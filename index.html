@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Viaggio di nozze</title>
+<meta name="theme-color" content="#16233F">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Viaggio">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="offline-badge" class="offline-badge">● Modalità offline — dati locali</div>
+
+<div id="app">
+  <div class="topbar">
+    <p class="eyebrow">Boarding pass</p>
+    <h1 id="trip-title">Viaggio di nozze</h1>
+    <div class="sub" id="trip-sub">20 ottobre – 9 novembre</div>
+  </div>
+
+  <div class="route-strip" id="route-strip"></div>
+
+  <main>
+    <section class="screen active" id="screen-home"></section>
+    <section class="screen" id="screen-cities"></section>
+    <section class="screen" id="screen-city-detail"></section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="active" data-screen="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button data-screen="cities">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-7.2 7-12a7 7 0 10-14 0c0 4.8 7 12 7 12z"/></svg>
+      Città
+    </button>
+  </nav>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

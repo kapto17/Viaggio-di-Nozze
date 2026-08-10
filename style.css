@@ -1,0 +1,337 @@
+:root{
+  --ink:#16233F;
+  --ink-soft:#2A3B5C;
+  --paper:#FBF8F1;
+  --paper-alt:#F1EADB;
+  --brass:#B98B2E;
+  --brass-soft:#DDBE7B;
+  --line:rgba(22,35,63,0.14);
+  --ok:#2F5D3A;
+
+  --acc-sf:#3C6E71;
+  --acc-la:#D9622B;
+  --acc-vegas:#A63472;
+  --acc-page:#B5502B;
+  --acc-chicago:#2F5D8A;
+  --acc-sd:#178C79;
+
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow: 0 8px 24px -12px rgba(22,35,63,0.35);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  background:var(--ink);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;
+}
+
+#app{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  background:var(--paper);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+
+/* ---------- Header ---------- */
+.topbar{
+  background:var(--ink);
+  color:var(--paper);
+  padding:22px 20px 26px;
+  position:relative;
+  overflow:hidden;
+}
+.topbar::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:0;
+  height:10px;
+  background-image: radial-gradient(circle, var(--paper) 4px, transparent 4.5px);
+  background-size: 16px 16px;
+  background-position: -4px 5px;
+}
+.topbar .eyebrow{
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-size:11px;
+  color:var(--brass-soft);
+  margin:0 0 6px;
+}
+.topbar h1{
+  margin:0;
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+.topbar .sub{
+  margin-top:4px;
+  font-size:13px;
+  color:rgba(251,248,241,0.65);
+}
+
+/* ---------- Route strip (signature element) ---------- */
+.route-strip{
+  display:flex;
+  gap:0;
+  overflow-x:auto;
+  padding:16px 14px 4px;
+  background:var(--paper-alt);
+  border-bottom:1px solid var(--line);
+  scrollbar-width:none;
+}
+.route-strip::-webkit-scrollbar{display:none;}
+.route-stop{
+  flex:0 0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:78px;
+  padding:0 2px;
+  cursor:pointer;
+  background:none;
+  border:none;
+  font-family:inherit;
+  color:var(--ink);
+}
+.route-stop .dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--paper);
+  border:2px solid var(--brass);
+  margin-bottom:6px;
+}
+.route-stop.done .dot{ background:var(--brass); }
+.route-stop.active .dot{
+  background:var(--ink);
+  border-color:var(--ink);
+  box-shadow:0 0 0 4px rgba(22,35,63,0.15);
+}
+.route-track{
+  height:2px;
+  flex:1 1 18px;
+  background:repeating-linear-gradient(90deg, var(--brass) 0 4px, transparent 4px 8px);
+  margin-top:5px;
+  align-self:flex-start;
+}
+.route-stop .rs-label{
+  font-size:10.5px;
+  font-weight:700;
+  text-align:center;
+  line-height:1.15;
+}
+.route-stop .rs-date{
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:9.5px;
+  color:var(--ink-soft);
+  margin-top:2px;
+}
+
+/* ---------- Main content ---------- */
+main{
+  flex:1;
+  padding:18px 16px 90px;
+}
+.screen{ display:none; }
+.screen.active{ display:block; }
+
+.section-title{
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--ink-soft);
+  margin:22px 0 10px;
+}
+.section-title:first-child{ margin-top:0; }
+
+/* Next-up card */
+.next-card{
+  background:var(--ink);
+  color:var(--paper);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.next-card .tag{
+  font-family:ui-monospace,monospace;
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--brass-soft);
+}
+.next-card h2{
+  font-size:20px;
+  margin:6px 0 2px;
+}
+.next-card .meta{
+  font-size:13px;
+  color:rgba(251,248,241,0.7);
+  margin-bottom:4px;
+}
+.next-card .countdown{
+  font-family:ui-monospace,monospace;
+  font-size:12px;
+  color:var(--brass-soft);
+  margin-top:10px;
+}
+
+/* Ticket / card styling (boarding pass motif) */
+.ticket{
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  margin-bottom:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+.ticket .stub-top{
+  padding:14px 16px 12px;
+  border-bottom:1px dashed var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.ticket .stub-top .stitle{ font-weight:800; font-size:15px; }
+.ticket .stub-top .ssub{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+.ticket .stub-bottom{
+  padding:10px 16px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:ui-monospace,monospace;
+  font-size:12px;
+}
+.ticket .accent-bar{ height:5px; }
+
+.pill{
+  display:inline-block;
+  padding:3px 9px;
+  border-radius:999px;
+  font-size:10.5px;
+  font-weight:700;
+  letter-spacing:.03em;
+  background:var(--paper-alt);
+  color:var(--ink);
+}
+
+.mapbtn{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  border:1px solid var(--ink);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:700;
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--paper);
+}
+.mapbtn:active{ background:var(--ink); color:var(--paper); }
+
+/* City cards on the Città screen */
+.city-card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  border-radius:var(--radius);
+  padding:14px 16px;
+  margin-bottom:10px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
+.city-card .swatch{
+  width:10px;align-self:stretch;border-radius:6px;flex:0 0 10px;
+}
+.city-card .ccontent{ flex:1; }
+.city-card .cname{ font-weight:800; font-size:15px; }
+.city-card .cdates{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+.city-card .chotel{ font-size:12px; color:var(--ink-soft); margin-top:1px; }
+.city-card .chev{ color:var(--ink-soft); }
+
+/* City detail screen */
+.city-header{
+  border-radius:var(--radius);
+  padding:18px;
+  color:#fff;
+  margin-bottom:16px;
+  position:relative;
+}
+.city-header h2{ margin:0 0 4px; font-size:22px; }
+.city-header .cd-dates{ font-size:13px; opacity:.9; }
+.city-header .cd-hotel{ font-size:13px; opacity:.85; margin-top:6px; }
+.back-btn{
+  background:none;border:none;color:var(--ink-soft);
+  font-size:13px;font-weight:700;padding:0 0 12px;cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+}
+
+.empty-note{
+  font-size:13px;
+  color:var(--ink-soft);
+  background:var(--paper-alt);
+  border-radius:var(--radius-sm);
+  padding:12px 14px;
+  border:1px dashed var(--line);
+}
+
+/* ---------- Bottom nav ---------- */
+nav.tabbar{
+  position:sticky;
+  bottom:0;
+  display:flex;
+  background:var(--ink);
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+}
+nav.tabbar button{
+  flex:1;
+  background:none;
+  border:none;
+  color:rgba(251,248,241,0.5);
+  font-family:inherit;
+  font-size:10.5px;
+  font-weight:700;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  padding:4px 2px;
+  cursor:pointer;
+}
+nav.tabbar button svg{ width:20px;height:20px; }
+nav.tabbar button.active{ color:var(--paper); }
+nav.tabbar button.active svg{ stroke:var(--brass); }
+
+/* Offline badge */
+.offline-badge{
+  position:fixed;
+  top:10px;left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:var(--brass-soft);
+  font-size:11px;
+  font-weight:700;
+  padding:5px 12px;
+  border-radius:999px;
+  font-family:ui-monospace,monospace;
+  z-index:50;
+  display:none;
+  box-shadow:var(--shadow);
+}
+.offline-badge.show{ display:block; }
+
+@media (min-width:481px){
+  body{ padding:24px 0; }
+  #app{ min-height:calc(100vh - 48px); border-radius:28px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.5); }
+}

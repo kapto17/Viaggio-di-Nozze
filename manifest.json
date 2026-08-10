@@ -1,0 +1,16 @@
+{
+  "name": "Viaggio di nozze",
+  "short_name": "Viaggio",
+  "description": "Itinerario, hotel, trasporti e biglietti del viaggio di nozze",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#16233F",
+  "theme_color": "#16233F",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
