@@ -1,0 +1,1 @@
+Per forzare l'aggiornamento PWA, cambia nel tuo sw.js il nome/versione della cache corrente in honeymoon-v6 (senza sostituire il resto del service worker).

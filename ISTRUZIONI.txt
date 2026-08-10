@@ -1,0 +1,19 @@
+V6 - Alloggi
+
+Questi sono file AGGIUNTIVI, come richiesto.
+
+1) Carica nella root GitHub:
+   hotels-v6.js
+   alloggi-v6.js
+   alloggi-v6.css
+
+2) In index.html aggiungi nel <head>:
+   <link rel="stylesheet" href="./alloggi-v6.css">
+
+3) Prima di </body>, e PRIMA del tuo app.js se possibile, aggiungi:
+   <script src="./hotels-v6.js"></script>
+   <script src="./alloggi-v6.js"></script>
+
+4) Nel tuo sw.js cambia SOLO il nome/versione cache corrente in honeymoon-v6.
+
+Nota: Las Vegas resta volutamente senza Alloggio.
