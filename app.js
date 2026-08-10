@@ -6,7 +6,14 @@ const ACCENT = {
   chicago: "var(--acc-chicago)",
   sd: "var(--acc-sd)"
 };
-const CITY_LABEL = { sf: "SF", la: "LA", vegas: "LV", page: "PGA", chicago: "CHI", sd: "SD" };
+const CITY_LABEL = {
+  sf: "San Francisco",
+  la: "Los Angeles",
+  vegas: "Las Vegas",
+  page: "Page",
+  chicago: "Chicago",
+  sd: "Santo Domingo"
+};
 
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -123,45 +130,20 @@ function daysUntil(iso){
 // ---------- Rendering: Home ----------
 function renderHome(){
   const el = $("#screen-home");
-  const next = getNextHappening();
-  let nextHtml = "";
-  if (next){
-    if (next.kind === "transport"){
-      const n = daysUntil(next.data.date);
-      const when = n === 0 ? "Oggi" : n === 1 ? "Domani" : n > 1 ? `Tra ${n} giorni` : "";
-      nextHtml = `
-        <div class="next-card">
-          <div class="tag">Prossimo evento</div>
-          <h2>${next.data.title}</h2>
-          <div class="meta">${fmtDateFull(next.data.date)} · ${next.data.time}</div>
-          <div class="meta">${next.data.subtitle||""}</div>
-          <div class="countdown">${when}</div>
-        </div>`;
-    } else {
-      const n = daysUntil(next.data.dateFrom);
-      const started = todayISO() >= next.data.dateFrom;
-      const when = started ? "In corso ora" : n === 0 ? "Oggi" : n === 1 ? "Domani" : `Tra ${n} giorni`;
-      nextHtml = `
-        <div class="next-card">
-          <div class="tag">${started ? "Ora sei a" : "Prossima tappa"}</div>
-          <h2>${next.data.city}</h2>
-          <div class="meta">${fmtDate(next.data.dateFrom)} – ${fmtDate(next.data.dateTo)}</div>
-          <div class="meta">${next.data.hotel?.name || ""}</div>
-          <div class="countdown">${when}</div>
-        </div>`;
-    }
-  } else {
-    nextHtml = `<div class="empty-note">Nessun evento in programma trovato.</div>`;
-  }
 
   el.innerHTML = `
-    <div class="section-title">Il tuo viaggio</div>
-    ${nextHtml}
-    <div class="section-title">Orari nel viaggio</div>
-    ${clocksHtml()}
+    <div class="timezone-box">
+      <div class="timezone-box-title">Fusi Orari</div>
+      ${clocksHtml()}
+    </div>
+
+    <div class="route-strip home-route-strip" id="route-strip"></div>
+
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
   `;
+
+  renderRouteStrip();
   bindCityCardClicks(el);
   startHomeClocks();
 }
@@ -307,10 +289,6 @@ function updateOnlineBadge(){
 
 // ---------- Init ----------
 function init(){
-  $("#trip-title").textContent = TRIP.title;
-  $("#trip-sub").textContent = TRIP.subtitle;
-
-  renderRouteStrip();
   renderHome();
   renderCitiesList();
 

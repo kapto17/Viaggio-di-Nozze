@@ -408,3 +408,55 @@ nav.tabbar button.active svg{ stroke:var(--brass); }
   color:var(--ink-soft);
   text-transform:capitalize;
 }
+
+
+/* ---------- Home V5: Honeymoon + Fusi Orari ---------- */
+.honeymoon-topbar{
+  min-height:112px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:28px 20px 34px;
+}
+.honeymoon-topbar h1{
+  width:100%;
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:.035em;
+}
+
+.timezone-box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:var(--shadow);
+  margin-bottom:18px;
+}
+.timezone-box-title{
+  text-align:center;
+  font-size:13px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  color:var(--ink);
+  margin:0 0 13px;
+}
+.timezone-box .world-clock-card{
+  box-shadow:none;
+  background:var(--paper);
+}
+
+.home-route-strip{
+  margin:0 -16px 8px;
+  border-top:1px solid var(--line);
+}
+.route-stop{
+  width:112px;
+}
+.route-stop .rs-label{
+  font-size:10px;
+  max-width:104px;
+  white-space:normal;
+}
