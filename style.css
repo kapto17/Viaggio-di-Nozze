@@ -460,3 +460,32 @@ nav.tabbar button.active svg{ stroke:var(--brass); }
   max-width:104px;
   white-space:normal;
 }
+
+
+/* ---------- V6: Alloggio ---------- */
+.hotel-card{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  padding:16px;
+  margin-bottom:16px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.hotel-icon{
+  flex:0 0 48px;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:var(--paper-alt);
+  font-size:24px;
+}
+.hotel-content{min-width:0;flex:1;}
+.hotel-name{font-size:16px;font-weight:850;line-height:1.25;}
+.hotel-address{margin-top:6px;font-size:12.5px;color:var(--ink-soft);line-height:1.4;}
+.hotel-dates{margin-top:7px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10.8px;color:var(--ink-soft);}
+.hotel-map{margin-top:12px;}

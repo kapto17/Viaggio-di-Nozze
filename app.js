@@ -29,6 +29,9 @@ function fmtDateFull(iso){
 function mapsUrl(query){
   return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
 }
+function itemMapsUrl(item, fallbackQuery){
+  return item && item.mapsUrl ? item.mapsUrl : mapsUrl((item && item.mapsQuery) || fallbackQuery);
+}
 
 function todayISO(){
   const d = new Date();
@@ -236,6 +239,18 @@ function openCity(legId){
       <div class="cd-hotel">🏨 ${leg.hotel?.name || "Hotel da definire"}</div>
     </div>
 
+    <div class="section-title">Alloggio</div>
+    ${leg.hotel && leg.hotel.name && !leg.hotel.name.toLowerCase().includes("da definire") ? `
+      <div class="hotel-card">
+        <div class="hotel-icon">🏨</div>
+        <div class="hotel-content">
+          <div class="hotel-name">${leg.hotel.name}</div>
+          ${leg.hotel.address ? `<div class="hotel-address">${leg.hotel.address}</div>` : ""}
+          <div class="hotel-dates">Check-in ${fmtDate(leg.hotel.checkin)} · Check-out ${fmtDate(leg.hotel.checkout)}</div>
+          <a class="mapbtn hotel-map" target="_blank" rel="noopener" href="${leg.hotel.mapsUrl || mapsUrl(leg.hotel.name + ", " + leg.city)}">📍 Apri in Maps</a>
+        </div>
+      </div>` : `<div class="empty-note">Alloggio ancora da definire.</div>`}
+
     <div class="section-title">Trasporti</div>
     ${transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`}
 
@@ -249,7 +264,7 @@ function openCity(legId){
           </div>
           <div class="activity-datetime">📅 ${fmtDateFull(a.date)}${a.time ? ` · 🕒 ${a.time}` : ""}</div>
           <div class="activity-note">${a.note || ""}</div>
-          <a class="mapbtn activity-map" target="_blank" rel="noopener" href="${mapsUrl(a.mapsQuery || a.name)}">📍 Apri in Maps</a>
+          <a class="mapbtn activity-map" target="_blank" rel="noopener" href="${itemMapsUrl(a, a.name)}">📍 Apri in Maps</a>
         </div>
       </div>
     `)}
