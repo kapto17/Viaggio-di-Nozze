@@ -266,7 +266,7 @@ function init(){
   updateOnlineBadge();
 
   if ("serviceWorker" in navigator){
-    navigator.serviceWorker.register("sw.js").catch(()=>{});
+    navigator.serviceWorker.register("./sw.js", { scope: "./", updateViaCache: "none" }).catch((err)=>console.error("Service Worker registration failed:", err));
   }
 }
 
