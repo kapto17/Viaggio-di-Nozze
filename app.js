@@ -55,6 +55,65 @@ function getNextHappening(){
   return null;
 }
 
+
+// ---------- Orologi Home ----------
+const HOME_CLOCKS = [
+  { label: "Italia", zone: "Europe/Rome", flag: "🇮🇹" },
+  { label: "California", zone: "America/Los_Angeles", flag: "🇺🇸" },
+  { label: "Chicago", zone: "America/Chicago", flag: "🇺🇸" },
+  { label: "Santo Domingo", zone: "America/Santo_Domingo", flag: "🇩🇴" }
+];
+
+function clockTime(zone){
+  return new Intl.DateTimeFormat("it-IT", {
+    timeZone: zone,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false
+  }).format(new Date());
+}
+
+function clockDate(zone){
+  return new Intl.DateTimeFormat("it-IT", {
+    timeZone: zone,
+    weekday: "short",
+    day: "numeric",
+    month: "short"
+  }).format(new Date());
+}
+
+function clocksHtml(){
+  return `
+    <div class="world-clock-grid">
+      ${HOME_CLOCKS.map((c, i) => `
+        <div class="world-clock-card" data-clock-index="${i}">
+          <div class="world-clock-place"><span>${c.flag}</span>${c.label}</div>
+          <div class="world-clock-time">--:--:--</div>
+          <div class="world-clock-date">---</div>
+        </div>`).join("")}
+    </div>`;
+}
+
+function updateHomeClocks(){
+  $$(".world-clock-card").forEach(card => {
+    const c = HOME_CLOCKS[Number(card.dataset.clockIndex)];
+    if (!c) return;
+    const timeEl = $(".world-clock-time", card);
+    const dateEl = $(".world-clock-date", card);
+    if (timeEl) timeEl.textContent = clockTime(c.zone);
+    if (dateEl) dateEl.textContent = clockDate(c.zone);
+  });
+}
+
+let homeClockTimer = null;
+function startHomeClocks(){
+  updateHomeClocks();
+  if (!homeClockTimer){
+    homeClockTimer = setInterval(updateHomeClocks, 1000);
+  }
+}
+
 function daysUntil(iso){
   const t = new Date(todayISO()+"T00:00:00");
   const d = new Date(iso+"T00:00:00");
@@ -98,10 +157,13 @@ function renderHome(){
   el.innerHTML = `
     <div class="section-title">Il tuo viaggio</div>
     ${nextHtml}
+    <div class="section-title">Orari nel viaggio</div>
+    ${clocksHtml()}
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
   `;
   bindCityCardClicks(el);
+  startHomeClocks();
 }
 
 function cityCardHtml(leg){

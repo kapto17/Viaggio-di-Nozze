@@ -367,3 +367,44 @@ nav.tabbar button.active svg{ stroke:var(--brass); }
 .status-pill{flex:0 0 auto;border-radius:999px;padding:4px 8px;font-size:9.5px;font-weight:800;letter-spacing:.03em;white-space:nowrap;}
 .status-pill.booked{background:#e8f2e9;color:var(--ok);}
 .status-pill.planned{background:var(--paper-alt);color:var(--ink-soft);}
+
+
+/* ---------- Orologi Home ---------- */
+.world-clock-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.world-clock-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:14px 15px 13px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+.world-clock-place{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:800;
+  color:var(--ink-soft);
+  white-space:nowrap;
+}
+.world-clock-place span{font-size:16px;}
+.world-clock-time{
+  margin-top:7px;
+  font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:22px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:-.04em;
+  color:var(--ink);
+}
+.world-clock-date{
+  margin-top:6px;
+  font-size:10.5px;
+  color:var(--ink-soft);
+  text-transform:capitalize;
+}
