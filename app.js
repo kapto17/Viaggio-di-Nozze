@@ -195,6 +195,21 @@ function openCity(legId){
     <div class="section-title">Trasporti</div>
     ${transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`}
 
+    ${sectionBlock("Cose da fare", leg.activities, "Aggiungeremo qui attività ed esperienze a " + leg.city + ".", a => `
+      <div class="activity-card">
+        <div class="activity-icon">${a.icon || "✨"}</div>
+        <div class="activity-content">
+          <div class="activity-topline">
+            <div class="activity-title">${a.name}</div>
+            ${a.status ? `<span class="status-pill ${a.status === "Prenotato" ? "booked" : "planned"}">${a.status}</span>` : ""}
+          </div>
+          <div class="activity-datetime">📅 ${fmtDateFull(a.date)}${a.time ? ` · 🕒 ${a.time}` : ""}</div>
+          <div class="activity-note">${a.note || ""}</div>
+          <a class="mapbtn activity-map" target="_blank" rel="noopener" href="${mapsUrl(a.mapsQuery || a.name)}">📍 Apri in Maps</a>
+        </div>
+      </div>
+    `)}
+
     ${sectionBlock("Da vedere", leg.places, "Aggiungeremo qui i luoghi da visitare a " + leg.city + ".", p => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div></div>
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div></div>
@@ -206,7 +221,7 @@ function openCity(legId){
     `)}
 
     ${sectionBlock("Biglietti", leg.tickets, "Nessun biglietto caricato per questa tappa.", tk => `
-      <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div></div></div>
+      <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
     `)}
   `;
   $("#back-to-cities").addEventListener("click", () => showScreen("cities"));

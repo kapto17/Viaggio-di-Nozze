@@ -335,3 +335,35 @@ nav.tabbar button.active svg{ stroke:var(--brass); }
   body{ padding:24px 0; }
   #app{ min-height:calc(100vh - 48px); border-radius:28px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.5); }
 }
+
+
+/* ---------- Cose da fare / esperienze ---------- */
+.activity-card{
+  display:flex;
+  gap:13px;
+  padding:15px;
+  margin-bottom:14px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.activity-icon{
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:var(--paper-alt);
+  font-size:23px;
+}
+.activity-content{min-width:0;flex:1;}
+.activity-topline{display:flex;align-items:flex-start;gap:8px;justify-content:space-between;}
+.activity-title{font-size:16px;font-weight:850;line-height:1.2;}
+.activity-datetime{margin-top:6px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11.5px;color:var(--ink-soft);}
+.activity-note{margin-top:7px;font-size:12.5px;color:var(--ink-soft);line-height:1.45;}
+.activity-map{margin-top:11px;}
+.status-pill{flex:0 0 auto;border-radius:999px;padding:4px 8px;font-size:9.5px;font-weight:800;letter-spacing:.03em;white-space:nowrap;}
+.status-pill.booked{background:#e8f2e9;color:var(--ok);}
+.status-pill.planned{background:var(--paper-alt);color:var(--ink-soft);}

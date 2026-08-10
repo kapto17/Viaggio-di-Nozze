@@ -33,9 +33,26 @@ const TRIP = {
         }
       ],
       days: [],
+      activities: [
+        {
+          name: "Alcatraz Night Tour",
+          date: "2026-10-22",
+          time: "17:55",
+          status: "Prenotato",
+          icon: "🌙",
+          note: "Tour serale di Alcatraz · biglietti già prenotati",
+          mapsQuery: "Alcatraz Island, San Francisco, CA"
+        }
+      ],
       restaurants: [],
       places: [],
-      tickets: []
+      tickets: [
+        {
+          name: "Alcatraz Night Tour",
+          note: "22 ottobre 2026 · 17:55 · prenotazione confermata. Documento/QR da aggiungere quando disponibile.",
+          status: "Prenotato"
+        }
+      ]
     },
     {
       id: "la",
@@ -63,6 +80,17 @@ const TRIP = {
         }
       ],
       days: [],
+      activities: [
+        {
+          name: "Universal Studios Hollywood",
+          date: "2026-10-26",
+          time: "Giornata",
+          status: "In programma",
+          icon: "🎬",
+          note: "Giornata agli Universal Studios Hollywood",
+          mapsQuery: "Universal Studios Hollywood, Universal City, CA"
+        }
+      ],
       restaurants: [],
       places: [],
       tickets: []
