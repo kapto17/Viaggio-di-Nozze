@@ -367,17 +367,62 @@ function openCity(legId, pushHistory=true){
         <span class="pill">${fmtDate(t.date)}</span>
       </div>
       <div class="stub-bottom">
-        <span>${t.time}${t.arriveTime ? " → " + t.arriveTime : ""}</span>
+        <span>${t.time || "Orario da confermare"}${t.arriveTime ? " → " + t.arriveTime : ""}</span>
         <a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(t.mapsQuery || leg.city)}">Apri Maps</a>
       </div>
       ${t.arriveNote ? `<div style="padding:0 16px 14px;font-size:12px;color:var(--ink-soft)">${t.arriveNote}</div>` : ""}
     </div>
   `).join("");
 
-  const sectionBlock = (title, items, emptyText, renderItem) => `
-    <div class="section-title">${title}</div>
-    ${items && items.length ? items.map(renderItem).join("") : `<div class="empty-note">${emptyText}</div>`}
-  `;
+  const accordion = (title, content, opts={}) => `
+    <details class="city-accordion ${opts.className || ""}" ${opts.open ? "open" : ""}>
+      <summary>
+        <span>${opts.icon ? `<span class="accordion-icon">${opts.icon}</span>` : ""}${title}</span>
+        ${opts.count !== undefined ? `<span class="accordion-count">${opts.count}</span>` : ""}
+        <span class="accordion-chevron">⌄</span>
+      </summary>
+      <div class="accordion-content">${content}</div>
+    </details>`;
+
+  const renderPlaceCard = (p) => `
+    <div class="ticket lf-ticket place-ticket" data-place-name="${p.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${p.name}">
+      <div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+      <div class="stub-bottom"><span class="place-more">Scopri di più ›</span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div>
+    </div>`;
+
+  const renderActivityCard = (a) => `
+    <div class="ticket lf-ticket place-ticket activity-place-ticket" data-place-name="${a.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${a.name}">
+      <div class="stub-top">
+        <div>
+          <div class="stitle">${a.icon || "✨"} ${a.name}</div>
+          <div class="ssub">${a.note || ""}</div>
+        </div>
+        <div class="activity-badges">${a.status ? `<span class="status-pill ${a.status === "Prenotato" ? "booked" : "planned"}">${a.status}</span>` : ""}${a.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+      </div>
+      <div class="stub-bottom"><span class="activity-inline-date">📅 ${fmtDateFull(a.date)}${a.time ? ` · ${a.time}` : ""}</span><a class="mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(a, a.name)}">Apri Maps</a></div>
+    </div>`;
+
+  const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
+  const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
+  const mustItemsHtml = [
+    ...(leg.activities||[]).map(renderActivityCard),
+    ...mustPlaces.map(renderPlaceCard)
+  ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
+  const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
+  const restaurantsHtml = (leg.restaurants||[]).map(r => `
+    <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+    <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
+  `).join("") || `<div class="empty-note">Aggiungeremo qui i ristoranti selezionati a ${leg.city}.</div>`;
+  const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
+      <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
+    `).join("") : `<div class="empty-note">Puoi salvare qui PDF, immagini e QR direttamente sul telefono.</div>`}
+    <div class="ticket-import-box">
+      <div class="ticket-import-title">Biglietti offline</div>
+      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub.</div>
+      <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*" multiple>
+      <button id="ticket-import-${leg.id}" class="ticket-import-btn">📎 Importa biglietto</button>
+      <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
+    </div>`;
 
   el.innerHTML = `
     <button class="back-btn" id="back-to-cities">‹ Tutte le tappe</button>
@@ -400,30 +445,11 @@ function openCity(legId, pushHistory=true){
         </div>
       </div>` : `<div class="empty-note">Alloggio ancora da definire.</div>`}
 
-    <div class="section-title">Trasporti</div>
-    ${transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`}
+    ${accordion("Trasporti", transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`, {icon:"✈️", count:(leg.transport||[]).length})}
 
-    ${sectionBlock("Cose da fare", leg.activities, "Aggiungeremo qui attività ed esperienze a " + leg.city + ".", a => `
-      <div class="activity-card">
-        <div class="activity-icon">${a.icon || "✨"}</div>
-        <div class="activity-content">
-          <div class="activity-topline">
-            <div class="activity-title">${a.name}</div>
-            ${a.status ? `<span class="status-pill ${a.status === "Prenotato" ? "booked" : "planned"}">${a.status}</span>` : ""}
-          </div>
-          <div class="activity-datetime">📅 ${fmtDateFull(a.date)}${a.time ? ` · 🕒 ${a.time}` : ""}</div>
-          <div class="activity-note">${a.note || ""}</div>
-          <a class="mapbtn activity-map" target="_blank" rel="noopener" href="${itemMapsUrl(a, a.name)}">📍 Apri in Maps</a>
-        </div>
-      </div>
-    `)}
+    ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
 
-    ${sectionBlock("Da vedere", leg.places, "Aggiungeremo qui i luoghi da visitare a " + leg.city + ".", p => `
-      <div class="ticket lf-ticket place-ticket" data-place-name="${p.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${p.name}">
-        <div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
-        <div class="stub-bottom"><span class="place-more">Scopri di più ›</span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div>
-      </div>
-    `)}
+    ${accordion("Da scoprire", discoverHtml, {icon:"◌", count:discoverPlaces.length, className:"accordion-discover"})}
 
     <div class="section-title">Piatti tipici da assaggiare</div>
     ${leg.foods && leg.foods.length ? `
@@ -436,23 +462,10 @@ function openCity(legId, pushHistory=true){
         <div class="food-section-arrow">›</div>
       </button>` : `<div class="empty-note">Aggiungeremo qui le specialità locali.</div>`}
 
-    ${sectionBlock("Dove mangiare", leg.restaurants, "Aggiungeremo qui i ristoranti selezionati a " + leg.city + ".", r => `
-      <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
-      <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
-    `)}
+    ${accordion("Dove mangiare", restaurantsHtml, {icon:"🍽️", count:(leg.restaurants||[]).length})}
 
     <div class="section-title">Biglietti</div>
-    ${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
-      <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
-    `).join("") : `<div class="empty-note">Puoi salvare qui PDF, immagini e QR direttamente sul telefono.</div>`}
-
-    <div class="ticket-import-box">
-      <div class="ticket-import-title">Biglietti offline</div>
-      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub.</div>
-      <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*" multiple>
-      <button id="ticket-import-${leg.id}" class="ticket-import-btn">📎 Importa biglietto</button>
-      <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
-    </div>
+    ${ticketsHtml}
   `;
   $("#back-to-cities").addEventListener("click", () => history.back());
   $$(`[data-food-leg="${leg.id}"]`, el).forEach(btn => {
@@ -534,7 +547,7 @@ async function loadWikipediaPlaceImage(detail, fallbackImage, imgEl, sourceEl){
 function openPlaceDetail(legId, placeName, pushHistory=true){
   const leg = TRIP.legs.find(l => l.id === legId);
   if (!leg) return;
-  const place = (leg.places || []).find(p => p.name === placeName);
+  const place = (leg.places || []).find(p => p.name === placeName) || (leg.activities || []).find(a => a.name === placeName);
   if (!place) return;
   const detail = (typeof PLACE_DETAILS !== "undefined" && PLACE_DETAILS[place.name]) || {};
   const el = $("#screen-place-detail");
@@ -550,10 +563,10 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
       </div>
     </div>
     <div class="place-detail-body">
-      <div class="place-detail-kicker">Da vedere</div>
+      <div class="place-detail-kicker">${place.priority === "must" || (leg.activities || []).includes(place) ? "Da non perdere" : "Da scoprire"}</div>
       <p>${detail.text || place.note || ""}</p>
       ${place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
-      <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${mapsUrl(place.mapsQuery || place.name)}">📍 Apri in Google Maps</a>
+      <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(place, place.name)}">📍 Apri in Google Maps</a>
       <div class="place-photo-source" id="place-photo-source">Caricamento immagine…</div>
     </div>
   `;

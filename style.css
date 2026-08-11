@@ -1111,3 +1111,70 @@ nav.tabbar button.active{
   .place-detail-body{padding:22px;}
   .place-detail-body p{font-size:15px;}
 }
+
+/* ---------- V16: sezioni compatte a tendina ---------- */
+.city-accordion{
+  margin:14px 0;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.city-accordion summary{
+  list-style:none;
+  cursor:pointer;
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:9px;
+  min-height:56px;
+  padding:14px 16px;
+  font-size:14px;
+  font-weight:850;
+  color:var(--ink);
+  user-select:none;
+}
+.city-accordion summary::-webkit-details-marker{display:none;}
+.city-accordion summary > span:first-child{display:flex;align-items:center;gap:9px;}
+.accordion-icon{
+  display:inline-grid;
+  place-items:center;
+  width:26px;height:26px;
+  border-radius:9px;
+  background:var(--paper-alt);
+  font-size:13px;
+}
+.accordion-count{
+  min-width:24px;height:24px;
+  display:grid;place-items:center;
+  padding:0 7px;
+  border-radius:999px;
+  background:var(--paper-alt);
+  color:var(--ink-soft);
+  font-size:10.5px;
+  font-weight:850;
+}
+.accordion-chevron{
+  font-size:20px;
+  line-height:1;
+  color:var(--ink-soft);
+  transform:rotate(0deg);
+  transition:transform .18s ease;
+}
+.city-accordion[open] .accordion-chevron{transform:rotate(180deg);}
+.accordion-content{
+  border-top:1px solid var(--line);
+  padding:14px 14px 2px;
+  background:linear-gradient(180deg,rgba(241,234,219,.30),rgba(255,255,255,0));
+}
+.accordion-must summary{background:linear-gradient(90deg,rgba(185,139,46,.10),#fff 46%);}
+.accordion-must .accordion-icon{background:rgba(185,139,46,.14);color:#8B681F;}
+.accordion-discover summary{background:linear-gradient(90deg,rgba(60,110,113,.08),#fff 46%);}
+.accordion-discover .accordion-icon{background:rgba(60,110,113,.12);color:#315C5E;}
+.activity-place-ticket .activity-badges{display:flex;align-items:flex-start;gap:7px;position:relative;min-width:70px;justify-content:flex-end;}
+.activity-place-ticket .activity-badges .lf-badge{position:relative;top:auto;right:auto;margin-right:-7px;margin-top:-7px;}
+.activity-inline-date{font-size:10.5px;color:var(--ink-soft);font-family:ui-monospace,"SF Mono",Menlo,monospace;}
+@media (min-width:760px){
+  .city-accordion summary{min-height:60px;font-size:15px;}
+}
