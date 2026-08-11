@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v8";
+const CACHE_NAME = "viaggio-nozze-v9";
 const ASSETS = [
   "./",
   "./index.html",
@@ -8,7 +8,13 @@ const ASSETS = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/icon-maskable-512.png"
+  "./icons/icon-maskable-512.png",
+  "./assets/san-francisco.jpg",
+  "./assets/los-angeles.jpg",
+  "./assets/las-vegas.jpg",
+  "./assets/page.jpg",
+  "./assets/chicago.jpg",
+  "./assets/santo-domingo.jpg"
 ];
 
 self.addEventListener("install", (event) => {

@@ -155,14 +155,13 @@ function cityCardHtml(leg){
   const active = getCurrentLeg() && getCurrentLeg().id === leg.id;
   const done = leg.dateTo <= todayISO();
   return `
-    <div class="city-card" data-leg="${leg.id}">
-      <div class="swatch" style="background:${ACCENT[leg.accent]}"></div>
-      <div class="ccontent">
-        <div class="cname">${leg.city} ${active ? "· ora" : ""}</div>
+    <div class="city-card photo-city-card" data-leg="${leg.id}" style="background-image:linear-gradient(180deg, rgba(10,18,32,.05) 18%, rgba(10,18,32,.82) 100%), url('${leg.image || ""}')">
+      <div class="city-card-content">
+        <div class="city-card-kicker">${active ? "Tappa attuale" : "Tappa"}</div>
+        <div class="cname">${leg.city}</div>
         <div class="cdates">${fmtDate(leg.dateFrom)} – ${fmtDate(leg.dateTo)}</div>
-        <div class="chotel">${leg.hotel?.name || ""}</div>
       </div>
-      <div class="chev">›</div>
+      <div class="city-card-arrow">›</div>
     </div>`;
 }
 
@@ -382,9 +381,11 @@ function openCity(legId){
 
   el.innerHTML = `
     <button class="back-btn" id="back-to-cities">‹ Tutte le tappe</button>
-    <div class="city-header" style="background:${ACCENT[leg.accent]}">
-      <h2>${leg.city}</h2>
-      <div class="cd-dates">${fmtDate(leg.dateFrom)} – ${fmtDate(leg.dateTo)}</div>
+    <div class="city-header photo-city-header" style="--city-accent:${ACCENT[leg.accent]}; background-image:linear-gradient(180deg, rgba(6,13,25,.08) 12%, rgba(6,13,25,.78) 100%), url('${leg.image || ""}')">
+      <div class="city-header-content">
+        <h2>${leg.city}</h2>
+        <div class="cd-dates">${fmtDate(leg.dateFrom)} – ${fmtDate(leg.dateTo)}</div>
+      </div>
     </div>
 
     <div class="section-title">Alloggio</div>

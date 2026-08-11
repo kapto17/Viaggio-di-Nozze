@@ -611,3 +611,289 @@ nav.tabbar button.active svg{ stroke:var(--brass); }
   background:#fff7f7;
   color:#8f3030;
 }
+
+/* ==========================================================
+   V9 — Restyling fotografico
+   Nessuna nuova sezione: cambia solo la presentazione visiva.
+   ========================================================== */
+
+:root{
+  --paper:#F6F2EA;
+  --paper-alt:#ECE5D8;
+  --ink:#152238;
+  --ink-soft:#5D6675;
+  --brass:#B68A46;
+  --brass-soft:#E3C98F;
+  --line:rgba(21,34,56,.11);
+  --radius:22px;
+  --radius-sm:14px;
+  --shadow:0 18px 42px -28px rgba(16,27,46,.55);
+}
+
+body{
+  background:#111A2A;
+}
+
+#app{
+  background:var(--paper);
+}
+
+/* Home hero fotografica */
+.honeymoon-topbar{
+  min-height:188px;
+  padding:38px 22px 42px;
+  background-image:
+    linear-gradient(180deg, rgba(9,18,31,.18) 0%, rgba(9,18,31,.76) 100%),
+    url('./assets/santo-domingo.jpg');
+  background-size:cover;
+  background-position:center 48%;
+  border-radius:0 0 30px 30px;
+  box-shadow:0 18px 40px -30px rgba(0,0,0,.65);
+}
+.honeymoon-topbar::after{display:none;}
+.honeymoon-topbar h1{
+  color:#fff;
+  font-size:35px;
+  letter-spacing:-.025em;
+  text-shadow:0 4px 18px rgba(0,0,0,.34);
+}
+
+main{
+  padding:18px 16px 96px;
+}
+
+/* Fusi orari: più leggeri e contemporanei */
+.timezone-box{
+  margin-top:-38px;
+  position:relative;
+  z-index:2;
+  border:none;
+  border-radius:24px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 20px 44px -30px rgba(12,24,43,.5);
+  backdrop-filter:blur(14px);
+}
+.timezone-box-title{
+  text-transform:none;
+  letter-spacing:-.01em;
+  font-size:17px;
+  text-align:left;
+  margin-bottom:12px;
+}
+.timezone-box .world-clock-grid{gap:8px;}
+.timezone-box .world-clock-card{
+  border:0;
+  border-radius:16px;
+  background:#F6F2EA;
+  padding:12px 13px;
+}
+.world-clock-place{font-size:11px;}
+.world-clock-time{font-size:21px;}
+.world-clock-date{font-size:9.5px;}
+
+/* Itinerario orizzontale: discreto, non più effetto "biglietto" */
+.home-route-strip{
+  margin:18px -16px 8px;
+  padding:13px 12px 9px;
+  background:transparent;
+  border:0;
+}
+.route-stop{width:118px;}
+.route-stop .dot{
+  width:9px;height:9px;
+  border-width:1.5px;
+}
+.route-track{opacity:.45;}
+.route-stop .rs-label{font-size:10.5px;}
+.route-stop .rs-date{font-size:9px;}
+
+.section-title{
+  margin:26px 2px 11px;
+  font-size:12px;
+  color:#667080;
+  letter-spacing:.13em;
+}
+
+/* Card fotografiche delle tappe */
+.city-card.photo-city-card{
+  min-height:164px;
+  display:flex;
+  align-items:flex-end;
+  position:relative;
+  overflow:hidden;
+  padding:18px;
+  margin-bottom:14px;
+  border:0;
+  border-radius:24px;
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 20px 38px -27px rgba(7,18,34,.72);
+  color:#fff;
+  isolation:isolate;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.city-card.photo-city-card:active{
+  transform:scale(.985);
+  box-shadow:0 12px 25px -20px rgba(7,18,34,.75);
+}
+.photo-city-card .city-card-content{
+  flex:1;
+  min-width:0;
+  position:relative;
+  z-index:1;
+}
+.photo-city-card .city-card-kicker{
+  font-size:9.5px;
+  font-weight:800;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.72);
+  margin-bottom:4px;
+}
+.photo-city-card .cname{
+  font-size:24px;
+  font-weight:850;
+  line-height:1.05;
+  color:#fff;
+  text-shadow:0 3px 14px rgba(0,0,0,.28);
+}
+.photo-city-card .cdates{
+  margin-top:6px;
+  font-size:12.5px;
+  color:rgba(255,255,255,.84);
+}
+.photo-city-card .city-card-arrow{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(8px);
+  font-size:24px;
+  line-height:1;
+  color:#fff;
+  position:relative;
+  z-index:1;
+}
+
+/* Hero fotografica nella singola tappa */
+.city-header.photo-city-header{
+  min-height:220px;
+  margin:0 0 20px;
+  padding:22px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  background-size:cover;
+  background-position:center;
+  border-radius:26px;
+  box-shadow:0 20px 40px -28px rgba(8,17,31,.75);
+  overflow:hidden;
+}
+.city-header.photo-city-header::after{
+  content:"";
+  position:absolute;
+  left:50%;bottom:0;
+  transform:translateX(-50%);
+  width:54px;height:4px;
+  border-radius:5px 5px 0 0;
+  background:var(--city-accent);
+}
+.city-header-content{
+  width:100%;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+.city-header.photo-city-header h2{
+  margin:0;
+  color:#fff;
+  font-size:30px;
+  line-height:1.05;
+  text-shadow:0 3px 18px rgba(0,0,0,.42);
+}
+.city-header.photo-city-header .cd-dates{
+  margin-top:8px;
+  color:rgba(255,255,255,.86);
+  font-size:13px;
+  font-weight:650;
+  text-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+
+.back-btn{
+  padding:2px 4px 13px;
+  color:#5f6876;
+}
+
+/* Contenuto delle sezioni: stesso contenuto, visual più pulita */
+.hotel-card,
+.activity-card,
+.ticket,
+.ticket-import-box{
+  border:0;
+  border-radius:20px;
+  box-shadow:0 16px 36px -29px rgba(13,27,48,.65);
+  background:#fff;
+}
+.hotel-card,
+.activity-card{
+  padding:16px;
+}
+.hotel-icon,
+.activity-icon{
+  background:#F1ECE3;
+  border-radius:15px;
+}
+.ticket .stub-top{
+  border-bottom:1px solid rgba(21,34,56,.08);
+}
+.ticket .accent-bar{
+  height:4px;
+}
+.mapbtn{
+  border:0;
+  background:#EEF0F3;
+  color:#26354D;
+  padding:8px 12px;
+}
+.mapbtn:active{
+  background:#152238;
+  color:#fff;
+}
+.empty-note{
+  background:rgba(255,255,255,.62);
+  border:1px dashed rgba(21,34,56,.14);
+}
+
+.ticket-import-btn{
+  border-radius:14px;
+  padding:12px 14px;
+}
+
+/* Barra inferiore flottante */
+nav.tabbar{
+  position:sticky;
+  bottom:10px;
+  width:calc(100% - 24px);
+  margin:0 auto 10px;
+  border:0;
+  border-radius:20px;
+  background:rgba(21,34,56,.96);
+  box-shadow:0 14px 36px -20px rgba(0,0,0,.7);
+  backdrop-filter:blur(16px);
+  padding:8px 5px calc(8px + env(safe-area-inset-bottom));
+  z-index:20;
+}
+nav.tabbar button{
+  border-radius:14px;
+}
+nav.tabbar button.active{
+  background:rgba(255,255,255,.07);
+}
+
+@media (min-width:481px){
+  #app{overflow:hidden;}
+  .honeymoon-topbar{border-radius:28px 28px 30px 30px;}
+}
