@@ -419,7 +419,7 @@ function openCity(legId, pushHistory=true){
     `)}
 
     ${sectionBlock("Da vedere", leg.places, "Aggiungeremo qui i luoghi da visitare a " + leg.city + ".", p => `
-      <div class="ticket"><div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div></div>
+      <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div></div>
     `)}
 
@@ -435,7 +435,7 @@ function openCity(legId, pushHistory=true){
       </button>` : `<div class="empty-note">Aggiungeremo qui le specialità locali.</div>`}
 
     ${sectionBlock("Dove mangiare", leg.restaurants, "Aggiungeremo qui i ristoranti selezionati a " + leg.city + ".", r => `
-      <div class="ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div></div>
+      <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
     `)}
 
