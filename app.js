@@ -419,8 +419,10 @@ function openCity(legId, pushHistory=true){
     `)}
 
     ${sectionBlock("Da vedere", leg.places, "Aggiungeremo qui i luoghi da visitare a " + leg.city + ".", p => `
-      <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
-      <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div></div>
+      <div class="ticket lf-ticket place-ticket" data-place-name="${p.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${p.name}">
+        <div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+        <div class="stub-bottom"><span class="place-more">Scopri di più ›</span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div>
+      </div>
     `)}
 
     <div class="section-title">Piatti tipici da assaggiare</div>
@@ -456,6 +458,19 @@ function openCity(legId, pushHistory=true){
   $$(`[data-food-leg="${leg.id}"]`, el).forEach(btn => {
     btn.addEventListener("click", () => openFoodDetail(leg.id, btn.dataset.foodId));
   });
+  $$(".place-ticket", el).forEach(card => {
+    const open = (event) => {
+      if (event && event.target && event.target.closest("a")) return;
+      openPlaceDetail(leg.id, card.dataset.placeName);
+    };
+    card.addEventListener("click", open);
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " "){
+        event.preventDefault();
+        openPlaceDetail(leg.id, card.dataset.placeName);
+      }
+    });
+  });
   bindTicketImporter(leg);
   renderLocalTickets(leg.id);
   navigateTo("city-detail", { legId: leg.id }, pushHistory);
@@ -486,9 +501,66 @@ function renderNavigationState(state){
     openFoodDetail(st.legId, st.foodId, false);
     return;
   }
+  if (st.screen === "place-detail" && st.legId && st.placeName){
+    openPlaceDetail(st.legId, st.placeName, false);
+    return;
+  }
   if (st.screen === "cities") renderCitiesList();
   if (st.screen === "home") renderHome();
   showScreen(st.screen || "home");
+}
+
+async function loadWikipediaPlaceImage(detail, fallbackImage, imgEl, sourceEl){
+  if (!detail || !detail.wikiTitle || !imgEl) return;
+  const title = detail.wikiTitle;
+  const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=pageimages&pithumbsize=1400&titles=${encodeURIComponent(title)}`;
+  try {
+    const response = await fetch(apiUrl, { headers: { "Accept": "application/json" } });
+    if (!response.ok) throw new Error("Wikipedia image unavailable");
+    const data = await response.json();
+    const pageData = data.query && data.query.pages ? Object.values(data.query.pages)[0] : null;
+    const src = pageData && pageData.thumbnail && pageData.thumbnail.source;
+    if (src) imgEl.src = src;
+    if (sourceEl){
+      const page = `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, "_"))}`;
+      sourceEl.innerHTML = `<a href="${page}" target="_blank" rel="noopener">Immagine da Wikipedia/Wikimedia Commons ↗</a>`;
+    }
+  } catch(err){
+    imgEl.src = fallbackImage || "";
+    if (sourceEl) sourceEl.textContent = "Immagine della tappa";
+  }
+}
+
+function openPlaceDetail(legId, placeName, pushHistory=true){
+  const leg = TRIP.legs.find(l => l.id === legId);
+  if (!leg) return;
+  const place = (leg.places || []).find(p => p.name === placeName);
+  if (!place) return;
+  const detail = (typeof PLACE_DETAILS !== "undefined" && PLACE_DETAILS[place.name]) || {};
+  const el = $("#screen-place-detail");
+
+  el.innerHTML = `
+    <button class="back-btn" id="back-from-place">‹ ${leg.city}</button>
+    <div class="place-detail-hero">
+      <img id="place-detail-image" src="${leg.image || ""}" alt="${place.name}" loading="eager">
+      <div class="place-detail-overlay">
+        <div class="place-detail-city">${leg.city}</div>
+        <h2>${place.name}</h2>
+        ${place.lf ? `<span class="lf-badge place-detail-lf" title="Scelto da L&F">L&amp;F</span>` : ""}
+      </div>
+    </div>
+    <div class="place-detail-body">
+      <div class="place-detail-kicker">Da vedere</div>
+      <p>${detail.text || place.note || ""}</p>
+      ${place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
+      <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${mapsUrl(place.mapsQuery || place.name)}">📍 Apri in Google Maps</a>
+      <div class="place-photo-source" id="place-photo-source">Caricamento immagine…</div>
+    </div>
+  `;
+
+  $("#back-from-place").addEventListener("click", () => history.back());
+  loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), $("#place-photo-source"));
+  navigateTo("place-detail", { legId, placeName:place.name }, pushHistory);
 }
 
 function openFoodDetail(legId, foodId, pushHistory=true){

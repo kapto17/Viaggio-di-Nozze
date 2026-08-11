@@ -1004,3 +1004,110 @@ nav.tabbar button.active{
   background:linear-gradient(135deg,rgba(255,255,255,.78) 0 48%,rgba(255,255,255,.18) 50% 100%);
   opacity:.9;
 }
+
+/* ---------- V15: dettaglio attrazioni ---------- */
+.place-ticket{
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.place-ticket:active{transform:scale(.992);}
+.place-ticket:focus-visible{outline:3px solid rgba(230,93,120,.28);outline-offset:3px;}
+.place-more{
+  color:#8A5362;
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:.01em;
+}
+.place-detail-hero{
+  position:relative;
+  height:310px;
+  border-radius:26px;
+  overflow:hidden;
+  background:var(--paper-alt);
+  box-shadow:0 20px 40px -28px rgba(8,17,31,.75);
+}
+.place-detail-hero img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:opacity .22s ease;
+}
+.place-detail-hero::after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(5,11,20,.03) 30%,rgba(5,11,20,.84) 100%);
+}
+.place-detail-overlay{
+  position:absolute;left:20px;right:20px;bottom:18px;z-index:2;color:#fff;
+}
+.place-detail-city{
+  font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;opacity:.84;
+}
+.place-detail-overlay h2{
+  margin:5px 54px 0 0;font-size:28px;line-height:1.08;text-shadow:0 3px 14px rgba(0,0,0,.3);
+}
+.place-detail-lf{
+  top:auto;
+  right:-8px;
+  bottom:1px;
+  border-color:rgba(255,255,255,.92);
+}
+.place-detail-body{
+  background:#fff;
+  border-radius:20px;
+  margin-top:14px;
+  padding:18px;
+  box-shadow:0 16px 36px -29px rgba(13,27,48,.65);
+}
+.place-detail-kicker{
+  color:#E65D78;
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  margin-bottom:8px;
+}
+.place-detail-body p{
+  margin:0;
+  font-size:14px;
+  line-height:1.62;
+  color:var(--ink);
+}
+.place-detail-plan{
+  margin-top:16px;
+  padding:13px 14px;
+  background:#FBF1F3;
+  border:1px solid rgba(230,93,120,.14);
+  border-radius:15px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.place-detail-plan strong{font-size:12px;color:#9E4057;}
+.place-detail-plan span{font-size:12px;line-height:1.45;color:var(--ink-soft);}
+.place-detail-mapbtn{
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  border-radius:15px;
+  background:#112A4A;
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:850;
+  box-shadow:0 10px 22px -16px rgba(17,42,74,.8);
+}
+.place-photo-source{
+  margin-top:10px;
+  text-align:center;
+  font-size:9.5px;
+  color:#7B8290;
+  line-height:1.35;
+}
+.place-photo-source a{color:inherit;text-decoration:underline;text-underline-offset:2px;}
+@media (min-width:760px){
+  .place-detail-hero{height:390px;}
+  .place-detail-overlay h2{font-size:34px;}
+  .place-detail-body{padding:22px;}
+  .place-detail-body p{font-size:15px;}
+}
