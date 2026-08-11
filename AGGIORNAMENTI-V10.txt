@@ -1,0 +1,15 @@
+VIAGGIO DI NOZZE — V10
+
+Aggiornamenti principali:
+- Itinerario generale: 20/10/2026 -> 10/11/2026.
+- SFO -> LAX: 23/10 ore 11:00 -> 12:36, Terminal 1 -> Terminal 6, durata 1h36.
+- Noleggio SUV: 23/10 LAX -> riconsegna 30/10 LAS.
+- Chicago mantenuta 30/10 -> 03/11.
+- LAS -> ORD del 30/10: orario volutamente lasciato vuoto/in attesa di conferma.
+- Repubblica Dominicana corretta: arrivo a Punta Cana (PUJ), soggiorno a Bayahibe 03/11 -> 09/11.
+- ORD -> PUJ: 03/11 09:30 -> 16:02.
+- PUJ -> IAD: 09/11 12:56 -> 15:55.
+- IAD -> FCO: 09/11 17:40 -> 10/11 08:30.
+- Foto Las Vegas sostituita con il cartello iconico “Welcome to Fabulous Las Vegas”.
+- Nuova icona PWA L&F a tema viaggio di nozze, incluse versioni standard, Apple Touch e maskable.
+- Manifest PWA aggiunto/aggiornato e cache Service Worker portata a v10.

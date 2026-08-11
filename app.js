@@ -12,7 +12,7 @@ const CITY_LABEL = {
   vegas: "Las Vegas",
   page: "Page",
   chicago: "Chicago",
-  sd: "Santo Domingo"
+  sd: "Bayahibe"
 };
 
 const $ = (sel, root=document) => root.querySelector(sel);
@@ -71,7 +71,7 @@ const HOME_CLOCKS = [
   { label: "Italia", zone: "Europe/Rome", flag: "🇮🇹" },
   { label: "California", zone: "America/Los_Angeles", flag: "🇺🇸" },
   { label: "Chicago", zone: "America/Chicago", flag: "🇺🇸" },
-  { label: "Santo Domingo", zone: "America/Santo_Domingo", flag: "🇩🇴" }
+  { label: "Bayahibe", zone: "America/Santo_Domingo", flag: "🇩🇴" }
 ];
 
 function clockTime(zone){

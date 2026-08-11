@@ -8,9 +8,9 @@
 
 const TRIP = {
   title: "Viaggio di nozze",
-  subtitle: "20 ottobre – 9 novembre",
+  subtitle: "20 ottobre – 10 novembre",
   start: "2026-10-20",
-  end: "2026-11-09",
+  end: "2026-11-10",
 
   legs: [
     {
@@ -66,18 +66,20 @@ const TRIP = {
       transport: [
         {
           date: "2026-10-23",
-          time: "Da definire",
+          time: "11:00",
           type: "flight",
           title: "Volo SFO → LAX",
-          subtitle: "Orario e carta d'imbarco da aggiungere",
+          subtitle: "SFO Terminal 1 → LAX Terminal 6 · Durata 1 h 36 min · bagaglio da stiva incluso",
+          arriveTime: "12:36",
+          arriveNote: "Arrivo a Los Angeles il 23/10 (ora locale)",
           mapsQuery: "Los Angeles International Airport"
         },
         {
           date: "2026-10-23",
-          time: "Da definire",
+          time: "",
           type: "car",
-          title: "Ritiro auto a noleggio",
-          subtitle: "Primo giorno a Los Angeles",
+          title: "Ritiro SUV a noleggio",
+          subtitle: "Ritiro a LAX · noleggio dal 23/10 al 30/10 · riconsegna a LAS",
           mapsQuery: "Los Angeles International Airport car rental"
         }
       ],
@@ -171,6 +173,14 @@ const TRIP = {
           title: "Page → Las Vegas",
           subtitle: "In auto, ritorno",
           mapsQuery: "Las Vegas, NV"
+        },
+        {
+          date: "2026-10-30",
+          time: "",
+          type: "car",
+          title: "Riconsegna SUV a noleggio",
+          subtitle: "Riconsegna all'aeroporto di Las Vegas (LAS)",
+          mapsQuery: "Harry Reid International Airport car rental return"
         }
       ],
       days: [],
@@ -189,10 +199,10 @@ const TRIP = {
       transport: [
         {
           date: "2026-10-30",
-          time: "Da definire",
+          time: "",
           type: "flight",
-          title: "Volo Las Vegas → Chicago",
-          subtitle: "Orario e carta d'imbarco da aggiungere",
+          title: "Volo LAS → ORD",
+          subtitle: "Orario in attesa di conferma/cambio con l'agenzia",
           mapsQuery: "Chicago O'Hare International Airport"
         }
       ],
@@ -202,35 +212,51 @@ const TRIP = {
       tickets: []
     },
     {
-      id: "santodomingo",
-      city: "Santo Domingo",
+      id: "bayahibe",
+      city: "Bayahibe",
       accent: "sd",
-      image: "./assets/santo-domingo.jpg",
+      image: "./assets/bayahibe.jpg",
       dateFrom: "2026-11-03",
       dateTo: "2026-11-09",
       hotel: { name: "Viva Dominicus Palace by Wyndham", address: "Dominicus, Bayahibe, La Romana, Repubblica Dominicana", mapsUrl: "https://www.google.com/maps/search/?api=1&query=Viva+Dominicus+Palace+by+Wyndham+Bayahibe+Dominican+Republic", checkin: "2026-11-03", checkout: "2026-11-09" },
       transport: [
         {
           date: "2026-11-03",
-          time: "Da definire",
+          time: "09:30",
           type: "flight",
-          title: "Volo Chicago → Santo Domingo",
-          subtitle: "Orario e carta d'imbarco da aggiungere",
-          mapsQuery: "Aeropuerto Internacional Las Américas"
+          title: "Volo ORD → PUJ",
+          subtitle: "Chicago O'Hare → Punta Cana · Durata 4 h 32 min",
+          arriveTime: "16:02",
+          arriveNote: "Arrivo a Punta Cana (PUJ) il 03/11 · transfer per Bayahibe incluso nel pacchetto",
+          mapsQuery: "Punta Cana International Airport"
         },
         {
           date: "2026-11-09",
-          time: "Da definire",
+          time: "12:56",
           type: "flight",
-          title: "Volo di rientro: Santo Domingo → Washington → FCO",
-          subtitle: "Scalo a Washington — orari da aggiungere",
+          title: "Volo PUJ → IAD",
+          subtitle: "Punta Cana → Washington Dulles · Durata 3 h 59 min",
+          arriveTime: "15:55",
+          arriveNote: "Scalo a Washington: 1 h 45 min",
+          mapsQuery: "Washington Dulles International Airport"
+        },
+        {
+          date: "2026-11-09",
+          time: "17:40",
+          type: "flight",
+          title: "Volo IAD → FCO",
+          subtitle: "Washington Dulles → Roma Fiumicino · Durata 8 h 50 min",
+          arriveTime: "08:30",
+          arriveNote: "Arrivo a Roma martedì 10/11/2026",
           mapsQuery: "Leonardo da Vinci–Fiumicino Airport"
         }
       ],
       days: [],
+      activities: [],
       restaurants: [],
       places: [],
       tickets: []
+
     }
   ]
 };

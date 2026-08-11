@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v9";
+const CACHE_NAME = "viaggio-nozze-v10";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,15 +6,17 @@ const ASSETS = [
   "./app.js",
   "./data.js",
   "./manifest.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-512.png",
+  "./icons/favicon-v10-64.png",
+  "./icons/icon-v10-180.png",
+  "./icons/icon-v10-192.png",
+  "./icons/icon-v10-512.png",
+  "./icons/icon-v10-maskable-512.png",
   "./assets/san-francisco.jpg",
   "./assets/los-angeles.jpg",
   "./assets/las-vegas.jpg",
   "./assets/page.jpg",
   "./assets/chicago.jpg",
-  "./assets/santo-domingo.jpg"
+  "./assets/bayahibe.jpg"
 ];
 
 self.addEventListener("install", (event) => {
