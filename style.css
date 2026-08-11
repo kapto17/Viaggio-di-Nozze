@@ -958,28 +958,49 @@ nav.tabbar button.active{
 .food-card-name{font-weight:850;font-size:14px;}
 .food-card-short{font-size:11.5px;color:var(--ink-soft);line-height:1.35;margin-top:3px;}
 
-/* V13 — badge per luoghi/ristoranti scelti direttamente da Lorenzo & Fortuna */
+/* V14 — bollino L&F "incollato" all'angolo per le scelte personali */
+.lf-ticket{
+  position:relative;
+  overflow:visible;
+}
 .lf-ticket .stub-top{
   position:relative;
-  padding-right:52px;
+  padding-right:46px;
+  overflow:visible;
 }
 .lf-badge{
   position:absolute;
-  top:10px;
-  right:10px;
-  min-width:34px;
-  height:24px;
-  padding:0 7px;
-  border-radius:999px;
+  top:-12px;
+  right:-12px;
+  width:40px;
+  height:40px;
+  padding:0;
+  border-radius:50%;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  background:var(--navy, #102f5b);
+  background:#E65D78;
   color:#fff;
-  font-size:10px;
+  border:3px solid var(--paper, #FBF8F1);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:13px;
+  font-style:italic;
+  font-weight:700;
   line-height:1;
-  font-weight:900;
-  letter-spacing:.04em;
-  box-shadow:0 2px 7px rgba(16,47,91,.18);
-  z-index:1;
+  letter-spacing:-.04em;
+  text-shadow:0 1px 1px rgba(87,20,39,.18);
+  box-shadow:0 5px 13px rgba(142,49,75,.25);
+  transform:rotate(7deg);
+  z-index:4;
+}
+.lf-badge::after{
+  content:"";
+  position:absolute;
+  right:1px;
+  bottom:1px;
+  width:9px;
+  height:9px;
+  border-radius:0 0 50% 0;
+  background:linear-gradient(135deg,rgba(255,255,255,.78) 0 48%,rgba(255,255,255,.18) 50% 100%);
+  opacity:.9;
 }
