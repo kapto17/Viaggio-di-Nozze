@@ -1,0 +1,8 @@
+V12 — Lista di Fortuna
+
+Aggiunti tutti i luoghi e ristoranti presenti nel foglio:
+SAN FRANCISCO / dintorni: The Cheesecake Factory, Scoma's Restaurant, Golden Gate Bridge (già presente), Sausalito, Fog Harbor Fish House, Golden Gate Park/Panhandle, Beach Chalet Brewery & Restaurant, Gray Whale Cove State Beach, Santa Cruz, The Crow's Nest.
+LOS ANGELES / dintorni: Santa Monica Pier (già presente), Griffith Observatory (già presente), Venice Beach (già presente), Water Grill Santa Monica, The Little Door, LACMA Urban Light, Santa Barbara.
+
+Nota: Santa Cruz/Gray Whale Cove e Santa Barbara sono mantenute nell'app ma indicate come escursioni/deviazioni da valutare, perché il trasferimento San Francisco→Los Angeles è in aereo.
+Cache PWA aggiornata a V12.
