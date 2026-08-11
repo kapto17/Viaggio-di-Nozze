@@ -101,7 +101,13 @@ const TRIP = {
       accent: "vegas",
       dateFrom: "2026-10-27",
       dateTo: "2026-10-28",
-      hotel: { name: "Hotel da definire", checkin: "2026-10-27", checkout: "2026-10-28" },
+      hotel: {
+        name: "Paris Las Vegas",
+        address: "3655 Las Vegas Blvd S, Las Vegas, NV 89109",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=Paris+Las+Vegas+3655+Las+Vegas+Blvd+S+Las+Vegas+NV+89109",
+        checkin: "2026-10-27",
+        checkout: "2026-10-28"
+      },
       transport: [
         {
           date: "2026-10-27",
@@ -145,7 +151,13 @@ const TRIP = {
       accent: "vegas",
       dateFrom: "2026-10-29",
       dateTo: "2026-10-30",
-      hotel: { name: "Hotel da definire (stesso di prima tappa)", checkin: "2026-10-29", checkout: "2026-10-30" },
+      hotel: {
+        name: "Paris Las Vegas",
+        address: "3655 Las Vegas Blvd S, Las Vegas, NV 89109",
+        mapsUrl: "https://www.google.com/maps/search/?api=1&query=Paris+Las+Vegas+3655+Las+Vegas+Blvd+S+Las+Vegas+NV+89109",
+        checkin: "2026-10-29",
+        checkout: "2026-10-30"
+      },
       transport: [
         {
           date: "2026-10-29",

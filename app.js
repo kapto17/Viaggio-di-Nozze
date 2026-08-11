@@ -202,6 +202,155 @@ function renderCitiesList(){
   bindCityCardClicks(el);
 }
 
+
+// ---------- Biglietti locali (IndexedDB) ----------
+const TICKET_DB_NAME = "viaggio-nozze-local";
+const TICKET_DB_VERSION = 1;
+const TICKET_STORE = "tickets";
+
+function openTicketDb(){
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(TICKET_DB_NAME, TICKET_DB_VERSION);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(TICKET_STORE)){
+        const store = db.createObjectStore(TICKET_STORE, { keyPath: "id", autoIncrement: true });
+        store.createIndex("legId", "legId", { unique:false });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function saveLocalTicket(legId, file, label=""){
+  const db = await openTicketDb();
+  const rec = {
+    legId,
+    label: label || file.name,
+    fileName: file.name,
+    mimeType: file.type || "application/octet-stream",
+    size: file.size,
+    createdAt: Date.now(),
+    blob: file
+  };
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(TICKET_STORE, "readwrite");
+    const req = tx.objectStore(TICKET_STORE).add(rec);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getLocalTickets(legId){
+  const db = await openTicketDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(TICKET_STORE, "readonly");
+    const idx = tx.objectStore(TICKET_STORE).index("legId");
+    const req = idx.getAll(legId);
+    req.onsuccess = () => resolve((req.result || []).sort((a,b)=>a.createdAt-b.createdAt));
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getLocalTicket(id){
+  const db = await openTicketDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(TICKET_STORE, "readonly");
+    const req = tx.objectStore(TICKET_STORE).get(Number(id));
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function deleteLocalTicket(id){
+  const db = await openTicketDb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(TICKET_STORE, "readwrite");
+    const req = tx.objectStore(TICKET_STORE).delete(Number(id));
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function formatFileSize(bytes){
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + " KB";
+  return (bytes/(1024*1024)).toFixed(1) + " MB";
+}
+
+async function renderLocalTickets(legId){
+  const host = $("#local-tickets-" + legId);
+  if (!host) return;
+  try {
+    const tickets = await getLocalTickets(legId);
+    if (!tickets.length){
+      host.innerHTML = `<div class="local-ticket-empty">Nessun file salvato sul telefono.</div>`;
+      return;
+    }
+    host.innerHTML = tickets.map(t => `
+      <div class="local-ticket-card">
+        <div class="local-ticket-icon">${t.mimeType.includes("pdf") ? "📄" : "🎟️"}</div>
+        <div class="local-ticket-info">
+          <div class="local-ticket-name">${t.label || t.fileName}</div>
+          <div class="local-ticket-meta">${t.fileName} · ${formatFileSize(t.size)}</div>
+          <div class="local-ticket-actions">
+            <button class="local-ticket-open" data-ticket-open="${t.id}">Apri</button>
+            <button class="local-ticket-delete" data-ticket-delete="${t.id}">Elimina</button>
+          </div>
+        </div>
+      </div>`).join("");
+
+    $$("[data-ticket-open]", host).forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const rec = await getLocalTicket(btn.dataset.ticketOpen);
+        if (!rec) return;
+        const url = URL.createObjectURL(rec.blob);
+        window.open(url, "_blank");
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+      });
+    });
+
+    $$("[data-ticket-delete]", host).forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Eliminare questo biglietto dal telefono?")) return;
+        await deleteLocalTicket(btn.dataset.ticketDelete);
+        renderLocalTickets(legId);
+      });
+    });
+  } catch(err){
+    console.error(err);
+    host.innerHTML = `<div class="local-ticket-empty">Impossibile leggere i biglietti locali.</div>`;
+  }
+}
+
+function bindTicketImporter(leg){
+  const input = $("#ticket-file-" + leg.id);
+  const button = $("#ticket-import-" + leg.id);
+  if (!input || !button) return;
+
+  button.addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    const files = Array.from(input.files || []);
+    if (!files.length) return;
+    button.disabled = true;
+    button.textContent = "Salvataggio…";
+    try {
+      for (const file of files){
+        await saveLocalTicket(leg.id, file, file.name.replace(/\.[^.]+$/, ""));
+      }
+      input.value = "";
+      await renderLocalTickets(leg.id);
+    } catch(err){
+      console.error(err);
+      alert("Non sono riuscito a salvare il file sul telefono.");
+    } finally {
+      button.disabled = false;
+      button.textContent = "📎 Importa biglietto";
+    }
+  });
+}
+
 // ---------- Rendering: dettaglio città ----------
 function openCity(legId){
   const leg = TRIP.legs.find(l => l.id === legId);
@@ -236,7 +385,6 @@ function openCity(legId){
     <div class="city-header" style="background:${ACCENT[leg.accent]}">
       <h2>${leg.city}</h2>
       <div class="cd-dates">${fmtDate(leg.dateFrom)} – ${fmtDate(leg.dateTo)}</div>
-      <div class="cd-hotel">🏨 ${leg.hotel?.name || "Hotel da definire"}</div>
     </div>
 
     <div class="section-title">Alloggio</div>
@@ -279,11 +427,22 @@ function openCity(legId){
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
     `)}
 
-    ${sectionBlock("Biglietti", leg.tickets, "Nessun biglietto caricato per questa tappa.", tk => `
+    <div class="section-title">Biglietti</div>
+    ${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
-    `)}
+    `).join("") : `<div class="empty-note">Puoi salvare qui PDF, immagini e QR direttamente sul telefono.</div>`}
+
+    <div class="ticket-import-box">
+      <div class="ticket-import-title">Biglietti offline</div>
+      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub.</div>
+      <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*" multiple>
+      <button id="ticket-import-${leg.id}" class="ticket-import-btn">📎 Importa biglietto</button>
+      <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
+    </div>
   `;
   $("#back-to-cities").addEventListener("click", () => showScreen("cities"));
+  bindTicketImporter(leg);
+  renderLocalTickets(leg.id);
   showScreen("city-detail");
 }
 
