@@ -897,3 +897,63 @@ nav.tabbar button.active{
   #app{overflow:hidden;}
   .honeymoon-topbar{border-radius:28px 28px 30px 30px;}
 }
+
+/* ---------- Piatti tipici ---------- */
+.food-section-link{
+  width:100%;
+  border:0;
+  background:#fff;
+  border-radius:20px;
+  box-shadow:0 16px 36px -29px rgba(13,27,48,.65);
+  padding:15px 16px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  text-align:left;
+  color:var(--ink);
+  font-family:inherit;
+  cursor:pointer;
+}
+.food-section-icon{
+  width:44px;height:44px;flex:0 0 44px;
+  display:grid;place-items:center;
+  border-radius:14px;
+  background:#F5E9E6;
+  font-size:20px;
+}
+.food-section-copy{flex:1;min-width:0;}
+.food-section-title{font-size:15px;font-weight:850;}
+.food-section-note{font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.35;}
+.food-section-arrow,.food-card-arrow{font-size:28px;line-height:1;color:#7A8290;}
+
+.food-detail-hero{
+  position:relative;
+  height:300px;
+  border-radius:26px;
+  overflow:hidden;
+  background:var(--paper-alt);
+  box-shadow:0 20px 40px -28px rgba(8,17,31,.75);
+}
+.food-detail-hero img{width:100%;height:100%;object-fit:cover;display:block;}
+.food-detail-hero::after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(5,11,20,.04) 35%,rgba(5,11,20,.82) 100%);
+}
+.food-detail-overlay{position:absolute;left:20px;right:20px;bottom:18px;z-index:2;color:#fff;}
+.food-detail-city{font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;opacity:.84;}
+.food-detail-overlay h2{margin:5px 0 0;font-size:28px;line-height:1.05;text-shadow:0 3px 14px rgba(0,0,0,.3);}
+.food-detail-body{background:#fff;border-radius:20px;margin-top:14px;padding:17px 18px;box-shadow:0 16px 36px -29px rgba(13,27,48,.65);}
+.food-detail-body p{margin:0;font-size:14px;line-height:1.55;color:var(--ink);}
+.photo-credit{font-size:9.5px;color:#7B8290;margin-top:13px;line-height:1.35;}
+.food-list{display:flex;flex-direction:column;gap:10px;}
+.food-card{
+  width:100%;border:0;background:#fff;border-radius:18px;padding:9px;
+  display:flex;align-items:center;gap:12px;text-align:left;color:var(--ink);font-family:inherit;
+  box-shadow:0 12px 30px -26px rgba(13,27,48,.7);cursor:pointer;
+}
+.food-card.selected{outline:2px solid rgba(185,139,46,.35);}
+.food-card img{width:78px;height:66px;flex:0 0 78px;object-fit:cover;border-radius:13px;background:var(--paper-alt);}
+.food-card-copy{flex:1;min-width:0;}
+.food-card-name{font-weight:850;font-size:14px;}
+.food-card-short{font-size:11.5px;color:var(--ink-soft);line-height:1.35;margin-top:3px;}

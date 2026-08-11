@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v10";
+const CACHE_NAME = "viaggio-nozze-v11";
 const ASSETS = [
   "./",
   "./index.html",
@@ -16,7 +16,18 @@ const ASSETS = [
   "./assets/las-vegas.jpg",
   "./assets/page.jpg",
   "./assets/chicago.jpg",
-  "./assets/bayahibe.jpg"
+  "./assets/bayahibe.jpg",
+  "./assets/food/sf-clam-chowder.jpg",
+  "./assets/food/sf-mission-burrito.jpg",
+  "./assets/food/la-tacos-al-pastor.jpg",
+  "./assets/food/la-french-dip.jpg",
+  "./assets/food/vegas-shrimp-cocktail.jpg",
+  "./assets/food/vegas-prime-rib.jpg",
+  "./assets/food/page-frybread.jpg",
+  "./assets/food/chicago-italian-beef.jpg",
+  "./assets/food/bayahibe-mangu.jpg",
+  "./assets/food/bayahibe-pescado-frito.jpg",
+  "./assets/food/bayahibe-tostones-camarones.jpg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -57,7 +68,7 @@ self.addEventListener("fetch", (event) => {
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request).then((response) => {
-        if (response && response.ok) {
+        if (response && (response.ok || response.type === "opaque")) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         }

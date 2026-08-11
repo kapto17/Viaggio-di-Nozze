@@ -12,3 +12,18 @@ Le fotografie usate nel restyling sono incluse localmente nella PWA per consenti
 Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato alterato il soggetto fotografico.
 
 - **Icona app L&F**: grafica personalizzata generata per questa PWA (iniziali L&F, tema viaggio di nozze).
+
+## Piatti tipici aggiunti in V11
+- Clam chowder nel sourdough bread bowl — Prayitno / Wikimedia Commons, CC BY 2.0: https://commons.wikimedia.org/wiki/File:Sourdough_Bread_Bowl_%2B_Clam_Chowder_Soup_(5838235665).jpg
+- Mission burrito — Ryan Michael / Wikimedia Commons, CC BY-SA 2.0: https://commons.wikimedia.org/wiki/File:Mission_burrito.jpg
+- Tacos al pastor — T.Tseng / Wikimedia Commons, CC BY 2.0: https://commons.wikimedia.org/wiki/File:Tacos_al_pastor.jpg
+- French Dip Sandwich — Jpatokal / Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Philippe_FrenchDipSandwich_Large.JPG
+- Shrimp cocktail — Didriks / Wikimedia Commons, CC BY 2.0: https://commons.wikimedia.org/wiki/File:Shrimp_cocktail.jpg
+- Prime rib — Steven Miller / Wikimedia Commons, CC BY 2.0: https://commons.wikimedia.org/wiki/File:Prime_Rib_(23260912464).jpg
+- Navajo fry bread — Wikimedia Commons: https://commons.wikimedia.org/wiki/File:Navajo_Fry_Bread.jpg
+- Chicago deep-dish pizza — Victorgrigas / Wikimedia Commons, CC BY-SA 3.0: https://commons.wikimedia.org/wiki/File:Deep_Dish_Pizza.jpg
+- Chicago-style hot dog — Meg Marco / Wikimedia Commons, CC BY-SA 3.0: https://commons.wikimedia.org/wiki/File:Chicago-style_hot_dog.jpg
+- Italian beef — Krista / Wikimedia Commons, CC BY 2.0: https://commons.wikimedia.org/wiki/File:Portillos_Italian_Beef_Sandwich.jpg
+- Mangú — Ll1324 / Wikimedia Commons, CC0: https://commons.wikimedia.org/wiki/File:Dominican_Mangu.jpg
+- Pescado frito — Arlene Campusano / Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Pecao_frito.jpg
+- Tostones rellenos con camarones — Arlene Campusano / Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Tostones_rellenos_con_camarones.jpg

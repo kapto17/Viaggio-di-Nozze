@@ -1,0 +1,13 @@
+VIAGGIO DI NOZZE — V11
+
+Novità principali:
+- Navigazione Android/PWA corretta con History API: il tasto/gesto Indietro torna alla schermata precedente.
+- Aggiunti i luoghi da vedere in ogni tappa, calibrati sui giorni disponibili.
+- Page: inseriti Grand Canyon South Rim (28/10), Desert View Drive, Desert View Watchtower, Horseshoe Bend e Antelope Canyon (29/10).
+- Aggiunta in ogni tappa la sezione "Piatti tipici da assaggiare".
+- Il pulsante dei piatti apre una schermata dedicata con foto, descrizione e altre specialità della stessa tappa.
+- Inserite fotografie locali per la maggior parte dei piatti e crediti fotografici.
+- Service Worker aggiornato alla cache V11.
+
+IMPORTANTE:
+Non serve disinstallare la PWA per queste modifiche. Dopo la pubblicazione su GitHub Pages, chiudere completamente e riaprire l'app; se necessario aprire una volta il sito dal browser per forzare l'aggiornamento del Service Worker.

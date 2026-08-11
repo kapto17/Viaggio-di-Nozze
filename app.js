@@ -351,7 +351,7 @@ function bindTicketImporter(leg){
 }
 
 // ---------- Rendering: dettaglio città ----------
-function openCity(legId){
+function openCity(legId, pushHistory=true){
   const leg = TRIP.legs.find(l => l.id === legId);
   if (!leg) return;
   const el = $("#screen-city-detail");
@@ -423,6 +423,17 @@ function openCity(legId){
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(p.mapsQuery||p.name)}">Apri Maps</a></div></div>
     `)}
 
+    <div class="section-title">Piatti tipici da assaggiare</div>
+    ${leg.foods && leg.foods.length ? `
+      <button class="food-section-link" data-food-leg="${leg.id}" data-food-id="${leg.foods[0].id}">
+        <div class="food-section-icon">🍴</div>
+        <div class="food-section-copy">
+          <div class="food-section-title">Scopri le specialità locali</div>
+          <div class="food-section-note">${leg.foods.map(f => f.name).join(" · ")}</div>
+        </div>
+        <div class="food-section-arrow">›</div>
+      </button>` : `<div class="empty-note">Aggiungeremo qui le specialità locali.</div>`}
+
     ${sectionBlock("Dove mangiare", leg.restaurants, "Aggiungeremo qui i ristoranti selezionati a " + leg.city + ".", r => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div></div>
       <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
@@ -441,18 +452,90 @@ function openCity(legId){
       <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
     </div>
   `;
-  $("#back-to-cities").addEventListener("click", () => showScreen("cities"));
+  $("#back-to-cities").addEventListener("click", () => history.back());
+  $$(`[data-food-leg="${leg.id}"]`, el).forEach(btn => {
+    btn.addEventListener("click", () => openFoodDetail(leg.id, btn.dataset.foodId));
+  });
   bindTicketImporter(leg);
   renderLocalTickets(leg.id);
-  showScreen("city-detail");
+  navigateTo("city-detail", { legId: leg.id }, pushHistory);
 }
 
-// ---------- Navigazione a schermate ----------
+// ---------- Navigazione a schermate / tasto Indietro Android ----------
 function showScreen(name){
   $$(".screen").forEach(s => s.classList.remove("active"));
-  $("#screen-" + name).classList.add("active");
+  const target = $("#screen-" + name);
+  if (target) target.classList.add("active");
   $$("nav.tabbar button").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
   window.scrollTo(0,0);
+}
+
+function navigateTo(screen, payload={}, push=true){
+  const state = { screen, ...payload };
+  if (push) history.pushState(state, "", "#" + screen);
+  showScreen(screen);
+}
+
+function renderNavigationState(state){
+  const st = state || { screen:"home" };
+  if (st.screen === "city-detail" && st.legId){
+    openCity(st.legId, false);
+    return;
+  }
+  if (st.screen === "food-detail" && st.legId && st.foodId){
+    openFoodDetail(st.legId, st.foodId, false);
+    return;
+  }
+  if (st.screen === "cities") renderCitiesList();
+  if (st.screen === "home") renderHome();
+  showScreen(st.screen || "home");
+}
+
+function openFoodDetail(legId, foodId, pushHistory=true){
+  const leg = TRIP.legs.find(l => l.id === legId);
+  if (!leg || !leg.foods || !leg.foods.length) return;
+  const selected = leg.foods.find(f => f.id === foodId) || leg.foods[0];
+  const el = $("#screen-food-detail");
+
+  el.innerHTML = `
+    <button class="back-btn" id="back-from-food">‹ ${leg.city}</button>
+    <div class="food-detail-hero">
+      <img src="${selected.image || leg.image}" alt="${selected.name}" loading="eager">
+      <div class="food-detail-overlay">
+        <div class="food-detail-city">${leg.city}</div>
+        <h2>${selected.name}</h2>
+      </div>
+    </div>
+    <div class="food-detail-body">
+      <p>${selected.description || selected.short || ""}</p>
+      ${selected.photoCredit ? `<div class="photo-credit">Foto: ${selected.photoCredit}</div>` : ""}
+    </div>
+    ${leg.foods.length > 1 ? `
+      <div class="section-title">Altre specialità da provare</div>
+      <div class="food-list">
+        ${leg.foods.map(food => `
+          <button class="food-card ${food.id === selected.id ? "selected" : ""}" data-food-switch="${food.id}">
+            <img src="${food.image || leg.image}" alt="${food.name}" loading="lazy">
+            <div class="food-card-copy">
+              <div class="food-card-name">${food.name}</div>
+              <div class="food-card-short">${food.short || ""}</div>
+            </div>
+            <div class="food-card-arrow">›</div>
+          </button>
+        `).join("")}
+      </div>` : ""}
+  `;
+
+  $("#back-from-food").addEventListener("click", () => history.back());
+  $$('[data-food-switch]', el).forEach(btn => {
+    btn.addEventListener("click", () => {
+      const nextId = btn.dataset.foodSwitch;
+      if (nextId === selected.id) return;
+      history.replaceState({ screen:"food-detail", legId, foodId:nextId }, "", "#food-detail");
+      openFoodDetail(legId, nextId, false);
+    });
+  });
+  navigateTo("food-detail", { legId, foodId:selected.id }, pushHistory);
 }
 
 // ---------- Stato offline ----------
@@ -467,15 +550,21 @@ function init(){
   renderHome();
   renderCitiesList();
 
+  // La prima voce della history è la Home: da una tappa il tasto Indietro
+  // del Galaxy torna davvero alla schermata precedente anziché chiudere la PWA.
+  history.replaceState({ screen:"home" }, "", "#home");
+  showScreen("home");
+
   $$("nav.tabbar button").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.dataset.screen;
       if (target === "home") renderHome();
       if (target === "cities") renderCitiesList();
-      showScreen(target);
+      navigateTo(target, {}, true);
     });
   });
 
+  window.addEventListener("popstate", (event) => renderNavigationState(event.state));
   window.addEventListener("online", updateOnlineBadge);
   window.addEventListener("offline", updateOnlineBadge);
   updateOnlineBadge();
