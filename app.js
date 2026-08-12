@@ -435,7 +435,7 @@ function openCity(legId, pushHistory=true){
   ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
   const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
   const restaurantsHtml = (leg.restaurants||[]).map(r => `
-    <div class="ticket lf-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div><div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+    <div class="ticket lf-ticket restaurant-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
     <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
   `).join("") || `<div class="empty-note">Aggiungeremo qui i ristoranti selezionati a ${leg.city}.</div>`;
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
@@ -582,6 +582,12 @@ function updatePrivateAreaEntry(){
   }
 }
 
+function updateBudgetTabVisibility(){
+  const tab = $("#budget-tab");
+  if (!tab) return;
+  tab.hidden = !privateAuthState.authenticated;
+}
+
 function firebaseReady(){
   return !!window.LFBudget;
 }
@@ -697,10 +703,17 @@ function renderBudgetScreen(){
     <details class="city-accordion budget-city-accordion">
       <summary><span><span class="accordion-icon">📍</span>Budget per tappa</span><span class="accordion-count">${Object.keys(cityBudgets).length}</span><span class="accordion-chevron">⌄</span></summary>
       <div class="accordion-content budget-city-list">
-        ${Object.entries(cityBudgets).map(([key,val]) => {
-          const s = Number(citySpent[key] || 0), max = Number(val || 0), rem = max-s;
-          return `<div class="budget-city-row"><div><strong>${budgetCityLabel(key)}</strong><small>${money(s,currency)} spesi</small></div><div class="budget-city-values"><span>${money(max,currency)}</span><em class="${rem<0?"negative":""}">${money(rem,currency)} rim.</em></div></div>`;
-        }).join("")}
+        ${(() => {
+          const defaults = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.destinations : [];
+          const orderedKeys = defaults.map(d => d.key);
+          const extraKeys = Object.keys(cityBudgets).filter(key => !orderedKeys.includes(key));
+          return [...orderedKeys, ...extraKeys].map(key => {
+            const fallback = defaults.find(d => d.key === key)?.amount || 0;
+            const max = Number(cityBudgets[key] ?? fallback);
+            const s = Number(citySpent[key] || 0), rem = max-s;
+            return `<div class="budget-city-row"><div><strong>${budgetCityLabel(key)}</strong><small>${money(s,currency)} spesi</small></div><div class="budget-city-values"><span>${money(max,currency)}</span><em class="${rem<0?"negative":""}">${money(rem,currency)} rim.</em></div></div>`;
+          }).join("");
+        })()}
       </div>
     </details>
 
@@ -808,6 +821,7 @@ function connectFirebaseBudget(){
   window.LFBudget.onAuth((state) => {
     privateAuthState = state;
     updatePrivateAreaEntry();
+    updateBudgetTabVisibility();
     if ($("#screen-home")?.classList.contains("active")) renderHome();
     if (!state.authenticated && $("#screen-budget")?.classList.contains("active")) openPrivateAccess(false);
   });
@@ -973,6 +987,7 @@ function init(){
   renderHome();
   renderCitiesList();
   bindSecretPrivateAccess();
+  updateBudgetTabVisibility();
 
   // La prima voce della history è la Home: da una tappa il tasto Indietro
   // del Galaxy torna davvero alla schermata precedente anziché chiudere la PWA.
@@ -982,6 +997,10 @@ function init(){
   $$("nav.tabbar button").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.dataset.screen;
+      if (target === "budget"){
+        openBudget(true);
+        return;
+      }
       if (target === "home") renderHome();
       if (target === "cities") renderCitiesList();
       navigateTo(target, {}, true);

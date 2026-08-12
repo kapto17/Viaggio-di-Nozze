@@ -31,11 +31,11 @@ const TRIP = {
         { id: "sf-burrito", name: "Mission Burrito", short: "Burrito grande e ricco nato nel Mission District.", description: "Burrito in stile Mission: tortilla di farina molto farcita con riso, fagioli, carne e condimenti. È uno dei cibi simbolo della cultura gastronomica di San Francisco.", image: "./assets/food/sf-mission-burrito.jpg", photoCredit: "Ryan Michael / Wikimedia Commons · CC BY-SA 2.0" }
       ],
       restaurants: [
-        { name: "The Cheesecake Factory", lf: true, note: "Segnato da Fortuna · Union Square, 251 Geary St.", mapsQuery: "The Cheesecake Factory 251 Geary St San Francisco" },
-        { name: "Scoma's Restaurant", lf: true, note: "Segnato da Fortuna · ristorante di pesce a Fisherman's Wharf.", mapsQuery: "Scoma's Restaurant San Francisco" },
-        { name: "Fog Harbor Fish House", lf: true, note: "Segnato da Fortuna · ristorante di pesce al Pier 39.", mapsQuery: "Fog Harbor Fish House Pier 39 San Francisco" },
-        { name: "Beach Chalet Brewery & Restaurant", lf: true, note: "Segnato da Fortuna · sul lato oceanico del Golden Gate Park, con vista sul Pacifico.", mapsQuery: "Beach Chalet Brewery & Restaurant San Francisco" },
-        { name: "The Crow's Nest", lf: true, note: "Segnato da Fortuna · Santa Cruz Harbor. Fuori San Francisco: da abbinare solo se decidete di fare l'escursione a Santa Cruz.", mapsQuery: "The Crow's Nest Santa Cruz California" }
+        { name: "The Cheesecake Factory", lf: true, type: "Dolci · cucina americana", typeIcon: "🍰", note: "Segnato da Fortuna · Union Square, 251 Geary St.", mapsQuery: "The Cheesecake Factory 251 Geary St San Francisco" },
+        { name: "Scoma's Restaurant", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce a Fisherman's Wharf.", mapsQuery: "Scoma's Restaurant San Francisco" },
+        { name: "Fog Harbor Fish House", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce al Pier 39.", mapsQuery: "Fog Harbor Fish House Pier 39 San Francisco" },
+        { name: "Beach Chalet Brewery & Restaurant", lf: true, type: "Cucina americana · birreria", typeIcon: "🍺", note: "Segnato da Fortuna · sul lato oceanico del Golden Gate Park, con vista sul Pacifico.", mapsQuery: "Beach Chalet Brewery & Restaurant San Francisco" },
+        { name: "The Crow's Nest", lf: true, type: "Pesce · cucina americana", typeIcon: "🐟", note: "Segnato da Fortuna · Santa Cruz Harbor. Fuori San Francisco: da abbinare solo se decidete di fare l'escursione a Santa Cruz.", mapsQuery: "The Crow's Nest Santa Cruz California" }
       ], days: [],
       tickets: [{ name: "Alcatraz Night Tour", note: "22 ottobre 2026 · 17:55 · prenotazione confermata. Documento/QR da aggiungere quando disponibile.", status: "Prenotato" }]
     },
@@ -65,8 +65,8 @@ const TRIP = {
         { id: "la-frenchdip", name: "French Dip Sandwich", short: "Panino con roast beef servito con il suo jus.", description: "Panino caldo ripieno di carne arrosto, tradizionalmente accompagnato da un jus in cui intingerlo. Los Angeles rivendica la nascita di questo sandwich all'inizio del Novecento.", image: "./assets/food/la-french-dip.jpg", photoCredit: "Jpatokal / Wikimedia Commons · CC BY-SA" }
       ],
       restaurants: [
-        { name: "Water Grill Santa Monica", lf: true, note: "Segnato da Fortuna · ristorante di pesce su Ocean Avenue, vicino al Santa Monica Pier.", mapsQuery: "Water Grill Santa Monica 1401 Ocean Ave" },
-        { name: "The Little Door", lf: true, note: "Segnato da Fortuna · ristorante su W 3rd Street a Los Angeles.", mapsQuery: "The Little Door 8164 W 3rd St Los Angeles" }
+        { name: "Water Grill Santa Monica", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce su Ocean Avenue, vicino al Santa Monica Pier.", mapsQuery: "Water Grill Santa Monica 1401 Ocean Ave" },
+        { name: "The Little Door", lf: true, type: "Mediterraneo · cena", typeIcon: "🍷", note: "Segnato da Fortuna · ristorante su W 3rd Street a Los Angeles.", mapsQuery: "The Little Door 8164 W 3rd St Los Angeles" }
       ], days: [], tickets: []
     },
 
