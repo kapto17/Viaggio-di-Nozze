@@ -110,7 +110,7 @@ const TRIP = {
     },
 
     {
-      id: "vegas2", city: "Las Vegas", accent: "vegas", image: "./assets/las-vegas.jpg",
+      id: "vegas2", city: "Las Vegas", accent: "vegas", image: "./assets/las-vegas-2.jpg",
       dateFrom: "2026-10-29", dateTo: "2026-10-30",
       hotel: { name: "Paris Las Vegas", address: "3655 Las Vegas Blvd S, Las Vegas, NV 89109", mapsUrl: "https://www.google.com/maps/search/?api=1&query=Paris+Las+Vegas+3655+Las+Vegas+Blvd+S+Las+Vegas+NV+89109", checkin: "2026-10-29", checkout: "2026-10-30", hotelFee: { perNight: 62.30, label: "Resort fee + tasse", note: "circa $62,30 a notte ($54,95 + tasse) · totale previsto: circa $62,30" } },
       transport: [
