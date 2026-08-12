@@ -15,6 +15,20 @@ const CITY_LABEL = {
   sd: "Bayahibe"
 };
 
+const BUDGET_CITY_BY_LEG = {
+  sfo: "San Francisco",
+  la: "Los Angeles",
+  vegas1: "Las Vegas 27-28",
+  page: "Page / Grand Canyon",
+  vegas2: "Las Vegas 29-30",
+  chicago: "Chicago",
+  bayahibe: "Bayahibe"
+};
+
+let privateAuthState = { authenticated:false, user:null };
+let budgetState = { settings:null, expenses:[] };
+let editingExpenseId = null;
+
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -144,10 +158,20 @@ function renderHome(){
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
+
+    <div class="private-area-wrap">
+      <button class="private-area-entry" id="private-area-entry">
+        <span class="private-area-icon">🔒</span>
+        <span class="private-area-copy"><strong>Area privata L&amp;F</strong><small>Accesso riservato ai vostri dispositivi</small></span>
+        <span class="private-area-arrow">›</span>
+      </button>
+    </div>
   `;
 
   renderRouteStrip();
   bindCityCardClicks(el);
+  bindPrivateAreaEntry();
+  updatePrivateAreaEntry();
   startHomeClocks();
 }
 
@@ -451,6 +475,19 @@ function openCity(legId, pushHistory=true){
 
     ${accordion("Da scoprire", discoverHtml, {icon:"◌", count:discoverPlaces.length, className:"accordion-discover"})}
 
+    ${(() => {
+      const c = (typeof CLOTHING_GUIDE !== "undefined" && CLOTHING_GUIDE[leg.accent]) || null;
+      if (!c) return "";
+      return accordion("Come vestirsi", `
+        <div class="clothing-card">
+          <div class="clothing-weather">🌡️ ${c.range}</div>
+          <div class="clothing-row"><span>☀️ Giorno</span><p>${c.day}</p></div>
+          <div class="clothing-row"><span>🌙 Sera</span><p>${c.evening}</p></div>
+          <div class="clothing-row"><span>🎒 Da portare</span><p>${c.pack}</p></div>
+          <div class="clothing-note">Indicazioni stagionali: controllate la previsione aggiornata 3–5 giorni prima della partenza.</div>
+        </div>`, {icon:"👕", className:"accordion-clothing"});
+    })()}
+
     <div class="section-title">Piatti tipici da assaggiare</div>
     ${leg.foods && leg.foods.length ? `
       <button class="food-section-link" data-food-leg="${leg.id}" data-food-id="${leg.foods[0].id}">
@@ -489,6 +526,271 @@ function openCity(legId, pushHistory=true){
   navigateTo("city-detail", { legId: leg.id }, pushHistory);
 }
 
+
+// ---------- Area privata L&F + Budget condiviso ----------
+function bindPrivateAreaEntry(){
+  const btn = $("#private-area-entry");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    if (privateAuthState.authenticated) openBudget();
+    else openPrivateAccess();
+  });
+}
+
+function updatePrivateAreaEntry(){
+  const btn = $("#private-area-entry");
+  if (!btn) return;
+  const icon = $(".private-area-icon", btn);
+  const title = $("strong", btn);
+  const note = $("small", btn);
+  if (privateAuthState.authenticated){
+    if (icon) icon.textContent = "💰";
+    if (title) title.textContent = "Budget L&F";
+    if (note) note.textContent = "Privato · sincronizzato tra i vostri telefoni";
+    btn.classList.add("unlocked");
+  } else {
+    if (icon) icon.textContent = "🔒";
+    if (title) title.textContent = "Area privata L&F";
+    if (note) note.textContent = "Accesso riservato ai vostri dispositivi";
+    btn.classList.remove("unlocked");
+  }
+}
+
+function firebaseReady(){
+  return !!window.LFBudget;
+}
+
+function friendlyAuthError(err){
+  const code = err && err.code || "";
+  if (code.includes("invalid-credential") || code.includes("wrong-password") || code.includes("user-not-found")) return "Email o codice L&F non corretti.";
+  if (code.includes("too-many-requests")) return "Troppi tentativi. Riprova tra qualche minuto.";
+  if (code.includes("network-request-failed")) return "Connessione assente. Il primo accesso richiede Internet.";
+  return "Accesso non riuscito. Controlla i dati e riprova.";
+}
+
+function openPrivateAccess(pushHistory=true){
+  const el = $("#screen-private-access");
+  el.innerHTML = `
+    <button class="back-btn" id="back-private">‹ Home</button>
+    <div class="private-login-card">
+      <div class="private-login-icon">🔐</div>
+      <div class="private-login-kicker">Area privata</div>
+      <h2>L&F</h2>
+      <p>Solo al primo accesso su ciascun telefono. In seguito Firebase ricorderà il dispositivo.</p>
+      <form id="lf-login-form" class="private-login-form">
+        <label>Email Firebase<input id="lf-email" type="email" autocomplete="username" required placeholder="La tua email"></label>
+        <label>Codice L&F<input id="lf-password" type="password" autocomplete="current-password" required placeholder="••••••••"></label>
+        <button type="submit" class="primary-action" id="lf-login-btn">Sblocca area privata</button>
+        <div class="private-login-error" id="lf-login-error"></div>
+      </form>
+      <div class="private-login-note">Usate questa funzione solo sui vostri smartphone personali. Il budget non compare agli altri visitatori dell'app.</div>
+    </div>`;
+  $("#back-private").addEventListener("click", () => history.back());
+  $("#lf-login-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const errorEl = $("#lf-login-error");
+    const button = $("#lf-login-btn");
+    if (!firebaseReady()){
+      errorEl.textContent = "Firebase non è ancora disponibile. Controlla la connessione e riprova.";
+      return;
+    }
+    button.disabled = true;
+    button.textContent = "Accesso…";
+    errorEl.textContent = "";
+    try {
+      await window.LFBudget.login($("#lf-email").value, $("#lf-password").value);
+      openBudget(false);
+      history.replaceState({ screen:"budget" }, "", "#budget");
+    } catch(err){
+      console.error(err);
+      errorEl.textContent = friendlyAuthError(err);
+    } finally {
+      button.disabled = false;
+      button.textContent = "Sblocca area privata";
+    }
+  });
+  navigateTo("private-access", {}, pushHistory);
+}
+
+function money(value, currency="USD"){
+  return new Intl.NumberFormat("it-IT", { style:"currency", currency, minimumFractionDigits:2, maximumFractionDigits:2 }).format(Number(value || 0));
+}
+
+function currentBudgetData(){
+  const settings = budgetState.settings || (window.LFBudget && window.LFBudget.defaults) || (typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS : { totalBudget:2500, currency:"USD", cityBudgets:{} });
+  const expenses = Array.isArray(budgetState.expenses) ? budgetState.expenses : [];
+  return { settings, expenses };
+}
+
+function expenseCityOptions(selected=""){
+  const defs = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.destinations : [];
+  return [`<option value="Generale" ${selected==="Generale"?"selected":""}>Generale</option>`, ...defs.map(d => `<option value="${d.key}" ${selected===d.key?"selected":""}>${d.label}</option>`)].join("");
+}
+
+function categoryOptions(selected=""){
+  const cats = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.categories : ["Cibo","Benzina","Parcheggio","Trasporti","Shopping","Escursioni","Altro"];
+  return cats.map(c => `<option value="${c}" ${selected===c?"selected":""}>${c}</option>`).join("");
+}
+
+function budgetCityLabel(key){
+  const d = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.destinations.find(x => x.key === key) : null;
+  return d ? d.label : key;
+}
+
+function renderBudgetScreen(){
+  const el = $("#screen-budget");
+  if (!privateAuthState.authenticated){
+    openPrivateAccess(false);
+    return;
+  }
+  const { settings, expenses } = currentBudgetData();
+  const currency = settings.currency || "USD";
+  const total = Number(settings.totalBudget || 0);
+  const spent = expenses.reduce((sum,e) => sum + Number(e.amount || 0), 0);
+  const remaining = total - spent;
+  const pct = total > 0 ? Math.min(100, Math.max(0, spent / total * 100)) : 0;
+  const cityBudgets = settings.cityBudgets || {};
+  const citySpent = expenses.reduce((acc,e) => { acc[e.city] = (acc[e.city] || 0) + Number(e.amount || 0); return acc; }, {});
+
+  el.innerHTML = `
+    <button class="back-btn" id="back-budget">‹ Home</button>
+    <div class="budget-hero">
+      <div><div class="budget-kicker">Area privata L&F</div><h2>Budget viaggio</h2></div>
+      <button class="budget-lock-btn" id="budget-lock" title="Blocca questo dispositivo">🔒</button>
+    </div>
+
+    <div class="budget-summary-grid">
+      <div class="budget-summary-card main"><span>Budget</span><strong>${money(total,currency)}</strong></div>
+      <div class="budget-summary-card"><span>Speso</span><strong>${money(spent,currency)}</strong></div>
+      <div class="budget-summary-card ${remaining < 0 ? "over" : "remaining"}"><span>Rimanente</span><strong>${money(remaining,currency)}</strong></div>
+    </div>
+    <div class="budget-progress"><span style="width:${pct}%"></span></div>
+    <button class="budget-edit-total" id="budget-edit-total">✎ Modifica budget iniziale</button>
+
+    <details class="city-accordion budget-city-accordion">
+      <summary><span><span class="accordion-icon">📍</span>Budget per tappa</span><span class="accordion-count">${Object.keys(cityBudgets).length}</span><span class="accordion-chevron">⌄</span></summary>
+      <div class="accordion-content budget-city-list">
+        ${Object.entries(cityBudgets).map(([key,val]) => {
+          const s = Number(citySpent[key] || 0), max = Number(val || 0), rem = max-s;
+          return `<div class="budget-city-row"><div><strong>${budgetCityLabel(key)}</strong><small>${money(s,currency)} spesi</small></div><div class="budget-city-values"><span>${money(max,currency)}</span><em class="${rem<0?"negative":""}">${money(rem,currency)} rim.</em></div></div>`;
+        }).join("")}
+      </div>
+    </details>
+
+    <div class="section-title">${editingExpenseId ? "Modifica spesa" : "Aggiungi spesa"}</div>
+    <form id="expense-form" class="expense-form">
+      <div class="expense-form-grid">
+        <label>Importo ($)<input id="expense-amount" type="number" min="0.01" step="0.01" inputmode="decimal" required placeholder="0,00"></label>
+        <label>Data<input id="expense-date" type="date" required value="${todayISO()}"></label>
+        <label>Tappa<select id="expense-city">${expenseCityOptions()}</select></label>
+        <label>Categoria<select id="expense-category">${categoryOptions("Cibo")}</select></label>
+      </div>
+      <label>Descrizione<input id="expense-description" type="text" maxlength="80" placeholder="Es. cena, benzina, parcheggio…"></label>
+      <div class="expense-form-actions">
+        <button type="submit" class="primary-action" id="expense-save">${editingExpenseId ? "Salva modifica" : "+ Aggiungi spesa"}</button>
+        ${editingExpenseId ? `<button type="button" class="secondary-action" id="expense-cancel">Annulla</button>` : ""}
+      </div>
+      <div class="expense-form-status" id="expense-status"></div>
+    </form>
+
+    <div class="section-title">Movimenti <span class="movement-count">${expenses.length}</span></div>
+    <div class="expense-list">
+      ${expenses.length ? expenses.map(e => `
+        <div class="expense-item" data-expense-id="${e.id}">
+          <div class="expense-icon">${expenseCategoryIcon(e.category)}</div>
+          <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span></div>
+          <div class="expense-amount">${money(e.amount,currency)}</div>
+          <div class="expense-actions"><button data-edit-expense="${e.id}" title="Modifica">✎</button><button data-delete-expense="${e.id}" title="Elimina">×</button></div>
+        </div>`).join("") : `<div class="empty-note">Nessuna spesa registrata. Il primo movimento comparirà qui e si sincronizzerà anche sull'altro telefono.</div>`}
+    </div>
+    <div class="budget-offline-note">☁️ Le modifiche vengono sincronizzate tra i due telefoni. Se siete offline, Firestore le conserva sul dispositivo e le invia quando torna la connessione.</div>`;
+
+  $("#back-budget").addEventListener("click", () => history.back());
+  $("#budget-lock").addEventListener("click", async () => {
+    if (!confirm("Bloccare l'Area L&F su questo dispositivo? Per rientrare serviranno di nuovo email e codice.")) return;
+    await window.LFBudget.logout();
+    editingExpenseId = null;
+    renderHome();
+    history.replaceState({screen:"home"}, "", "#home");
+    showScreen("home");
+  });
+  $("#budget-edit-total").addEventListener("click", async () => {
+    const value = prompt("Budget totale del viaggio in dollari:", String(total));
+    if (value === null) return;
+    const n = Number(String(value).replace(",","."));
+    if (!Number.isFinite(n) || n <= 0){ alert("Inserisci un importo valido."); return; }
+    await window.LFBudget.saveSettings({ totalBudget:n });
+  });
+
+  const form = $("#expense-form");
+  if (editingExpenseId){
+    const exp = expenses.find(e => e.id === editingExpenseId);
+    if (exp){
+      $("#expense-amount").value = exp.amount || "";
+      $("#expense-date").value = exp.date || todayISO();
+      $("#expense-city").innerHTML = expenseCityOptions(exp.city || "Generale");
+      $("#expense-category").innerHTML = categoryOptions(exp.category || "Altro");
+      $("#expense-description").value = exp.description || "";
+    }
+    $("#expense-cancel")?.addEventListener("click", () => { editingExpenseId = null; renderBudgetScreen(); });
+  }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const amount = Number($("#expense-amount").value);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value };
+    const btn = $("#expense-save"), status=$("#expense-status");
+    btn.disabled = true; status.textContent = navigator.onLine ? "Salvataggio…" : "Salvataggio offline…";
+    try {
+      if (editingExpenseId) await window.LFBudget.editExpense(editingExpenseId, payload);
+      else await window.LFBudget.addExpense(payload);
+      editingExpenseId = null;
+      status.textContent = navigator.onLine ? "Salvato ✓" : "Salvato sul telefono · sincronizzerà appena torna Internet ✓";
+      setTimeout(() => renderBudgetScreen(), 350);
+    } catch(err){
+      console.error(err); status.textContent = "Non sono riuscito a salvare la spesa.";
+    } finally { btn.disabled = false; }
+  });
+  $$('[data-edit-expense]', el).forEach(btn => btn.addEventListener("click", () => { editingExpenseId = btn.dataset.editExpense; renderBudgetScreen(); window.scrollTo(0, Math.max(0, $("#expense-form").offsetTop - 90)); }));
+  $$('[data-delete-expense]', el).forEach(btn => btn.addEventListener("click", async () => {
+    const exp = expenses.find(e => e.id === btn.dataset.deleteExpense);
+    if (!confirm(`Eliminare la spesa "${exp?.description || exp?.category || "selezionata"}"?`)) return;
+    await window.LFBudget.removeExpense(btn.dataset.deleteExpense);
+  }));
+}
+
+function expenseCategoryIcon(cat){
+  return ({"Cibo":"🍽️","Benzina":"⛽","Parcheggio":"🅿️","Trasporti":"🚕","Shopping":"🛍️","Escursioni":"🎟️","Altro":"💳"})[cat] || "💳";
+}
+
+function formatExpenseDate(iso){
+  if (!iso) return "";
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("it-IT", { day:"2-digit", month:"short" });
+}
+
+function openBudget(pushHistory=true){
+  if (!privateAuthState.authenticated){ openPrivateAccess(pushHistory); return; }
+  renderBudgetScreen();
+  navigateTo("budget", {}, pushHistory);
+}
+
+function connectFirebaseBudget(){
+  if (!window.LFBudget || window.__lfBudgetConnected) return;
+  window.__lfBudgetConnected = true;
+  window.LFBudget.onAuth((state) => {
+    privateAuthState = state;
+    updatePrivateAreaEntry();
+    if (!state.authenticated && $("#screen-budget")?.classList.contains("active")) openPrivateAccess(false);
+  });
+  window.LFBudget.onBudget((state) => {
+    budgetState = state || { settings:null, expenses:[] };
+    if ($("#screen-budget")?.classList.contains("active")) renderBudgetScreen();
+  });
+}
+
+window.addEventListener("lf-firebase-ready", connectFirebaseBudget);
+
 // ---------- Navigazione a schermate / tasto Indietro Android ----------
 function showScreen(name){
   $$(".screen").forEach(s => s.classList.remove("active"));
@@ -516,6 +818,14 @@ function renderNavigationState(state){
   }
   if (st.screen === "place-detail" && st.legId && st.placeName){
     openPlaceDetail(st.legId, st.placeName, false);
+    return;
+  }
+  if (st.screen === "private-access"){
+    openPrivateAccess(false);
+    return;
+  }
+  if (st.screen === "budget"){
+    openBudget(false);
     return;
   }
   if (st.screen === "cities") renderCitiesList();
@@ -653,6 +963,7 @@ function init(){
   window.addEventListener("online", updateOnlineBadge);
   window.addEventListener("offline", updateOnlineBadge);
   updateOnlineBadge();
+  connectFirebaseBudget();
 
   if ("serviceWorker" in navigator){
     navigator.serviceWorker.register("./sw.js", { scope: "./", updateViaCache: "none" }).catch((err)=>console.error("Service Worker registration failed:", err));

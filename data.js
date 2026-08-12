@@ -340,3 +340,59 @@ const PLACE_DETAILS = {
     text: "Il Parque Nacional Cotubanamá protegge una vasta area di foresta tropicale, costa, grotte e ambienti marini nel sud-est della Repubblica Dominicana. Comprende anche l'Isola Saona e conserva importanti testimonianze della cultura indigena Taína. È l'alternativa più naturalistica se vorrete dedicare una giornata a qualcosa di diverso dalla spiaggia del resort."
   }
 };
+
+// V17 — Abbigliamento consigliato per le date reali del viaggio.
+// Le temperature sono fasce stagionali indicative: prima di partire va sempre controllata la previsione aggiornata.
+const CLOTHING_GUIDE = {
+  "sf": {
+    range: "Fine ottobre · circa 12–20 °C, spesso più fresco con vento e nebbia vicino alla baia.",
+    day: "T-shirt o camicia leggera + felpa/maglione sottile. Pantaloni lunghi e scarpe comode per salite e camminate.",
+    evening: "Giacca antivento o giacca leggera più calda; foulard/sciarpa sottile utile sul waterfront e ad Alcatraz.",
+    pack: "Piccolo ombrello o guscio impermeabile leggero, soprattutto se la previsione segnala pioggia."
+  },
+  "la": {
+    range: "Fine ottobre · in genere mite, circa 15–26 °C, con serate più fresche sulla costa.",
+    day: "T-shirt, pantaloni leggeri o jeans e sneakers. Occhiali da sole indispensabili nelle giornate limpide.",
+    evening: "Felpa o giacca leggera per Santa Monica, Venice e Griffith dopo il tramonto.",
+    pack: "Uno strato leggero nello zaino: tra interno, costa e colline la temperatura può cambiare parecchio."
+  },
+  "vegas": {
+    range: "Fine ottobre · giornate spesso piacevoli e asciutte, circa 12–25 °C, con forte escursione tra giorno e notte.",
+    day: "Abbigliamento leggero a strati, scarpe comode: sulla Strip si cammina molto più di quanto sembri.",
+    evening: "Giacca leggera o felpa; per una cena o un locale basta un outfit casual curato, senza necessità di abiti formali.",
+    pack: "Occhiali da sole e balsamo labbra: l'aria del deserto è secca."
+  },
+  "page": {
+    range: "28–29 ottobre · deserto d'alta quota. Page può essere mite di giorno, ma al Grand Canyon South Rim si può scendere vicino o sotto 0 °C al mattino/sera.",
+    day: "Vestirsi a cipolla: maglia, felpa o pile e giacca antivento. Pantaloni lunghi e scarpe chiuse con buona suola.",
+    evening: "Giacca più calda consigliata. Al South Rim il vento può far percepire temperature decisamente inferiori.",
+    pack: "Berretto leggero, acqua, crema solare e uno strato caldo sempre in auto. Possibili cambi meteo rapidi e perfino neve precoce."
+  },
+  "chicago": {
+    range: "Fine ottobre / inizio novembre · clima fresco e ventoso, indicativamente 4–14 °C, con possibilità di pioggia.",
+    day: "Maglia + felpa/maglione, pantaloni lunghi e scarpe chiuse comode. Meglio avere uno strato antivento.",
+    evening: "Giacca calda di mezza stagione; sciarpa leggera molto utile lungo il lago e sul Riverwalk.",
+    pack: "Impermeabile compatto o ombrello. Se la previsione scende molto, aggiungere un pile più pesante."
+  },
+  "sd": {
+    range: "Inizio novembre · tropicale, circa 24–30 °C, caldo umido con possibili rovesci brevi.",
+    day: "Costume, t-shirt, shorts, abiti leggeri e sandali. Cappello e occhiali da sole per spiaggia ed escursioni.",
+    evening: "Camicia/polo o vestito leggero; nei locali con aria condizionata può essere utile una felpa sottilissima.",
+    pack: "K-way leggero, repellente per insetti e almeno due costumi per alternarli."
+  }
+};
+
+const BUDGET_DEFAULTS = {
+  totalBudget: 2500,
+  currency: "USD",
+  destinations: [
+    { key:"San Francisco", label:"San Francisco", amount:450 },
+    { key:"Los Angeles", label:"Los Angeles", amount:650 },
+    { key:"Las Vegas 27-28", label:"Las Vegas · 27–28 ott", amount:170 },
+    { key:"Page / Grand Canyon", label:"Page + Grand Canyon", amount:300 },
+    { key:"Las Vegas 29-30", label:"Las Vegas · 29–30 ott", amount:180 },
+    { key:"Chicago", label:"Chicago", amount:550 },
+    { key:"Bayahibe", label:"Bayahibe", amount:200 }
+  ],
+  categories: ["Cibo", "Benzina", "Parcheggio", "Trasporti", "Shopping", "Escursioni", "Altro"]
+};
