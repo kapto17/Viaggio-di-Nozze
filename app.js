@@ -435,8 +435,10 @@ function openCity(legId, pushHistory=true){
   ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
   const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
   const restaurantsHtml = (leg.restaurants||[]).map(r => `
-    <div class="ticket lf-ticket restaurant-ticket"><div class="stub-top"><div><div class="stitle">${r.name}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
-    <div class="stub-bottom"><span></span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div></div>
+    <div class="ticket lf-ticket restaurant-ticket" data-restaurant-name="${r.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${r.name}">
+      <div class="stub-top"><div><div class="stitle">${r.name}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+      <div class="stub-bottom"><span class="restaurant-more">Dettagli e recensioni ›</span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div>
+    </div>
   `).join("") || `<div class="empty-note">Aggiungeremo qui i ristoranti selezionati a ${leg.city}.</div>`;
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
@@ -519,6 +521,19 @@ function openCity(legId, pushHistory=true){
       if (event.key === "Enter" || event.key === " "){
         event.preventDefault();
         openPlaceDetail(leg.id, card.dataset.placeName);
+      }
+    });
+  });
+  $$(".restaurant-ticket", el).forEach(card => {
+    const open = (event) => {
+      if (event && event.target && event.target.closest("a")) return;
+      openRestaurantDetail(leg.id, card.dataset.restaurantName);
+    };
+    card.addEventListener("click", open);
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " "){
+        event.preventDefault();
+        openRestaurantDetail(leg.id, card.dataset.restaurantName);
       }
     });
   });
@@ -862,6 +877,10 @@ function renderNavigationState(state){
     openPlaceDetail(st.legId, st.placeName, false);
     return;
   }
+  if (st.screen === "restaurant-detail" && st.legId && st.restaurantName){
+    openRestaurantDetail(st.legId, st.restaurantName, false);
+    return;
+  }
   if (st.screen === "private-access"){
     openPrivateAccess(false);
     return;
@@ -926,6 +945,46 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
   $("#back-from-place").addEventListener("click", () => history.back());
   loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), $("#place-photo-source"));
   navigateTo("place-detail", { legId, placeName:place.name }, pushHistory);
+}
+
+function googleSearchUrl(query){
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
+function openRestaurantDetail(legId, restaurantName, pushHistory=true){
+  const leg = TRIP.legs.find(l => l.id === legId);
+  if (!leg) return;
+  const restaurant = (leg.restaurants || []).find(r => r.name === restaurantName);
+  if (!restaurant) return;
+  const el = $("#screen-restaurant-detail");
+  const searchQuery = `${restaurant.name} ${leg.city} recensioni prezzi menu telefono orari`;
+  const description = restaurant.description || restaurant.note || `Locale selezionato per la tappa di ${leg.city}.`;
+
+  el.innerHTML = `
+    <button class="back-btn" id="back-from-restaurant">‹ ${leg.city}</button>
+    <div class="restaurant-detail-hero" style="background-image:linear-gradient(180deg, rgba(6,13,25,.10) 10%, rgba(6,13,25,.82) 100%), url('${leg.image || ""}')">
+      <div class="restaurant-detail-overlay">
+        <div class="restaurant-detail-city">${leg.city}</div>
+        <h2>${restaurant.name}</h2>
+        ${restaurant.lf ? `<span class="lf-badge restaurant-detail-lf" title="Scelto da L&F">L&amp;F</span>` : ""}
+      </div>
+    </div>
+    <div class="restaurant-detail-body">
+      ${restaurant.type ? `<div class="restaurant-detail-type"><span>${restaurant.typeIcon || "🍽️"}</span><strong>${restaurant.type}</strong></div>` : ""}
+      <p>${description}</p>
+      <div class="restaurant-live-info">
+        <div class="restaurant-live-icon">🔎</div>
+        <div><strong>Informazioni aggiornate mentre siete in viaggio</strong><span>La ricerca Google è il modo più pratico per controllare in quel momento recensioni, fascia di prezzo, orari, telefono, menu e sito ufficiale quando disponibili.</span></div>
+      </div>
+      <div class="restaurant-detail-actions">
+        <a class="restaurant-google-btn" target="_blank" rel="noopener" href="${googleSearchUrl(searchQuery)}">🔎 Info, recensioni e prezzi su Google</a>
+        <a class="restaurant-maps-btn" target="_blank" rel="noopener" href="${mapsUrl(restaurant.mapsQuery || restaurant.name + " " + leg.city)}">📍 Apri in Google Maps</a>
+      </div>
+    </div>
+  `;
+
+  $("#back-from-restaurant").addEventListener("click", () => history.back());
+  navigateTo("restaurant-detail", { legId, restaurantName:restaurant.name }, pushHistory);
 }
 
 function openFoodDetail(legId, foodId, pushHistory=true){

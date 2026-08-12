@@ -1217,3 +1217,27 @@ nav.tabbar button.active{
 .restaurant-type{display:inline-flex;align-items:center;gap:6px;margin:6px 0 5px;padding:5px 9px;border-radius:999px;background:#F7EEF1;color:#8A4053;font-size:10.5px;font-weight:850;letter-spacing:.01em;}
 .restaurant-type-icon{font-size:13px;line-height:1;}
 #budget-tab[hidden]{display:none !important;}
+
+
+/* V21 · dettaglio ristoranti */
+.restaurant-ticket{cursor:pointer;}
+.restaurant-ticket:focus-visible{outline:3px solid rgba(224,90,121,.28);outline-offset:2px;}
+.restaurant-more{font-size:11px;font-weight:850;color:#9E4057;}
+.restaurant-detail-hero{height:255px;border-radius:0 0 28px 28px;background-size:cover;background-position:center;position:relative;overflow:hidden;margin:0 -2px 16px;}
+.restaurant-detail-overlay{position:absolute;left:20px;right:20px;bottom:20px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.38);}
+.restaurant-detail-city{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-bottom:4px;}
+.restaurant-detail-overlay h2{margin:0;max-width:88%;font-size:29px;line-height:1.05;}
+.restaurant-detail-lf{position:absolute;right:0;top:-2px;}
+.restaurant-detail-body{background:#fff;border-radius:24px;padding:20px;margin-bottom:20px;box-shadow:0 9px 28px rgba(22,35,63,.08);}
+.restaurant-detail-type{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:#F7EEF1;color:#8A4053;font-size:12px;margin-bottom:13px;}
+.restaurant-detail-type span{font-size:16px;}
+.restaurant-detail-body p{margin:0 0 16px;font-size:14px;line-height:1.58;color:var(--ink-soft);}
+.restaurant-live-info{display:flex;gap:11px;padding:13px 14px;border-radius:16px;background:#F7F8FC;margin:14px 0 17px;}
+.restaurant-live-icon{font-size:19px;flex:0 0 auto;}
+.restaurant-live-info strong{display:block;font-size:12px;color:var(--ink);margin-bottom:3px;}
+.restaurant-live-info span{display:block;font-size:11.5px;line-height:1.45;color:var(--ink-soft);}
+.restaurant-detail-actions{display:grid;gap:10px;}
+.restaurant-google-btn,.restaurant-maps-btn{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:11px 14px;border-radius:14px;text-decoration:none;font-size:12.5px;font-weight:900;}
+.restaurant-google-btn{background:#16233F;color:#fff;}
+.restaurant-maps-btn{background:#F7EEF1;color:#8A4053;border:1px solid #EFD8DF;}
+@media(min-width:700px){.restaurant-detail-hero{height:360px}.restaurant-detail-overlay h2{font-size:36px}.restaurant-detail-body{padding:24px}.restaurant-detail-actions{grid-template-columns:1.4fr 1fr}}
