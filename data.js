@@ -147,7 +147,9 @@ const TRIP = {
         { id: "chi-hotdog", name: "Chicago-Style Hot Dog", short: "Hot dog 'dragged through the garden' e niente ketchup.", description: "Salsiccia di manzo in bun al papavero con senape gialla, cipolla, relish, pomodoro, pickle, peperoncini sport peppers e sale al sedano. La versione tradizionale non prevede ketchup.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Chicago-style_hot_dog.jpg/960px-Chicago-style_hot_dog.jpg", photoCredit: "Meg Marco / Wikimedia Commons · CC BY-SA 3.0" },
         { id: "chi-beef", name: "Italian Beef", short: "Panino di manzo affettato sottile con jus e giardiniera.", description: "Panino con manzo cotto e affettato sottilissimo, bagnato nel suo jus e spesso completato con giardiniera piccante o peperoni dolci.", image: "./assets/food/chicago-italian-beef.jpg", photoCredit: "Krista / Wikimedia Commons · CC BY 2.0" }
       ],
-      activities: [], restaurants: [], days: [], tickets: []
+      activities: [
+        { priority: "must", lf: true, name: "Haunted Halsted Halloween Parade", date: "2026-10-31", time: "18:30–22:00", status: "Confermato 2026", icon: "🎃", note: "Halloween a Chicago: 29ª edizione della parata di Northalsted, gratuita per gli spettatori. Partenza zona Halsted & Aldine.", mapsQuery: "3300 N Halsted St Chicago" }
+      ], restaurants: [], days: [], tickets: []
     },
 
     {
@@ -172,6 +174,150 @@ const TRIP = {
       ],
       activities: [], restaurants: [], days: [], tickets: []
     }
+  ]
+};
+
+
+// Programma giornaliero consigliato: una traccia flessibile, non una tabella rigida.
+// "booked" = orario/prenotazione da rispettare; "recommended" = percorso consigliato;
+// "optional" = bonus da fare solo se resta tempo/energia.
+const PROGRAM_GUIDE = {
+  sfo: [
+    { date:"2026-10-20", title:"Arrivo a San Francisco", theme:"Atterraggio e recupero energie", items:[
+      { time:"19:25", kind:"booked", icon:"✈️", title:"Arrivo a SFO", note:"Immigrazione, bagagli e trasferimento verso Hotel Spero." },
+      { time:"21:30 circa", kind:"recommended", icon:"🏨", title:"Check-in e cena leggera", note:"Niente visite programmate: meglio assorbire il fuso e partire bene il giorno dopo." }
+    ]},
+    { date:"2026-10-21", title:"Golden Gate, Sausalito e costa", theme:"Tutto nella stessa zona, senza attraversare la città avanti e indietro", items:[
+      { time:"09:00", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto e passeggiata sul ponte.", mapsQuery:"Golden Gate Bridge San Francisco" },
+      { time:"11:30", kind:"recommended", icon:"⛵", title:"Sausalito", note:"Passeggiata sul waterfront e pranzo leggero.", mapsQuery:"Sausalito California" },
+      { time:"14:30", kind:"recommended", icon:"🌳", title:"Golden Gate Park · Panhandle", note:"Rientro verso San Francisco e passeggiata nel verde.", mapsQuery:"Panhandle San Francisco" },
+      { time:"17:00", kind:"recommended", icon:"🌊", title:"Ocean Beach", note:"Tramonto e relax sul Pacifico.", mapsQuery:"Ocean Beach San Francisco" },
+      { time:"19:00", kind:"recommended", icon:"🍺", title:"Beach Chalet Brewery & Restaurant", note:"È già in zona: perfetto per chiudere la giornata senza spostamenti inutili.", mapsQuery:"Beach Chalet Brewery & Restaurant San Francisco" }
+    ]},
+    { date:"2026-10-22", title:"Waterfront e Alcatraz", theme:"Giornata costruita intorno al Night Tour già prenotato", items:[
+      { time:"09:30", kind:"recommended", icon:"🏙️", title:"Ferry Building e Embarcadero", note:"Passeggiata verso nord lungo la baia.", mapsQuery:"Ferry Building San Francisco" },
+      { time:"11:30", kind:"recommended", icon:"🦭", title:"Pier 39 e Fisherman's Wharf", note:"Leoni marini, waterfront e atmosfera tipica.", mapsQuery:"Pier 39 San Francisco" },
+      { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
+      { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
+      { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Al rientro lasciate la serata libera.", mapsQuery:"Alcatraz City Cruises Pier 33" }
+    ]}
+  ],
+  la: [
+    { date:"2026-10-23", title:"Arrivo e Downtown LA", theme:"Pomeriggio leggero dopo volo e ritiro auto", items:[
+      { time:"12:36", kind:"booked", icon:"✈️", title:"Arrivo a LAX", note:"Bagagli e ritiro SUV." },
+      { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta." },
+      { time:"16:30", kind:"recommended", icon:"🏙️", title:"Downtown Los Angeles", note:"Grand Central Market / Walt Disney Concert Hall / centro, scegliendo in base all'energia.", mapsQuery:"Grand Central Market Los Angeles" },
+      { time:"19:30", kind:"recommended", icon:"🐟", title:"Cena in zona Downtown", note:"Water Grill è una delle scelte L&F e qui si incastra senza tornare apposta.", mapsQuery:"Water Grill Los Angeles" }
+    ]},
+    { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"LA cinematografica raggruppata per zone", items:[
+      { time:"09:00", kind:"recommended", icon:"⭐", title:"Hollywood Boulevard", note:"Walk of Fame, TCL Chinese Theatre e Dolby Theatre. 2 ore circa sono sufficienti.", mapsQuery:"TCL Chinese Theatre Los Angeles" },
+      { time:"11:45", kind:"recommended", icon:"🛍️", title:"Beverly Hills & Rodeo Drive", note:"Passeggiata e pranzo in zona.", mapsQuery:"Rodeo Drive Beverly Hills" },
+      { time:"15:00", kind:"optional", icon:"💡", title:"Urban Light / LACMA", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA" },
+      { time:"17:00", kind:"recommended", icon:"🌇", title:"Griffith Observatory", note:"Arrivate con la luce e restate fino al tramonto/sera.", mapsQuery:"Griffith Observatory" },
+      { time:"20:00", kind:"optional", icon:"🍷", title:"The Little Door", note:"Cena più romantica e costosa: tenetela come opzione speciale, non obbligatoria.", mapsQuery:"The Little Door Los Angeles" }
+    ]},
+    { date:"2026-10-25", title:"Costa e location di The O.C.", theme:"Santa Monica → Venice → South Bay: una sola direzione", items:[
+      { time:"09:00", kind:"recommended", icon:"🎡", title:"Santa Monica Pier", note:"Molo, Route 66, spiaggia e Third Street Promenade.", mapsQuery:"Santa Monica Pier" },
+      { time:"11:30", kind:"recommended", icon:"🏖️", title:"Venice Beach", note:"Boardwalk, Muscle Beach e Venice Canals.", mapsQuery:"Venice Beach Los Angeles" },
+      { time:"14:30", kind:"optional", icon:"🌴", title:"Manhattan Beach", note:"Sosta breve lungo la strada, solo se avete tempo.", mapsQuery:"Manhattan Beach Pier" },
+      { time:"16:00", kind:"recommended", icon:"📺", title:"Redondo Beach Pier · The O.C.", note:"Molte scene della serie ambientate a Newport sono state girate qui: è la scelta più efficiente per vedere location riconoscibili.", mapsQuery:"Redondo Beach Pier" }
+    ]},
+    { date:"2026-10-26", title:"Universal Studios Hollywood", theme:"Giornata intera già prenotata", items:[
+      { time:"Apertura", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Arrivate poco prima dell'apertura e dedicate il giorno al parco.", mapsQuery:"Universal Studios Hollywood" },
+      { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: case decorate a Burbank", note:"Se avete ancora energia, Burbank organizza ogni anno un Halloween Outdoor Decorating Contest con una destination guide delle case partecipanti. È vicino a Universal: controlliamo la guida 2026 poco prima del viaggio.", mapsQuery:"Burbank California" },
+      { time:"Sera", kind:"optional", icon:"👻", title:"Halloween Horror Nights", note:"Nel 2026 è previsto dal 3 settembre al 1 novembre, ma richiede un biglietto separato: non lo considero parte del programma base." }
+    ]}
+  ],
+  vegas1: [
+    { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Trasferimento e prima serata sulla Strip", items:[
+      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da Los Angeles", note:"Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
+      { time:"13:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo e check-in al Paris Las Vegas", note:"Lasciate l'auto e muovetevi soprattutto a piedi sulla Strip." },
+      { time:"16:00", kind:"recommended", icon:"🎰", title:"Las Vegas Strip", note:"Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery:"Las Vegas Strip" },
+      { time:"Sera", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio e Strip illuminata", note:"Vegas rende soprattutto dopo il tramonto.", mapsQuery:"Bellagio Fountains" },
+      { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: atmosfera horror", note:"Se vi avanza tempo durante uno dei due passaggi a Vegas, Universal Horror Unleashed ad AREA15 è un'esperienza horror permanente; non la inserisco nel percorso base.", mapsQuery:"Universal Horror Unleashed Las Vegas" }
+    ]}
+  ],
+  page: [
+    { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
+      { time:"06:30", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
+      { time:"11:00 circa", kind:"recommended", icon:"🏜️", title:"Grand Canyon South Rim", note:"Mather Point e Visitor Center: niente trekking lungo, puntiamo sui panorami.", mapsQuery:"Mather Point Grand Canyon" },
+      { time:"14:00", kind:"recommended", icon:"🛣️", title:"Desert View Drive", note:"Viewpoint selezionati lungo la strada nella direzione di Page.", mapsQuery:"Desert View Drive Grand Canyon" },
+      { time:"15:30", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima sosta panoramica prima di uscire dal parco verso est.", mapsQuery:"Desert View Watchtower" },
+      { time:"18:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo a Page", note:"Check-in, cena e riposo." }
+    ]},
+    { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
+      { time:"08:30", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Circa 1½ ore complessive tra parcheggio, passeggiata e foto.", mapsQuery:"Horseshoe Bend Page Arizona" },
+      { time:"11:15", kind:"booked", icon:"📍", title:"Arrivo da Ken's Tours", note:"Parcheggio e margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
+      { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Meglio essere già in fila almeno 30 minuti prima." },
+      { time:"12:00", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
+      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza", note:"Poi Page → Las Vegas." },
+      { time:"18:30 circa", kind:"recommended", icon:"🎰", title:"Arrivo a Las Vegas", note:"Seconda serata in città." }
+    ]}
+  ],
+  vegas2: [
+    { date:"2026-10-29", title:"Seconda serata a Las Vegas", theme:"Completate ciò che non avete visto il 27", items:[
+      { time:"19:00 circa", kind:"recommended", icon:"🌃", title:"Strip oppure Fremont Street", note:"Scegliete in base a ciò che vi manca e alla stanchezza dopo Page.", mapsQuery:"Fremont Street Experience" }
+    ]},
+    { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
+      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
+      { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
+    ]}
+  ],
+  chicago: [
+    { date:"2026-10-30", title:"Arrivo a Chicago", theme:"Dipende dal nuovo volo da Las Vegas", items:[
+      { time:"Da definire", kind:"booked", icon:"✈️", title:"Arrivo a ORD", note:"Quando l'agenzia conferma l'orario, rifiniamo questa serata." },
+      { time:"Sera", kind:"recommended", icon:"🏨", title:"Warwick Allerton", note:"Check-in e prima passeggiata su Michigan Avenue solo se l'orario lo consente." }
+    ]},
+    { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Turismo leggero di giorno, Haunted Halsted come evento principale", special:true, items:[
+      { time:"09:30", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Partite direttamente dalla zona dell'hotel.", mapsQuery:"Magnificent Mile Chicago" },
+      { time:"11:00", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Passeggiata senza fretta lungo il fiume.", mapsQuery:"Chicago Riverwalk" },
+      { time:"13:00", kind:"recommended", icon:"🌭", title:"Pranzo tipico", note:"Italian beef oppure Chicago-style hot dog: veloce e perfetto per questa giornata." },
+      { time:"14:00", kind:"recommended", icon:"☁️", title:"Millennium Park & Loop", note:"Cloud Gate e centro, senza riempire troppo il pomeriggio.", mapsQuery:"Cloud Gate Chicago" },
+      { time:"16:30", kind:"recommended", icon:"🏨", title:"Rientro in hotel", note:"Riposo, cambio e magari un piccolo accessorio/trucco Halloween." },
+      { time:"17:45", kind:"recommended", icon:"🚇", title:"Partenza per Northalsted", note:"CTA o rideshare: lasciate margine perché sarà sabato sera e Halloween." },
+      { time:"18:30", kind:"booked", icon:"🎃", title:"Haunted Halsted Halloween Parade", note:"29ª edizione, 31 ottobre 2026, 18:30–22:00. Spettatori gratis. Partenza zona Halsted & Aldine.", mapsQuery:"3300 N Halsted St Chicago" },
+      { time:"22:00+", kind:"optional", icon:"🍸", title:"Drink / locale in Northalsted", note:"Solo se avete ancora energia: la zona resta molto viva dopo la parata." }
+    ]},
+    { date:"2026-11-01", title:"Architettura e centro", theme:"La crociera passa qui per non sovraccaricare Halloween", items:[
+      { time:"10:30 circa", kind:"recommended", icon:"🚢", title:"Architecture River Cruise", note:"90 minuti circa. Quando prenotiamo sceglierei tarda mattinata, con luce.", mapsQuery:"Chicago Architecture Center River Cruise" },
+      { time:"12:30", kind:"recommended", icon:"🌆", title:"Riverwalk / Loop", note:"Completate con calma ciò che non avete visto il giorno prima." },
+      { time:"15:00", kind:"recommended", icon:"🌳", title:"Grant Park / centro", note:"Passeggiata e tempo libero." },
+      { time:"Durante il giorno", kind:"recommended", icon:"🍿", title:"Garrett Popcorn / snack tipico", note:"Facile da inserire mentre siete su Michigan Avenue." }
+    ]},
+    { date:"2026-11-02", title:"Museo, panorama e deep dish", theme:"Ultima giornata piena, con parecchia libertà", items:[
+      { time:"10:00", kind:"recommended", icon:"🎨", title:"Art Institute of Chicago", note:"La mia prima scelta se volete fare un grande museo.", mapsQuery:"Art Institute of Chicago" },
+      { time:"15:00", kind:"optional", icon:"🔭", title:"360 Chicago oppure Skydeck", note:"Uno solo dei due. 360 Chicago è comodissimo rispetto al Warwick.", mapsQuery:"360 Chicago Observation Deck" },
+      { time:"19:30", kind:"recommended", icon:"🍕", title:"Deep-dish pizza", note:"Cena perfetta per salutare Chicago." }
+    ]},
+    { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
+      { time:"Mattina presto", kind:"recommended", icon:"🧳", title:"Check-out e trasferimento a ORD", note:"Lasciate margine per traffico e controlli." },
+      { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Arrivo a Punta Cana alle 16:02." }
+    ]}
+  ],
+  bayahibe: [
+    { date:"2026-11-03", title:"Arrivo a Bayahibe", theme:"Transfer, resort e decompressione", items:[
+      { time:"16:02", kind:"booked", icon:"✈️", title:"Arrivo a Punta Cana", note:"Transfer per Bayahibe incluso." },
+      { time:"Sera", kind:"recommended", icon:"🌴", title:"Resort e cena", note:"Niente programmi: avete appena attraversato mezzo continente." }
+    ]},
+    { date:"2026-11-04", title:"Resort", theme:"Giornata volutamente vuota", items:[
+      { time:"Tutto il giorno", kind:"recommended", icon:"🏖️", title:"Mare, piscina e relax", note:"Questa non è una giornata sprecata: è parte del viaggio." }
+    ]},
+    { date:"2026-11-05", title:"Isola Saona", theme:"L'escursione principale del soggiorno caraibico", items:[
+      { time:"Mattina", kind:"recommended", icon:"🚤", title:"Escursione a Isola Saona", note:"Giornata in barca tra spiagge e piscine naturali. Da prenotare quando scegliamo l'operatore.", mapsQuery:"Saona Island Dominican Republic" }
+    ]},
+    { date:"2026-11-06", title:"Resort", theme:"Relax senza agenda", items:[
+      { time:"Tutto il giorno", kind:"recommended", icon:"🍹", title:"Spiaggia e all inclusive", note:"Nessun obbligo." }
+    ]},
+    { date:"2026-11-07", title:"Giornata facoltativa", theme:"Solo se avete voglia di muovervi", items:[
+      { time:"Da decidere", kind:"optional", icon:"🌿", title:"Cotubanamá / Bayahibe village", note:"Escursione naturalistica o passeggiata nel borgo; altrimenti restate al resort.", mapsQuery:"Cotubanama National Park Dominican Republic" }
+    ]},
+    { date:"2026-11-08", title:"Ultimo giorno pieno", theme:"Niente escursioni lunghe", items:[
+      { time:"Tutto il giorno", kind:"recommended", icon:"❤️", title:"Resort, mare e valigie", note:"Ultima giornata tranquilla prima del rientro." }
+    ]},
+    { date:"2026-11-09", title:"Rientro", theme:"Punta Cana → Washington → Roma", items:[
+      { time:"12:56", kind:"booked", icon:"✈️", title:"PUJ → IAD", note:"Arrivo 15:55." },
+      { time:"17:40", kind:"booked", icon:"✈️", title:"IAD → FCO", note:"Arrivo a Roma il 10 novembre alle 08:30." }
+    ]}
   ]
 };
 

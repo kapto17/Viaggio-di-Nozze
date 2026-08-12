@@ -409,6 +409,42 @@ function openCity(legId, pushHistory=true){
       <div class="accordion-content">${content}</div>
     </details>`;
 
+  const programDays = (typeof PROGRAM_GUIDE !== "undefined" && PROGRAM_GUIDE[leg.id]) || [];
+  const programHtml = programDays.length ? `
+    <div class="program-intro">
+      <strong>Una traccia flessibile, non una tabella militare.</strong>
+      <span>Gli orari servono per raggruppare le cose vicine e ridurre gli spostamenti inutili.</span>
+      <div class="program-legend">
+        <span class="program-badge booked">🔒 Prenotato / orario</span>
+        <span class="program-badge recommended">★ Consigliato</span>
+        <span class="program-badge optional">○ Facoltativo</span>
+      </div>
+    </div>
+    ${programDays.map(day => `
+      <div class="program-day ${day.special ? "program-day-special" : ""}">
+        <div class="program-day-head">
+          <div>
+            <div class="program-date">${fmtDateFull(day.date)}</div>
+            <div class="program-day-title">${day.title}</div>
+            <div class="program-theme">${day.theme || ""}</div>
+          </div>
+          ${day.special ? `<div class="program-special-icon">🎃</div>` : ""}
+        </div>
+        <div class="program-timeline">
+          ${(day.items || []).map(item => `
+            <div class="program-item ${item.kind || "recommended"}">
+              <div class="program-time">${item.time || ""}</div>
+              <div class="program-dot">${item.icon || "•"}</div>
+              <div class="program-copy">
+                <div class="program-item-title">${item.title}</div>
+                <div class="program-note">${item.note || ""}</div>
+                ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
+              </div>
+            </div>`).join("")}
+        </div>
+      </div>`).join("")}
+  ` : `<div class="empty-note">Programma giornaliero non ancora definito per questa tappa.</div>`;
+
   const renderPlaceCard = (p) => `
     <div class="ticket lf-ticket place-ticket" data-place-name="${p.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${p.name}">
       <div class="stub-top"><div><div class="stitle">${p.name}</div><div class="ssub">${p.note||""}</div></div>${p.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
@@ -473,6 +509,8 @@ function openCity(legId, pushHistory=true){
       </div>` : `<div class="empty-note">Alloggio ancora da definire.</div>`}
 
     ${accordion("Trasporti", transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`, {icon:"✈️", count:(leg.transport||[]).length})}
+
+    ${accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
 
     ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
 
