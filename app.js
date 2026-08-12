@@ -61,7 +61,9 @@ function localISODate(){
   return `${y}-${m}-${day}`;
 }
 
-const CHECKLIST_HIDE_FROM = "2026-10-20";
+const CHECKLIST_HIDE_AT = new Date("2026-10-20T14:00:00Z"); // 20/10/2026 ore 16:00 in Italia (CEST)
+const CHECKLIST_EXPIRED_KEY = "lf-checklist-expired-v13";
+let checklistCountdownTimer = null;
 const CHECKLIST_PROFILES = ["Lorenzo", "Fortuna"];
 const CHECKLIST_SECTIONS = [
   { id:"before", icon:"🗓️", title:"Da fare prima di partire", items:[
@@ -85,8 +87,50 @@ const CHECKLIST_SECTIONS = [
 ];
 
 function checklistVisible(){
-  return localISODate() < CHECKLIST_HIDE_FROM;
+  if (localStorage.getItem(CHECKLIST_EXPIRED_KEY) === "1") return false;
+  if (Date.now() >= CHECKLIST_HIDE_AT.getTime()){
+    localStorage.setItem(CHECKLIST_EXPIRED_KEY, "1");
+    return false;
+  }
+  return true;
 }
+
+function checklistCountdownText(){
+  const diff = CHECKLIST_HIDE_AT.getTime() - Date.now();
+  if (diff <= 0) return "Checklist chiusa";
+  const totalMinutes = Math.floor(diff / 60000);
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+  if (days > 0) return `${days}g ${hours}h ${minutes}m`;
+  return `${hours}h ${minutes}m`;
+}
+
+function updateChecklistCountdown(){
+  const el = $("#checklist-countdown-value");
+  if (el) el.textContent = checklistCountdownText();
+
+  if (!checklistVisible()) {
+    if (checklistCountdownTimer) {
+      clearInterval(checklistCountdownTimer);
+      checklistCountdownTimer = null;
+    }
+    if ($("#screen-checklist")?.classList.contains("active")) {
+      renderHome();
+      history.replaceState({ screen:"home" }, "", "#home");
+      showScreen("home");
+    } else if ($("#screen-home")?.classList.contains("active")) {
+      renderHome();
+    }
+  }
+}
+
+function startChecklistCountdown(){
+  if (checklistCountdownTimer) clearInterval(checklistCountdownTimer);
+  updateChecklistCountdown();
+  if (checklistVisible()) checklistCountdownTimer = setInterval(updateChecklistCountdown, 30000);
+}
+
 
 function checklistStorageKey(profile){
   return `lf-checklist-v12-${profile.toLowerCase()}`;
@@ -280,6 +324,7 @@ function renderChecklist(){
       <div><small>20 ottobre 2026</small><h2>Checklist pre-partenza</h2><p>Preparativi e valigia di ${activeChecklistProfile}</p></div>
     </div>
     <div class="checklist-local-note">📱 Le spunte sono salvate solo su questo smartphone e non vengono sincronizzate con l'altro telefono.</div>
+    <div class="checklist-countdown"><span>⏳ Tempo alla partenza</span><strong id="checklist-countdown-value">${checklistCountdownText()}</strong><small>La checklist si nasconderà il 20 ottobre 2026 alle 16:00.</small></div>
     <div class="checklist-profile-tabs">
       ${CHECKLIST_PROFILES.map(p => `<button class="${p===activeChecklistProfile?'active':''}" data-check-profile="${p}">${p}</button>`).join("")}
     </div>
@@ -301,7 +346,9 @@ function renderChecklist(){
         </details>`;
       }).join("")}
     </div>
-    <div class="checklist-hide-note">✨ Questa sezione sparirà automaticamente dall'app il 20 ottobre 2026.</div>`;
+    <div class="checklist-hide-note">✨ Questa sezione sparirà automaticamente dall'app il 20 ottobre 2026 alle 16:00.</div>`;
+
+  startChecklistCountdown();
 
   $("#back-checklist").addEventListener("click", () => history.back());
   $$('[data-check-profile]', el).forEach(btn => btn.addEventListener("click", () => {
@@ -1271,6 +1318,7 @@ function updateOnlineBadge(){
 function init(){
   renderHome();
   renderCitiesList();
+  startChecklistCountdown();
   bindSecretPrivateAccess();
   updateBudgetTabVisibility();
 
