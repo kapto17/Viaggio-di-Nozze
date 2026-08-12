@@ -145,6 +145,38 @@ function saveChecklistState(profile, state){
   localStorage.setItem(checklistStorageKey(profile), JSON.stringify(state));
 }
 
+function checklistItemsStorageKey(profile){
+  return `lf-checklist-items-v14-${profile.toLowerCase()}`;
+}
+
+function defaultChecklistSections(){
+  return CHECKLIST_SECTIONS.map(section => ({
+    ...section,
+    items: section.items.map((text, i) => ({ id:`${section.id}-${i}`, text }))
+  }));
+}
+
+function loadChecklistSections(profile){
+  try {
+    const saved = JSON.parse(localStorage.getItem(checklistItemsStorageKey(profile)) || "null");
+    if (Array.isArray(saved) && saved.length) return saved;
+  } catch(e){}
+  return defaultChecklistSections();
+}
+
+function saveChecklistSections(profile, sections){
+  localStorage.setItem(checklistItemsStorageKey(profile), JSON.stringify(sections));
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 // ---------- Trova la tappa/evento corrente e il prossimo ----------
 function getAllTransportEvents(){
   const events = [];
@@ -301,12 +333,36 @@ function bindCityCardClicks(root){
 
 // ---------- Checklist pre-partenza ----------
 let activeChecklistProfile = localStorage.getItem("lf-checklist-profile") || "Lorenzo";
+let checklistEditMode = false;
 
 function checklistProgress(profile){
   const state = loadChecklistState(profile);
-  const total = CHECKLIST_SECTIONS.reduce((n,s) => n+s.items.length, 0);
-  const done = Object.values(state).filter(Boolean).length;
+  const sections = loadChecklistSections(profile);
+  const ids = sections.flatMap(section => section.items.map(item => item.id));
+  const done = ids.filter(id => !!state[id]).length;
+  const total = ids.length;
   return { done, total, pct: total ? Math.round(done/total*100) : 0 };
+}
+
+function currentOpenChecklistSections(el){
+  return new Set($$(".checklist-section[open]", el).map(d => d.dataset.sectionId));
+}
+
+function updateChecklistProgressDom(el){
+  const state = loadChecklistState(activeChecklistProfile);
+  const sections = loadChecklistSections(activeChecklistProfile);
+  const progress = checklistProgress(activeChecklistProfile);
+  const progressText = $(".checklist-progress-wrap strong", el);
+  const progressBar = $(".checklist-progress span", el);
+  const progressPct = $(".checklist-progress-wrap>b", el);
+  if (progressText) progressText.textContent = `${progress.done} / ${progress.total}`;
+  if (progressBar) progressBar.style.width = `${progress.pct}%`;
+  if (progressPct) progressPct.textContent = `${progress.pct}%`;
+  sections.forEach(section => {
+    const done = section.items.filter(item => !!state[item.id]).length;
+    const count = $(`[data-check-count="${section.id}"]`, el);
+    if (count) count.textContent = `${done}/${section.items.length} completate`;
+  });
 }
 
 function renderChecklist(){
@@ -316,32 +372,42 @@ function renderChecklist(){
     showScreen("home");
     return;
   }
+  const openSections = currentOpenChecklistSections(el);
+  const firstRender = !el.querySelector(".checklist-section");
   const state = loadChecklistState(activeChecklistProfile);
+  const sections = loadChecklistSections(activeChecklistProfile);
   const progress = checklistProgress(activeChecklistProfile);
   el.innerHTML = `
     <button class="back-btn" id="back-checklist">‹ Home</button>
     <div class="checklist-hero" style="background-image:linear-gradient(180deg,rgba(13,25,43,.08),rgba(13,25,43,.78)),url('./assets/checklist-prepartenza.jpg')">
-      <div><small>20 ottobre 2026</small><h2>Checklist pre-partenza</h2><p>Preparativi e valigia di ${activeChecklistProfile}</p></div>
+      <div><small>20 ottobre 2026</small><h2>Checklist pre-partenza</h2><p>Preparativi e valigia di ${escapeHtml(activeChecklistProfile)}</p></div>
     </div>
-    <div class="checklist-local-note">📱 Le spunte sono salvate solo su questo smartphone e non vengono sincronizzate con l'altro telefono.</div>
+    <div class="checklist-local-note">📱 Voci e spunte sono salvate solo su questo smartphone e non vengono sincronizzate con l'altro telefono.</div>
     <div class="checklist-countdown"><span>⏳ Tempo alla partenza</span><strong id="checklist-countdown-value">${checklistCountdownText()}</strong><small>La checklist si nasconderà il 20 ottobre 2026 alle 16:00.</small></div>
     <div class="checklist-profile-tabs">
       ${CHECKLIST_PROFILES.map(p => `<button class="${p===activeChecklistProfile?'active':''}" data-check-profile="${p}">${p}</button>`).join("")}
+    </div>
+    <div class="checklist-toolbar">
+      <span>${checklistEditMode ? "Modifica, aggiungi o elimina le voci." : "Personalizza la tua checklist direttamente dall’app."}</span>
+      <button type="button" id="checklist-edit-toggle">${checklistEditMode ? "✓ Fine" : "✎ Modifica elenco"}</button>
     </div>
     <div class="checklist-progress-wrap">
       <div><strong>${progress.done} / ${progress.total}</strong><span>completate</span></div>
       <div class="checklist-progress"><span style="width:${progress.pct}%"></span></div><b>${progress.pct}%</b>
     </div>
     <div class="checklist-sections">
-      ${CHECKLIST_SECTIONS.map(section => {
-        const doneCount = section.items.filter((_,i)=>state[`${section.id}-${i}`]).length;
-        return `<details class="checklist-section" ${section.id==='before'?'open':''}>
-          <summary><span class="checklist-section-icon">${section.icon}</span><span><strong>${section.title}</strong><small>${doneCount}/${section.items.length} completate</small></span><span class="accordion-chevron">⌄</span></summary>
+      ${sections.map(section => {
+        const doneCount = section.items.filter(item=>state[item.id]).length;
+        const isOpen = checklistEditMode || openSections.has(section.id) || (firstRender && section.id==='before');
+        return `<details class="checklist-section" data-section-id="${section.id}" ${isOpen?'open':''}>
+          <summary><span class="checklist-section-icon">${section.icon}</span><span><strong>${escapeHtml(section.title)}</strong><small data-check-count="${section.id}">${doneCount}/${section.items.length} completate</small></span><span class="accordion-chevron">⌄</span></summary>
           <div class="checklist-items">
-            ${section.items.map((item,i)=>{
-              const key=`${section.id}-${i}`; const checked=!!state[key];
-              return `<label class="checklist-item ${checked?'checked':''}"><input type="checkbox" data-check-key="${key}" ${checked?'checked':''}><span class="custom-check">✓</span><span>${item}</span></label>`;
+            ${section.items.map(item=>{
+              const checked=!!state[item.id];
+              if (checklistEditMode) return `<div class="checklist-edit-item" data-edit-id="${item.id}"><input type="text" maxlength="100" value="${escapeHtml(item.text)}" data-edit-text="${item.id}"><button type="button" data-delete-check-item="${item.id}" aria-label="Elimina">×</button></div>`;
+              return `<label class="checklist-item ${checked?'checked':''}"><input type="checkbox" data-check-key="${item.id}" ${checked?'checked':''}><span class="custom-check">✓</span><span>${escapeHtml(item.text)}</span></label>`;
             }).join("")}
+            ${checklistEditMode ? `<div class="checklist-add-item"><input type="text" maxlength="100" data-add-check-text="${section.id}" placeholder="Nuova voce…"><button type="button" data-add-check-item="${section.id}">＋</button></div>` : ""}
           </div>
         </details>`;
       }).join("")}
@@ -351,16 +417,54 @@ function renderChecklist(){
   startChecklistCountdown();
 
   $("#back-checklist").addEventListener("click", () => history.back());
-  $$('[data-check-profile]', el).forEach(btn => btn.addEventListener("click", () => {
+  $$("[data-check-profile]", el).forEach(btn => btn.addEventListener("click", () => {
     activeChecklistProfile = btn.dataset.checkProfile;
     localStorage.setItem("lf-checklist-profile", activeChecklistProfile);
+    checklistEditMode = false;
     renderChecklist();
   }));
-  $$('[data-check-key]', el).forEach(input => input.addEventListener("change", () => {
+  $("#checklist-edit-toggle").addEventListener("click", () => {
+    checklistEditMode = !checklistEditMode;
+    renderChecklist();
+  });
+  $$("[data-check-key]", el).forEach(input => input.addEventListener("change", () => {
     const next = loadChecklistState(activeChecklistProfile);
     next[input.dataset.checkKey] = input.checked;
     saveChecklistState(activeChecklistProfile, next);
+    input.closest(".checklist-item")?.classList.toggle("checked", input.checked);
+    updateChecklistProgressDom(el);
+  }));
+  $$("[data-edit-text]", el).forEach(input => input.addEventListener("change", () => {
+    const value = input.value.trim();
+    if (!value) { renderChecklist(); return; }
+    const sectionsNow = loadChecklistSections(activeChecklistProfile);
+    sectionsNow.forEach(section => section.items.forEach(item => { if (item.id === input.dataset.editText) item.text = value; }));
+    saveChecklistSections(activeChecklistProfile, sectionsNow);
+  }));
+  $$("[data-delete-check-item]", el).forEach(btn => btn.addEventListener("click", () => {
+    const id = btn.dataset.deleteCheckItem;
+    const sectionsNow = loadChecklistSections(activeChecklistProfile);
+    sectionsNow.forEach(section => section.items = section.items.filter(item => item.id !== id));
+    saveChecklistSections(activeChecklistProfile, sectionsNow);
+    const next = loadChecklistState(activeChecklistProfile);
+    delete next[id];
+    saveChecklistState(activeChecklistProfile, next);
     renderChecklist();
+  }));
+  function addChecklistItem(sectionId){
+    const input = $(`[data-add-check-text="${sectionId}"]`, el);
+    const value = input?.value.trim();
+    if (!value) return;
+    const sectionsNow = loadChecklistSections(activeChecklistProfile);
+    const section = sectionsNow.find(s => s.id === sectionId);
+    if (!section) return;
+    section.items.push({ id:`custom-${Date.now()}-${Math.random().toString(36).slice(2,7)}`, text:value });
+    saveChecklistSections(activeChecklistProfile, sectionsNow);
+    renderChecklist();
+  }
+  $$("[data-add-check-item]", el).forEach(btn => btn.addEventListener("click", () => addChecklistItem(btn.dataset.addCheckItem)));
+  $$("[data-add-check-text]", el).forEach(input => input.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); addChecklistItem(input.dataset.addCheckText); }
   }));
 }
 
@@ -917,7 +1021,6 @@ function renderBudgetScreen(){
     <button class="back-btn" id="back-budget">‹ Home</button>
     <div class="budget-hero">
       <div><div class="budget-kicker">Area privata L&F</div><h2>Budget viaggio</h2></div>
-      <button class="budget-lock-btn" id="budget-lock" title="Blocca questo dispositivo">🔒</button>
     </div>
 
     <div class="budget-summary-grid">
@@ -994,14 +1097,6 @@ function renderBudgetScreen(){
     <div class="budget-offline-note">☁️ Le modifiche vengono sincronizzate tra i due telefoni. Se siete offline, Firestore le conserva sul dispositivo e le invia quando torna la connessione.</div>`;
 
   $("#back-budget").addEventListener("click", () => history.back());
-  $("#budget-lock").addEventListener("click", async () => {
-    if (!confirm("Bloccare l'Area L&F su questo dispositivo? Per rientrare serviranno di nuovo email e codice.")) return;
-    await window.LFBudget.logout();
-    editingExpenseId = null;
-    renderHome();
-    history.replaceState({screen:"home"}, "", "#home");
-    showScreen("home");
-  });
   let converterFrom = "USD";
   const converterAmount = $("#currency-amount");
   const converterFromSelect = $("#currency-from");
