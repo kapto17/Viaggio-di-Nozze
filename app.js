@@ -52,6 +52,55 @@ function todayISO(){
   return d.toISOString().slice(0,10);
 }
 
+
+function localISODate(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+
+const CHECKLIST_HIDE_FROM = "2026-10-20";
+const CHECKLIST_PROFILES = ["Lorenzo", "Fortuna"];
+const CHECKLIST_SECTIONS = [
+  { id:"before", icon:"🗓️", title:"Da fare prima di partire", items:[
+    "Acquistare e attivare la eSIM", "Controllare passaporto e validità", "Controllare ESTA per gli Stati Uniti", "Controllare assicurazione viaggio", "Avvisare la banca del viaggio se necessario", "Scaricare biglietti e prenotazioni nell’app", "Fare check-in online dei voli quando disponibile", "Preparare carte di pagamento e un po’ di contanti", "Controllare meteo delle tappe pochi giorni prima", "Pesare la valigia prima di uscire di casa"
+  ]},
+  { id:"docs", icon:"🛂", title:"Documenti e pagamenti", items:[
+    "Passaporto", "Carta d’identità", "Patente italiana", "Carte di credito/debito", "Contanti", "Conferme voli e hotel", "Prenotazioni Alcatraz / Universal / Antelope Canyon", "Copia digitale dei documenti importanti"
+  ]},
+  { id:"clothes", icon:"👕", title:"Abbigliamento", items:[
+    "Intimo", "Calze", "T-shirt", "Maglie a maniche lunghe", "Felpa o maglione", "Giacca per le tappe più fredde", "Pantaloni lunghi", "Pantaloni/shorts leggeri", "Pigiama", "Costume da bagno", "Scarpe comode", "Secondo paio di scarpe", "Ciabatte", "Cappello o berretto", "Occhiali da sole"
+  ]},
+  { id:"tech", icon:"🔌", title:"Tecnologia", items:[
+    "Smartphone", "Caricatore smartphone", "Power bank", "Cavo USB di riserva", "Adattatore prese USA", "Auricolari/cuffie", "Smartwatch e caricatore", "Fotocamera/accessori se previsti"
+  ]},
+  { id:"care", icon:"🧴", title:"Salute e igiene", items:[
+    "Farmaci personali", "Antidolorifico / farmaci da viaggio", "Cerotti", "Spazzolino e dentifricio", "Deodorante", "Prodotti doccia", "Rasoio / prodotti personali", "Crema solare", "Burrocacao", "Fazzoletti / salviette"
+  ]},
+  { id:"home", icon:"🏠", title:"Ultimi controlli a casa", items:[
+    "Chiudere gas e controllare rubinetti", "Controllare finestre e balconi", "Svuotare i rifiuti", "Controllare frigorifero e alimenti deperibili", "Impostare riscaldamento/termostato", "Controllare automazioni e telecamere", "Staccare ciò che non serve", "Chiudere casa e portare le chiavi"
+  ]}
+];
+
+function checklistVisible(){
+  return localISODate() < CHECKLIST_HIDE_FROM;
+}
+
+function checklistStorageKey(profile){
+  return `lf-checklist-v12-${profile.toLowerCase()}`;
+}
+
+function loadChecklistState(profile){
+  try { return JSON.parse(localStorage.getItem(checklistStorageKey(profile)) || "{}"); }
+  catch(e){ return {}; }
+}
+
+function saveChecklistState(profile, state){
+  localStorage.setItem(checklistStorageKey(profile), JSON.stringify(state));
+}
+
 // ---------- Trova la tappa/evento corrente e il prossimo ----------
 function getAllTransportEvents(){
   const events = [];
@@ -156,6 +205,14 @@ function renderHome(){
 
     <div class="route-strip home-route-strip" id="route-strip"></div>
 
+    ${checklistVisible() ? `
+    <button class="pretrip-card" id="open-checklist">
+      <img src="./assets/checklist-prepartenza.jpg" alt="Valigia e checklist di viaggio">
+      <span class="pretrip-card-overlay"></span>
+      <span class="pretrip-card-copy"><small>Prima di partire</small><strong>Checklist pre-partenza</strong><em>Preparativi e valigia, senza dimenticare nulla</em></span>
+      <span class="pretrip-card-arrow">›</span>
+    </button>` : ""}
+
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
 
@@ -171,6 +228,7 @@ function renderHome(){
 
   renderRouteStrip();
   bindCityCardClicks(el);
+  $("#open-checklist")?.addEventListener("click", () => openChecklist());
   bindPrivateAreaEntry();
   updatePrivateAreaEntry();
   startHomeClocks();
@@ -194,6 +252,75 @@ function bindCityCardClicks(root){
   $$(".city-card", root).forEach(card => {
     card.addEventListener("click", () => openCity(card.dataset.leg));
   });
+}
+
+
+// ---------- Checklist pre-partenza ----------
+let activeChecklistProfile = localStorage.getItem("lf-checklist-profile") || "Lorenzo";
+
+function checklistProgress(profile){
+  const state = loadChecklistState(profile);
+  const total = CHECKLIST_SECTIONS.reduce((n,s) => n+s.items.length, 0);
+  const done = Object.values(state).filter(Boolean).length;
+  return { done, total, pct: total ? Math.round(done/total*100) : 0 };
+}
+
+function renderChecklist(){
+  const el = $("#screen-checklist");
+  if (!checklistVisible()){
+    renderHome();
+    showScreen("home");
+    return;
+  }
+  const state = loadChecklistState(activeChecklistProfile);
+  const progress = checklistProgress(activeChecklistProfile);
+  el.innerHTML = `
+    <button class="back-btn" id="back-checklist">‹ Home</button>
+    <div class="checklist-hero" style="background-image:linear-gradient(180deg,rgba(13,25,43,.08),rgba(13,25,43,.78)),url('./assets/checklist-prepartenza.jpg')">
+      <div><small>20 ottobre 2026</small><h2>Checklist pre-partenza</h2><p>Preparativi e valigia di ${activeChecklistProfile}</p></div>
+    </div>
+    <div class="checklist-local-note">📱 Le spunte sono salvate solo su questo smartphone e non vengono sincronizzate con l'altro telefono.</div>
+    <div class="checklist-profile-tabs">
+      ${CHECKLIST_PROFILES.map(p => `<button class="${p===activeChecklistProfile?'active':''}" data-check-profile="${p}">${p}</button>`).join("")}
+    </div>
+    <div class="checklist-progress-wrap">
+      <div><strong>${progress.done} / ${progress.total}</strong><span>completate</span></div>
+      <div class="checklist-progress"><span style="width:${progress.pct}%"></span></div><b>${progress.pct}%</b>
+    </div>
+    <div class="checklist-sections">
+      ${CHECKLIST_SECTIONS.map(section => {
+        const doneCount = section.items.filter((_,i)=>state[`${section.id}-${i}`]).length;
+        return `<details class="checklist-section" ${section.id==='before'?'open':''}>
+          <summary><span class="checklist-section-icon">${section.icon}</span><span><strong>${section.title}</strong><small>${doneCount}/${section.items.length} completate</small></span><span class="accordion-chevron">⌄</span></summary>
+          <div class="checklist-items">
+            ${section.items.map((item,i)=>{
+              const key=`${section.id}-${i}`; const checked=!!state[key];
+              return `<label class="checklist-item ${checked?'checked':''}"><input type="checkbox" data-check-key="${key}" ${checked?'checked':''}><span class="custom-check">✓</span><span>${item}</span></label>`;
+            }).join("")}
+          </div>
+        </details>`;
+      }).join("")}
+    </div>
+    <div class="checklist-hide-note">✨ Questa sezione sparirà automaticamente dall'app il 20 ottobre 2026.</div>`;
+
+  $("#back-checklist").addEventListener("click", () => history.back());
+  $$('[data-check-profile]', el).forEach(btn => btn.addEventListener("click", () => {
+    activeChecklistProfile = btn.dataset.checkProfile;
+    localStorage.setItem("lf-checklist-profile", activeChecklistProfile);
+    renderChecklist();
+  }));
+  $$('[data-check-key]', el).forEach(input => input.addEventListener("change", () => {
+    const next = loadChecklistState(activeChecklistProfile);
+    next[input.dataset.checkKey] = input.checked;
+    saveChecklistState(activeChecklistProfile, next);
+    renderChecklist();
+  }));
+}
+
+function openChecklist(pushHistory=true){
+  if (!checklistVisible()) return;
+  renderChecklist();
+  navigateTo("checklist", {}, pushHistory);
 }
 
 // ---------- Rendering: Route strip ----------
@@ -754,6 +881,15 @@ function renderBudgetScreen(){
     <div class="budget-progress"><span style="width:${pct}%"></span></div>
     <button class="budget-edit-total" id="budget-edit-total">✎ Modifica budget iniziale</button>
 
+    <div class="currency-converter" id="currency-converter">
+      <div class="currency-converter-head"><div><small>Strumento rapido</small><strong>Convertitore valuta</strong></div><span>€ ⇄ $</span></div>
+      <div class="currency-row"><input id="currency-amount" type="number" min="0" step="0.01" inputmode="decimal" value="100"><select id="currency-from"><option value="USD">USD $</option><option value="EUR">EUR €</option></select></div>
+      <button class="currency-swap" id="currency-swap" type="button" aria-label="Inverti valute">⇅</button>
+      <div class="currency-result"><strong id="currency-result-value">—</strong><span id="currency-to-label">EUR €</span></div>
+      <button class="currency-convert-btn" id="currency-convert" type="button">Converti</button>
+      <div class="currency-meta" id="currency-meta">Cambio indicativo aggiornato online. Il valore effettivo della carta può essere diverso.</div>
+    </div>
+
     <details class="city-accordion budget-city-accordion">
       <summary><span><span class="accordion-icon">📍</span>Budget per tappa</span><span class="accordion-count">${Object.keys(cityBudgets).length}</span><span class="accordion-chevron">⌄</span></summary>
       <div class="accordion-content budget-city-list">
@@ -819,6 +955,42 @@ function renderBudgetScreen(){
     history.replaceState({screen:"home"}, "", "#home");
     showScreen("home");
   });
+  let converterFrom = "USD";
+  const converterAmount = $("#currency-amount");
+  const converterFromSelect = $("#currency-from");
+  const converterResult = $("#currency-result-value");
+  const converterToLabel = $("#currency-to-label");
+  const converterMeta = $("#currency-meta");
+
+  async function runCurrencyConversion(){
+    const amount = Number(converterAmount.value);
+    converterFrom = converterFromSelect.value;
+    const to = converterFrom === "USD" ? "EUR" : "USD";
+    converterToLabel.textContent = to === "EUR" ? "EUR €" : "USD $";
+    if (!Number.isFinite(amount) || amount < 0){ converterResult.textContent = "—"; return; }
+    converterMeta.textContent = "Aggiornamento cambio in corso…";
+    try{
+      const response = await fetch(`https://api.frankfurter.dev/v2/rate/${converterFrom}/${to}`, { headers:{"Accept":"application/json"} });
+      if (!response.ok) throw new Error("Cambio non disponibile");
+      const data = await response.json();
+      const value = amount * Number(data.rate);
+      converterResult.textContent = new Intl.NumberFormat("it-IT", { minimumFractionDigits:2, maximumFractionDigits:2 }).format(value);
+      const rateText = new Intl.NumberFormat("it-IT", { minimumFractionDigits:4, maximumFractionDigits:4 }).format(Number(data.rate));
+      converterMeta.textContent = `1 ${converterFrom} = ${rateText} ${to} · tasso del ${data.date || "giorno disponibile"}. Cambio indicativo: la carta può applicare un valore diverso.`;
+    }catch(err){
+      converterResult.textContent = "—";
+      converterMeta.textContent = "Connessione necessaria per aggiornare il cambio. Riprova quando sei online.";
+    }
+  }
+  $("#currency-convert").addEventListener("click", runCurrencyConversion);
+  $("#currency-swap").addEventListener("click", () => {
+    converterFromSelect.value = converterFromSelect.value === "USD" ? "EUR" : "USD";
+    runCurrencyConversion();
+  });
+  converterFromSelect.addEventListener("change", runCurrencyConversion);
+  converterAmount.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); runCurrencyConversion(); } });
+  runCurrencyConversion();
+
   $("#budget-edit-total").addEventListener("click", async () => {
     const value = prompt("Budget totale del viaggio in dollari:", String(total));
     if (value === null) return;
@@ -929,6 +1101,10 @@ function renderNavigationState(state){
   }
   if (st.screen === "restaurant-detail" && st.legId && st.restaurantName){
     openRestaurantDetail(st.legId, st.restaurantName, false);
+    return;
+  }
+  if (st.screen === "checklist"){
+    openChecklist(false);
     return;
   }
   if (st.screen === "private-access"){
