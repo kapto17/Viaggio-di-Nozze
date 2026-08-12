@@ -23,7 +23,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDree1MDDET9M8xw_6sQ6Rs3vMh-WA7GEI",
+  apiKey: "AIzaSyDreelMDDET9M8xw_6sQ6Rs3vMh-WA7GEI",
   authDomain: "viaggio-nozze-lf.firebaseapp.com",
   projectId: "viaggio-nozze-lf",
   storageBucket: "viaggio-nozze-lf.firebasestorage.app",

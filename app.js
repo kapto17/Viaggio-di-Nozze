@@ -591,7 +591,8 @@ function friendlyAuthError(err){
   if (code.includes("invalid-credential") || code.includes("wrong-password") || code.includes("user-not-found")) return "Email o codice L&F non corretti.";
   if (code.includes("too-many-requests")) return "Troppi tentativi. Riprova tra qualche minuto.";
   if (code.includes("network-request-failed")) return "Connessione assente. Il primo accesso richiede Internet.";
-  return "Accesso non riuscito. Controlla i dati e riprova.";
+  if (code.includes("api-key-not-valid") || code.includes("invalid-api-key")) return "Configurazione Firebase non valida. Aggiorna l’app e riprova.";
+  return `Accesso non riuscito${code ? ` (${code})` : ""}.`;
 }
 
 function openPrivateAccess(pushHistory=true){
