@@ -503,6 +503,7 @@ function openCity(legId, pushHistory=true){
         <div class="hotel-content">
           <div class="hotel-name">${leg.hotel.name}</div>
           ${leg.hotel.address ? `<div class="hotel-address">${leg.hotel.address}</div>` : ""}
+          ${leg.hotel.hotelFee ? `<div class="hotel-fee-note"><span>💳 ${leg.hotel.hotelFee.label}</span><strong>${leg.hotel.hotelFee.note}</strong></div>` : ""}
           <div class="hotel-dates">Check-in ${fmtDate(leg.hotel.checkin)} · Check-out ${fmtDate(leg.hotel.checkout)}</div>
           <a class="mapbtn hotel-map" target="_blank" rel="noopener" href="${leg.hotel.mapsUrl || mapsUrl(leg.hotel.name + ", " + leg.city)}">📍 Apri in Maps</a>
         </div>
@@ -714,7 +715,7 @@ function expenseCityOptions(selected=""){
 }
 
 function categoryOptions(selected=""){
-  const cats = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.categories : ["Cibo","Benzina","Parcheggio","Trasporti","Shopping","Escursioni","Altro"];
+  const cats = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.categories : ["Cibo","Benzina","Parcheggio","Hotel & tasse","Trasporti","Shopping","Escursioni","Altro"];
   return cats.map(c => `<option value="${c}" ${selected===c?"selected":""}>${c}</option>`).join("");
 }
 
@@ -767,6 +768,17 @@ function renderBudgetScreen(){
             return `<div class="budget-city-row"><div><strong>${budgetCityLabel(key)}</strong><small>${money(s,currency)} spesi</small></div><div class="budget-city-values"><span>${money(max,currency)}</span><em class="${rem<0?"negative":""}">${money(rem,currency)} rim.</em></div></div>`;
           }).join("");
         })()}
+      </div>
+    </details>
+
+    <details class="city-accordion budget-city-accordion hotel-fees-accordion">
+      <summary><span><span class="accordion-icon">🏨</span>Tasse hotel previste</span><span class="accordion-count">${TRIP.legs.filter(l => l.hotel?.hotelFee).length}</span><span class="accordion-chevron">⌄</span></summary>
+      <div class="accordion-content hotel-fees-list">
+        ${TRIP.legs.filter(l => l.hotel?.hotelFee).map(l => {
+          const f=l.hotel.hotelFee;
+          return `<div class="hotel-fee-row"><div><strong>${l.hotel.name}</strong><small>${l.city} · ${fmtDate(l.hotel.checkin)}</small></div><div class="hotel-fee-value">${f.perNight > 0 ? money(f.perNight,currency)+"/notte" : "Da verificare"}</div><p>${f.note}</p></div>`;
+        }).join("")}
+        <div class="hotel-fees-total"><span>Totale fee hotel attualmente previste</span><strong>${money(482.92,currency)}</strong><small>Stima informativa: non viene sottratta automaticamente dal budget finché non registrate la spesa.</small></div>
       </div>
     </details>
 
@@ -853,7 +865,7 @@ function renderBudgetScreen(){
 }
 
 function expenseCategoryIcon(cat){
-  return ({"Cibo":"🍽️","Benzina":"⛽","Parcheggio":"🅿️","Trasporti":"🚕","Shopping":"🛍️","Escursioni":"🎟️","Altro":"💳"})[cat] || "💳";
+  return ({"Cibo":"🍽️","Benzina":"⛽","Parcheggio":"🅿️","Hotel & tasse":"🏨","Trasporti":"🚕","Shopping":"🛍️","Escursioni":"🎟️","Altro":"💳"})[cat] || "💳";
 }
 
 function formatExpenseDate(iso){
