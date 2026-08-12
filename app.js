@@ -159,13 +159,14 @@ function renderHome(){
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
 
+    ${privateAuthState.authenticated ? `
     <div class="private-area-wrap">
-      <button class="private-area-entry" id="private-area-entry">
-        <span class="private-area-icon">🔒</span>
-        <span class="private-area-copy"><strong>Area privata L&amp;F</strong><small>Accesso riservato ai vostri dispositivi</small></span>
+      <button class="private-area-entry unlocked" id="private-area-entry">
+        <span class="private-area-icon">💰</span>
+        <span class="private-area-copy"><strong>Budget L&amp;F</strong><small>Privato · sincronizzato tra i vostri telefoni</small></span>
         <span class="private-area-arrow">›</span>
       </button>
-    </div>
+    </div>` : ""}
   `;
 
   renderRouteStrip();
@@ -531,7 +532,32 @@ function openCity(legId, pushHistory=true){
 function bindPrivateAreaEntry(){
   const btn = $("#private-area-entry");
   if (!btn) return;
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", () => openBudget());
+}
+
+// Accesso segreto L&F: per chi non è autenticato non compare alcun pulsante.
+// Un doppio tap/click sul titolo "Viaggio di Nozze" apre la schermata privata.
+function bindSecretPrivateAccess(){
+  const title = document.querySelector(".honeymoon-topbar h1");
+  if (!title || title.dataset.lfSecretBound === "1") return;
+  title.dataset.lfSecretBound = "1";
+
+  let lastTap = 0;
+  title.addEventListener("pointerup", (event) => {
+    const now = Date.now();
+    if (now - lastTap > 0 && now - lastTap < 450){
+      event.preventDefault();
+      lastTap = 0;
+      if (privateAuthState.authenticated) openBudget();
+      else openPrivateAccess();
+      return;
+    }
+    lastTap = now;
+  });
+
+  // Utile anche da PC con un vero doppio click del mouse.
+  title.addEventListener("dblclick", (event) => {
+    event.preventDefault();
     if (privateAuthState.authenticated) openBudget();
     else openPrivateAccess();
   });
@@ -781,6 +807,7 @@ function connectFirebaseBudget(){
   window.LFBudget.onAuth((state) => {
     privateAuthState = state;
     updatePrivateAreaEntry();
+    if ($("#screen-home")?.classList.contains("active")) renderHome();
     if (!state.authenticated && $("#screen-budget")?.classList.contains("active")) openPrivateAccess(false);
   });
   window.LFBudget.onBudget((state) => {
@@ -944,6 +971,7 @@ function updateOnlineBadge(){
 function init(){
   renderHome();
   renderCitiesList();
+  bindSecretPrivateAccess();
 
   // La prima voce della history è la Home: da una tappa il tasto Indietro
   // del Galaxy torna davvero alla schermata precedente anziché chiudere la PWA.
