@@ -2191,3 +2191,23 @@ nav.tabbar button svg{
     padding-top:calc(14px + constant(safe-area-inset-top)) !important;
   }
 }
+
+
+/* ==========================================================
+   v2.1.5 — iPhone standalone safe area robusta
+   Su alcune PWA iOS env(safe-area-inset-top) può risultare
+   insufficiente: imponiamo anche una distanza minima reale.
+   ========================================================== */
+@supports (-webkit-touch-callout: none){
+  @media (display-mode: standalone){
+    .honeymoon-topbar.home-only-hidden + main{
+      padding-top:max(calc(env(safe-area-inset-top) + 14px), 58px) !important;
+    }
+
+    .honeymoon-topbar.home-only-hidden + main .screen.active > .back-btn{
+      margin-top:0 !important;
+      min-height:34px;
+      align-items:center;
+    }
+  }
+}
