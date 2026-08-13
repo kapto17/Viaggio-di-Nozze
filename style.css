@@ -2396,3 +2396,33 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   background-size:cover !important;
   background-position:center !important;
 }
+
+
+/* ==========================================================
+   v2.2.7 — FIX iPhone standalone definitivo
+   Non dipende esclusivamente da safe-area-inset-top:
+   WebKit può restituire 0 nelle PWA Home Screen.
+   Android/Desktop non vengono toccati.
+   ========================================================== */
+@media (display-mode: standalone) {
+  html.ios-standalone .honeymoon-topbar.home-only-hidden + main{
+    padding-top:72px !important;
+  }
+
+  html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .back-btn{
+    margin-top:0 !important;
+    position:relative !important;
+    z-index:20 !important;
+    min-height:38px !important;
+  }
+}
+
+/* iPhone con notch/Dynamic Island: se l'inset è disponibile usiamo il maggiore
+   tra la distanza fissa di sicurezza e l'inset reale. */
+@supports (padding-top: env(safe-area-inset-top)) {
+  @media (display-mode: standalone) {
+    html.ios-standalone .honeymoon-topbar.home-only-hidden + main{
+      padding-top:max(72px, calc(env(safe-area-inset-top) + 22px)) !important;
+    }
+  }
+}
