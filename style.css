@@ -2493,3 +2493,62 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
     }
   }
 }
+
+
+/* ==========================================================
+   v2.3.0 — Calcolatore mance compatto
+   ========================================================== */
+.tip-calculator{
+  margin:10px 0 12px;
+  padding:11px 12px;
+  border-radius:15px;
+  background:var(--th-card,#fff);
+  color:var(--th-text,#152238);
+  border:1px solid var(--th-border,rgba(21,34,56,.10));
+  box-shadow:0 10px 24px -22px rgba(20,35,55,.28);
+}
+.tip-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:8px;
+}
+.tip-head strong{display:block;font-size:13px;line-height:1.2}
+.tip-head small{display:block;margin-top:2px;font-size:10px;opacity:.62}
+.tip-total{
+  flex:0 0 auto;padding:4px 7px;border-radius:999px;
+  font-size:10px;font-weight:850;
+  background:var(--th-panel-soft,#f5f0e8);
+  color:var(--th-accent,#8b681f);
+}
+.tip-row{display:flex;align-items:end;gap:8px}
+.tip-amount-wrap{flex:1;min-width:0}
+.tip-amount-wrap span{
+  display:block;margin:0 0 3px 2px;font-size:9px;font-weight:800;opacity:.62;
+}
+.tip-amount-wrap input{
+  width:100%;height:34px;box-sizing:border-box;
+  border-radius:10px;border:1px solid var(--th-border,rgba(21,34,56,.14));
+  background:#fff;color:#152238;padding:0 9px;font-size:14px;font-weight:750;
+}
+.tip-percentages{display:flex;gap:4px}
+.tip-percentages button{
+  height:34px;min-width:42px;padding:0 7px;
+  border-radius:10px;border:1px solid var(--th-border,rgba(21,34,56,.12));
+  background:var(--th-panel-soft,#f5f0e8);
+  color:var(--th-text,#152238);
+  font-size:11px;font-weight:850;
+}
+.tip-percentages button.active{
+  background:var(--th-accent,#152238);
+  border-color:var(--th-accent,#152238);
+  color:#fff;
+}
+.tip-result{
+  display:flex;justify-content:flex-end;gap:14px;
+  margin-top:7px;font-size:10px;opacity:.78;
+}
+.tip-result b{font-size:11px;color:var(--th-text,#152238)}
+@media(max-width:370px){
+  .tip-row{align-items:stretch;flex-direction:column}
+  .tip-percentages button{flex:1}
+  .tip-percentages{width:100%}
+}

@@ -123,19 +123,6 @@ let privateAuthState = { authenticated:false, user:null };
 let budgetState = { settings:null, expenses:[] };
 let editingExpenseId = null;
 
-
-/* v2.2.9 — iOS PWA runtime detection */
-(function(){
-  const ua = navigator.userAgent || "";
-  const isiOS = /iPhone|iPad|iPod/i.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const standalone = window.matchMedia?.("(display-mode: standalone)")?.matches ||
-    window.navigator.standalone === true;
-  if(isiOS && standalone){
-    document.documentElement.classList.add("lf-ios-pwa");
-  }
-})();
-
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
@@ -1279,7 +1266,24 @@ function renderBudgetScreen(){
 
     <div class="budget-summary-grid">
       <div class="budget-summary-card main"><span>Budget</span><strong>${money(total,currency)}</strong></div>
-      <div class="budget-summary-card"><span>Speso</span><strong>${money(spent,currency)}</strong></div>
+      
+    <div class="tip-calculator" id="tip-calculator">
+      <div class="tip-head">
+        <div><strong>💵 Mancia USA</strong><small>Calcolo rapido sul conto</small></div>
+        <span class="tip-total" id="tip-total">Totale $0.00</span>
+      </div>
+      <div class="tip-row">
+        <label class="tip-amount-wrap"><span>Conto $</span><input id="tip-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></label>
+        <div class="tip-percentages" role="group" aria-label="Percentuale mancia">
+          <button type="button" data-tip="18">18%</button>
+          <button type="button" data-tip="20" class="active">20%</button>
+          <button type="button" data-tip="22">22%</button>
+        </div>
+      </div>
+      <div class="tip-result"><span>Mancia <b id="tip-value">$0.00</b></span><span>Totale <b id="tip-grand-total">$0.00</b></span></div>
+    </div>
+
+    <div class="budget-summary-card"><span>Speso</span><strong>${money(spent,currency)}</strong></div>
       <div class="budget-summary-card ${remaining < 0 ? "over" : "remaining"}"><span>Rimanente</span><strong>${money(remaining,currency)}</strong></div>
     </div>
     <div class="budget-progress"><span style="width:${pct}%"></span></div>
@@ -1833,3 +1837,32 @@ function initThemePicker(){
   });
 }
 initThemePicker();
+
+
+/* v2.3.0 — calcolatore mance USA */
+function updateTipCalculator(){
+  const amountEl=document.getElementById("tip-amount");
+  if(!amountEl)return;
+  const amount=Math.max(0,Number(amountEl.value)||0);
+  const active=document.querySelector(".tip-percentages button.active");
+  const pct=Number(active?.dataset.tip)||20;
+  const tip=amount*pct/100;
+  const total=amount+tip;
+  const fmt=n=>"$"+n.toFixed(2);
+  const tipValue=document.getElementById("tip-value");
+  const grand=document.getElementById("tip-grand-total");
+  const badge=document.getElementById("tip-total");
+  if(tipValue)tipValue.textContent=fmt(tip);
+  if(grand)grand.textContent=fmt(total);
+  if(badge)badge.textContent="Totale "+fmt(total);
+}
+document.addEventListener("input",e=>{
+  if(e.target?.id==="tip-amount") updateTipCalculator();
+});
+document.addEventListener("click",e=>{
+  const btn=e.target.closest?.(".tip-percentages button");
+  if(!btn)return;
+  document.querySelectorAll(".tip-percentages button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  updateTipCalculator();
+});
