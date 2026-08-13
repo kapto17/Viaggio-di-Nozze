@@ -332,3 +332,233 @@ html[data-theme="rose"] .timezone-box .world-clock-card:nth-child(4){
   .theme-menu-btn{left:10px;width:39px;height:39px;}
   .theme-panel{left:9px;right:9px;padding:15px;}
 }
+
+
+/* ==========================================================
+   v2.2.0 — TEMA ORIGINALE recuperato dalla v2.0.1
+   Le nuove funzioni restano attive, ma la resa visiva torna
+   al panna / blu inchiostro / ottone della versione storica.
+   ========================================================== */
+html[data-theme="classic"]{
+  --th-bg:#111A2A;
+  --th-app:#F6F2EA;
+  --th-panel:#FFFFFF;
+  --th-panel-soft:#F6F2EA;
+  --th-card:#FFFFFF;
+  --th-text:#152238;
+  --th-muted:#5D6675;
+  --th-accent:#152238;
+  --th-accent-2:#B68A46;
+  --th-border:rgba(21,34,56,.11);
+  --th-nav:#152238;
+  --th-nav-text:#F6F2EA;
+  --th-shadow:0 18px 42px -28px rgba(16,27,46,.55);
+}
+
+html[data-theme="classic"] body{background:#111A2A !important;}
+html[data-theme="classic"] #app{background:#F6F2EA !important;color:#152238 !important;}
+html[data-theme="classic"] main{color:#152238 !important;}
+
+/* Home originale v2.0.1: fotografia + titolo bianco */
+html[data-theme="classic"] .honeymoon-topbar{
+  min-height:188px !important;
+  padding:38px 22px 42px !important;
+  background-image:
+    linear-gradient(180deg,rgba(9,18,31,.18) 0%,rgba(9,18,31,.76) 100%),
+    url('./assets/santo-domingo.jpg') !important;
+  background-size:cover !important;
+  background-position:center 48% !important;
+  border-radius:0 0 30px 30px !important;
+  box-shadow:0 18px 40px -30px rgba(0,0,0,.65) !important;
+}
+html[data-theme="classic"] .honeymoon-topbar::after{display:none !important;}
+html[data-theme="classic"] .honeymoon-topbar h1{
+  color:#FFFFFF !important;
+  font-size:35px !important;
+  letter-spacing:-.025em !important;
+  text-shadow:0 4px 18px rgba(0,0,0,.34) !important;
+}
+html[data-theme="classic"] .honeymoon-heart-line path{stroke:#E3C98F !important;}
+html[data-theme="classic"] .theme-menu-btn{
+  background:rgba(255,255,255,.90) !important;
+  color:#152238 !important;
+}
+
+/* Fusi: card bianca sospesa come nella 2.0.1 */
+html[data-theme="classic"] .timezone-box{
+  margin-top:-38px !important;
+  position:relative !important;
+  z-index:2 !important;
+  border:none !important;
+  border-radius:24px !important;
+  background:rgba(255,255,255,.94) !important;
+  box-shadow:0 20px 44px -30px rgba(12,24,43,.5) !important;
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+}
+html[data-theme="classic"] .timezone-box-title{
+  color:#152238 !important;
+  text-transform:none !important;
+  letter-spacing:-.01em !important;
+  font-size:17px !important;
+  text-align:left !important;
+}
+html[data-theme="classic"] .timezone-box .world-clock-card,
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(2),
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(3),
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(4){
+  border:0 !important;
+  border-radius:16px !important;
+  background:#F6F2EA !important;
+  box-shadow:none !important;
+}
+html[data-theme="classic"] .timezone-box .world-clock-place{color:#152238 !important;}
+html[data-theme="classic"] .timezone-box .world-clock-time{color:#152238 !important;}
+html[data-theme="classic"] .timezone-box .world-clock-date{color:#5D6675 !important;}
+
+/* Timeline originale */
+html[data-theme="classic"] .home-route-strip{background:transparent !important;border:0 !important;}
+html[data-theme="classic"] .route-stop,
+html[data-theme="classic"] .route-stop .rs-label{color:#152238 !important;}
+html[data-theme="classic"] .route-stop .rs-date{color:#5D6675 !important;}
+html[data-theme="classic"] .route-stop .route-pin{color:#B68A46 !important;}
+html[data-theme="classic"] .route-stop.active .route-pin{color:#152238 !important;}
+html[data-theme="classic"] .route-stop .route-pin circle{fill:#F6F2EA !important;}
+html[data-theme="classic"] .section-title{color:#5D6675 !important;}
+
+/* Tendine originali: bianche, testo blu inchiostro */
+html[data-theme="classic"] .city-accordion,
+html[data-theme="classic"] .budget-city-accordion{
+  margin:14px 0 !important;
+  border:1px solid rgba(21,34,56,.11) !important;
+  border-radius:18px !important;
+  background:#FFFFFF !important;
+  color:#152238 !important;
+  box-shadow:0 18px 42px -28px rgba(16,27,46,.55) !important;
+  overflow:hidden !important;
+}
+html[data-theme="classic"] .city-accordion > summary,
+html[data-theme="classic"] .budget-city-accordion > summary{
+  background:#FFFFFF !important;
+  color:#152238 !important;
+  border-bottom-color:rgba(21,34,56,.11) !important;
+}
+html[data-theme="classic"] .city-accordion .accordion-content,
+html[data-theme="classic"] .budget-city-accordion .accordion-content{
+  background:linear-gradient(180deg,rgba(241,234,219,.30),rgba(255,255,255,0)) !important;
+  color:#152238 !important;
+  border-top-color:rgba(21,34,56,.11) !important;
+}
+html[data-theme="classic"] .accordion-icon,
+html[data-theme="classic"] .accordion-count{
+  background:#ECE5D8 !important;
+  color:#5D6675 !important;
+  border-color:transparent !important;
+}
+html[data-theme="classic"] .accordion-chevron{color:#5D6675 !important;}
+
+/* Le due icone che nella versione storica avevano accenti distinti */
+html[data-theme="classic"] .accordion-must > summary{
+  background:linear-gradient(90deg,rgba(185,139,46,.10),#fff 46%) !important;
+  color:#152238 !important;
+}
+html[data-theme="classic"] .accordion-must .accordion-icon{
+  background:rgba(185,139,46,.14) !important;
+  color:#8B681F !important;
+}
+html[data-theme="classic"] .accordion-discover > summary{
+  background:linear-gradient(90deg,rgba(60,110,113,.08),#fff 46%) !important;
+  color:#152238 !important;
+}
+html[data-theme="classic"] .accordion-discover .accordion-icon{
+  background:rgba(60,110,113,.12) !important;
+  color:#315C5E !important;
+}
+html[data-theme="classic"] .accordion-discover .discover-compass{
+  color:#315C5E !important;
+  stroke:#315C5E !important;
+}
+
+/* Card interne e nuove funzioni: estensione coerente del vecchio tema */
+html[data-theme="classic"] .ticket,
+html[data-theme="classic"] .hotel-card,
+html[data-theme="classic"] .activity-card,
+html[data-theme="classic"] .food-section-link,
+html[data-theme="classic"] .food-card,
+html[data-theme="classic"] .ticket-import-box,
+html[data-theme="classic"] .local-ticket-card,
+html[data-theme="classic"] .program-day,
+html[data-theme="classic"] .restaurant-card,
+html[data-theme="classic"] .info-card,
+html[data-theme="classic"] .place-card,
+html[data-theme="classic"] .must-card,
+html[data-theme="classic"] .discover-card,
+html[data-theme="classic"] .food-detail-body,
+html[data-theme="classic"] .place-detail-body,
+html[data-theme="classic"] .restaurant-detail-body{
+  background:#FFFFFF !important;
+  color:#152238 !important;
+  border:0 !important;
+  box-shadow:0 16px 36px -29px rgba(13,27,48,.65) !important;
+}
+html[data-theme="classic"] .city-accordion p,
+html[data-theme="classic"] .food-detail-body p,
+html[data-theme="classic"] .place-detail-body p,
+html[data-theme="classic"] .restaurant-detail-body p,
+html[data-theme="classic"] .empty-note,
+html[data-theme="classic"] .ticket-import-note,
+html[data-theme="classic"] .local-ticket-empty{color:#5D6675 !important;}
+
+/* Budget / convertitore / SOS: contrasto esplicito, senza tono-su-tono */
+html[data-theme="classic"] .currency-converter,
+html[data-theme="classic"] .sos-info-card,
+html[data-theme="classic"] .private-login-card,
+html[data-theme="classic"] .budget-summary-card,
+html[data-theme="classic"] .expense-form,
+html[data-theme="classic"] .expense-item,
+html[data-theme="classic"] .checklist-section,
+html[data-theme="classic"] .checklist-progress-wrap,
+html[data-theme="classic"] .today-card,
+html[data-theme="classic"] .today-preview-panel{
+  background:#FFFFFF !important;
+  color:#152238 !important;
+  border:1px solid rgba(21,34,56,.11) !important;
+  box-shadow:0 16px 36px -29px rgba(13,27,48,.65) !important;
+}
+html[data-theme="classic"] .currency-converter *,
+html[data-theme="classic"] .sos-info-card *{color:inherit;}
+html[data-theme="classic"] .currency-converter input,
+html[data-theme="classic"] .currency-converter select,
+html[data-theme="classic"] .private-login-card input,
+html[data-theme="classic"] .expense-form input,
+html[data-theme="classic"] .expense-form select{
+  background:#F6F2EA !important;
+  color:#152238 !important;
+  border:1px solid rgba(21,34,56,.14) !important;
+}
+
+/* Pulsanti vecchio stile */
+html[data-theme="classic"] .mapbtn,
+html[data-theme="classic"] .secondary-action,
+html[data-theme="classic"] .restaurant-maps-btn,
+html[data-theme="classic"] .local-ticket-actions button,
+html[data-theme="classic"] .expense-actions button{
+  background:#EEF0F3 !important;
+  color:#26354D !important;
+  border:0 !important;
+}
+
+/* Barra inferiore originale scura; conserva i fix iPhone successivi */
+html[data-theme="classic"] nav.tabbar{
+  background:rgba(21,34,56,.96) !important;
+  color:#F6F2EA !important;
+  border:0 !important;
+  box-shadow:0 14px 36px -20px rgba(0,0,0,.7) !important;
+}
+html[data-theme="classic"] nav.tabbar button{color:rgba(246,242,234,.72) !important;}
+html[data-theme="classic"] nav.tabbar button.active{
+  color:#F6F2EA !important;
+  background:rgba(255,255,255,.07) !important;
+}
+html[data-theme="classic"] nav.tabbar button.active svg{stroke:#B68A46 !important;}
+html[data-theme="classic"] nav.tabbar button.active .tab-dollar{color:#B68A46 !important;}
