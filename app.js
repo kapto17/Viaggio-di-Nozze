@@ -441,30 +441,21 @@ function todayCardHtml(forcedDate=null){
   const day = first.day;
   const openLegId = first.legId;
   return `
-    <div class="today-card today-card-full" data-today-leg="${openLegId}" data-today-date="${iso}">
+    <button type="button" class="today-card today-card-compact" data-open-today-screen="${openLegId}" data-open-today-date="${iso}">
       <div class="today-card-head">
-        <div><small>${forcedDate ? "OGGI · MODALITÀ TEST" : "OGGI"} · ${fmtDateFull(iso)}</small><strong>${day.title}</strong><span>${day.theme || ""}</span></div>
+        <div class="today-card-copy"><small>${forcedDate ? "OGGI · MODALITÀ TEST" : "OGGI"} · ${fmtDateFull(iso)}</small><strong>${day.title}</strong><span>${day.theme || ""}</span></div>
         <div class="today-live-stack">
           <div class="today-local-time"><b>${localTime}</b><em>${zone === "America/Chicago" ? "Chicago" : zone === "America/Santo_Domingo" ? "Bayahibe" : (iso==="2026-10-28" ? "Grand Canyon / Page" : "Ovest USA")}</em></div>
           <div class="today-weather city-live-loading" id="today-live-weather"><span>🌡️</span><strong>--°C</strong></div>
         </div>
+        <span class="today-card-chevron">›</span>
       </div>
-      <div class="today-program">${programDayHtml(day)}</div>
-      <button type="button" class="today-open-program" data-open-today-leg="${openLegId}" data-open-today-date="${iso}">Apri nel Programma consigliato ›</button>
-    </div>`;
+    </button>`;
 }
 
 function bindTodayCard(root=document){
-  $$('[data-open-today-leg]', root).forEach(btn => btn.addEventListener("click", () => {
-    const legId=btn.dataset.openTodayLeg, date=btn.dataset.openTodayDate;
-    sessionStorage.setItem("lf-open-program-date",date||"");
-    openCity(legId);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      const program=document.querySelector(".accordion-program");
-      if(program) program.open=true;
-      const target=date ? document.querySelector(`.program-day[data-program-date="${CSS.escape(date)}"]`) : null;
-      if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
-    }));
+  $$("[data-open-today-screen]",root).forEach(btn=>btn.addEventListener("click",()=>{
+    openTodayScreen(btn.dataset.openTodayScreen,btn.dataset.openTodayDate);
   }));
 }
 
@@ -510,6 +501,12 @@ function renderHome(){
   renderRouteStrip();
   bindCityCardClicks(el);
   $("#open-checklist")?.addEventListener("click", () => openChecklist());
+  if(new Date() < new Date("2026-10-20T00:00:00")){
+    const version=document.createElement("div");
+    version.className="home-app-version";
+    version.textContent="Versione app 2.3.5";
+    el.appendChild(version);
+  }
   bindTodayCard(el);
   refreshTodayWeather(checklistVisible() ? "2026-10-28" : null);
   startTodayHomeWatcher();
@@ -1899,31 +1896,6 @@ document.addEventListener("click",e=>{
 });
 
 
-/* v2.3.3 — indicatore versione temporaneo in fondo alla Home */
-function renderHomeVersionBadge(){
-  const home = document.getElementById("screen-home");
-  if(!home) return;
-
-  const old = document.getElementById("home-app-version");
-  if(old) old.remove();
-
-  const hideFrom = new Date("2026-10-20T00:00:00");
-  if(new Date() >= hideFrom) return;
-
-  const badge = document.createElement("div");
-  badge.id = "home-app-version";
-  badge.className = "home-app-version";
-  badge.textContent = "Versione app 2.3.3";
-  home.appendChild(badge);
-}
-
-if(document.readyState === "loading"){
-  document.addEventListener("DOMContentLoaded", renderHomeVersionBadge, {once:true});
-}else{
-  renderHomeVersionBadge();
-}
-
-
 /* v2.3.3 — aggiornamento PWA automatico, senza banner o messaggi */
 if("serviceWorker" in navigator){
   window.addEventListener("load", async ()=>{
@@ -1979,5 +1951,65 @@ async function refreshTodayWeather(forcedDate=null){
       badge.innerHTML=`<span>${weatherIcon(Number(payload.weather_code),Number(payload.is_day)===1)}</span><strong>${Math.round(Number(payload.temperature_2m))}°C</strong>`;
       badge.classList.remove("city-live-loading");
     }
+  }catch(e){}
+}
+
+
+function openTodayScreen(legId, iso){
+  const leg=ITINERARY.find(x=>x.id===legId);
+  const days=(typeof PROGRAM_GUIDE!=="undefined" && PROGRAM_GUIDE[legId])||[];
+  const day=days.find(d=>d.date===iso);
+  if(!day)return;
+
+  let screen=document.getElementById("screen-today");
+  if(!screen){
+    screen=document.createElement("section");
+    screen.id="screen-today";
+    screen.className="screen";
+    document.querySelector("main")?.appendChild(screen);
+  }
+
+  screen.innerHTML=`
+    <button type="button" class="back-btn today-back-btn">‹ Home</button>
+    <div class="today-screen-hero">
+      <div>
+        <small>OGGI · ${fmtDateFull(iso)}</small>
+        <h2>${day.title}</h2>
+        <p>${day.theme||""}</p>
+      </div>
+      <div class="today-screen-live">
+        <div class="today-local-time"><b id="today-screen-clock">--:--</b><em>${iso==="2026-10-28"?"Grand Canyon / Page":leg?.city||""}</em></div>
+        <div class="today-weather city-live-loading" id="today-screen-weather"><span>🌡️</span><strong>--°C</strong></div>
+      </div>
+    </div>
+    <div class="today-screen-program">${programDayHtml(day)}</div>`;
+
+  $$(".screen").forEach(s=>s.classList.remove("active"));
+  screen.classList.add("active");
+  document.querySelector(".honeymoon-topbar")?.classList.add("home-only-hidden");
+  window.scrollTo({top:0,behavior:"instant"});
+
+  screen.querySelector(".today-back-btn")?.addEventListener("click",()=>showScreen("home"));
+  refreshDedicatedTodayLive(iso);
+}
+
+async function refreshDedicatedTodayLive(iso){
+  const clock=document.getElementById("today-screen-clock");
+  const weather=document.getElementById("today-screen-weather");
+  const zone=iso==="2026-10-28"?"America/Phoenix":"America/Los_Angeles";
+  if(clock){
+    const tick=()=>clock.textContent=new Intl.DateTimeFormat("it-IT",{timeZone:zone,hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date());
+    tick(); setTimeout(tick,30000);
+  }
+  if(!weather)return;
+  const info=iso==="2026-10-28"?{lat:36.0544,lon:-112.1401,tz:"America/Phoenix"}:null;
+  if(!info)return;
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${info.lat}&longitude=${info.lon}&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timezone=${encodeURIComponent(info.tz)}`;
+    const r=await fetch(url,{headers:{"Accept":"application/json"}});
+    if(!r.ok)throw new Error();
+    const c=(await r.json()).current;
+    weather.innerHTML=`<span>${weatherIcon(Number(c.weather_code),Number(c.is_day)===1)}</span><strong>${Math.round(Number(c.temperature_2m))}°C</strong>`;
+    weather.classList.remove("city-live-loading");
   }catch(e){}
 }

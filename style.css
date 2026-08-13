@@ -2632,3 +2632,42 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   .today-card-full .today-card-head{gap:8px}
   .today-live-stack{min-width:88px}
 }
+
+
+/* ==========================================================
+   v2.3.5 — Oggi compatto in Home + schermata dedicata
+   ========================================================== */
+.today-card-compact{
+  width:100%;display:block;text-align:left;cursor:pointer;
+  border:0;font:inherit;color:inherit;
+}
+.today-card-compact .today-card-head{margin:0}
+.today-card-copy{min-width:0;flex:1}
+.today-card-chevron{
+  flex:0 0 auto;font-size:24px;line-height:1;opacity:.55;margin-left:2px;
+}
+.today-screen-hero{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:12px;
+  margin:6px 0 14px;padding:15px;border-radius:20px;
+  background:var(--th-card,#fff);
+  border:1px solid var(--th-border,rgba(21,34,56,.10));
+}
+.today-screen-hero small{font-size:10px;font-weight:850;opacity:.62}
+.today-screen-hero h2{font-size:20px;line-height:1.15;margin:4px 0}
+.today-screen-hero p{font-size:11px;line-height:1.35;margin:0;opacity:.7}
+.today-screen-live{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:0 0 auto}
+.today-screen-program .program-day{margin:0}
+.today-screen-program .program-day-head{display:none}
+.today-back-btn{margin-top:0!important}
+.home-app-version{
+  position:relative!important;
+  z-index:2!important;
+  margin:18px 0 calc(76px + env(safe-area-inset-bottom))!important;
+  padding:5px 8px!important;
+  display:block!important;
+  visibility:visible!important;
+}
+@media(max-width:430px){
+  .today-screen-hero{padding:12px}
+  .today-screen-hero h2{font-size:18px}
+}
