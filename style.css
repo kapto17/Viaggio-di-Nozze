@@ -1282,3 +1282,95 @@ nav.tabbar button.active{
 .sos-grid{display:flex;flex-direction:column;gap:9px}.sos-info-card{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px}.sos-card-icon{font-size:22px;text-align:center}.sos-info-card>div:nth-child(2){display:flex;flex-direction:column;gap:2px}.sos-info-card small{font-size:8.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em}.sos-info-card strong{font-size:11.5px}.sos-info-card p{margin:1px 0 0;font-size:10px;line-height:1.35;color:var(--ink-soft)}.sos-info-card>a{text-decoration:none;border-radius:10px;background:#FFF0F4;color:#C94764;padding:8px 9px;font-size:9.5px;font-weight:900}.sos-note{margin:14px 0 4px;padding:11px 13px;border-radius:14px;background:#F3F6F9;border:1px solid #E3E8EE;font-size:9.5px;line-height:1.45;color:#5E6B7A}
 
 @media (max-width:380px){.today-card-head{grid-template-columns:1fr}.today-local-time{align-items:flex-start}.today-mini-item{grid-template-columns:64px 22px 1fr}.sos-info-card{grid-template-columns:32px 1fr}.sos-info-card>a{grid-column:2;justify-self:start}}
+
+/* ---------- v2.0.2 · Restyling mirato Home ---------- */
+/* Header senza fotografia: titolo più elegante con cuore */
+.honeymoon-topbar{
+  min-height:auto;
+  padding:28px 18px 24px;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+  overflow:visible;
+}
+.honeymoon-topbar::after{display:none;}
+.honeymoon-topbar h1{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:0;
+  color:#6F1D2A;
+  font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;
+  font-size:34px;
+  font-weight:600;
+  line-height:1.15;
+  letter-spacing:-.035em;
+  text-shadow:none;
+}
+.honeymoon-topbar h1 span{display:block;}
+.honeymoon-topbar h1 img{
+  width:31px;
+  height:31px;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+
+/* Fusi orari svincolati dal vecchio contenitore bianco */
+.timezone-box{
+  margin:0 0 16px;
+  padding:0;
+  position:relative;
+  z-index:auto;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+}
+.timezone-box-title{
+  margin:2px 2px 12px;
+  text-align:left;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:13px;
+  font-weight:850;
+  color:#6F1D2A;
+}
+.timezone-box .world-clock-grid{
+  gap:10px;
+}
+.timezone-box .world-clock-card{
+  border:1px solid rgba(181,87,77,.10);
+  border-radius:18px;
+  padding:13px 14px;
+  background:linear-gradient(145deg, rgba(247,223,211,.72), rgba(249,235,226,.58));
+  box-shadow:none;
+}
+.timezone-box .world-clock-card:nth-child(2){
+  background:linear-gradient(145deg, rgba(246,226,216,.70), rgba(247,233,224,.56));
+}
+.timezone-box .world-clock-card:nth-child(3){
+  background:linear-gradient(145deg, rgba(238,224,226,.70), rgba(247,235,229,.56));
+}
+.timezone-box .world-clock-card:nth-child(4){
+  background:linear-gradient(145deg, rgba(250,220,216,.72), rgba(250,235,226,.58));
+}
+.timezone-box .world-clock-place{
+  color:#6F1D2A;
+  font-size:11px;
+}
+.timezone-box .world-clock-time{
+  color:var(--ink);
+  font-size:22px;
+}
+.timezone-box .world-clock-date{
+  color:var(--ink-soft);
+}
+
+@media (max-width:360px){
+  .honeymoon-topbar h1{font-size:30px;gap:6px;}
+  .honeymoon-topbar h1 img{width:27px;height:27px;}
+  .timezone-box .world-clock-card{padding:12px 11px;}
+  .timezone-box .world-clock-time{font-size:20px;}
+}
