@@ -1737,3 +1737,222 @@ nav.tabbar button.active svg{stroke:var(--theme-gold-2);}
 .food-detail-hero,.place-detail-hero,.restaurant-detail-hero{
   scroll-margin-top:0;
 }
+
+
+/* ==========================================================
+   v2.1.2 — Travel Liquid Glass
+   Gerarchia: fondo oliva scuro -> pannello glass -> card glass chiara
+   ========================================================== */
+:root{
+  --glass-white:#F7FAF3;
+  --glass-text:#F8FAF4;
+  --glass-text-soft:#DDE5D7;
+  --glass-dark:rgba(29,43,31,.58);
+  --glass-dark-strong:rgba(24,37,27,.72);
+  --glass-light:rgba(247,250,243,.88);
+  --glass-light-soft:rgba(238,244,233,.76);
+  --glass-border:rgba(255,255,255,.19);
+  --glass-border-light:rgba(255,255,255,.55);
+  --glass-ink:#1D2A1E;
+  --glass-muted:#526153;
+}
+
+/* Le tendine principali diventano vetro scuro, non più blocchi verde su verde */
+.city-accordion,
+.budget-city-accordion{
+  background:
+    linear-gradient(145deg,rgba(56,77,57,.66),rgba(31,48,35,.68)) !important;
+  color:var(--glass-text) !important;
+  border:1px solid var(--glass-border) !important;
+  border-radius:18px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.10),
+    0 14px 34px -26px rgba(0,0,0,.9) !important;
+  backdrop-filter:blur(18px) saturate(118%);
+  -webkit-backdrop-filter:blur(18px) saturate(118%);
+  overflow:hidden;
+}
+
+.city-accordion > summary,
+.budget-city-accordion > summary,
+.accordion-must > summary,
+.accordion-discover > summary,
+.accordion-clothing > summary,
+.accordion-program > summary{
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.075),rgba(255,255,255,.025)) !important;
+  color:#F9FBF6 !important;
+  border-bottom-color:rgba(255,255,255,.10) !important;
+  text-shadow:0 1px 2px rgba(0,0,0,.18);
+}
+
+.city-accordion[open] > summary{
+  border-bottom:1px solid rgba(255,255,255,.10) !important;
+}
+
+.city-accordion .accordion-content{
+  color:var(--glass-text-soft) !important;
+  background:transparent !important;
+}
+
+.city-accordion .accordion-icon{
+  background:rgba(255,255,255,.12) !important;
+  color:#F7FAF3 !important;
+  border:1px solid rgba(255,255,255,.10);
+}
+
+/* Card contenuto: vetro bianco/avorio, nettamente separate dalla tendina */
+.city-accordion .activity-card,
+.city-accordion .food-card,
+.city-accordion .food-section-link,
+.city-accordion .hotel-card,
+.city-accordion .ticket,
+.city-accordion .ticket-import-box,
+.city-accordion .local-ticket-card,
+.city-accordion .program-day,
+.city-accordion .restaurant-card,
+.city-accordion .info-card,
+.city-accordion .place-card,
+.city-accordion .must-card,
+.city-accordion .discover-card{
+  background:
+    linear-gradient(145deg,rgba(250,252,247,.94),rgba(230,238,226,.84)) !important;
+  color:var(--glass-ink) !important;
+  border:1px solid rgba(255,255,255,.62) !important;
+  border-radius:16px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.78),
+    0 12px 28px -23px rgba(0,0,0,.82) !important;
+  backdrop-filter:blur(14px) saturate(112%);
+  -webkit-backdrop-filter:blur(14px) saturate(112%);
+}
+
+/* Testi delle card: contrasto netto */
+.city-accordion .activity-card *,
+.city-accordion .food-card *,
+.city-accordion .food-section-link *,
+.city-accordion .hotel-card *,
+.city-accordion .ticket *,
+.city-accordion .program-day *,
+.city-accordion .restaurant-card *,
+.city-accordion .info-card *,
+.city-accordion .place-card *{
+  color:inherit;
+}
+
+.city-accordion h3,
+.city-accordion h4,
+.city-accordion .activity-title,
+.city-accordion .food-name,
+.city-accordion .restaurant-name{
+  color:#172319 !important;
+}
+
+.city-accordion p,
+.city-accordion .muted,
+.city-accordion .activity-desc,
+.city-accordion .food-desc,
+.city-accordion .restaurant-meta{
+  color:#4A5A4B !important;
+}
+
+/* Le card fotografiche mantengono testo bianco sopra la foto */
+.city-accordion .place-card.has-image *,
+.city-accordion .activity-card.has-image *,
+.city-accordion .restaurant-card.has-image *{
+  color:#FFF !important;
+}
+
+/* Bottoni interni: bianco vetroso con accento verde scuro */
+.city-accordion .mapbtn,
+.city-accordion .secondary-action,
+.city-accordion .restaurant-maps-btn,
+.city-accordion .local-ticket-actions button{
+  background:rgba(255,255,255,.68) !important;
+  color:#29412D !important;
+  border:1px solid rgba(47,73,50,.22) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+/* Programma consigliato: giornate ben separate */
+.city-accordion .program-day{
+  margin-bottom:12px;
+}
+.city-accordion .program-time{
+  color:#38513A !important;
+  font-weight:800;
+}
+
+/* Piatti tipici: maggiore stacco tra le singole voci */
+.city-accordion .food-section-link{
+  margin-bottom:10px;
+}
+.city-accordion .food-section-link:last-child{
+  margin-bottom:0;
+}
+
+/* Pannelli generali fuori dalle tendine: glass verde medio */
+.checklist-section,
+.currency-converter,
+.today-card,
+.today-preview-panel,
+.sos-info-card,
+.private-login-card,
+.budget-summary-card,
+.expense-form,
+.expense-item{
+  background:
+    linear-gradient(145deg,rgba(66,87,64,.72),rgba(42,61,45,.70)) !important;
+  color:#F7FAF3 !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 32px -26px rgba(0,0,0,.9) !important;
+  backdrop-filter:blur(16px) saturate(115%);
+  -webkit-backdrop-filter:blur(16px) saturate(115%);
+}
+
+/* Campi input su pannello scuro: chiari e leggibili */
+.checklist-section input,
+.currency-converter input,
+.private-login-card input,
+.expense-form input,
+.expense-form select{
+  background:rgba(250,252,247,.91) !important;
+  color:#172319 !important;
+  border-color:rgba(255,255,255,.42) !important;
+}
+
+/* Dettagli piatto/luogo/ristorante: pannello chiaro "frosted" */
+.food-detail-body,
+.place-detail-body,
+.restaurant-detail-body{
+  background:
+    linear-gradient(145deg,rgba(249,251,246,.94),rgba(228,237,224,.88)) !important;
+  color:#1B291D !important;
+  border:1px solid rgba(255,255,255,.62) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 16px 32px -25px rgba(0,0,0,.85) !important;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.food-detail-body p,
+.place-detail-body p,
+.restaurant-detail-body p{
+  color:#425244 !important;
+}
+
+/* Mobile: blur leggermente ridotto per mantenere fluidità */
+@media(max-width:520px){
+  .city-accordion{
+    backdrop-filter:blur(13px) saturate(112%);
+    -webkit-backdrop-filter:blur(13px) saturate(112%);
+  }
+  .city-accordion .activity-card,
+  .city-accordion .food-card,
+  .city-accordion .food-section-link,
+  .city-accordion .hotel-card,
+  .city-accordion .program-day{
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+  }
+}
