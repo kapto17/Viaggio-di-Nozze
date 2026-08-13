@@ -1956,3 +1956,218 @@ nav.tabbar button.active svg{stroke:var(--theme-gold-2);}
     -webkit-backdrop-filter:blur(9px);
   }
 }
+
+
+/* ==========================================================
+   v2.1.3 — Clean Green & White
+   Più semplice, leggibile e ordinato: niente liquid glass.
+   ========================================================== */
+:root{
+  --clean-green-900:#223128;
+  --clean-green-800:#2F4538;
+  --clean-green-700:#45624D;
+  --clean-green-600:#5E7A64;
+  --clean-green-300:#B8CDBD;
+  --clean-green-100:#EEF4EF;
+  --clean-white:#FFFFFF;
+  --clean-ink:#1E2721;
+  --clean-muted:#5B665E;
+  --clean-gold:#D9B46C;
+}
+
+/* Pannelli principali: verde medio/scuro pieno e pulito */
+.city-accordion,
+.budget-city-accordion,
+.checklist-section,
+.currency-converter,
+.today-card,
+.today-preview-panel,
+.sos-info-card,
+.private-login-card,
+.budget-summary-card,
+.expense-form,
+.expense-item{
+  background:linear-gradient(145deg,#3F5A48,#314639) !important;
+  color:#FFFFFF !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-radius:18px !important;
+  box-shadow:0 10px 24px -20px rgba(0,0,0,.58) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Titoli e riepiloghi leggibili */
+.city-accordion > summary,
+.budget-city-accordion > summary,
+.accordion-must > summary,
+.accordion-discover > summary,
+.accordion-clothing > summary,
+.accordion-program > summary{
+  background:#385040 !important;
+  color:#FFFFFF !important;
+  border-bottom:1px solid rgba(255,255,255,.10) !important;
+  text-shadow:none !important;
+}
+
+.city-accordion .accordion-content,
+.budget-city-accordion .accordion-content{
+  background:transparent !important;
+  color:#EEF4EF !important;
+}
+
+.accordion-icon{
+  background:rgba(255,255,255,.13) !important;
+  color:#FFFFFF !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+}
+
+/* Card interne: bianco pieno e molto leggibile */
+.city-accordion .activity-card,
+.city-accordion .food-card,
+.city-accordion .food-section-link,
+.city-accordion .hotel-card,
+.city-accordion .ticket,
+.city-accordion .ticket-import-box,
+.city-accordion .local-ticket-card,
+.city-accordion .program-day,
+.city-accordion .restaurant-card,
+.city-accordion .info-card,
+.city-accordion .place-card,
+.city-accordion .must-card,
+.city-accordion .discover-card,
+.budget-city-accordion .budget-summary-card,
+.budget-city-accordion .expense-item{
+  background:#FFFFFF !important;
+  color:#1E2721 !important;
+  border:1px solid #D8E2DA !important;
+  border-radius:15px !important;
+  box-shadow:0 8px 18px -16px rgba(0,0,0,.46) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+.city-accordion .activity-card *,
+.city-accordion .food-card *,
+.city-accordion .food-section-link *,
+.city-accordion .hotel-card *,
+.city-accordion .ticket *,
+.city-accordion .ticket-import-box *,
+.city-accordion .local-ticket-card *,
+.city-accordion .program-day *,
+.city-accordion .restaurant-card *,
+.city-accordion .info-card *,
+.city-accordion .place-card *,
+.city-accordion .must-card *,
+.city-accordion .discover-card *{
+  color:inherit;
+}
+
+.city-accordion h3,
+.city-accordion h4,
+.city-accordion .activity-title,
+.city-accordion .food-name,
+.city-accordion .restaurant-name{
+  color:#1E2721 !important;
+}
+
+.city-accordion p,
+.city-accordion .muted,
+.city-accordion .activity-desc,
+.city-accordion .food-desc,
+.city-accordion .restaurant-meta{
+  color:#5B665E !important;
+}
+
+/* Card fotografiche: testo sempre bianco */
+.city-accordion .place-card.has-image *,
+.city-accordion .activity-card.has-image *,
+.city-accordion .restaurant-card.has-image *{
+  color:#FFFFFF !important;
+}
+
+/* Bottoni coerenti bianco/verde */
+.city-accordion .mapbtn,
+.city-accordion .secondary-action,
+.city-accordion .restaurant-maps-btn,
+.city-accordion .local-ticket-actions button,
+.budget-city-accordion button{
+  background:#EEF4EF !important;
+  color:#28402F !important;
+  border:1px solid #C5D4C8 !important;
+  box-shadow:none !important;
+}
+
+/* Convertitore budget: contrasto completo */
+.currency-converter{
+  background:linear-gradient(145deg,#3F5A48,#314639) !important;
+  color:#FFFFFF !important;
+}
+.currency-converter *,
+.currency-converter label,
+.currency-converter .converter-title,
+.currency-converter .converter-result{
+  color:#FFFFFF !important;
+}
+.currency-converter input,
+.currency-converter select{
+  background:#FFFFFF !important;
+  color:#1E2721 !important;
+  border:1px solid #CED9D0 !important;
+}
+.currency-converter input::placeholder{
+  color:#7A857D !important;
+}
+
+/* Input generici privati/budget */
+.private-login-card input,
+.expense-form input,
+.expense-form select{
+  background:#FFFFFF !important;
+  color:#1E2721 !important;
+  border:1px solid #CED9D0 !important;
+}
+
+/* Dettagli: bianco pieno, niente tono su tono */
+.food-detail-body,
+.place-detail-body,
+.restaurant-detail-body{
+  background:#FFFFFF !important;
+  color:#1E2721 !important;
+  border:1px solid #D8E2DA !important;
+  box-shadow:0 10px 24px -20px rgba(0,0,0,.55) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.food-detail-body p,
+.place-detail-body p,
+.restaurant-detail-body p{
+  color:#556159 !important;
+}
+
+/* Barra inferiore più chiara */
+nav.tabbar{
+  background:rgba(243,247,243,.97) !important;
+  border-top:1px solid #D7E1D9 !important;
+  box-shadow:0 -8px 24px -20px rgba(0,0,0,.42) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+nav.tabbar button{
+  color:#647267 !important;
+}
+nav.tabbar button.active{
+  color:#2F5A3A !important;
+  background:rgba(78,108,85,.09) !important;
+}
+nav.tabbar button svg{
+  stroke:currentColor !important;
+}
+
+.tab-dollar{
+  display:block;
+  font-size:23px;
+  line-height:20px;
+  font-weight:900;
+  font-family:Arial,Helvetica,sans-serif;
+  margin-bottom:2px;
+}
