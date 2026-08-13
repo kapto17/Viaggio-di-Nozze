@@ -73,16 +73,16 @@ const CHECKLIST_SECTIONS = [
     "Passaporto", "Carta d’identità", "Patente italiana", "Carte di credito/debito", "Contanti", "Conferme voli e hotel", "Prenotazioni Alcatraz / Universal / Antelope Canyon", "Copia digitale dei documenti importanti"
   ]},
   { id:"clothes", icon:"👕", title:"Abbigliamento", items:[
-    "Intimo", "Calze", "T-shirt", "Maglie a maniche lunghe", "Felpa o maglione", "Giacca per le tappe più fredde", "Pantaloni lunghi", "Pantaloni/shorts leggeri", "Pigiama", "Costume da bagno", "Scarpe comode", "Secondo paio di scarpe", "Ciabatte", "Cappello o berretto", "Occhiali da sole"
+    "Intimo", "Calze", "T-shirt", "Maglie a maniche lunghe", "Felpa o maglione", "Giacca per le tappe più fredde", "Pantaloni lunghi", "Pantaloni/shorts leggeri", "Pigiama", "Costume da bagno", "Scarpe comode", "Secondo paio di scarpe", "Ciabatte", "Cappello o berretto", "Occhiali da sole", "Ago e filo"
   ]},
   { id:"tech", icon:"🔌", title:"Tecnologia", items:[
     "Smartphone", "Caricatore smartphone", "Power bank", "Cavo USB di riserva", "Adattatore prese USA", "Auricolari/cuffie", "Smartwatch e caricatore", "Fotocamera/accessori se previsti"
   ]},
   { id:"meds", icon:"💊", title:"Farmaci e kit salute", items:[
-    "Farmaci personali abituali per tutti i giorni del viaggio", "Ricette o documentazione dei farmaci personali se necessaria", "Antidolorifico / antipiretico abituale", "Antistaminico abituale", "Farmaco per nausea o mal d’auto/aereo se già utilizzato", "Antidiarroico da viaggio", "Sali reidratanti", "Cerotti assortiti e cerotti per vesciche", "Disinfettante in formato viaggio", "Termometro", "Repellente per insetti", "Crema solare"
+    "Farmaci personali abituali per tutti i giorni del viaggio", "Ricette o documentazione dei farmaci personali se necessaria", "Antidolorifico / antipiretico abituale", "Antistaminico abituale", "Farmaco per nausea o mal d’auto/aereo se già utilizzato", "Antidiarroico da viaggio", "Sali reidratanti", "Cerotti assortiti e cerotti per vesciche", "Disinfettante in formato viaggio", "Termometro", "Repellente per insetti", "Creme solari"
   ]},
   { id:"care", icon:"🧴", title:"Igiene personale", items:[
-    "Spazzolino e dentifricio", "Deodorante", "Prodotti doccia", "Rasoio / prodotti personali", "Burrocacao", "Fazzoletti / salviette", "Gel igienizzante mani"
+    "Spazzolino e dentifricio", "Deodorante", "Prodotti doccia", "Rasoio / prodotti personali", "Burrocacao", "Fazzoletti / salviette", "Gel igienizzante mani", "Pinzetta", "Forbicine", "Limetta", "Salviette umidificate", "Carta igienica umidificata"
   ]},
   { id:"home", icon:"🏠", title:"Ultimi controlli a casa", items:[
     "Chiudere gas e controllare rubinetti", "Controllare finestre e balconi", "Svuotare i rifiuti", "Controllare frigorifero e alimenti deperibili", "Impostare riscaldamento/termostato", "Controllare automazioni e telecamere", "Staccare ciò che non serve", "Chiudere casa e portare le chiavi"
@@ -149,7 +149,7 @@ function saveChecklistState(profile, state){
 }
 
 function checklistItemsStorageKey(profile){
-  return `lf-checklist-items-v17-${profile.toLowerCase()}`;
+  return `lf-checklist-items-v19-${profile.toLowerCase()}`;
 }
 
 function defaultChecklistSections(){
@@ -1038,10 +1038,12 @@ function updatePrivateAreaEntry(){
   }
 }
 
-function updateBudgetTabVisibility(){
-  const tab = $("#budget-tab");
-  if (!tab) return;
-  tab.hidden = !privateAuthState.authenticated;
+function updatePrivateTabsVisibility(){
+  const hidden = !privateAuthState.authenticated;
+  const budgetTab = $("#budget-tab");
+  const sosTab = $("#sos-tab");
+  if (budgetTab) budgetTab.hidden = hidden;
+  if (sosTab) sosTab.hidden = hidden;
 }
 
 function firebaseReady(){
@@ -1331,7 +1333,7 @@ function connectFirebaseBudget(){
   window.LFBudget.onAuth((state) => {
     privateAuthState = state;
     updatePrivateAreaEntry();
-    updateBudgetTabVisibility();
+    updatePrivateTabsVisibility();
     if ($("#screen-home")?.classList.contains("active")) renderHome();
     if (!state.authenticated && $("#screen-budget")?.classList.contains("active")) openPrivateAccess(false);
   });
@@ -1590,7 +1592,7 @@ function init(){
   renderCitiesList();
   startChecklistCountdown();
   bindSecretPrivateAccess();
-  updateBudgetTabVisibility();
+  updatePrivateTabsVisibility();
 
   // La prima voce della history è la Home: da una tappa il tasto Indietro
   // del Galaxy torna davvero alla schermata precedente anziché chiudere la PWA.
