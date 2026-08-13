@@ -222,15 +222,17 @@ const PROGRAM_GUIDE = {
       { time:"21:30 circa", kind:"recommended", icon:"🏨", title:"Check-in e cena leggera", note:"Niente visite programmate: meglio assorbire il fuso e partire bene il giorno dopo." }
     ,
       { time:"Dopo bagagli e controlli", kind:"recommended", icon:"🚕", title:"SFO → Hotel Spero", note:"Soluzione consigliata dopo il volo: Uber o Lyft direttamente fino all'hotel. Hotel Spero · 405 Taylor St, San Francisco, CA.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco", uberDestination:"Hotel Spero, 405 Taylor St, San Francisco, CA", lyftDestination:"Hotel Spero, 405 Taylor St, San Francisco, CA" }]},
-    { date:"2026-10-21", title:"Golden Gate, Sausalito e costa", theme:"Tutto nella stessa zona, senza attraversare la città avanti e indietro", items:[
-      { time:"09:00", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto e passeggiata sul ponte.", mapsQuery:"Golden Gate Bridge San Francisco" },
+    { date:"2026-10-21", title:"Golden Gate, Sausalito e costa", theme:"Prima giornata alla scoperta di San Francisco, tra i suoi luoghi più iconici e l’atmosfera della baia.", items:[
+      { time:"08:20", kind:"recommended", icon:"🚕", title:"Partenza da Hotel Spero", note:"Partenza verso il Golden Gate Bridge. Considerate circa 30–40 minuti in base al traffico; arrivo previsto intorno alle 09:00.", mapsQuery:"Golden Gate Bridge San Francisco" },
+{ time:"09:00", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto e passeggiata sul ponte.", mapsQuery:"Golden Gate Bridge San Francisco" },
       { time:"11:30", kind:"recommended", icon:"⛵", title:"Sausalito", note:"Passeggiata sul waterfront e pranzo leggero.", mapsQuery:"Sausalito California" },
       { time:"14:30", kind:"recommended", icon:"🌳", title:"Golden Gate Park · Panhandle", note:"Rientro verso San Francisco e passeggiata nel verde.", mapsQuery:"Panhandle San Francisco" },
       { time:"17:00", kind:"recommended", icon:"🌊", title:"Ocean Beach", note:"Tramonto e relax sul Pacifico.", mapsQuery:"Ocean Beach San Francisco" },
       { time:"19:00", kind:"recommended", icon:"🍺", title:"Beach Chalet Brewery & Restaurant", note:"È già in zona: perfetto per chiudere la giornata senza spostamenti inutili.", mapsQuery:"Beach Chalet Brewery & Restaurant San Francisco" }
     ]},
     { date:"2026-10-22", title:"Waterfront e Alcatraz", theme:"Giornata costruita intorno al Night Tour già prenotato", items:[
-      { time:"09:30", kind:"recommended", icon:"🏙️", title:"Ferry Building e Embarcadero", note:"Passeggiata verso nord lungo la baia.", mapsQuery:"Ferry Building San Francisco" },
+      { time:"08:55", kind:"recommended", icon:"🚕", title:"Partenza da Hotel Spero", note:"Partenza verso Ferry Building ed Embarcadero con un margine tranquillo per arrivare intorno alle 09:30.", mapsQuery:"Ferry Building San Francisco" },
+{ time:"09:30", kind:"recommended", icon:"🏙️", title:"Ferry Building e Embarcadero", note:"Passeggiata verso nord lungo la baia.", mapsQuery:"Ferry Building San Francisco" },
       { time:"11:30", kind:"recommended", icon:"🦭", title:"Pier 39 e Fisherman's Wharf", note:"Leoni marini, waterfront e atmosfera tipica.", mapsQuery:"Pier 39 San Francisco" },
       { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
       { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
@@ -257,20 +259,22 @@ const PROGRAM_GUIDE = {
       { time:"20:00", kind:"optional", icon:"🍷", title:"The Little Door", note:"Cena più romantica e costosa: tenetela come opzione speciale, non obbligatoria.", mapsQuery:"The Little Door Los Angeles" }
     ]},
     { date:"2026-10-25", title:"Costa e location di The O.C.", theme:"Santa Monica → Venice → South Bay: una sola direzione", items:[
-      { time:"09:00", kind:"recommended", icon:"🎡", title:"Santa Monica Pier", note:"Molo, Route 66, spiaggia e Third Street Promenade.", mapsQuery:"Santa Monica Pier" },
+      { time:"08:10", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza verso Santa Monica. Considerate circa 45–50 minuti: il traffico di Los Angeles può allungare il tragitto.", mapsQuery:"Santa Monica Pier" },
+{ time:"09:00", kind:"recommended", icon:"🎡", title:"Santa Monica Pier", note:"Molo, Route 66, spiaggia e Third Street Promenade.", mapsQuery:"Santa Monica Pier" },
       { time:"11:30", kind:"recommended", icon:"🏖️", title:"Venice Beach", note:"Boardwalk, Muscle Beach e Venice Canals.", mapsQuery:"Venice Beach Los Angeles" },
       { time:"14:30", kind:"optional", icon:"🌴", title:"Manhattan Beach", note:"Sosta breve lungo la strada, solo se avete tempo.", mapsQuery:"Manhattan Beach Pier" },
       { time:"16:00", kind:"recommended", icon:"📺", title:"Redondo Beach Pier · The O.C.", note:"Molte scene della serie ambientate a Newport sono state girate qui: è la scelta più efficiente per vedere location riconoscibili.", mapsQuery:"Redondo Beach Pier" }
     ]},
     { date:"2026-10-26", title:"Universal Studios Hollywood", theme:"Giornata intera già prenotata", items:[
-      { time:"Apertura", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Arrivate poco prima dell'apertura e dedicate il giorno al parco.", mapsQuery:"Universal Studios Hollywood" },
+      { time:"07:45", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza verso Universal Studios. Orario prudente da adeguare all’apertura ufficiale del 26 ottobre; conviene arrivare prima dei cancelli.", mapsQuery:"Universal Studios Hollywood" },
+{ time:"Apertura", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Arrivate poco prima dell'apertura e dedicate il giorno al parco.", mapsQuery:"Universal Studios Hollywood" },
       { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: case decorate a Burbank", note:"Se avete ancora energia, Burbank organizza ogni anno un Halloween Outdoor Decorating Contest con una destination guide delle case partecipanti. È vicino a Universal: controlliamo la guida 2026 poco prima del viaggio.", mapsQuery:"Burbank California" },
       { time:"Sera", kind:"optional", icon:"👻", title:"Halloween Horror Nights", note:"Nel 2026 è previsto dal 3 settembre al 1 novembre, ma richiede un biglietto separato: non lo considero parte del programma base." }
     ]}
   ],
   vegas1: [
     { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Trasferimento e prima serata sulla Strip", items:[
-      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da Los Angeles", note:"Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
+      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.", mapsQuery:"Paris Las Vegas" },
       { time:"13:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo e check-in al Paris Las Vegas", note:"Lasciate l'auto e muovetevi soprattutto a piedi sulla Strip." },
       { time:"16:00", kind:"recommended", icon:"🎰", title:"Las Vegas Strip", note:"Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery:"Las Vegas Strip" },
       { time:"Sera", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio e Strip illuminata", note:"Vegas rende soprattutto dopo il tramonto.", mapsQuery:"Bellagio Fountains" },
@@ -279,7 +283,7 @@ const PROGRAM_GUIDE = {
   ],
   page: [
     { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
-      { time:"07:00", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Partenza presto verso il South Rim. Foto al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Grand Canyon Visitor Center South Rim" },
+      { time:"07:00", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"Check-out e partenza verso il Grand Canyon South Rim. È la giornata più lunga del road trip.", mapsQuery:"Grand Canyon Visitor Center South Rim" },
       { time:"11:30 circa", kind:"recommended", icon:"🅿️", title:"Visitor Center · parcheggio", note:"Lasciate l'auto nei parcheggi 1–4 del Visitor Center. Da qui Mather Point è a circa 5 minuti a piedi.", mapsQuery:"Grand Canyon Visitor Center" },
       { time:"11:45", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon" },
       { time:"12:30", kind:"recommended", icon:"🥪", title:"Pausa pranzo veloce", note:"Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive." },
@@ -293,7 +297,8 @@ const PROGRAM_GUIDE = {
       { time:"19:00 circa", kind:"recommended", icon:"🏨", title:"Arrivo a Page", note:"Ingresso nell'area Glen Canyon/Lake Powell, check-in al Lake Powell Resort, cena e riposo.", mapsQuery:"Lake Powell Resort Page Arizona" }
     ]},
     { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
-      { time:"08:30", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Circa 1½ ore complessive tra parcheggio, passeggiata e foto.", mapsQuery:"Horseshoe Bend Page Arizona" },
+      { time:"08:15", kind:"recommended", icon:"🚗", title:"Partenza da Lake Powell Resort", note:"Partenza verso Horseshoe Bend. È vicino a Page, quindi non serve anticipare inutilmente la sveglia.", mapsQuery:"Horseshoe Bend Page Arizona" },
+{ time:"08:30", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Circa 1½ ore complessive tra parcheggio, passeggiata e foto.", mapsQuery:"Horseshoe Bend Page Arizona" },
       { time:"11:15", kind:"booked", icon:"📍", title:"Arrivo da Ken's Tours", note:"Parcheggio e margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
       { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Meglio essere già in fila almeno 30 minuti prima." },
       { time:"12:00", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
@@ -306,7 +311,8 @@ const PROGRAM_GUIDE = {
       { time:"19:00 circa", kind:"recommended", icon:"🌃", title:"Strip oppure Fremont Street", note:"Scegliete in base a ciò che vi manca e alla stanchezza dopo Page.", mapsQuery:"Fremont Street Experience" }
     ]},
     { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
-      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
+      { time:"Da definire", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"L’orario verrà calcolato appena l’agenzia conferma il nuovo volo LAS → ORD. La giornata partirà comunque dall’hotel.", mapsQuery:"Harry Reid International Airport Las Vegas" },
+{ time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
       { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
     ]}
   ],
@@ -316,7 +322,8 @@ const PROGRAM_GUIDE = {
       { time:"Sera", kind:"recommended", icon:"🏨", title:"Warwick Allerton", note:"Check-in e prima passeggiata su Michigan Avenue solo se l'orario lo consente." }
     ]},
     { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Turismo leggero di giorno, Haunted Halsted come evento principale", special:true, items:[
-      { time:"09:30", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Partite direttamente dalla zona dell'hotel.", mapsQuery:"Magnificent Mile Chicago" },
+      { time:"09:20", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Uscite dall’hotel direttamente sulla Magnificent Mile: la prima tappa è praticamente nella stessa zona.", mapsQuery:"Magnificent Mile Chicago" },
+{ time:"09:30", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Partite direttamente dalla zona dell'hotel.", mapsQuery:"Magnificent Mile Chicago" },
       { time:"11:00", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Passeggiata senza fretta lungo il fiume.", mapsQuery:"Chicago Riverwalk" },
       { time:"13:00", kind:"recommended", icon:"🌭", title:"Pranzo tipico", note:"Italian beef oppure Chicago-style hot dog: veloce e perfetto per questa giornata." },
       { time:"14:00", kind:"recommended", icon:"☁️", title:"Millennium Park & Loop", note:"Cloud Gate e centro, senza riempire troppo il pomeriggio.", mapsQuery:"Cloud Gate Chicago" },
@@ -326,13 +333,15 @@ const PROGRAM_GUIDE = {
       { time:"22:00+", kind:"optional", icon:"🍸", title:"Drink / locale in Northalsted", note:"Solo se avete ancora energia: la zona resta molto viva dopo la parata." }
     ]},
     { date:"2026-11-01", title:"Architettura e centro", theme:"La crociera passa qui per non sovraccaricare Halloween", items:[
-      { time:"10:30 circa", kind:"recommended", icon:"🚢", title:"Architecture River Cruise", note:"90 minuti circa. Quando prenotiamo sceglierei tarda mattinata, con luce.", mapsQuery:"Chicago Architecture Center River Cruise" },
+      { time:"09:55", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Partenza verso l’imbarco della Architecture River Cruise con un buon margine prima della crociera.", mapsQuery:"Chicago Architecture Center River Cruise" },
+{ time:"10:30 circa", kind:"recommended", icon:"🚢", title:"Architecture River Cruise", note:"90 minuti circa. Quando prenotiamo sceglierei tarda mattinata, con luce.", mapsQuery:"Chicago Architecture Center River Cruise" },
       { time:"12:30", kind:"recommended", icon:"🌆", title:"Riverwalk / Loop", note:"Completate con calma ciò che non avete visto il giorno prima." },
       { time:"15:00", kind:"recommended", icon:"🌳", title:"Grant Park / centro", note:"Passeggiata e tempo libero." },
       { time:"Durante il giorno", kind:"recommended", icon:"🍿", title:"Garrett Popcorn / snack tipico", note:"Facile da inserire mentre siete su Michigan Avenue." }
     ]},
     { date:"2026-11-02", title:"Museo, panorama e deep dish", theme:"Ultima giornata piena, con parecchia libertà", items:[
-      { time:"10:00", kind:"recommended", icon:"🎨", title:"Art Institute of Chicago", note:"La mia prima scelta se volete fare un grande museo.", mapsQuery:"Art Institute of Chicago" },
+      { time:"09:20", kind:"recommended", icon:"🚕", title:"Partenza dal Warwick Allerton", note:"Partenza verso l’Art Institute con margine tranquillo per l’ingresso delle 10:00.", mapsQuery:"Art Institute of Chicago" },
+{ time:"10:00", kind:"recommended", icon:"🎨", title:"Art Institute of Chicago", note:"La mia prima scelta se volete fare un grande museo.", mapsQuery:"Art Institute of Chicago" },
       { time:"15:00", kind:"optional", icon:"🔭", title:"360 Chicago oppure Skydeck", note:"Uno solo dei due. 360 Chicago è comodissimo rispetto al Warwick.", mapsQuery:"360 Chicago Observation Deck" },
       { time:"19:30", kind:"recommended", icon:"🍕", title:"Deep-dish pizza", note:"Cena perfetta per salutare Chicago." }
     ]},

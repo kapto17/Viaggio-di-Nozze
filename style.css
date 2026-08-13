@@ -2722,3 +2722,7 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
 /* v2.3.7 — azioni viaggio */
 .program-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .program-actions .program-map{margin-top:0}
+
+.program-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px!important;width:min(100%,330px)}
+.program-actions .program-action-btn{min-height:38px;margin:0!important;padding:8px 10px!important;display:flex!important;align-items:center;justify-content:center;gap:5px;box-sizing:border-box;border-radius:11px;text-decoration:none;font:inherit;font-size:11px!important;font-weight:800!important;cursor:pointer}
+.program-actions button.program-action-btn{border:0}

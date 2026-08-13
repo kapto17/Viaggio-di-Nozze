@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.7";
+    version.textContent="Versione app 2.3.8";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -568,9 +568,9 @@ function programDayHtml(day){
               <div class="program-item-title">${item.title}</div>
               <div class="program-note">${item.note || ""}</div>
               ${(item.mapsQuery||item.uberDestination||item.lyftDestination) ? `<div class="program-actions">
-                ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
-                ${item.uberDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}">Uber</a>` : ""}
-                ${item.lyftDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://ride.lyft.com/ridetype?id=lyft&destination[address]=${encodeURIComponent(item.lyftDestination)}">Lyft</a>` : ""}
+                ${item.mapsQuery ? `<a class="program-map program-action-btn" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}"><span>📍</span> Maps</a>` : ""}
+                ${item.uberDestination ? `<a class="program-map program-action-btn" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}"><span>🚕</span> Uber</a>` : ""}
+                ${item.lyftDestination ? `<button type="button" class="program-map program-action-btn program-lyft-btn" data-lyft-destination="${encodeURIComponent(item.lyftDestination)}"><span>🚘</span> Lyft</button>` : ""}
               </div>` : ""}
             </div>
           </div>`).join("")}
@@ -2023,10 +2023,13 @@ function openTodayScreen(legId, iso){
   $$(".screen").forEach(s=>s.classList.remove("active"));
   screen.classList.add("active");
   screen.dataset.legId=legId;
+  if(history.state?.screen!=="today") history.pushState({screen:"today"},"",location.href);
   document.querySelector(".honeymoon-topbar")?.classList.add("home-only-hidden");
   window.scrollTo({top:0,behavior:"instant"});
 
-  screen.querySelector(".today-back-btn")?.addEventListener("click",()=>showScreen("home"));
+  screen.querySelector(".today-back-btn")?.addEventListener("click",()=>{
+    if(history.state?.screen==="today") history.back(); else showScreen("home");
+  });
   refreshDedicatedTodayLive(iso);
 }
 
@@ -2067,3 +2070,18 @@ function todayLiveInfo(iso, legId){
   const leg=TRIP.legs.find(x=>x.id===legId);
   return CITY_LIVE?.[leg?.accent]||null;
 }
+
+document.addEventListener("click",e=>{
+  const btn=e.target.closest?.(".program-lyft-btn"); if(!btn)return;
+  e.preventDefault();
+  const dest=decodeURIComponent(btn.dataset.lyftDestination||"");
+  const appUrl=`lyft://ridetype?id=lyft&destination[address]=${encodeURIComponent(dest)}`;
+  const webUrl=`https://ride.lyft.com/ridetype?id=lyft&destination[address]=${encodeURIComponent(dest)}`;
+  const started=Date.now(); window.location.href=appUrl;
+  setTimeout(()=>{ if(document.visibilityState==="visible"&&Date.now()-started<2200) window.location.href=webUrl; },1200);
+});
+
+window.addEventListener("popstate",()=>{
+  const today=document.getElementById("screen-today");
+  if(today?.classList.contains("active")) showScreen("home");
+});
