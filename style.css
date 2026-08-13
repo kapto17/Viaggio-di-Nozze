@@ -1396,3 +1396,57 @@ nav.tabbar button.active{
   .timezone-box .world-clock-card{padding:12px 11px;}
   .timezone-box .world-clock-time{font-size:20px;}
 }
+
+
+/* ---------- v2.0.7 · Header responsive con cuore calligrafico sotto ---------- */
+.honeymoon-topbar{
+  min-height:auto;
+  padding:24px 16px 18px;
+  background:transparent;
+  border-radius:0;
+  box-shadow:none;
+  overflow:visible;
+}
+.honeymoon-title-wrap{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+}
+.honeymoon-topbar h1{
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0;
+  padding:0 4px;
+  color:#B51F36;
+  font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;
+  font-size:44px;
+  font-weight:600;
+  line-height:1.08;
+  letter-spacing:-.035em;
+  text-align:center;
+  text-shadow:none;
+  white-space:normal;
+  overflow:visible;
+}
+.honeymoon-heart-line{
+  display:block;
+  width:min(94%, 520px);
+  height:auto;
+  margin:4px auto 0;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+}
+@media (max-width:420px){
+  .honeymoon-topbar{padding:22px 12px 16px;}
+  .honeymoon-topbar h1{font-size:40px;letter-spacing:-.04em;}
+  .honeymoon-heart-line{width:96%;margin-top:3px;}
+}
+@media (max-width:360px){
+  .honeymoon-topbar h1{font-size:37px;}
+  .honeymoon-heart-line{width:98%;}
+}

@@ -403,8 +403,7 @@ function renderHome(){
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
-
-  `;
+`;
 
   renderRouteStrip();
   bindCityCardClicks(el);
