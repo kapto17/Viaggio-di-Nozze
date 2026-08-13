@@ -1656,3 +1656,84 @@ nav.tabbar button.active svg{stroke:var(--theme-gold-2);}
 .city-header-content{position:relative;z-index:2}
 .screen.active{animation:screenIn .16s ease-out}@keyframes screenIn{from{opacity:.86}to{opacity:1}}
 @media(max-width:380px){.city-live-row{top:9px;left:9px;right:9px}.city-live-badge{padding:5px 8px;gap:4px;font-size:11px}}
+
+
+/* ==========================================================
+   v2.1.1 — Hero solo Home + oliva più profondo + dettaglio
+   ========================================================== */
+
+/* La cover principale non occupa spazio fuori dalla Home */
+.honeymoon-topbar.home-only-hidden{
+  display:none !important;
+}
+
+/* Card: oliva caldo più profondo, meno "pastello" */
+:root{
+  --panel-olive:#AEB99A;
+  --panel-olive-2:#98A787;
+  --panel-olive-dark:#7E906D;
+  --panel-ink:#172016;
+  --panel-muted:#3F4D3B;
+}
+
+.ticket,.hotel-card,.activity-card,.food-section-link,.food-card,.city-accordion,
+.ticket-import-box,.local-ticket-card,.private-login-card,.budget-summary-card,.expense-form,.expense-item,
+.checklist-progress-wrap,.checklist-section,.currency-converter,.today-card,.today-preview-panel,.sos-info-card,
+.restaurant-detail-body,.food-detail-body,.place-detail-body,.program-day,.budget-city-accordion{
+  background:linear-gradient(145deg,var(--panel-olive),var(--panel-olive-2)) !important;
+  color:var(--panel-ink) !important;
+  border-color:rgba(32,48,28,.30) !important;
+  box-shadow:0 10px 24px -22px rgba(0,0,0,.75);
+}
+
+.city-accordion summary,.accordion-must summary,.accordion-discover summary,
+.accordion-clothing summary,.accordion-program>summary{
+  background:linear-gradient(90deg,rgba(50,70,43,.22),rgba(255,255,255,.06)) !important;
+  color:var(--panel-ink) !important;
+}
+
+.accordion-content,
+.food-detail-body p,.place-detail-body p,.restaurant-detail-body p{
+  color:var(--panel-ink) !important;
+}
+.empty-note,.ticket-import-note,.local-ticket-empty{
+  color:var(--panel-muted) !important;
+}
+.accordion-icon{
+  background:rgba(35,58,30,.18) !important;
+  color:#273C23 !important;
+}
+.mapbtn,.secondary-action,.local-ticket-actions button,.expense-actions button{
+  background:#D9E0CF !important;
+  color:#24351F !important;
+  border-color:rgba(45,67,39,.32) !important;
+}
+.restaurant-maps-btn{
+  background:#C7D2BA !important;
+  color:#24351F !important;
+  border-color:#849678 !important;
+}
+.custom-check{
+  background:#DCE3D3 !important;
+  border-color:#74866A !important;
+}
+.checklist-profile-tabs button.active{
+  background:#C6D1B9 !important;
+  color:#21341D !important;
+}
+.place-detail-plan{
+  background:#B8C6AA !important;
+  border-color:#879B78 !important;
+}
+.place-detail-plan strong{color:#263C21 !important;}
+.place-detail-plan span{color:#354832 !important;}
+
+/* Senza la cover globale, le schermate secondarie partono più in alto */
+.honeymoon-topbar.home-only-hidden + main{
+  padding-top:14px;
+}
+
+/* I dettagli devono iniziare visivamente dalla propria immagine */
+.food-detail-hero,.place-detail-hero,.restaurant-detail-hero{
+  scroll-margin-top:0;
+}

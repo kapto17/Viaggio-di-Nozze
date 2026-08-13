@@ -1479,6 +1479,11 @@ function showScreen(name){
   const target = $("#screen-" + name);
   if (target) target.classList.add("active");
   $$("nav.tabbar button").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
+
+  // La copertina "Viaggio di Nozze" appartiene solo alla Home.
+  const topbar = $(".honeymoon-topbar");
+  if (topbar) topbar.classList.toggle("home-only-hidden", name !== "home");
+
   window.scrollTo(0,0);
 }
 
@@ -1578,6 +1583,7 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
   $("#back-from-place").addEventListener("click", () => history.back());
   loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), $("#place-photo-source"));
   navigateTo("place-detail", { legId, placeName:place.name }, pushHistory);
+  focusDetailHero("place-detail");
 }
 
 function googleSearchUrl(query){
@@ -1618,6 +1624,7 @@ function openRestaurantDetail(legId, restaurantName, pushHistory=true){
 
   $("#back-from-restaurant").addEventListener("click", () => history.back());
   navigateTo("restaurant-detail", { legId, restaurantName:restaurant.name }, pushHistory);
+  focusDetailHero("restaurant-detail");
 }
 
 function openFoodDetail(legId, foodId, pushHistory=true){
@@ -1665,6 +1672,17 @@ function openFoodDetail(legId, foodId, pushHistory=true){
     });
   });
   navigateTo("food-detail", { legId, foodId:selected.id }, pushHistory);
+  focusDetailHero("food-detail");
+}
+
+
+function focusDetailHero(screenName){
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const screen = $("#screen-" + screenName);
+    if (!screen || !screen.classList.contains("active")) return;
+    const hero = screen.querySelector(".food-detail-hero, .place-detail-hero, .restaurant-detail-hero");
+    if (hero) hero.scrollIntoView({ block:"start", inline:"nearest", behavior:"instant" });
+  }));
 }
 
 // ---------- Stato offline ----------
