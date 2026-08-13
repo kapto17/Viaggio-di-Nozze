@@ -200,6 +200,11 @@ const PROGRAM_GUIDE = {
       { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
       { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
       { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Al rientro lasciate la serata libera.", mapsQuery:"Alcatraz City Cruises Pier 33" }
+    ]},
+    { date:"2026-10-23", title:"Partenza per Los Angeles", theme:"Check-out, bagagli da stiva e volo SFO → LAX", items:[
+      { time:"07:45", kind:"recommended", icon:"🧳", title:"Check-out e partenza da Hotel Spero", note:"Partite con margine per il traffico del mattino. Obiettivo: essere a SFO intorno alle 09:00, circa 2 ore prima del volo, così avete tempo per consegnare i bagagli da stiva e superare i controlli.", mapsQuery:"San Francisco International Airport" },
+      { time:"09:00 circa", kind:"recommended", icon:"🛫", title:"Arrivo a SFO", note:"Bag drop, controlli TSA e poi gate. Per i voli domestici SFO/TSA raccomandano circa 2 ore di anticipo." },
+      { time:"11:00", kind:"booked", icon:"✈️", title:"Volo SFO → LAX", note:"Volo domestico · arrivo a Los Angeles alle 12:36." }
     ]}
   ],
   la: [
@@ -230,7 +235,7 @@ const PROGRAM_GUIDE = {
   ],
   vegas1: [
     { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Trasferimento e prima serata sulla Strip", items:[
-      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da Los Angeles", note:"Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
+      { time:"08:00", kind:"recommended", icon:"🚗", title:"Check-out e partenza dal The Commerce", note:"Scendete dall’hotel con l’auto già caricata. Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
       { time:"13:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo e check-in al Paris Las Vegas", note:"Lasciate l'auto e muovetevi soprattutto a piedi sulla Strip." },
       { time:"16:00", kind:"recommended", icon:"🎰", title:"Las Vegas Strip", note:"Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery:"Las Vegas Strip" },
       { time:"Sera", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio e Strip illuminata", note:"Vegas rende soprattutto dopo il tramonto.", mapsQuery:"Bellagio Fountains" },
@@ -239,7 +244,7 @@ const PROGRAM_GUIDE = {
   ],
   page: [
     { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
-      { time:"06:30", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
+      { time:"07:00", kind:"recommended", icon:"🚗", title:"Check-out e partenza dal Paris Las Vegas", note:"Auto caricata e partenza verso il Grand Canyon. Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l’avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
       { time:"11:00 circa", kind:"recommended", icon:"🏜️", title:"Grand Canyon South Rim", note:"Mather Point e Visitor Center: niente trekking lungo, puntiamo sui panorami.", mapsQuery:"Mather Point Grand Canyon" },
       { time:"14:00", kind:"recommended", icon:"🛣️", title:"Desert View Drive", note:"Viewpoint selezionati lungo la strada nella direzione di Page.", mapsQuery:"Desert View Drive Grand Canyon" },
       { time:"15:30", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima sosta panoramica prima di uscire dal parco verso est.", mapsQuery:"Desert View Watchtower" },
@@ -250,7 +255,7 @@ const PROGRAM_GUIDE = {
       { time:"11:15", kind:"booked", icon:"📍", title:"Arrivo da Ken's Tours", note:"Parcheggio e margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
       { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Meglio essere già in fila almeno 30 minuti prima." },
       { time:"12:00", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
-      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza", note:"Poi Page → Las Vegas." },
+      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza da Page", note:"Dopo il tour recuperate l’auto e ripartite verso Las Vegas; arrivo previsto intorno alle 18:30." },
       { time:"18:30 circa", kind:"recommended", icon:"🎰", title:"Arrivo a Las Vegas", note:"Seconda serata in città." }
     ]}
   ],
@@ -259,7 +264,8 @@ const PROGRAM_GUIDE = {
       { time:"19:00 circa", kind:"recommended", icon:"🌃", title:"Strip oppure Fremont Street", note:"Scegliete in base a ciò che vi manca e alla stanchezza dopo Page.", mapsQuery:"Fremont Street Experience" }
     ]},
     { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
-      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
+      { time:"Da definire", kind:"recommended", icon:"🧳", title:"Check-out e partenza dal Paris Las Vegas", note:"L’orario esatto verrà calcolato appena è confermato il nuovo volo LAS → ORD, includendo trasferimento a LAS, riconsegna dell’auto a noleggio, bagagli da stiva e controlli." },
+      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l’agenzia non conferma il nuovo volo." },
       { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
     ]}
   ],
@@ -290,7 +296,7 @@ const PROGRAM_GUIDE = {
       { time:"19:30", kind:"recommended", icon:"🍕", title:"Deep-dish pizza", note:"Cena perfetta per salutare Chicago." }
     ]},
     { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
-      { time:"Mattina presto", kind:"recommended", icon:"🧳", title:"Check-out e trasferimento a ORD", note:"Lasciate margine per traffico e controlli." },
+      { time:"05:15", kind:"recommended", icon:"🧳", title:"Check-out e partenza dal Warwick Allerton", note:"Partenza prudente verso O’Hare: il volo per Punta Cana è internazionale e avete bagagli da stiva. Obiettivo: arrivare a ORD intorno alle 06:30, circa 3 ore prima della partenza." , mapsQuery:"Chicago O'Hare International Airport" },
       { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Arrivo a Punta Cana alle 16:02." }
     ]}
   ],
@@ -314,7 +320,8 @@ const PROGRAM_GUIDE = {
     { date:"2026-11-08", title:"Ultimo giorno pieno", theme:"Niente escursioni lunghe", items:[
       { time:"Tutto il giorno", kind:"recommended", icon:"❤️", title:"Resort, mare e valigie", note:"Ultima giornata tranquilla prima del rientro." }
     ]},
-    { date:"2026-11-09", title:"Rientro", theme:"Punta Cana → Washington → Roma", items:[
+    { date:"2026-11-09", title:"Rientro", theme:"Bayahibe → Punta Cana → Washington → Roma", items:[
+      { time:"08:30", kind:"recommended", icon:"🧳", title:"Check-out e pronti per il transfer", note:"Il transfer per PUJ è incluso: considerate le 08:30 come orario prudente per essere pronti. Se l’operatore comunica un pick-up precedente, vale naturalmente l’orario del transfer. Obiettivo: essere a PUJ circa 3 ore prima del volo internazionale.", mapsQuery:"Punta Cana International Airport" },
       { time:"12:56", kind:"booked", icon:"✈️", title:"PUJ → IAD", note:"Arrivo 15:55." },
       { time:"17:40", kind:"booked", icon:"✈️", title:"IAD → FCO", note:"Arrivo a Roma il 10 novembre alle 08:30." }
     ]}
