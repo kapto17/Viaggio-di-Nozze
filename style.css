@@ -2588,3 +2588,20 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
 .tip-amount-wrap input{
   font-size:16px !important;
 }
+
+
+/* ==========================================================
+   v2.3.3 — versione app, discreta in fondo alla Home
+   ========================================================== */
+.home-app-version{
+  width:100%;
+  box-sizing:border-box;
+  margin:16px 0 calc(8px + env(safe-area-inset-bottom));
+  padding:4px 8px;
+  text-align:center;
+  font-size:10px;
+  font-weight:650;
+  letter-spacing:.02em;
+  opacity:.42;
+  color:var(--th-text,#152238);
+}

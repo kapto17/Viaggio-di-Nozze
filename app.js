@@ -1883,3 +1883,62 @@ document.addEventListener("click",e=>{
   btn.classList.add("active");
   updateTipCalculator();
 });
+
+
+/* v2.3.3 — indicatore versione temporaneo in fondo alla Home */
+function renderHomeVersionBadge(){
+  const home = document.getElementById("screen-home");
+  if(!home) return;
+
+  const old = document.getElementById("home-app-version");
+  if(old) old.remove();
+
+  const hideFrom = new Date("2026-10-20T00:00:00");
+  if(new Date() >= hideFrom) return;
+
+  const badge = document.createElement("div");
+  badge.id = "home-app-version";
+  badge.className = "home-app-version";
+  badge.textContent = "Versione app 2.3.3";
+  home.appendChild(badge);
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", renderHomeVersionBadge, {once:true});
+}else{
+  renderHomeVersionBadge();
+}
+
+
+/* v2.3.3 — aggiornamento PWA automatico, senza banner o messaggi */
+if("serviceWorker" in navigator){
+  window.addEventListener("load", async ()=>{
+    try{
+      const reg = await navigator.serviceWorker.getRegistration();
+      if(!reg) return;
+
+      await reg.update();
+
+      if(reg.waiting){
+        reg.waiting.postMessage({type:"SKIP_WAITING"});
+      }
+
+      reg.addEventListener("updatefound", ()=>{
+        const worker = reg.installing;
+        if(!worker) return;
+        worker.addEventListener("statechange", ()=>{
+          if(worker.state === "installed" && navigator.serviceWorker.controller){
+            worker.postMessage({type:"SKIP_WAITING"});
+          }
+        });
+      });
+
+      let reloading = false;
+      navigator.serviceWorker.addEventListener("controllerchange", ()=>{
+        if(reloading) return;
+        reloading = true;
+        window.location.reload();
+      });
+    }catch(e){}
+  });
+}

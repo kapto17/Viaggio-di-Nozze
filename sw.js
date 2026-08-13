@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v64";
+const CACHE_NAME = "viaggio-nozze-v65";
 const ASSETS = [
   "./",
   "./index.html",
@@ -102,4 +102,12 @@ self.addEventListener("fetch", (event) => {
       });
     })
   );
+});
+
+
+/* v2.3.3 — attivazione immediata degli aggiornamenti */
+self.addEventListener("message", event => {
+  if(event.data && event.data.type === "SKIP_WAITING"){
+    self.skipWaiting();
+  }
 });
