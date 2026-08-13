@@ -689,15 +689,6 @@ function openCity(legId, pushHistory=true){
 
   const programDays = (typeof PROGRAM_GUIDE !== "undefined" && PROGRAM_GUIDE[leg.id]) || [];
   const programHtml = programDays.length ? `
-    <div class="program-intro">
-      <strong>Una traccia flessibile, non una tabella militare.</strong>
-      <span>Gli orari servono per raggruppare le cose vicine e ridurre gli spostamenti inutili.</span>
-      <div class="program-legend">
-        <span class="program-badge booked">🔒 Prenotato / orario</span>
-        <span class="program-badge recommended">★ Consigliato</span>
-        <span class="program-badge optional">○ Facoltativo</span>
-      </div>
-    </div>
     ${programDays.map(day => `
       <div class="program-day ${day.special ? "program-day-special" : ""}">
         <div class="program-day-head">
@@ -756,7 +747,7 @@ function openCity(legId, pushHistory=true){
   `).join("") || `<div class="empty-note">Aggiungeremo qui i ristoranti selezionati a ${leg.city}.</div>`;
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
-    `).join("") : `<div class="empty-note">Puoi salvare qui PDF, immagini e QR direttamente sul telefono.</div>`}
+    `).join("") : ""}
     <div class="ticket-import-box">
       <div class="ticket-import-title">Biglietti offline</div>
       <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub.</div>
