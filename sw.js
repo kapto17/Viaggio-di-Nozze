@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v33";
+const CACHE_NAME = "viaggio-nozze-v34";
 const ASSETS = [
   "./",
   "./index.html",
@@ -66,7 +66,27 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Asset statici: cache prima, rete come fallback.
+  // File applicativi principali: rete prima, cache come fallback.
+  // Evita che browser diversi rimangano bloccati su vecchie versioni di CSS/JS.
+  const url = new URL(event.request.url);
+  const isCoreAsset = ["/style.css", "/app.js", "/data.js", "/firebase-budget.js", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+
+  if (isCoreAsset) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && (response.ok || response.type === "opaque")) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Immagini e altri asset: cache prima, rete come fallback.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
