@@ -1230,7 +1230,7 @@ function currentBudgetData(){
 
 function expenseCityOptions(selected=""){
   const defs = typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS.destinations : [];
-  return [`<option value="Generale" ${selected==="Generale"?"selected":""}>Generale</option>`, ...defs.map(d => `<option value="${d.key}" ${selected===d.key?"selected":""}>${d.label}</option>`)].join("");
+  return [...defs.map(d => `<option value="${d.key}" ${selected===d.key?"selected":""}>${d.label}</option>`), `<option value="Generale" ${selected==="Generale"?"selected":""}>Generale</option>`].join("");
 }
 
 function categoryOptions(selected=""){
@@ -1267,22 +1267,6 @@ function renderBudgetScreen(){
     <div class="budget-summary-grid">
       <div class="budget-summary-card main"><span>Budget</span><strong>${money(total,currency)}</strong></div>
       
-    <div class="tip-calculator" id="tip-calculator">
-      <div class="tip-head">
-        <div><strong>💵 Mancia USA</strong><small>Calcolo rapido sul conto</small></div>
-        <span class="tip-total" id="tip-total">Totale $0.00</span>
-      </div>
-      <div class="tip-row">
-        <label class="tip-amount-wrap"><span>Conto $</span><input id="tip-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></label>
-        <div class="tip-percentages" role="group" aria-label="Percentuale mancia">
-          <button type="button" data-tip="18">18%</button>
-          <button type="button" data-tip="20" class="active">20%</button>
-          <button type="button" data-tip="22">22%</button>
-        </div>
-      </div>
-      <div class="tip-result"><span>Mancia <b id="tip-value">$0.00</b></span><span>Totale <b id="tip-grand-total">$0.00</b></span></div>
-    </div>
-
     <div class="budget-summary-card"><span>Speso</span><strong>${money(spent,currency)}</strong></div>
       <div class="budget-summary-card ${remaining < 0 ? "over" : "remaining"}"><span>Rimanente</span><strong>${money(remaining,currency)}</strong></div>
     </div>
@@ -1296,6 +1280,24 @@ function renderBudgetScreen(){
       <div class="currency-result"><strong id="currency-result-value">—</strong><span id="currency-to-label">EUR €</span></div>
       <button class="currency-convert-btn" id="currency-convert" type="button">Converti</button>
       <div class="currency-meta" id="currency-meta">Cambio indicativo aggiornato online. Il valore effettivo della carta può essere diverso.</div>
+    </div>
+
+    <div class="tip-calculator" id="tip-calculator">
+      <div class="tip-head">
+        <div><strong>💵 Mancia USA</strong><small>Calcolo rapido sul conto</small></div>
+        <span class="tip-total" id="tip-total">Totale $0.00</span>
+      </div>
+      <div class="tip-row">
+        <label class="tip-amount-wrap"><span>Conto $</span><input id="tip-amount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00"></label>
+        <div class="tip-percentages" role="group" aria-label="Percentuale mancia">
+          <button type="button" data-tip="15">15%</button>
+          <button type="button" data-tip="18">18%</button>
+          <button type="button" data-tip="20" class="active">20%</button>
+          <button type="button" data-tip="22">22%</button>
+          <button type="button" data-tip="25">25%</button>
+        </div>
+      </div>
+      <div class="tip-result"><span>Mancia <b id="tip-value">$0.00</b></span><span>Totale <b id="tip-grand-total">$0.00</b></span></div>
     </div>
 
     <details class="city-accordion budget-city-accordion">
@@ -1323,6 +1325,21 @@ function renderBudgetScreen(){
           return `<div class="hotel-fee-row"><div><strong>${l.hotel.name}</strong><small>${l.city} · ${fmtDate(l.hotel.checkin)}</small></div><div class="hotel-fee-value">${f.perNight > 0 ? money(f.perNight,currency)+"/notte" : "Da verificare"}</div><p>${f.note}</p></div>`;
         }).join("")}
         <div class="hotel-fees-total"><span>Totale fee hotel attualmente previste</span><strong>${money(482.92,currency)}</strong><small>Stima informativa: non viene sottratta automaticamente dal budget finché non registrate la spesa.</small></div>
+      </div>
+    </details>
+
+
+    <details class="city-accordion budget-city-accordion parking-fees-accordion">
+      <summary><span><span class="accordion-icon">🅿️</span>Parcheggi previsti</span><span class="accordion-count">7</span><span class="accordion-chevron">⌄</span></summary>
+      <div class="accordion-content hotel-fees-list parking-fees-list">
+        <div class="hotel-fee-row"><div><strong>The Commerce Hotel & Casino</strong><small>Los Angeles · 23–27 ott</small></div><div class="hotel-fee-value">$15/notte</div><p>Valet indicato dall'hotel. Stima 4 notti: $60. Da ricontrollare al check-in perché il fact sheet cita anche benefit legati alla resort fee.</p></div>
+        <div class="hotel-fee-row"><div><strong>Universal Studios Hollywood</strong><small>Los Angeles · 26 ott</small></div><div class="hotel-fee-value">$40</div><p>General Parking prima delle 17:00. Preferred e Front Gate costano di più.</p></div>
+        <div class="hotel-fee-row"><div><strong>Santa Monica</strong><small>Los Angeles · 25 ott</small></div><div class="hotel-fee-value">$15</div><p>Stima usando Beach Lot 4 South nel weekend. Il costo effettivo dipende dal parcheggio scelto.</p></div>
+        <div class="hotel-fee-row"><div><strong>Paris Las Vegas</strong><small>Las Vegas · 27 e 29 ott</small></div><div class="hotel-fee-value">Da verificare</div><p>Self-parking Caesars soggetto a tariffa/eventi e possibili variazioni. Lo lasciamo previsto ma senza inventare un importo.</p></div>
+        <div class="hotel-fee-row"><div><strong>Grand Canyon South Rim</strong><small>28 ott</small></div><div class="hotel-fee-value">$0</div><p>I parcheggi del South Rim non hanno una tariffa separata. Resta distinto il costo d'ingresso al parco.</p></div>
+        <div class="hotel-fee-row"><div><strong>Lake Powell Resort</strong><small>Page · 28–29 ott</small></div><div class="hotel-fee-value">$30*</div><p>*Non è una tariffa parcheggio: è l'ingresso veicolo a Glen Canyon NRA, valido 7 giorni, necessario per raggiungere il resort.</p></div>
+        <div class="hotel-fee-row"><div><strong>Horseshoe Bend</strong><small>Page · 29 ott</small></div><div class="hotel-fee-value">$10</div><p>Tariffa per veicolo nel parcheggio gestito dalla City of Page; i pass dei parchi nazionali non la coprono.</p></div>
+        <div class="hotel-fees-total"><span>Totale minimo oggi quantificabile</span><strong>${money(155,currency)}</strong><small>$60 Commerce + $40 Universal + $15 Santa Monica + $30 Glen Canyon + $10 Horseshoe Bend. Paris Las Vegas resta da verificare. Grand Canyon: parcheggio $0.</small></div>
       </div>
     </details>
 

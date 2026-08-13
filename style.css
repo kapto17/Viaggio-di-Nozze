@@ -2552,3 +2552,30 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   .tip-percentages button{flex:1}
   .tip-percentages{width:100%}
 }
+
+
+/* ==========================================================
+   v2.3.1 — Budget: mance su riga propria + parcheggi
+   ========================================================== */
+.tip-calculator{
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin:10px 0 12px !important;
+}
+.tip-percentages{
+  flex-wrap:nowrap !important;
+}
+.tip-percentages button{
+  min-width:38px !important;
+  padding:0 5px !important;
+}
+.parking-fees-accordion .accordion-icon{
+  display:inline-grid;
+  place-items:center;
+}
+@media(max-width:420px){
+  .tip-calculator{padding:10px !important}
+  .tip-head{margin-bottom:7px !important}
+  .tip-percentages{gap:3px !important}
+  .tip-percentages button{min-width:36px !important;font-size:10px !important}
+}
