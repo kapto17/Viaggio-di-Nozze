@@ -78,8 +78,11 @@ const CHECKLIST_SECTIONS = [
   { id:"tech", icon:"🔌", title:"Tecnologia", items:[
     "Smartphone", "Caricatore smartphone", "Power bank", "Cavo USB di riserva", "Adattatore prese USA", "Auricolari/cuffie", "Smartwatch e caricatore", "Fotocamera/accessori se previsti"
   ]},
-  { id:"care", icon:"🧴", title:"Salute e igiene", items:[
-    "Farmaci personali", "Antidolorifico / farmaci da viaggio", "Cerotti", "Spazzolino e dentifricio", "Deodorante", "Prodotti doccia", "Rasoio / prodotti personali", "Crema solare", "Burrocacao", "Fazzoletti / salviette"
+  { id:"meds", icon:"💊", title:"Farmaci e kit salute", items:[
+    "Farmaci personali abituali per tutti i giorni del viaggio", "Ricette o documentazione dei farmaci personali se necessaria", "Antidolorifico / antipiretico abituale", "Antistaminico abituale", "Farmaco per nausea o mal d’auto/aereo se già utilizzato", "Antidiarroico da viaggio", "Sali reidratanti", "Cerotti assortiti e cerotti per vesciche", "Disinfettante in formato viaggio", "Termometro", "Repellente per insetti", "Crema solare"
+  ]},
+  { id:"care", icon:"🧴", title:"Igiene personale", items:[
+    "Spazzolino e dentifricio", "Deodorante", "Prodotti doccia", "Rasoio / prodotti personali", "Burrocacao", "Fazzoletti / salviette", "Gel igienizzante mani"
   ]},
   { id:"home", icon:"🏠", title:"Ultimi controlli a casa", items:[
     "Chiudere gas e controllare rubinetti", "Controllare finestre e balconi", "Svuotare i rifiuti", "Controllare frigorifero e alimenti deperibili", "Impostare riscaldamento/termostato", "Controllare automazioni e telecamere", "Staccare ciò che non serve", "Chiudere casa e portare le chiavi"
@@ -133,7 +136,7 @@ function startChecklistCountdown(){
 
 
 function checklistStorageKey(profile){
-  return `lf-checklist-v12-${profile.toLowerCase()}`;
+  return `lf-checklist-v17-${profile.toLowerCase()}`;
 }
 
 function loadChecklistState(profile){
@@ -146,7 +149,7 @@ function saveChecklistState(profile, state){
 }
 
 function checklistItemsStorageKey(profile){
-  return `lf-checklist-items-v14-${profile.toLowerCase()}`;
+  return `lf-checklist-items-v17-${profile.toLowerCase()}`;
 }
 
 function defaultChecklistSections(){
@@ -269,6 +272,110 @@ function daysUntil(iso){
   return Math.round((d - t) / 86400000);
 }
 
+
+// ---------- Home dinamica "OGGI" ----------
+// La checklist scompare alle 16:00 italiane; la card OGGI entra un minuto dopo.
+const TODAY_CARD_START_AT = new Date("2026-10-20T14:01:00Z");
+let todayHomeTimer = null;
+let lastTodayHomeDate = null;
+
+function dateInTimeZone(zone, now=new Date()){
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: zone, year:"numeric", month:"2-digit", day:"2-digit"
+  }).formatToParts(now);
+  const vals = Object.fromEntries(parts.filter(p => p.type !== "literal").map(p => [p.type,p.value]));
+  return `${vals.year}-${vals.month}-${vals.day}`;
+}
+
+function timeInTimeZone(zone, now=new Date()){
+  return new Intl.DateTimeFormat("it-IT", {
+    timeZone: zone, hour:"2-digit", minute:"2-digit", hour12:false
+  }).format(now);
+}
+
+function tripTimeZoneForDateGuess(now=new Date()){
+  // Le tappe USA occidentali condividono lo stesso offset nelle vostre date;
+  // poi si passa a Chicago e infine alla Repubblica Dominicana.
+  const chicagoDate = dateInTimeZone("America/Chicago", now);
+  const santoDate = dateInTimeZone("America/Santo_Domingo", now);
+  if (santoDate >= "2026-11-03") return "America/Santo_Domingo";
+  if (chicagoDate >= "2026-10-30") return "America/Chicago";
+  return "America/Los_Angeles";
+}
+
+function programForDate(iso){
+  if (typeof PROGRAM_GUIDE === "undefined") return null;
+  const matches = [];
+  TRIP.legs.forEach(leg => {
+    const day = (PROGRAM_GUIDE[leg.id] || []).find(d => d.date === iso);
+    if (day) matches.push({ legId:leg.id, day, leg });
+  });
+  if (!matches.length) return null;
+  return {
+    matches,
+    legId: matches[0].legId,
+    lastLegId: matches[matches.length-1].legId,
+    day: matches[0].day,
+    leg: matches[0].leg
+  };
+}
+
+function todayTripState(now=new Date(), forcedDate=null){
+  if (!forcedDate && now < TODAY_CARD_START_AT) return null;
+  const zone = forcedDate ? (() => {
+    if (forcedDate >= "2026-11-03") return "America/Santo_Domingo";
+    if (forcedDate >= "2026-10-30") return "America/Chicago";
+    return "America/Los_Angeles";
+  })() : tripTimeZoneForDateGuess(now);
+  const iso = forcedDate || dateInTimeZone(zone, now);
+  if (iso < TRIP.start || iso >= TRIP.end) return null;
+  const program = programForDate(iso);
+  return { iso, zone, localTime: forcedDate ? "Anteprima" : timeInTimeZone(zone, now), program };
+}
+
+function todayCardHtml(forcedDate=null){
+  const state = todayTripState(new Date(), forcedDate);
+  if (!state || !state.program) return "";
+  const { iso, zone, localTime, program } = state;
+  const matches = program.matches || [program];
+  const isTransfer = matches.length > 1;
+  const first = matches[0], last = matches[matches.length-1];
+  const title = isTransfer ? `${first.leg.city} → ${last.leg.city}` : first.day.title;
+  const theme = isTransfer ? matches.map(m => m.day.title).join(" · ") : (first.day.theme || first.leg.city);
+  const items = matches.flatMap(m => (m.day.items || [])).slice(0,6);
+  const openLegId = isTransfer ? last.legId : first.legId;
+  return `
+    <div class="today-card" data-today-leg="${openLegId}" data-today-date="${iso}">
+      <div class="today-card-head">
+        <div><small>${forcedDate ? "Anteprima" : "Oggi"} · ${fmtDateFull(iso)}</small><strong>${title}</strong><span>${theme}</span></div>
+        <div class="today-local-time"><b>${localTime}</b><em>${zone === "America/Chicago" ? "Chicago" : zone === "America/Santo_Domingo" ? "Bayahibe" : "Ovest USA"}</em></div>
+      </div>
+      <div class="today-mini-timeline">
+        ${items.map(item => `<div class="today-mini-item"><span>${item.time || ""}</span><b>${item.icon || "•"}</b><p><strong>${item.title}</strong>${item.note ? `<small>${item.note}</small>` : ""}</p></div>`).join("")}
+      </div>
+      ${isTransfer ? `<div class="today-transfer-note">La card unisce automaticamente partenza e arrivo della stessa giornata.</div>` : ""}
+      <button type="button" class="today-open-program" data-open-today-leg="${openLegId}">Apri il programma di oggi ›</button>
+    </div>`;
+}
+
+function bindTodayCard(root=document){
+  $$('[data-open-today-leg]', root).forEach(btn => btn.addEventListener("click", () => openCity(btn.dataset.openTodayLeg)));
+}
+
+function startTodayHomeWatcher(){
+  if (todayHomeTimer) clearInterval(todayHomeTimer);
+  const tick = () => {
+    const state = todayTripState();
+    const iso = state?.iso || null;
+    const timeEl = $(".today-local-time b");
+    if (timeEl && state) timeEl.textContent = state.localTime;
+    if (lastTodayHomeDate && iso && lastTodayHomeDate !== iso && $("#screen-home")?.classList.contains("active")) renderHome();
+    lastTodayHomeDate = iso;
+  };
+  tick();
+  todayHomeTimer = setInterval(tick, 30000);
+}
+
 // ---------- Rendering: Home ----------
 function renderHome(){
   const el = $("#screen-home");
@@ -287,7 +394,7 @@ function renderHome(){
       <span class="pretrip-card-overlay"></span>
       <span class="pretrip-card-copy"><small>Prima di partire</small><strong>Checklist pre-partenza</strong><em>Preparativi e valigia, senza dimenticare nulla</em></span>
       <span class="pretrip-card-arrow">›</span>
-    </button>` : ""}
+    </button>` : todayCardHtml()}
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
@@ -305,6 +412,8 @@ function renderHome(){
   renderRouteStrip();
   bindCityCardClicks(el);
   $("#open-checklist")?.addEventListener("click", () => openChecklist());
+  bindTodayCard(el);
+  startTodayHomeWatcher();
   bindPrivateAreaEntry();
   updatePrivateAreaEntry();
   startHomeClocks();
@@ -391,6 +500,16 @@ function renderChecklist(){
       <span>${checklistEditMode ? "Modifica, aggiungi o elimina le voci." : "Personalizza la tua checklist direttamente dall’app."}</span>
       <button type="button" id="checklist-edit-toggle">${checklistEditMode ? "✓ Fine" : "✎ Modifica elenco"}</button>
     </div>
+    <details class="today-preview-panel">
+      <summary><span>👁️ Prova la schermata OGGI prima della partenza</span><span class="accordion-chevron">⌄</span></summary>
+      <div class="today-preview-content">
+        <label for="today-preview-date">Giorno da simulare</label>
+        <select id="today-preview-date">
+          ${[...new Map(Object.values(PROGRAM_GUIDE).flat().map(d => [d.date,d])).values()].map(d => `<option value="${d.date}">${fmtDateFull(d.date)} · ${d.title}</option>`).join("")}
+        </select>
+        <div id="today-preview-card">${todayCardHtml("2026-10-20")}</div>
+      </div>
+    </details>
     <div class="checklist-progress-wrap">
       <div><strong>${progress.done} / ${progress.total}</strong><span>completate</span></div>
       <div class="checklist-progress"><span style="width:${progress.pct}%"></span></div><b>${progress.pct}%</b>
@@ -427,6 +546,15 @@ function renderChecklist(){
     checklistEditMode = !checklistEditMode;
     renderChecklist();
   });
+  const previewSelect = $("#today-preview-date");
+  if (previewSelect){
+    previewSelect.value = "2026-10-20";
+    previewSelect.addEventListener("change", () => {
+      const holder = $("#today-preview-card");
+      if (holder){ holder.innerHTML = todayCardHtml(previewSelect.value); bindTodayCard(holder); }
+    });
+    bindTodayCard($("#today-preview-card"));
+  }
   $$("[data-check-key]", el).forEach(input => input.addEventListener("change", () => {
     const next = loadChecklistState(activeChecklistProfile);
     next[input.dataset.checkKey] = input.checked;
@@ -1203,6 +1331,43 @@ function connectFirebaseBudget(){
 
 window.addEventListener("lf-firebase-ready", connectFirebaseBudget);
 
+
+// ---------- SOS & informazioni utili ----------
+function sosSuggestedArea(){
+  const now = new Date();
+  if (now < TODAY_CARD_START_AT) return "Entrambe le destinazioni";
+  const zone = tripTimeZoneForDateGuess(now);
+  return zone === "America/Santo_Domingo" ? "Repubblica Dominicana" : "Stati Uniti";
+}
+
+function openSOS(pushHistory=true){
+  const el = $("#screen-sos");
+  const suggested = sosSuggestedArea();
+  el.innerHTML = `
+    <button class="back-btn" id="back-sos">‹ Indietro</button>
+    <div class="sos-hero">
+      <div class="sos-hero-icon">🆘</div>
+      <div><small>Sempre disponibile</small><h2>SOS & info utili</h2><p>Numeri pubblici di emergenza e assistenza consolare. Area suggerita: <strong>${suggested}</strong>.</p></div>
+    </div>
+
+    <div class="sos-emergency-card">
+      <span>Emergenza immediata</span><strong>911</strong><p>Polizia · ambulanza · vigili del fuoco negli Stati Uniti. In Repubblica Dominicana il sistema 9-1-1 è il riferimento d'emergenza nelle aree coperte.</p>
+      <a href="tel:911">Chiama 911</a>
+    </div>
+
+    <div class="section-title">Assistenza italiana</div>
+    <div class="sos-grid">
+      <div class="sos-info-card"><div class="sos-card-icon">🇮🇹</div><div><small>H24 · emergenze all'estero</small><strong>Unità di Crisi Farnesina</strong><p>+39 06 36225</p></div><a href="tel:+390636225">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🇺🇸</div><div><small>Fuori orario · USA</small><strong>Ambasciata d'Italia a Washington</strong><p>+1 202 612 4411<br>+1 202 257 3753</p></div><a href="tel:+12026124411">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🇩🇴</div><div><small>Emergenze consolari · Rep. Dominicana</small><strong>Ambasciata d'Italia a Santo Domingo</strong><p>+1 829 342 4942</p></div><a href="tel:+18293424942">Chiama</a></div>
+    </div>
+
+    <div class="sos-note">Questa schermata è pubblica perché contiene solo contatti istituzionali e numeri di emergenza. Eventuali dati personali — polizza assicurativa, numero pratica, documenti o contatti privati — li terremo invece nell'area privata.</div>
+  `;
+  $("#back-sos")?.addEventListener("click", () => history.back());
+  navigateTo("sos", {}, pushHistory);
+}
+
 // ---------- Navigazione a schermate / tasto Indietro Android ----------
 function showScreen(name){
   $$(".screen").forEach(s => s.classList.remove("active"));
@@ -1246,6 +1411,10 @@ function renderNavigationState(state){
   }
   if (st.screen === "budget"){
     openBudget(false);
+    return;
+  }
+  if (st.screen === "sos"){
+    openSOS(false);
     return;
   }
   if (st.screen === "cities") renderCitiesList();
@@ -1418,6 +1587,10 @@ function init(){
       const target = btn.dataset.screen;
       if (target === "budget"){
         openBudget(true);
+        return;
+      }
+      if (target === "sos"){
+        openSOS(true);
         return;
       }
       if (target === "home") renderHome();
