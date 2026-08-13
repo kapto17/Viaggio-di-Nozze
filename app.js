@@ -969,7 +969,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
 
   el.innerHTML = `
     <button class="back-btn" id="back-to-cities">‹ Tutte le tappe</button>
-    <div class="city-header photo-city-header" style="--city-accent:${ACCENT[leg.accent]}; background-image:linear-gradient(180deg, rgba(6,13,25,.08) 12%, rgba(6,13,25,.78) 100%), url('${leg.image || ""}')">
+    <div class="city-header photo-city-header" style="--city-accent:${ACCENT[leg.accent]}; --city-image:url('${leg.image || ""}')">
       <div class="city-live-row">
         <div class="city-live-badge city-live-loading" id="city-live-weather"><span>🌡️</span><strong>--°</strong></div>
         <div class="city-live-badge" id="city-live-time"><span>🕒</span><strong>--:--</strong></div>
@@ -1734,3 +1734,60 @@ function init(){
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+
+// ---------- Temi locali ----------
+const APP_THEMES = {
+  classic: { themeColor:"#F6F1E8" },
+  green:   { themeColor:"#27362D" },
+  rose:    { themeColor:"#FFF7F8" }
+};
+
+function applyAppTheme(themeName, persist=true){
+  const theme = APP_THEMES[themeName] ? themeName : "classic";
+  document.documentElement.dataset.theme = theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", APP_THEMES[theme].themeColor);
+  $$(".theme-choice").forEach(btn => btn.classList.toggle("selected", btn.dataset.themeChoice === theme));
+  if (persist) localStorage.setItem("lf-app-theme", theme);
+}
+
+function openThemePanel(){
+  const panel = $("#theme-panel");
+  const backdrop = $("#theme-panel-backdrop");
+  const btn = $("#theme-menu-btn");
+  if (!panel || !backdrop) return;
+  backdrop.hidden = false;
+  requestAnimationFrame(() => {
+    backdrop.classList.add("open");
+    panel.classList.add("open");
+    panel.setAttribute("aria-hidden","false");
+    btn?.setAttribute("aria-expanded","true");
+  });
+}
+
+function closeThemePanel(){
+  const panel = $("#theme-panel");
+  const backdrop = $("#theme-panel-backdrop");
+  const btn = $("#theme-menu-btn");
+  if (!panel || !backdrop) return;
+  panel.classList.remove("open");
+  backdrop.classList.remove("open");
+  panel.setAttribute("aria-hidden","true");
+  btn?.setAttribute("aria-expanded","false");
+  setTimeout(() => { if (!backdrop.classList.contains("open")) backdrop.hidden = true; }, 220);
+}
+
+function initThemePicker(){
+  applyAppTheme(localStorage.getItem("lf-app-theme") || "classic", false);
+  $("#theme-menu-btn")?.addEventListener("click", openThemePanel);
+  $("#theme-panel-close")?.addEventListener("click", closeThemePanel);
+  $("#theme-panel-backdrop")?.addEventListener("click", closeThemePanel);
+  $$(".theme-choice").forEach(btn => btn.addEventListener("click", () => {
+    applyAppTheme(btn.dataset.themeChoice, true);
+    setTimeout(closeThemePanel, 120);
+  }));
+  document.addEventListener("keydown", ev => {
+    if (ev.key === "Escape") closeThemePanel();
+  });
+}
+initThemePicker();

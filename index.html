@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>L&F · Viaggio di nozze</title>
-<meta name="theme-color" content="#FFF7F8">
+<meta name="theme-color" content="#F6F1E8">
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/png" sizes="64x64" href="./icons/favicon-v10-64.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-v10-192.png">
@@ -12,15 +12,19 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" sizes="180x180" href="./icons/icon-v10-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="L&F Viaggio">
 <link rel="stylesheet" href="style.css?v=50">
+<link rel="stylesheet" href="themes.css?v=50">
 </head>
 <body>
 <div id="offline-badge" class="offline-badge">● Modalità offline — dati locali</div>
 
 <div id="app">
   <div class="topbar honeymoon-topbar">
+    <button id="theme-menu-btn" class="theme-menu-btn" type="button" aria-label="Apri menu temi" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <div class="honeymoon-title-wrap">
       <h1>Viaggio di Nozze</h1>
       <svg class="honeymoon-heart-line" viewBox="0 0 320 70" aria-hidden="true" focusable="false">
@@ -29,6 +33,36 @@
       </svg>
     </div>
   </div>
+
+  <div id="theme-panel-backdrop" class="theme-panel-backdrop" hidden></div>
+  <aside id="theme-panel" class="theme-panel" aria-hidden="true" aria-label="Scelta tema">
+    <div class="theme-panel-head">
+      <div>
+        <small>PERSONALIZZA</small>
+        <h2>Tema dell'app</h2>
+      </div>
+      <button id="theme-panel-close" class="theme-panel-close" type="button" aria-label="Chiudi">×</button>
+    </div>
+    <p class="theme-panel-intro">Il tema viene salvato solo su questo dispositivo.</p>
+
+    <button class="theme-choice" type="button" data-theme-choice="classic">
+      <span class="theme-swatch theme-swatch-classic"><i></i><i></i><i></i></span>
+      <span><strong>Originale</strong><small>Panna, bianco e rosso romantico</small></span>
+      <b class="theme-check">✓</b>
+    </button>
+
+    <button class="theme-choice" type="button" data-theme-choice="green">
+      <span class="theme-swatch theme-swatch-green"><i></i><i></i><i></i></span>
+      <span><strong>Verde</strong><small>Oliva, verde e bianco</small></span>
+      <b class="theme-check">✓</b>
+    </button>
+
+    <button class="theme-choice" type="button" data-theme-choice="rose">
+      <span class="theme-swatch theme-swatch-rose"><i></i><i></i><i></i></span>
+      <span><strong>Elegante Rosa</strong><small>Rosa cipria, bianco e lampone</small></span>
+      <b class="theme-check">✓</b>
+    </button>
+  </aside>
 
   <main>
     <section class="screen active" id="screen-home"></section>
@@ -65,6 +99,6 @@
 
 <script src="data.js?v=32"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=49"></script>
+<script src="app.js?v=50"></script>
 </body>
 </html>

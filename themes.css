@@ -1,0 +1,334 @@
+
+/* ==========================================================
+   THEME SYSTEM · v2.1.9
+   Solo visual: le funzioni restano in style.css/app.js.
+   ========================================================== */
+
+:root{
+  --th-bg:#F6F1E8;
+  --th-app:#FBF8F1;
+  --th-panel:#FFFFFF;
+  --th-panel-soft:#F2EDE3;
+  --th-card:#FFFFFF;
+  --th-text:#172235;
+  --th-muted:#69717C;
+  --th-accent:#B51F36;
+  --th-accent-2:#D45668;
+  --th-border:#E6DED2;
+  --th-nav:#FFFFFF;
+  --th-nav-text:#5C6672;
+  --th-shadow:0 12px 30px -24px rgba(28,34,45,.30);
+}
+
+/* -------- Struttura comune a tutti i temi -------- */
+html,body{background:var(--th-bg) !important;}
+body{color:var(--th-text) !important;}
+#app{
+  background:var(--th-app) !important;
+  color:var(--th-text) !important;
+}
+main{color:var(--th-text) !important;}
+
+.section-title,
+.timezone-box-title{color:var(--th-accent) !important;}
+
+.back-btn{color:var(--th-accent) !important;}
+
+/* Hero delle città: FIX permanente dell'immagine */
+.city-header.photo-city-header{
+  background-image:
+    linear-gradient(180deg,rgba(6,13,25,.07) 10%,rgba(6,13,25,.76) 100%),
+    var(--city-image) !important;
+  background-size:cover !important;
+  background-position:center !important;
+  color:#fff !important;
+}
+.city-header.photo-city-header h2{color:#fff !important;}
+.city-header.photo-city-header .cd-dates,
+.city-header.photo-city-header .cd-hotel{color:rgba(255,255,255,.90) !important;}
+
+/* Pannelli e tendine */
+.city-accordion,
+.budget-city-accordion,
+.checklist-section,
+.currency-converter,
+.today-card,
+.today-preview-panel,
+.sos-info-card,
+.private-login-card,
+.budget-summary-card,
+.expense-form,
+.expense-item,
+.checklist-progress-wrap{
+  background:var(--th-panel-soft) !important;
+  color:var(--th-text) !important;
+  border:1px solid var(--th-border) !important;
+  box-shadow:var(--th-shadow) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.city-accordion > summary,
+.budget-city-accordion > summary,
+.accordion-must > summary,
+.accordion-discover > summary,
+.accordion-clothing > summary,
+.accordion-program > summary{
+  background:transparent !important;
+  color:var(--th-accent) !important;
+  border-bottom-color:var(--th-border) !important;
+  text-shadow:none !important;
+}
+.accordion-icon{
+  background:color-mix(in srgb,var(--th-accent) 10%, white) !important;
+  color:var(--th-accent) !important;
+  border-color:color-mix(in srgb,var(--th-accent) 18%, transparent) !important;
+}
+
+/* Card informative: SEMPRE chiare e contrastate */
+.ticket,.hotel-card,.activity-card,.food-section-link,.food-card,
+.ticket-import-box,.local-ticket-card,.program-day,.restaurant-card,.info-card,
+.place-card,.must-card,.discover-card,.food-detail-body,.place-detail-body,
+.restaurant-detail-body{
+  background:var(--th-card) !important;
+  color:var(--th-text) !important;
+  border:1px solid var(--th-border) !important;
+  box-shadow:var(--th-shadow) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.ticket *,.hotel-card *,.activity-card *,.food-section-link *,.food-card *,
+.ticket-import-box *,.local-ticket-card *,.program-day *,.restaurant-card *,
+.info-card *,.place-card *,.must-card *,.discover-card *{
+  color:inherit;
+}
+.city-accordion p,
+.food-detail-body p,.place-detail-body p,.restaurant-detail-body p,
+.empty-note,.ticket-import-note,.local-ticket-empty{
+  color:var(--th-muted) !important;
+}
+
+/* Input / convertitore: mai tono-su-tono */
+.currency-converter input,
+.currency-converter select,
+.private-login-card input,
+.expense-form input,
+.expense-form select,
+.checklist-section input{
+  background:#fff !important;
+  color:#172235 !important;
+  border:1px solid var(--th-border) !important;
+}
+.currency-converter input::placeholder,
+.private-login-card input::placeholder,
+.expense-form input::placeholder{color:#7C8490 !important;}
+.currency-converter .converter-result,
+.currency-converter strong,
+.currency-converter label{color:var(--th-text) !important;}
+
+/* Bottoni */
+.mapbtn,.secondary-action,.restaurant-maps-btn,
+.local-ticket-actions button,.expense-actions button{
+  background:var(--th-card) !important;
+  color:var(--th-accent) !important;
+  border:1px solid var(--th-border) !important;
+}
+
+/* Fusi */
+.timezone-box{background:transparent !important;}
+.timezone-box .world-clock-card,
+.timezone-box .world-clock-card:nth-child(2),
+.timezone-box .world-clock-card:nth-child(3),
+.timezone-box .world-clock-card:nth-child(4){
+  background:var(--th-panel) !important;
+  border:1px solid var(--th-border) !important;
+  box-shadow:var(--th-shadow) !important;
+}
+.timezone-box .world-clock-place{color:var(--th-accent) !important;}
+.timezone-box .world-clock-time{color:var(--th-text) !important;}
+.timezone-box .world-clock-date{color:var(--th-muted) !important;}
+
+/* Timeline */
+.route-stop,.route-stop .rs-label{color:var(--th-text) !important;}
+.route-stop .rs-date{color:var(--th-muted) !important;}
+.route-stop .route-pin{color:var(--th-accent-2) !important;}
+.route-stop .route-pin circle{fill:var(--th-app) !important;}
+.route-stop.active .route-pin{color:var(--th-accent) !important;}
+
+/* Barra sotto */
+nav.tabbar{
+  background:var(--th-nav) !important;
+  border-top:1px solid var(--th-border) !important;
+  color:var(--th-nav-text) !important;
+}
+nav.tabbar button{color:var(--th-nav-text) !important;}
+nav.tabbar button.active{
+  color:var(--th-accent) !important;
+  background:color-mix(in srgb,var(--th-accent) 7%, transparent) !important;
+}
+
+/* Menu hamburger e pannello temi */
+.theme-menu-btn{
+  position:absolute;
+  z-index:8;
+  left:16px;
+  top:calc(22px + env(safe-area-inset-top));
+  width:42px;height:42px;
+  border:0;border-radius:14px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  background:color-mix(in srgb,var(--th-panel) 84%, transparent);
+  color:var(--th-accent);
+  box-shadow:0 8px 22px -18px rgba(0,0,0,.5);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.theme-menu-btn span{
+  width:19px;height:2px;border-radius:3px;background:currentColor;
+}
+.theme-panel-backdrop{
+  position:fixed;inset:0;z-index:90;
+  background:rgba(8,12,16,.34);
+  opacity:0;transition:opacity .2s ease;
+}
+.theme-panel-backdrop.open{opacity:1;}
+.theme-panel{
+  position:fixed;z-index:91;
+  left:12px;right:12px;top:max(calc(env(safe-area-inset-top) + 14px),24px);
+  max-width:470px;margin:auto;
+  padding:18px;
+  border-radius:24px;
+  background:var(--th-panel);
+  color:var(--th-text);
+  border:1px solid var(--th-border);
+  box-shadow:0 28px 70px -28px rgba(0,0,0,.55);
+  transform:translateY(-18px) scale(.98);
+  opacity:0;pointer-events:none;
+  transition:.2s ease;
+}
+.theme-panel.open{transform:none;opacity:1;pointer-events:auto;}
+.theme-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.theme-panel-head small{color:var(--th-accent);font-weight:800;letter-spacing:.12em;}
+.theme-panel-head h2{margin:3px 0 0;color:var(--th-text);}
+.theme-panel-close{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--th-border);
+  background:var(--th-panel-soft);color:var(--th-text);font-size:25px;line-height:1;
+}
+.theme-panel-intro{margin:10px 0 15px;color:var(--th-muted);font-size:13px;}
+.theme-choice{
+  width:100%;display:grid;grid-template-columns:58px 1fr 24px;align-items:center;gap:12px;
+  padding:11px;margin:8px 0;border-radius:16px;text-align:left;
+  border:1px solid var(--th-border);background:var(--th-card);color:var(--th-text);
+}
+.theme-choice strong,.theme-choice small{display:block;}
+.theme-choice small{color:var(--th-muted);margin-top:3px;}
+.theme-check{opacity:0;color:var(--th-accent);font-size:18px;}
+.theme-choice.selected{border-color:var(--th-accent);}
+.theme-choice.selected .theme-check{opacity:1;}
+.theme-swatch{
+  height:42px;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr 1fr;
+  border:1px solid rgba(0,0,0,.08);
+}
+.theme-swatch i{display:block;}
+.theme-swatch-classic i:nth-child(1){background:#F6F1E8}
+.theme-swatch-classic i:nth-child(2){background:#FFFFFF}
+.theme-swatch-classic i:nth-child(3){background:#B51F36}
+.theme-swatch-green i:nth-child(1){background:#29392F}
+.theme-swatch-green i:nth-child(2){background:#DDE8DE}
+.theme-swatch-green i:nth-child(3){background:#3E6A48}
+.theme-swatch-rose i:nth-child(1){background:#FFF7F8}
+.theme-swatch-rose i:nth-child(2){background:#F9E5E9}
+.theme-swatch-rose i:nth-child(3){background:#B82648}
+
+/* ---------- TEMA 1: ORIGINALE ---------- */
+html[data-theme="classic"]{
+  --th-bg:#EDE8DF;
+  --th-app:#F7F3EB;
+  --th-panel:#FFFFFF;
+  --th-panel-soft:#F2ECE2;
+  --th-card:#FFFFFF;
+  --th-text:#18243A;
+  --th-muted:#68717F;
+  --th-accent:#B51F36;
+  --th-accent-2:#D57472;
+  --th-border:#E4DDD2;
+  --th-nav:#FFFFFF;
+  --th-nav-text:#5C6672;
+  --th-shadow:0 12px 28px -23px rgba(34,38,48,.28);
+}
+html[data-theme="classic"] .honeymoon-topbar{
+  background:#F7F3EB !important;
+  box-shadow:none !important;
+}
+html[data-theme="classic"] .honeymoon-topbar h1{color:#B51F36 !important;text-shadow:none !important;}
+html[data-theme="classic"] .honeymoon-heart-line path{stroke:#D45C6C !important;}
+
+/* ---------- TEMA 2: VERDE ---------- */
+html[data-theme="green"]{
+  --th-bg:#151A15;
+  --th-app:#263229;
+  --th-panel:#F3F7F1;
+  --th-panel-soft:#DCE7DB;
+  --th-card:#FFFFFF;
+  --th-text:#1F2D23;
+  --th-muted:#5D695F;
+  --th-accent:#355F3F;
+  --th-accent-2:#719078;
+  --th-border:#C9D5CA;
+  --th-nav:#F5F8F4;
+  --th-nav-text:#617066;
+  --th-shadow:0 13px 30px -24px rgba(0,0,0,.40);
+}
+html[data-theme="green"] #app{
+  background:linear-gradient(180deg,#304034 0%,#222D25 100%) !important;
+}
+html[data-theme="green"] main{color:#F1F5F0 !important;}
+html[data-theme="green"] .section-title,
+html[data-theme="green"] .timezone-box-title{color:#EAF2E8 !important;}
+html[data-theme="green"] .honeymoon-topbar{
+  background:
+    linear-gradient(180deg,rgba(23,34,25,.34),rgba(30,42,31,.86)),
+    url("./assets/hero-travel.jpg") center/cover !important;
+}
+html[data-theme="green"] .honeymoon-topbar h1{color:#FFF7E8 !important;}
+html[data-theme="green"] .honeymoon-heart-line path{stroke:#E9C878 !important;}
+html[data-theme="green"] .route-stop,
+html[data-theme="green"] .route-stop .rs-label{color:#F4F7F2 !important;}
+html[data-theme="green"] .route-stop .rs-date{color:#C6D0C6 !important;}
+
+/* ---------- TEMA 3: ELEGANTE ROSA ---------- */
+html[data-theme="rose"]{
+  --th-bg:#F6F1F1;
+  --th-app:#FFF7F7;
+  --th-panel:#FFF4F5;
+  --th-panel-soft:#F9E4E8;
+  --th-card:#FFFFFF;
+  --th-text:#70283A;
+  --th-muted:#976672;
+  --th-accent:#B82648;
+  --th-accent-2:#D75E79;
+  --th-border:#EDCDD4;
+  --th-nav:#FFFFFF;
+  --th-nav-text:#86646D;
+  --th-shadow:0 12px 28px -23px rgba(112,40,58,.30);
+}
+html[data-theme="rose"] .honeymoon-topbar{
+  background:linear-gradient(180deg,#FFF9F8 0%,#FFF3F5 100%) !important;
+  box-shadow:none !important;
+}
+html[data-theme="rose"] .honeymoon-topbar h1{color:#B82648 !important;text-shadow:none !important;}
+html[data-theme="rose"] .honeymoon-heart-line path{stroke:#C93659 !important;}
+html[data-theme="rose"] .timezone-box .world-clock-card,
+html[data-theme="rose"] .timezone-box .world-clock-card:nth-child(2),
+html[data-theme="rose"] .timezone-box .world-clock-card:nth-child(3),
+html[data-theme="rose"] .timezone-box .world-clock-card:nth-child(4){
+  background:linear-gradient(145deg,#FFF4F4,#FBE7EA) !important;
+}
+
+/* Theme panel su iPhone: resta sotto la status bar */
+@supports (-webkit-touch-callout:none){
+  .theme-menu-btn{top:max(calc(env(safe-area-inset-top) + 8px),22px);}
+}
+
+@media(max-width:420px){
+  .theme-menu-btn{left:10px;width:39px;height:39px;}
+  .theme-panel{left:9px;right:9px;padding:15px;}
+}
