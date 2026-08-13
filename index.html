@@ -16,6 +16,24 @@
 <meta name="apple-mobile-web-app-title" content="L&F Viaggio">
 <link rel="stylesheet" href="style.css?v=59">
 <link rel="stylesheet" href="themes.css?v=53">
+
+<style id="ios-pwa-back-fix">
+/* v2.2.9 — tasto indietro iPhone PWA: posizione fisica sicura */
+html.lf-ios-pwa .honeymoon-topbar.home-only-hidden + main{
+  padding-top:92px !important;
+}
+html.lf-ios-pwa .honeymoon-topbar.home-only-hidden + main .screen.active > .back-btn{
+  position:relative !important;
+  z-index:1000 !important;
+  margin-top:0 !important;
+  min-height:42px !important;
+  display:flex !important;
+  align-items:center !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+}
+</style>
+
 </head>
 <body>
 <div id="offline-badge" class="offline-badge">● Modalità offline — dati locali</div>
@@ -99,6 +117,6 @@
 
 <script src="data.js?v=57"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=59"></script>
+<script src="app.js?v=60"></script>
 </body>
 </html>

@@ -123,6 +123,19 @@ let privateAuthState = { authenticated:false, user:null };
 let budgetState = { settings:null, expenses:[] };
 let editingExpenseId = null;
 
+
+/* v2.2.9 — iOS PWA runtime detection */
+(function(){
+  const ua = navigator.userAgent || "";
+  const isiOS = /iPhone|iPad|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const standalone = window.matchMedia?.("(display-mode: standalone)")?.matches ||
+    window.navigator.standalone === true;
+  if(isiOS && standalone){
+    document.documentElement.classList.add("lf-ios-pwa");
+  }
+})();
+
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
