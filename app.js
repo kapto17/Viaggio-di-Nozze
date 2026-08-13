@@ -85,15 +85,25 @@ async function refreshCityLiveInfo(leg){
 }
 function rememberCityViewState(legId){
   if(!$("#screen-city-detail")?.classList.contains("active"))return;
-  const openKeys=$$(".city-accordion[open]",$("#screen-city-detail")).map(el=>el.dataset.accordionKey).filter(Boolean);
+  const host=$("#screen-city-detail");
+  const openKeys=$$(".city-accordion[open]",host).map(el=>el.dataset.accordionKey).filter(Boolean);
+  const openRestaurantGroups=$$(".restaurant-subaccordion[open]",host).map(el=>{
+    if(el.classList.contains("quick")) return "quick";
+    if(el.classList.contains("serious")) return "serious";
+    return "";
+  }).filter(Boolean);
   const current=history.state||{screen:"city-detail",legId};
-  history.replaceState({...current,screen:"city-detail",legId,cityView:{scrollY:window.scrollY,openKeys}},"","#city-detail");
+  history.replaceState({...current,screen:"city-detail",legId,cityView:{scrollY:window.scrollY,openKeys,openRestaurantGroups}},"","#city-detail");
 }
 function restoreCityViewState(cityView){
   if(!cityView)return;
   const host=$("#screen-city-detail");
   (cityView.openKeys||[]).forEach(key=>{
     const detail=$(`.city-accordion[data-accordion-key="${CSS.escape(key)}"]`,host);
+    if(detail)detail.open=true;
+  });
+  (cityView.openRestaurantGroups||[]).forEach(group=>{
+    const detail=$(`.restaurant-subaccordion.${CSS.escape(group)}`,host);
     if(detail)detail.open=true;
   });
   requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,Number(cityView.scrollY)||0)));
