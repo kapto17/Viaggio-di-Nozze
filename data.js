@@ -269,7 +269,7 @@ const PROGRAM_GUIDE = {
       { time:"07:45", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza verso Universal Studios. Orario prudente da adeguare all’apertura ufficiale del 26 ottobre; conviene arrivare prima dei cancelli.", mapsQuery:"Universal Studios Hollywood" },
 { time:"Apertura", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Arrivate poco prima dell'apertura e dedicate il giorno al parco.", mapsQuery:"Universal Studios Hollywood" },
       { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: case decorate a Burbank", note:"Se avete ancora energia, Burbank organizza ogni anno un Halloween Outdoor Decorating Contest con una destination guide delle case partecipanti. È vicino a Universal: controlliamo la guida 2026 poco prima del viaggio.", mapsQuery:"Burbank California" },
-      { time:"Sera", kind:"optional", icon:"👻", title:"Halloween Horror Nights", note:"Nel 2026 è previsto dal 3 settembre al 1 novembre, ma richiede un biglietto separato: non lo considero parte del programma base." }
+      { time:"20:00 circa", kind:"recommended", icon:"🥩", title:"Musso & Frank Grill", note:"Cena Old Hollywood dopo gli Universal. Storico ristorante su Hollywood Boulevard: una chiusura di giornata più rilassata rispetto a un altro evento serale.", mapsQuery:"Musso & Frank Grill 6667 Hollywood Blvd Los Angeles" }
     ]}
   ],
   vegas1: [

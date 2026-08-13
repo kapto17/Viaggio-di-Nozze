@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.8";
+    version.textContent="Versione app 2.3.9";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -547,6 +547,48 @@ function renderHome(){
   startHomeClocks();
 }
 
+
+
+function normalizeProgramRef(s){
+  return String(s||"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/&/g," and ").replace(/[^a-z0-9]+/g," ").trim();
+}
+function resolveProgramDetail(item){
+  const title=normalizeProgramRef(item?.title);
+  const mq=normalizeProgramRef(item?.mapsQuery);
+  if(!title && !mq)return null;
+  let best=null,score=0;
+  for(const leg of TRIP.legs){
+    const candidates=[
+      ...(leg.places||[]).map(x=>({type:"place",obj:x})),
+      ...(leg.activities||[]).map(x=>({type:"place",obj:x})),
+      ...(leg.restaurants||[]).map(x=>({type:"restaurant",obj:x}))
+    ];
+    for(const c of candidates){
+      const name=normalizeProgramRef(c.obj.name);
+      const cmq=normalizeProgramRef(c.obj.mapsQuery);
+      let s=0;
+      if(name===title)s=100;
+      else if(name && (title.includes(name)||name.includes(title)))s=85;
+      else if(cmq && mq && (cmq.includes(mq)||mq.includes(cmq)))s=75;
+      else {
+        const words=name.split(" ").filter(w=>w.length>3);
+        const hits=words.filter(w=>title.includes(w)||mq.includes(w)).length;
+        if(words.length && hits>=Math.min(2,words.length))s=55+hits;
+      }
+      if(s>score){score=s;best={legId:leg.id,type:c.type,name:c.obj.name};}
+    }
+  }
+  return score>=55?best:null;
+}
+function openProgramDetail(item){
+  const ref=resolveProgramDetail(item);
+  if(!ref)return false;
+  if(ref.type==="restaurant")openRestaurantDetail(ref.legId,ref.name);
+  else openPlaceDetail(ref.legId,ref.name);
+  return true;
+}
 
 function programDayHtml(day){
   return `
@@ -560,20 +602,24 @@ function programDayHtml(day){
         ${day.special ? `<div class="program-special-icon">🎃</div>` : ""}
       </div>
       <div class="program-timeline">
-        ${(day.items || []).map(item => `
-          <div class="program-item ${item.kind || "recommended"}">
+        ${(day.items || []).map(item => {
+          const ref=resolveProgramDetail(item);
+          const payload=encodeURIComponent(JSON.stringify(item));
+          return `
+          <div class="program-item ${item.kind || "recommended"} ${ref?"program-item-clickable":""}"
+               ${ref?`role="button" tabindex="0" data-program-detail="${payload}"`:""}>
             <div class="program-time">${item.time || ""}</div>
             <div class="program-dot">${item.icon || "•"}</div>
             <div class="program-copy">
-              <div class="program-item-title">${item.title}</div>
+              <div class="program-item-title">${item.title}${ref?`<span class="program-detail-arrow">›</span>`:""}</div>
               <div class="program-note">${item.note || ""}</div>
               ${(item.mapsQuery||item.uberDestination||item.lyftDestination) ? `<div class="program-actions">
-                ${item.mapsQuery ? `<a class="program-map program-action-btn" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}"><span>📍</span> Maps</a>` : ""}
-                ${item.uberDestination ? `<a class="program-map program-action-btn" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}"><span>🚕</span> Uber</a>` : ""}
-                ${item.lyftDestination ? `<button type="button" class="program-map program-action-btn program-lyft-btn" data-lyft-destination="${encodeURIComponent(item.lyftDestination)}"><span>🚘</span> Lyft</button>` : ""}
+                ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
+                ${item.uberDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}">Uber</a>` : ""}
+                ${item.lyftDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://ride.lyft.com/ridetype?id=lyft&destination[address]=${encodeURIComponent(item.lyftDestination)}">Lyft</a>` : ""}
               </div>` : ""}
             </div>
-          </div>`).join("")}
+          </div>`}).join("")}
       </div>
     </div>`;
 }
@@ -2084,4 +2130,18 @@ document.addEventListener("click",e=>{
 window.addEventListener("popstate",()=>{
   const today=document.getElementById("screen-today");
   if(today?.classList.contains("active")) showScreen("home");
+});
+
+document.addEventListener("click",e=>{
+  if(e.target.closest?.(".program-actions a, .program-actions button"))return;
+  const row=e.target.closest?.("[data-program-detail]");
+  if(!row)return;
+  try{ openProgramDetail(JSON.parse(decodeURIComponent(row.dataset.programDetail))); }catch(_){}
+});
+document.addEventListener("keydown",e=>{
+  if(e.key!=="Enter"&&e.key!==" ")return;
+  const row=e.target.closest?.("[data-program-detail]");
+  if(!row)return;
+  e.preventDefault();
+  try{ openProgramDetail(JSON.parse(decodeURIComponent(row.dataset.programDetail))); }catch(_){}
 });
