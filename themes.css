@@ -562,3 +562,62 @@ html[data-theme="classic"] nav.tabbar button.active{
 }
 html[data-theme="classic"] nav.tabbar button.active svg{stroke:#B68A46 !important;}
 html[data-theme="classic"] nav.tabbar button.active .tab-dollar{color:#B68A46 !important;}
+
+
+/* ==========================================================
+   v2.2.1 — Originale: Fusi Orari ripristinati
+   Niente contenitore esterno; solo le quattro card.
+   ========================================================== */
+html[data-theme="classic"] .timezone-box{
+  margin:0 0 18px !important;
+  padding:0 !important;
+  position:relative !important;
+  z-index:2 !important;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html[data-theme="classic"] .timezone-box-title{
+  margin:0 2px 12px !important;
+  padding:0 !important;
+  color:#152238 !important;
+  font-size:12px !important;
+  line-height:1.2 !important;
+  font-weight:900 !important;
+  letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+  text-align:left !important;
+}
+
+html[data-theme="classic"] .timezone-box .world-clock-grid{
+  gap:10px !important;
+}
+
+html[data-theme="classic"] .timezone-box .world-clock-card,
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(2),
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(3),
+html[data-theme="classic"] .timezone-box .world-clock-card:nth-child(4){
+  padding:14px 15px 13px !important;
+  background:#FFFFFF !important;
+  border:1px solid rgba(21,34,56,.08) !important;
+  border-radius:18px !important;
+  box-shadow:0 10px 24px -21px rgba(16,27,46,.42) !important;
+}
+
+html[data-theme="classic"] .timezone-box .world-clock-place{
+  color:#5D6675 !important;
+  font-size:12px !important;
+}
+
+html[data-theme="classic"] .timezone-box .world-clock-time{
+  color:#152238 !important;
+  font-size:22px !important;
+}
+
+html[data-theme="classic"] .timezone-box .world-clock-date{
+  color:#6D7581 !important;
+}
