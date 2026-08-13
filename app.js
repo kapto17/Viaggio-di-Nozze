@@ -957,9 +957,14 @@ function openCity(legId, pushHistory=true, restoreState=null){
     </div>`;
   const quickRestaurants = (leg.restaurants||[]).filter(r => r.meal === "quick");
   const seriousRestaurants = (leg.restaurants||[]).filter(r => r.meal !== "quick");
+  const restaurantSubgroup = (title, subtitle, icon, items, cls) => items.length ? `
+    <details class="restaurant-subaccordion ${cls}">
+      <summary><span class="restaurant-subicon">${icon}</span><span class="restaurant-subcopy"><strong>${title}</strong><small>${subtitle}</small></span><span class="restaurant-subcount">${items.length}</span><span class="restaurant-subchevron">⌄</span></summary>
+      <div class="restaurant-subcontent">${items.map(renderRestaurantCard).join("")}</div>
+    </details>` : "";
   const restaurantsHtml = (leg.restaurants||[]).length ? `
-    ${quickRestaurants.length ? `<div class="restaurant-group"><div class="restaurant-group-head"><span>⚡</span><div><strong>Pasto veloce</strong><small>Street food, panini e soste rapide</small></div></div>${quickRestaurants.map(renderRestaurantCard).join("")}</div>` : ""}
-    ${seriousRestaurants.length ? `<div class="restaurant-group"><div class="restaurant-group-head"><span>🍽️</span><div><strong>Pasto più serio</strong><small>Ristoranti da godersi con più calma, soprattutto a cena</small></div></div>${seriousRestaurants.map(renderRestaurantCard).join("")}</div>` : ""}
+    ${restaurantSubgroup("Pasto veloce", "Street food, panini e soste rapide", "⚡", quickRestaurants, "quick")}
+    ${restaurantSubgroup("Pasto più serio", "Ristoranti da godersi con più calma, soprattutto a cena", "🍽️", seriousRestaurants, "serious")}
   ` : "";
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
@@ -1579,7 +1584,7 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
     <div class="place-detail-body">
       <div class="place-detail-kicker">${place.priority === "must" || (leg.activities || []).includes(place) ? "Da non perdere" : "Da scoprire"}</div>
       <p>${detail.text || place.note || ""}</p>
-      ${place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
+      ${(leg.activities || []).includes(place) && place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
       <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(place, place.name)}">📍 Apri in Google Maps</a>
       <div class="place-photo-source" id="place-photo-source">Caricamento immagine…</div>
     </div>
@@ -1616,10 +1621,6 @@ function openRestaurantDetail(legId, restaurantName, pushHistory=true){
     <div class="restaurant-detail-body">
       ${restaurant.type || restaurant.price ? `<div class="restaurant-detail-type"><span>${restaurant.typeIcon || "🍽️"}</span><strong>${restaurant.type || "Ristorante"}</strong>${restaurant.price ? `<b class="price-band restaurant-detail-price">${restaurant.price}</b>` : ""}</div>` : ""}
       <p>${description}</p>
-      <div class="restaurant-live-info">
-        <div class="restaurant-live-icon">🔎</div>
-        <div><strong>Informazioni aggiornate mentre siete in viaggio</strong><span>La ricerca Google è il modo più pratico per controllare in quel momento recensioni, fascia di prezzo, orari, telefono, menu e sito ufficiale quando disponibili.</span></div>
-      </div>
       <div class="restaurant-detail-actions">
         <a class="restaurant-google-btn" target="_blank" rel="noopener" href="${googleSearchUrl(searchQuery)}">🔎 Info, recensioni e prezzi su Google</a>
         <a class="restaurant-maps-btn" target="_blank" rel="noopener" href="${mapsUrl(restaurant.mapsQuery || restaurant.name + " " + leg.city)}">📍 Apri in Google Maps</a>
@@ -1661,7 +1662,6 @@ function openFoodDetail(legId, foodId, pushHistory=true){
               <a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(place.mapsQuery || place.name + " " + leg.city)}">Apri Maps</a>
             </div>`).join("")}
         </div>` : ""}
-      ${selected.photoCredit ? `<div class="photo-credit">Foto: ${selected.photoCredit}</div>` : ""}
     </div>
     ${leg.foods.length > 1 ? `
       <div class="section-title">Altre specialità da provare</div>

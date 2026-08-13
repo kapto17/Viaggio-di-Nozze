@@ -2306,3 +2306,62 @@ nav.tabbar button svg{
   .food-where-card{align-items:flex-start;flex-direction:column}
   .food-where-card .mapbtn{align-self:flex-end}
 }
+
+
+/* ==========================================================
+   v2.2.4 — sottotendine ristoranti
+   ========================================================== */
+.restaurant-subaccordion{
+  margin:10px 0 12px;
+  border:1px solid rgba(21,34,56,.10);
+  border-radius:15px;
+  background:rgba(255,255,255,.55);
+  overflow:hidden;
+}
+.restaurant-subaccordion>summary{
+  list-style:none;cursor:pointer;
+  display:flex;align-items:center;gap:10px;
+  padding:12px 13px;color:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+.restaurant-subaccordion>summary::-webkit-details-marker{display:none}
+.restaurant-subicon{
+  width:32px;height:32px;border-radius:10px;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.75);font-size:17px;
+}
+.restaurant-subcopy{min-width:0;flex:1}
+.restaurant-subcopy strong{display:block;font-size:14px}
+.restaurant-subcopy small{display:block;margin-top:2px;font-size:11px;opacity:.66}
+.restaurant-subcount{
+  min-width:25px;height:25px;padding:0 7px;border-radius:999px;
+  display:grid;place-items:center;font-size:11px;font-weight:850;
+  background:rgba(255,255,255,.75);
+}
+.restaurant-subchevron{font-size:17px;transition:transform .18s ease;opacity:.65}
+.restaurant-subaccordion[open] .restaurant-subchevron{transform:rotate(180deg)}
+.restaurant-subcontent{padding:0 10px 10px}
+.restaurant-subcontent .restaurant-ticket:first-child{margin-top:0}
+
+
+/* ==========================================================
+   v2.2.5 — iPhone safe area: fix permanente tasto indietro
+   Usa la classe ios-standalone già impostata da app.js e non
+   dipende dal tema selezionato.
+   ========================================================== */
+html.ios-standalone .honeymoon-topbar.home-only-hidden + main{
+  padding-top:max(calc(env(safe-area-inset-top) + 14px), 58px) !important;
+}
+
+html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .back-btn{
+  margin-top:0 !important;
+  min-height:36px !important;
+  position:relative !important;
+  z-index:5 !important;
+}
+
+@supports (padding-top: constant(safe-area-inset-top)){
+  html.ios-standalone .honeymoon-topbar.home-only-hidden + main{
+    padding-top:max(calc(constant(safe-area-inset-top) + 14px), 58px) !important;
+  }
+}
