@@ -2211,3 +2211,25 @@ nav.tabbar button svg{
     }
   }
 }
+
+
+/* ==========================================================
+   v2.1.6 — iPhone tabbar compatta
+   Mantiene la safe area dell'Home Indicator, ma evita
+   una barra inutilmente alta rispetto ad Android.
+   ========================================================== */
+@supports (-webkit-touch-callout: none){
+  @media (display-mode: standalone){
+    nav.tabbar{
+      min-height:auto !important;
+      padding-top:6px !important;
+      padding-bottom:max(env(safe-area-inset-bottom), 8px) !important;
+    }
+
+    nav.tabbar button{
+      min-height:44px !important;
+      padding-top:4px !important;
+      padding-bottom:2px !important;
+    }
+  }
+}
