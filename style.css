@@ -2267,3 +2267,242 @@ nav.tabbar button svg{
   stroke-linecap:round;
   stroke-linejoin:round;
 }
+
+
+/* ==========================================================
+   v2.1.8 — ELEGANTE CLASSICO · ROSA & BIANCO
+   Tema globale ispirato allo stile A: fondo chiarissimo,
+   rosa cipria per i box, rosa intenso per titoli/icone/testi.
+   Nessuna modifica funzionale.
+   ========================================================== */
+:root{
+  --a-bg:#FFF9F8;
+  --a-bg-2:#FDF3F4;
+  --a-card:#FFFFFF;
+  --a-card-soft:#FCEBED;
+  --a-card-soft-2:#F8DFE3;
+  --a-rose:#B82648;
+  --a-rose-2:#C93659;
+  --a-rose-dark:#7D2137;
+  --a-text:#70283A;
+  --a-muted:#9B6672;
+  --a-line:#EFCFD5;
+  --a-shadow:0 10px 28px -22px rgba(112,40,58,.35);
+}
+
+html,body{background:#F6F1F1 !important;}
+body{color:var(--a-text) !important;}
+#app{
+  background:linear-gradient(180deg,#FFF9F8 0%,#FFF6F6 42%,#FCF0F2 100%) !important;
+  color:var(--a-text) !important;
+}
+main{color:var(--a-text) !important;}
+
+/* HOME HEADER — come stile A: niente foto, pulito e romantico */
+.honeymoon-topbar{
+  min-height:205px !important;
+  padding:38px 18px 18px !important;
+  background:linear-gradient(180deg,#FFF9F8 0%,#FFF4F5 100%) !important;
+  box-shadow:none !important;
+}
+.honeymoon-topbar h1{
+  color:var(--a-rose) !important;
+  text-shadow:none !important;
+}
+.honeymoon-heart-line{width:min(54%,260px) !important;margin-top:8px !important;}
+.honeymoon-heart-line path{stroke:var(--a-rose-2) !important;}
+.section-title,.timezone-box-title{color:var(--a-rose-dark) !important;}
+
+/* FUSI ORARI */
+.timezone-box{background:transparent !important;}
+.timezone-box .world-clock-card,
+.timezone-box .world-clock-card:nth-child(2),
+.timezone-box .world-clock-card:nth-child(3),
+.timezone-box .world-clock-card:nth-child(4){
+  background:linear-gradient(145deg,#FFF4F4,#FBE7EA) !important;
+  border:1px solid #F1D3D9 !important;
+  box-shadow:var(--a-shadow) !important;
+}
+.timezone-box .world-clock-place{color:var(--a-rose-dark) !important;}
+.timezone-box .world-clock-time{color:#711F35 !important;}
+.timezone-box .world-clock-date{color:var(--a-muted) !important;}
+
+/* TIMELINE HOME */
+.home-route-strip{background:transparent !important;}
+.route-track{background:repeating-linear-gradient(90deg,#D76A82 0 4px,transparent 4px 8px) !important;opacity:.42 !important;}
+.route-stop,.route-stop .rs-label{color:var(--a-rose-dark) !important;}
+.route-stop .rs-date{color:var(--a-muted) !important;}
+.route-stop .route-pin{color:#D55B76 !important;}
+.route-stop .route-pin circle{fill:#FFF7F7 !important;}
+.route-stop.active .route-pin{color:#B82648 !important;filter:drop-shadow(0 0 4px rgba(184,38,72,.18)) !important;}
+
+/* HOME FOTO/CARD: struttura invariata, accenti rosa */
+.pretrip-card,.city-card.photo-city-card{border-color:rgba(201,54,89,.16) !important;box-shadow:0 14px 30px -24px rgba(86,27,42,.38) !important;}
+.pretrip-card-copy small,.city-card-kicker{color:#FFDDE4 !important;}
+
+/* PAGINE SECONDARIE */
+.back-btn{color:var(--a-rose) !important;}
+.city-header{background:#FFF7F7 !important;color:var(--a-rose-dark) !important;}
+.city-header.photo-city-header{color:#FFF !important;}
+.city-header.photo-city-header .cd-dates,.city-header.photo-city-header .cd-hotel{color:#FFF2F4 !important;}
+.city-live-badge{background:rgba(121,27,51,.72) !important;color:#FFF !important;border-color:rgba(255,255,255,.36) !important;}
+
+/* TENDINE PRINCIPALI — rosa cipria, testo rosa deciso */
+.city-accordion,
+.budget-city-accordion,
+.checklist-section,
+.currency-converter,
+.today-card,
+.today-preview-panel,
+.sos-info-card,
+.private-login-card,
+.budget-summary-card,
+.expense-form,
+.expense-item,
+.checklist-progress-wrap{
+  background:linear-gradient(145deg,#FCEDEF,#F7DFE4) !important;
+  color:var(--a-text) !important;
+  border:1px solid #EECBD2 !important;
+  box-shadow:var(--a-shadow) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.city-accordion>summary,
+.budget-city-accordion>summary,
+.accordion-must>summary,
+.accordion-discover>summary,
+.accordion-clothing>summary,
+.accordion-program>summary,
+.checklist-section>summary{
+  background:linear-gradient(90deg,#F8E1E5,#FDEEEF) !important;
+  color:var(--a-rose-dark) !important;
+  border-bottom-color:#EBC6CE !important;
+  text-shadow:none !important;
+}
+.city-accordion .accordion-content,.budget-city-accordion .accordion-content{color:var(--a-text) !important;}
+.accordion-icon{background:#F5D6DD !important;color:var(--a-rose) !important;border-color:#E9BFC8 !important;}
+.accordion-chevron,.accordion-count{color:#A24D61 !important;}
+
+/* CARD INTERNE: bianche, netto contrasto */
+.ticket,.hotel-card,.activity-card,.food-section-link,.food-card,
+.ticket-import-box,.local-ticket-card,.program-day,.restaurant-card,.info-card,
+.place-card,.must-card,.discover-card,
+.food-detail-body,.place-detail-body,.restaurant-detail-body{
+  background:#FFFFFF !important;
+  color:var(--a-text) !important;
+  border:1px solid #EFD5DA !important;
+  box-shadow:0 8px 20px -18px rgba(112,40,58,.30) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+.ticket *, .hotel-card *, .activity-card *, .food-section-link *, .food-card *,
+.ticket-import-box *, .local-ticket-card *, .program-day *, .restaurant-card *,
+.info-card *, .place-card *, .must-card *, .discover-card *{color:inherit;}
+
+/* Titoli e descrizioni interne */
+.city-accordion h3,.city-accordion h4,.activity-title,.food-name,.restaurant-name,
+.currency-converter-head strong,.budget-summary-card strong,.sos-info-card strong{
+  color:var(--a-rose-dark) !important;
+}
+.ticket .ssub,.hotel-address,.hotel-dates,.activity-datetime,.activity-note,
+.food-section-note,.food-card-short,.clothing-row p,.clothing-note,
+.program-date,.program-theme,.program-note,.local-ticket-empty,.empty-note,
+.ticket-import-note,.currency-rate-note,.budget-city-row small,.expense-copy span,
+.food-detail-body p,.place-detail-body p,.restaurant-detail-body p,
+.sos-info-card p,.sos-info-card small{
+  color:var(--a-muted) !important;
+}
+
+/* BOTTONI */
+.mapbtn,.secondary-action,.local-ticket-actions button,.expense-actions button,
+.restaurant-maps-btn{
+  background:#FFF7F8 !important;
+  color:var(--a-rose-dark) !important;
+  border:1px solid #EAC7CF !important;
+  box-shadow:none !important;
+}
+.primary-action,.ticket-import-btn,.today-open-program,.restaurant-google-btn,
+.currency-convert-btn{
+  background:linear-gradient(180deg,#C93A5C,#AF2344) !important;
+  color:#FFFFFF !important;
+  border:0 !important;
+  box-shadow:0 7px 16px -12px rgba(175,35,68,.55) !important;
+}
+
+/* CHECKLIST */
+.checklist-profile-tabs{background:#F7E3E7 !important;border:1px solid #EDCBD2 !important;}
+.checklist-profile-tabs button{color:#9B6070 !important;}
+.checklist-profile-tabs button.active{background:#FFFFFF !important;color:var(--a-rose-dark) !important;}
+.custom-check{background:#FFFFFF !important;border-color:#DFAEB9 !important;}
+.checklist-item.checked .custom-check{background:var(--a-rose-2) !important;border-color:var(--a-rose-2) !important;color:#FFFFFF !important;}
+.checklist-local-note,.checklist-hide-note,.budget-offline-note,.sos-note,.clothing-weather{
+  background:#FFF2F4 !important;color:#8C4053 !important;border-color:#EDCFD5 !important;
+}
+
+/* BUDGET — convertitore sempre leggibile */
+.budget-hero{
+  background:linear-gradient(135deg,#F7DDE3,#FCECEF) !important;
+  color:var(--a-rose-dark) !important;
+  border:1px solid #EBC4CC !important;
+}
+.budget-hero h2,.budget-hero strong,.budget-hero span{color:var(--a-rose-dark) !important;}
+.currency-converter{background:#FFFFFF !important;color:var(--a-text) !important;}
+.currency-converter *{color:var(--a-text) !important;}
+.currency-converter-head small{color:var(--a-muted) !important;}
+.currency-converter-head>span{color:var(--a-rose-2) !important;}
+.currency-row,.currency-result{background:#FFF7F8 !important;border-color:#E8CDD3 !important;}
+.currency-row input,.currency-row select{background:#FFFFFF !important;color:#67283A !important;}
+.currency-row input::placeholder{color:#B48590 !important;}
+.currency-result strong,.currency-result span{color:#70283A !important;}
+.currency-swap{background:var(--a-rose-2) !important;color:#FFFFFF !important;box-shadow:0 5px 12px rgba(201,54,89,.22) !important;}
+.currency-convert-btn{color:#FFFFFF !important;}
+.currency-meta{color:var(--a-muted) !important;}
+
+/* SOS — leggibilità netta */
+.sos-hero,.sos-emergency-card{
+  background:linear-gradient(135deg,#F6DCE2,#FBEAEC) !important;
+  color:var(--a-rose-dark) !important;
+  border:1px solid #E8C1C9 !important;
+}
+.sos-hero h2,.sos-hero strong,.sos-emergency-card strong{color:var(--a-rose-dark) !important;}
+.sos-hero p,.sos-hero small,.sos-emergency-card p,.sos-emergency-card small{color:#955164 !important;}
+.sos-info-card{background:#FFFFFF !important;color:var(--a-text) !important;border-color:#EED3D9 !important;}
+.sos-info-card strong{color:var(--a-rose-dark) !important;}
+.sos-info-card p,.sos-info-card small{color:#8F5966 !important;}
+
+/* INPUT */
+.private-login-card input,.expense-form input,.expense-form select,
+.currency-converter input,.currency-converter select{
+  background:#FFFFFF !important;
+  color:#67283A !important;
+  border:1px solid #E6C6CD !important;
+}
+
+/* DETTAGLI */
+.place-detail-plan{background:#FCE9ED !important;border-color:#E7C1C9 !important;}
+.place-detail-plan strong{color:var(--a-rose-dark) !important;}
+.place-detail-plan span{color:#8F5966 !important;}
+
+/* TAB BAR — stile A: bianca e pulita */
+nav.tabbar{
+  background:rgba(255,250,250,.97) !important;
+  border-top:1px solid #EED8DC !important;
+  box-shadow:0 -8px 24px -20px rgba(100,35,52,.26) !important;
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+nav.tabbar button{color:#9A6B76 !important;}
+nav.tabbar button.active{color:var(--a-rose) !important;background:rgba(201,54,89,.07) !important;}
+nav.tabbar button svg{stroke:currentColor !important;}
+.tab-dollar{color:currentColor !important;}
+
+/* Desktop */
+@media(min-width:700px){
+  body{background:#F2ECEE !important;}
+  #app{box-shadow:0 0 60px rgba(82,31,44,.15) !important;}
+}
+@media(max-width:420px){
+  .honeymoon-topbar{min-height:190px !important;padding:34px 14px 16px !important;}
+  .honeymoon-topbar h1{font-size:34px !important;}
+  .honeymoon-heart-line{width:min(58%,230px) !important;}
+}
