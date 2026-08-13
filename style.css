@@ -1300,49 +1300,42 @@ nav.tabbar button.active{
   justify-content:center;
   gap:8px;
   margin:0;
-  color:#6F1D2A;
+  color:#B51F36;
   font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;
-  font-size:34px;
+  font-size:51px;
   font-weight:600;
   line-height:1.15;
   letter-spacing:-.035em;
   text-shadow:none;
+  white-space:nowrap;
 }
 .honeymoon-topbar h1 span{display:block;}
 .honeymoon-heart{
-  position:relative;
-  display:inline-block;
-  width:27px;
-  height:25px;
-  flex:0 0 27px;
-  margin-left:1px;
-  transform:rotate(-5deg);
+  display:inline-flex;
+  width:46px;
+  height:54px;
+  flex:0 0 46px;
+  align-items:center;
+  justify-content:center;
+  color:#B51F36;
+  margin-left:2px;
 }
-.honeymoon-heart::before{
-  content:"♡";
-  position:absolute;
-  left:0;
-  top:-8px;
-  color:#E64E70;
-  font-family:"Segoe UI Symbol","Arial Unicode MS",sans-serif;
-  font-size:36px;
-  font-weight:400;
-  line-height:1;
+.honeymoon-heart svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
 }
-.honeymoon-heart::after{
-  content:"";
-  position:absolute;
-  width:14px;
-  height:7px;
-  left:15px;
-  top:19px;
-  border-bottom:2px solid #E64E70;
-  border-radius:50%;
-  transform:rotate(-16deg);
+.honeymoon-heart path{
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;
 }
 @media (max-width:380px){
-  .honeymoon-topbar h1{font-size:34px;}
-  .honeymoon-heart{transform:scale(.9) rotate(-5deg); transform-origin:left center;}
+  .honeymoon-topbar h1{font-size:46px;gap:6px;}
+  .honeymoon-heart{width:42px;height:50px;flex-basis:42px;}
 }
 
 /* Fusi orari svincolati dal vecchio contenitore bianco */
@@ -1398,8 +1391,8 @@ nav.tabbar button.active{
 }
 
 @media (max-width:360px){
-  .honeymoon-topbar h1{font-size:30px;gap:6px;}
-  .honeymoon-topbar h1 img{width:27px;height:27px;}
+  .honeymoon-topbar h1{font-size:43px;gap:5px;}
+  .honeymoon-heart{width:39px;height:47px;flex-basis:39px;}
   .timezone-box .world-clock-card{padding:12px 11px;}
   .timezone-box .world-clock-time{font-size:20px;}
 }
