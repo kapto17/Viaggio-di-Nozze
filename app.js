@@ -437,28 +437,35 @@ function todayCardHtml(forcedDate=null){
   if (!state || !state.program) return "";
   const { iso, zone, localTime, program } = state;
   const matches = program.matches || [program];
-  const isTransfer = matches.length > 1;
-  const first = matches[0], last = matches[matches.length-1];
-  const title = isTransfer ? `${first.leg.city} → ${last.leg.city}` : first.day.title;
-  const theme = isTransfer ? matches.map(m => m.day.title).join(" · ") : (first.day.theme || first.leg.city);
-  const items = matches.flatMap(m => (m.day.items || [])).slice(0,6);
-  const openLegId = isTransfer ? last.legId : first.legId;
+  const first = matches[0];
+  const day = first.day;
+  const openLegId = first.legId;
   return `
-    <div class="today-card" data-today-leg="${openLegId}" data-today-date="${iso}">
+    <div class="today-card today-card-full" data-today-leg="${openLegId}" data-today-date="${iso}">
       <div class="today-card-head">
-        <div><small>${forcedDate ? "Anteprima" : "Oggi"} · ${fmtDateFull(iso)}</small><strong>${title}</strong><span>${theme}</span></div>
-        <div class="today-local-time"><b>${localTime}</b><em>${zone === "America/Chicago" ? "Chicago" : zone === "America/Santo_Domingo" ? "Bayahibe" : "Ovest USA"}</em></div>
+        <div><small>${forcedDate ? "OGGI · MODALITÀ TEST" : "OGGI"} · ${fmtDateFull(iso)}</small><strong>${day.title}</strong><span>${day.theme || ""}</span></div>
+        <div class="today-live-stack">
+          <div class="today-local-time"><b>${localTime}</b><em>${zone === "America/Chicago" ? "Chicago" : zone === "America/Santo_Domingo" ? "Bayahibe" : (iso==="2026-10-28" ? "Grand Canyon / Page" : "Ovest USA")}</em></div>
+          <div class="today-weather city-live-loading" id="today-live-weather"><span>🌡️</span><strong>--°C</strong></div>
+        </div>
       </div>
-      <div class="today-mini-timeline">
-        ${items.map(item => `<div class="today-mini-item"><span>${item.time || ""}</span><b>${item.icon || "•"}</b><p><strong>${item.title}</strong>${item.note ? `<small>${item.note}</small>` : ""}</p></div>`).join("")}
-      </div>
-      ${isTransfer ? `<div class="today-transfer-note">La card unisce automaticamente partenza e arrivo della stessa giornata.</div>` : ""}
-      <button type="button" class="today-open-program" data-open-today-leg="${openLegId}">Apri il programma di oggi ›</button>
+      <div class="today-program">${programDayHtml(day)}</div>
+      <button type="button" class="today-open-program" data-open-today-leg="${openLegId}" data-open-today-date="${iso}">Apri nel Programma consigliato ›</button>
     </div>`;
 }
 
 function bindTodayCard(root=document){
-  $$('[data-open-today-leg]', root).forEach(btn => btn.addEventListener("click", () => openCity(btn.dataset.openTodayLeg)));
+  $$('[data-open-today-leg]', root).forEach(btn => btn.addEventListener("click", () => {
+    const legId=btn.dataset.openTodayLeg, date=btn.dataset.openTodayDate;
+    sessionStorage.setItem("lf-open-program-date",date||"");
+    openCity(legId);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      const program=document.querySelector(".accordion-program");
+      if(program) program.open=true;
+      const target=date ? document.querySelector(`.program-day[data-program-date="${CSS.escape(date)}"]`) : null;
+      if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+    }));
+  }));
 }
 
 function startTodayHomeWatcher(){
@@ -493,7 +500,8 @@ function renderHome(){
       <span class="pretrip-card-overlay"></span>
       <span class="pretrip-card-copy"><small>Prima di partire</small><strong>Checklist pre-partenza</strong><em>Preparativi e valigia, senza dimenticare nulla</em></span>
       <span class="pretrip-card-arrow">›</span>
-    </button>` : todayCardHtml()}
+    </button>
+    ${todayCardHtml("2026-10-28")}` : todayCardHtml()}
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
@@ -503,10 +511,38 @@ function renderHome(){
   bindCityCardClicks(el);
   $("#open-checklist")?.addEventListener("click", () => openChecklist());
   bindTodayCard(el);
+  refreshTodayWeather(checklistVisible() ? "2026-10-28" : null);
   startTodayHomeWatcher();
   bindPrivateAreaEntry();
   updatePrivateAreaEntry();
   startHomeClocks();
+}
+
+
+function programDayHtml(day){
+  return `
+    <div class="program-day ${day.special ? "program-day-special" : ""}" data-program-date="${day.date}">
+      <div class="program-day-head">
+        <div>
+          <div class="program-date">${fmtDateFull(day.date)}</div>
+          <div class="program-day-title">${day.title}</div>
+          <div class="program-theme">${day.theme || ""}</div>
+        </div>
+        ${day.special ? `<div class="program-special-icon">🎃</div>` : ""}
+      </div>
+      <div class="program-timeline">
+        ${(day.items || []).map(item => `
+          <div class="program-item ${item.kind || "recommended"}">
+            <div class="program-time">${item.time || ""}</div>
+            <div class="program-dot">${item.icon || "•"}</div>
+            <div class="program-copy">
+              <div class="program-item-title">${item.title}</div>
+              <div class="program-note">${item.note || ""}</div>
+              ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
+            </div>
+          </div>`).join("")}
+      </div>
+    </div>`;
 }
 
 function cityCardHtml(leg){
@@ -910,29 +946,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
 
   const programDays = (typeof PROGRAM_GUIDE !== "undefined" && PROGRAM_GUIDE[leg.id]) || [];
   const programHtml = programDays.length ? `
-    ${programDays.map(day => `
-      <div class="program-day ${day.special ? "program-day-special" : ""}">
-        <div class="program-day-head">
-          <div>
-            <div class="program-date">${fmtDateFull(day.date)}</div>
-            <div class="program-day-title">${day.title}</div>
-            <div class="program-theme">${day.theme || ""}</div>
-          </div>
-          ${day.special ? `<div class="program-special-icon">🎃</div>` : ""}
-        </div>
-        <div class="program-timeline">
-          ${(day.items || []).map(item => `
-            <div class="program-item ${item.kind || "recommended"}">
-              <div class="program-time">${item.time || ""}</div>
-              <div class="program-dot">${item.icon || "•"}</div>
-              <div class="program-copy">
-                <div class="program-item-title">${item.title}</div>
-                <div class="program-note">${item.note || ""}</div>
-                ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
-              </div>
-            </div>`).join("")}
-        </div>
-      </div>`).join("")}
+    ${programDays.map(day => programDayHtml(day)).join("")}
   ` : `<div class="empty-note">Programma giornaliero non ancora definito per questa tappa.</div>`;
 
   const renderPlaceCard = (p) => `
@@ -1941,4 +1955,29 @@ if("serviceWorker" in navigator){
       });
     }catch(e){}
   });
+}
+
+
+async function refreshTodayWeather(forcedDate=null){
+  const badge=document.getElementById("today-live-weather");
+  if(!badge)return;
+  let info;
+  if(forcedDate==="2026-10-28"){
+    info={lat:36.0544,lon:-112.1401,tz:"America/Phoenix",label:"Grand Canyon South Rim"};
+  }else{
+    const state=todayTripState(new Date(),forcedDate);
+    const accent=state?.program?.leg?.accent;
+    info=CITY_LIVE[accent];
+  }
+  if(!info)return;
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${info.lat}&longitude=${info.lon}&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timezone=${encodeURIComponent(info.tz)}`;
+    const response=await fetch(url,{headers:{"Accept":"application/json"}});
+    if(!response.ok)throw new Error("Meteo non disponibile");
+    const payload=(await response.json()).current;
+    if(payload){
+      badge.innerHTML=`<span>${weatherIcon(Number(payload.weather_code),Number(payload.is_day)===1)}</span><strong>${Math.round(Number(payload.temperature_2m))}°C</strong>`;
+      badge.classList.remove("city-live-loading");
+    }
+  }catch(e){}
 }

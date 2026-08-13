@@ -2605,3 +2605,30 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   opacity:.42;
   color:var(--th-text,#152238);
 }
+
+
+/* ==========================================================
+   v2.3.4 — laboratorio schermata OGGI
+   ========================================================== */
+.today-card-full{margin:14px 0 18px}
+.today-card-full .today-card-head{align-items:flex-start}
+.today-live-stack{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.today-weather{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 8px;border-radius:999px;
+  background:rgba(255,255,255,.78);
+  font-size:11px;white-space:nowrap;
+}
+.today-weather strong{font-size:12px}
+.today-program .program-day{
+  margin:10px 0 0;
+  box-shadow:none;
+}
+.today-program .program-day-head{display:none}
+.today-program .program-timeline{margin-top:0}
+.today-card-full .today-open-program{margin-top:10px}
+.program-day[data-program-date]{scroll-margin-top:90px}
+@media(max-width:430px){
+  .today-card-full .today-card-head{gap:8px}
+  .today-live-stack{min-width:88px}
+}

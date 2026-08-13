@@ -273,11 +273,18 @@ const PROGRAM_GUIDE = {
   ],
   page: [
     { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
-      { time:"06:30", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
-      { time:"11:00 circa", kind:"recommended", icon:"🏜️", title:"Grand Canyon South Rim", note:"Mather Point e Visitor Center: niente trekking lungo, puntiamo sui panorami.", mapsQuery:"Mather Point Grand Canyon" },
-      { time:"14:00", kind:"recommended", icon:"🛣️", title:"Desert View Drive", note:"Viewpoint selezionati lungo la strada nella direzione di Page.", mapsQuery:"Desert View Drive Grand Canyon" },
-      { time:"15:30", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima sosta panoramica prima di uscire dal parco verso est.", mapsQuery:"Desert View Watchtower" },
-      { time:"18:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo a Page", note:"Check-in, cena e riposo." }
+      { time:"06:30", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Partenza presto verso il South Rim. Foto al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Grand Canyon Visitor Center South Rim" },
+      { time:"11:00 circa", kind:"recommended", icon:"🅿️", title:"Visitor Center · parcheggio", note:"Lasciate l'auto nei parcheggi 1–4 del Visitor Center. Da qui Mather Point è a circa 5 minuti a piedi.", mapsQuery:"Grand Canyon Visitor Center" },
+      { time:"11:15", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon" },
+      { time:"12:00", kind:"recommended", icon:"🥪", title:"Pausa pranzo veloce", note:"Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive." },
+      { time:"12:45", kind:"recommended", icon:"🚗", title:"Inizio Desert View Drive", note:"Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.", mapsQuery:"Desert View Drive Grand Canyon" },
+      { time:"13:05", kind:"recommended", icon:"📍", title:"Pipe Creek Vista", note:"Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.", mapsQuery:"Pipe Creek Vista Grand Canyon" },
+      { time:"13:35", kind:"recommended", icon:"📍", title:"Grandview Point", note:"Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.", mapsQuery:"Grandview Point Grand Canyon" },
+      { time:"14:15", kind:"recommended", icon:"📍", title:"Moran Point", note:"Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.", mapsQuery:"Moran Point Grand Canyon" },
+      { time:"14:50", kind:"recommended", icon:"📍", title:"Navajo Point", note:"È il viewpoint più alto del South Rim e offre già una splendida vista della Desert View Watchtower.", mapsQuery:"Navajo Point Grand Canyon" },
+      { time:"15:15", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.", mapsQuery:"Desert View Watchtower" },
+      { time:"16:00 circa", kind:"recommended", icon:"🚗", title:"Partenza per Page", note:"Uscita dall'East Entrance e proseguimento verso Page. Lipan Point non è inserito: il NPS ne prevede la chiusura fino al 23 dicembre 2026.", mapsQuery:"Lake Powell Resort Page Arizona" },
+      { time:"18:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo a Page", note:"Ingresso nell'area Glen Canyon/Lake Powell, check-in al Lake Powell Resort, cena e riposo.", mapsQuery:"Lake Powell Resort Page Arizona" }
     ]},
     { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
       { time:"08:30", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Circa 1½ ore complessive tra parcheggio, passeggiata e foto.", mapsQuery:"Horseshoe Bend Page Arizona" },
