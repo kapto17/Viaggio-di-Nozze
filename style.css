@@ -2267,3 +2267,42 @@ nav.tabbar button svg{
   stroke-linecap:round;
   stroke-linejoin:round;
 }
+
+
+/* ==========================================================
+   v2.2.3 — Dove mangiare + prezzi + dove provare i piatti
+   ========================================================== */
+.restaurant-group + .restaurant-group{margin-top:20px}
+.restaurant-group-head{
+  display:flex;align-items:center;gap:10px;
+  margin:4px 2px 10px;padding:9px 10px;
+  border-radius:13px;background:rgba(255,255,255,.58);
+}
+.restaurant-group-head>span{font-size:20px}
+.restaurant-group-head strong{display:block;font-size:14px}
+.restaurant-group-head small{display:block;margin-top:2px;font-size:11px;opacity:.68}
+.restaurant-title-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.price-band{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:3px 7px;border-radius:999px;
+  font-size:11px;font-weight:900;letter-spacing:.04em;
+  background:rgba(182,138,70,.13);color:#8b681f;
+  border:1px solid rgba(182,138,70,.22);
+  white-space:nowrap;
+}
+.restaurant-detail-price{margin-left:auto}
+.food-where{margin-top:18px}
+.food-where-title{font-size:13px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px}
+.food-where-card{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px;margin:8px 0;border-radius:15px;
+  background:#fff;border:1px solid rgba(21,34,56,.10);
+}
+.food-where-copy{min-width:0}
+.food-where-name{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-weight:850;font-size:14px}
+.food-where-note{margin-top:4px;font-size:12px;line-height:1.4;opacity:.72}
+.food-where-card .mapbtn{flex:0 0 auto}
+@media(max-width:390px){
+  .food-where-card{align-items:flex-start;flex-direction:column}
+  .food-where-card .mapbtn{align-self:flex-end}
+}

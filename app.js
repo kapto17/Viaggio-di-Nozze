@@ -950,12 +950,17 @@ function openCity(legId, pushHistory=true, restoreState=null){
     ...mustPlaces.map(renderPlaceCard)
   ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
   const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
-  const restaurantsHtml = (leg.restaurants||[]).map(r => `
+  const renderRestaurantCard = (r) => `
     <div class="ticket lf-ticket restaurant-ticket" data-restaurant-name="${r.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${r.name}">
-      <div class="stub-top"><div><div class="stitle">${r.name}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
+      <div class="stub-top"><div><div class="restaurant-title-line"><div class="stitle">${r.name}</div>${r.price ? `<span class="price-band" title="Fascia di prezzo indicativa">${r.price}</span>` : ""}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
       <div class="stub-bottom"><span class="restaurant-more">Dettagli e recensioni ›</span><a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(r.mapsQuery||r.name)}">Apri Maps</a></div>
-    </div>
-  `).join("") || `<div class="empty-note">Aggiungeremo qui i ristoranti selezionati a ${leg.city}.</div>`;
+    </div>`;
+  const quickRestaurants = (leg.restaurants||[]).filter(r => r.meal === "quick");
+  const seriousRestaurants = (leg.restaurants||[]).filter(r => r.meal !== "quick");
+  const restaurantsHtml = (leg.restaurants||[]).length ? `
+    ${quickRestaurants.length ? `<div class="restaurant-group"><div class="restaurant-group-head"><span>⚡</span><div><strong>Pasto veloce</strong><small>Street food, panini e soste rapide</small></div></div>${quickRestaurants.map(renderRestaurantCard).join("")}</div>` : ""}
+    ${seriousRestaurants.length ? `<div class="restaurant-group"><div class="restaurant-group-head"><span>🍽️</span><div><strong>Pasto più serio</strong><small>Ristoranti da godersi con più calma, soprattutto a cena</small></div></div>${seriousRestaurants.map(renderRestaurantCard).join("")}</div>` : ""}
+  ` : "";
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
     `).join("") : ""}
@@ -1025,7 +1030,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
         <div class="food-section-arrow">›</div>
       </button>` : `<div class="empty-note">Aggiungeremo qui le specialità locali.</div>`}
 
-    ${accordion("Dove mangiare", restaurantsHtml, {icon:"🍽️", count:(leg.restaurants||[]).length})}
+    ${(leg.restaurants||[]).length ? accordion("Dove mangiare", restaurantsHtml, {icon:"🍽️", count:(leg.restaurants||[]).length}) : ""}
 
     <div class="section-title">Biglietti</div>
     ${ticketsHtml}
@@ -1609,7 +1614,7 @@ function openRestaurantDetail(legId, restaurantName, pushHistory=true){
       </div>
     </div>
     <div class="restaurant-detail-body">
-      ${restaurant.type ? `<div class="restaurant-detail-type"><span>${restaurant.typeIcon || "🍽️"}</span><strong>${restaurant.type}</strong></div>` : ""}
+      ${restaurant.type || restaurant.price ? `<div class="restaurant-detail-type"><span>${restaurant.typeIcon || "🍽️"}</span><strong>${restaurant.type || "Ristorante"}</strong>${restaurant.price ? `<b class="price-band restaurant-detail-price">${restaurant.price}</b>` : ""}</div>` : ""}
       <p>${description}</p>
       <div class="restaurant-live-info">
         <div class="restaurant-live-icon">🔎</div>
@@ -1644,6 +1649,18 @@ function openFoodDetail(legId, foodId, pushHistory=true){
     </div>
     <div class="food-detail-body">
       <p>${selected.description || selected.short || ""}</p>
+      ${selected.whereToFind && selected.whereToFind.length ? `
+        <div class="food-where">
+          <div class="food-where-title">📍 Dove provarlo</div>
+          ${selected.whereToFind.map(place => `
+            <div class="food-where-card">
+              <div class="food-where-copy">
+                <div class="food-where-name">${place.name}${place.price ? `<span class="price-band">${place.price}</span>` : ""}</div>
+                <div class="food-where-note">${place.note || ""}</div>
+              </div>
+              <a class="mapbtn" target="_blank" rel="noopener" href="${mapsUrl(place.mapsQuery || place.name + " " + leg.city)}">Apri Maps</a>
+            </div>`).join("")}
+        </div>` : ""}
       ${selected.photoCredit ? `<div class="photo-credit">Foto: ${selected.photoCredit}</div>` : ""}
     </div>
     ${leg.foods.length > 1 ? `

@@ -27,15 +27,17 @@ const TRIP = {
         { priority: "discover", name: "Santa Cruz", lf: true, note: "Città costiera a sud di San Francisco. Inserita dalla lista di Fortuna: da valutare come escursione dedicata perché non è sul vostro trasferimento in aereo verso Los Angeles.", mapsQuery: "Santa Cruz California" }
       ],
       foods: [
-        { id: "sf-clam", name: "Clam Chowder nel pane", short: "Zuppa cremosa di vongole servita nella pagnotta di sourdough.", description: "Una delle specialità più associate al waterfront di San Francisco: clam chowder cremosa con patate e vongole, spesso servita dentro una pagnotta di pane sourdough.", image: "./assets/food/sf-clam-chowder.jpg", photoCredit: "Prayitno / Wikimedia Commons · CC BY 2.0" },
-        { id: "sf-burrito", name: "Mission Burrito", short: "Burrito grande e ricco nato nel Mission District.", description: "Burrito in stile Mission: tortilla di farina molto farcita con riso, fagioli, carne e condimenti. È uno dei cibi simbolo della cultura gastronomica di San Francisco.", image: "./assets/food/sf-mission-burrito.jpg", photoCredit: "Ryan Michael / Wikimedia Commons · CC BY-SA 2.0" }
+        { id: "sf-clam", name: "Clam Chowder nel pane", short: "Zuppa cremosa di vongole servita nella pagnotta di sourdough.", description: "Una delle specialità più associate al waterfront di San Francisco: clam chowder cremosa con patate e vongole, spesso servita dentro una pagnotta di pane sourdough.", whereToFind: [{ name: "Boudin Bakery · Fisherman's Wharf", note: "Iconico per clam chowder servita nel sourdough bread bowl.", price: "$$", mapsQuery: "Boudin Bakery 160 Jefferson St San Francisco" }, { name: "Scoma's Restaurant", note: "Versione più da ristorante, sul Fisherman's Wharf.", price: "$$$", mapsQuery: "Scoma's Restaurant San Francisco" }], image: "./assets/food/sf-clam-chowder.jpg", photoCredit: "Prayitno / Wikimedia Commons · CC BY 2.0" },
+        { id: "sf-burrito", name: "Mission Burrito", short: "Burrito grande e ricco nato nel Mission District.", description: "Burrito in stile Mission: tortilla di farina molto farcita con riso, fagioli, carne e condimenti. È uno dei cibi simbolo della cultura gastronomica di San Francisco.", whereToFind: [{ name: "La Taqueria", note: "Una delle taquerias simbolo del Mission District.", price: "$", mapsQuery: "La Taqueria 2889 Mission St San Francisco" }], image: "./assets/food/sf-mission-burrito.jpg", photoCredit: "Ryan Michael / Wikimedia Commons · CC BY-SA 2.0" }
       ],
       restaurants: [
-        { name: "The Cheesecake Factory", lf: true, type: "Dolci · cucina americana", typeIcon: "🍰", note: "Segnato da Fortuna · Union Square, 251 Geary St.", mapsQuery: "The Cheesecake Factory 251 Geary St San Francisco" },
-        { name: "Scoma's Restaurant", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce a Fisherman's Wharf.", mapsQuery: "Scoma's Restaurant San Francisco" },
-        { name: "Fog Harbor Fish House", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce al Pier 39.", mapsQuery: "Fog Harbor Fish House Pier 39 San Francisco" },
-        { name: "Beach Chalet Brewery & Restaurant", lf: true, type: "Cucina americana · birreria", typeIcon: "🍺", note: "Segnato da Fortuna · sul lato oceanico del Golden Gate Park, con vista sul Pacifico.", mapsQuery: "Beach Chalet Brewery & Restaurant San Francisco" },
-        { name: "The Crow's Nest", lf: true, type: "Pesce · cucina americana", typeIcon: "🐟", note: "Segnato da Fortuna · Santa Cruz Harbor. Fuori San Francisco: da abbinare solo se decidete di fare l'escursione a Santa Cruz.", mapsQuery: "The Crow's Nest Santa Cruz California" }
+        { name: "Boudin Bakery · Fisherman's Wharf", meal: "quick", price: "$$", type: "Sourdough · clam chowder", typeIcon: "🥣", note: "Classico facile sul waterfront: perfetto per provare clam chowder nella pagnotta di sourdough.", mapsQuery: "Boudin Bakery 160 Jefferson St San Francisco" },
+        { name: "La Taqueria", meal: "quick", price: "$", type: "Mission burrito · tacos", typeIcon: "🌯", note: "Storica taqueria del Mission District: scelta pratica per provare il lato più street di San Francisco.", mapsQuery: "La Taqueria 2889 Mission St San Francisco" },
+        { name: "The Cheesecake Factory", meal: "quick", price: "$$", lf: true, type: "Dolci · cucina americana", typeIcon: "🍰", note: "Segnato da Fortuna · Union Square, all'ultimo piano di Macy's. Buono anche per cheesecake + vista.", mapsQuery: "The Cheesecake Factory 251 Geary St San Francisco" },
+        { name: "Scoma's Restaurant", meal: "serious", price: "$$$", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · storico ristorante di pesce a Fisherman's Wharf. Ottimo candidato per cioppino e chowder.", mapsQuery: "Scoma's Restaurant San Francisco" },
+        { name: "Fog Harbor Fish House", meal: "serious", price: "$$$", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · Pier 39, pesce e vista sulla baia.", mapsQuery: "Fog Harbor Fish House Pier 39 San Francisco" },
+        { name: "Beach Chalet Brewery & Restaurant", meal: "serious", price: "$$", lf: true, type: "Cucina americana · birreria", typeIcon: "🍺", note: "Segnato da Fortuna · sul lato oceanico del Golden Gate Park, con vista sul Pacifico.", mapsQuery: "Beach Chalet Brewery & Restaurant San Francisco" },
+        { name: "The Crow's Nest", meal: "serious", price: "$$", lf: true, type: "Pesce · cucina americana", typeIcon: "🐟", note: "Segnato da Fortuna · Santa Cruz Harbor. Solo se decidete di fare l'escursione a Santa Cruz.", mapsQuery: "The Crow's Nest Santa Cruz California" }
       ], days: [],
       tickets: [{ name: "Alcatraz Night Tour", note: "22 ottobre 2026 · 17:55 · prenotazione confermata. Documento/QR da aggiungere quando disponibile.", status: "Prenotato" }]
     },
@@ -61,12 +63,16 @@ const TRIP = {
         { priority: "discover", name: "Santa Barbara", lf: true, note: "Città costiera a nord-ovest di Los Angeles, inserita dalla lista di Fortuna. Richiede una mezza/giornata dedicata e va valutata rispetto ai 4 giorni disponibili.", mapsQuery: "Santa Barbara California" }
       ],
       foods: [
-        { id: "la-tacos", name: "Tacos al pastor", short: "Street food messicano, parte essenziale della scena gastronomica di LA.", description: "Tortillas con carne al pastor arrostita sul trompo, cipolla, coriandolo, salsa e spesso ananas. A Los Angeles i taco truck e le taquerias sono una parte fondamentale della cucina cittadina.", image: "./assets/food/la-tacos-al-pastor.jpg", photoCredit: "T.Tseng / Wikimedia Commons · CC BY 2.0" },
-        { id: "la-frenchdip", name: "French Dip Sandwich", short: "Panino con roast beef servito con il suo jus.", description: "Panino caldo ripieno di carne arrosto, tradizionalmente accompagnato da un jus in cui intingerlo. Los Angeles rivendica la nascita di questo sandwich all'inizio del Novecento.", image: "./assets/food/la-french-dip.jpg", photoCredit: "Jpatokal / Wikimedia Commons · CC BY-SA" }
+        { id: "la-tacos", name: "Tacos al pastor", short: "Street food messicano, parte essenziale della scena gastronomica di LA.", description: "Tortillas con carne al pastor arrostita sul trompo, cipolla, coriandolo, salsa e spesso ananas. A Los Angeles i taco truck e le taquerias sono una parte fondamentale della cucina cittadina.", whereToFind: [{ name: "Guelaguetza", note: "Per una tappa messicana più strutturata e molto legata alla cultura gastronomica di LA.", price: "$$", mapsQuery: "Guelaguetza Los Angeles" }], image: "./assets/food/la-tacos-al-pastor.jpg", photoCredit: "T.Tseng / Wikimedia Commons · CC BY 2.0" },
+        { id: "la-frenchdip", name: "French Dip Sandwich", short: "Panino con roast beef servito con il suo jus.", description: "Panino caldo ripieno di carne arrosto, tradizionalmente accompagnato da un jus in cui intingerlo. Los Angeles rivendica la nascita di questo sandwich all'inizio del Novecento.", whereToFind: [{ name: "Philippe The Original", note: "Dal 1908; rivendica la nascita del French Dip ed è ancora il posto storico dove provarlo.", price: "$", mapsQuery: "Philippe The Original Los Angeles" }], image: "./assets/food/la-french-dip.jpg", photoCredit: "Jpatokal / Wikimedia Commons · CC BY-SA" }
       ],
       restaurants: [
-        { name: "Water Grill Santa Monica", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · ristorante di pesce su Ocean Avenue, vicino al Santa Monica Pier.", mapsQuery: "Water Grill Santa Monica 1401 Ocean Ave" },
-        { name: "The Little Door", lf: true, type: "Mediterraneo · cena", typeIcon: "🍷", note: "Segnato da Fortuna · ristorante su W 3rd Street a Los Angeles.", mapsQuery: "The Little Door 8164 W 3rd St Los Angeles" }
+        { name: "Philippe The Original", meal: "quick", price: "$", type: "French Dip · panini", typeIcon: "🥪", note: "Dal 1908. È uno dei due locali storicamente legati alla nascita del French Dip; oggi è la scelta storica più semplice da provare.", mapsQuery: "Philippe The Original 1001 N Alameda St Los Angeles" },
+        { name: "In-N-Out Burger · Hollywood", meal: "quick", price: "$", type: "Burger californiano", typeIcon: "🍔", note: "Un classico della California per un pasto rapido ed economico tra una visita e l'altra.", mapsQuery: "In-N-Out Burger 7009 Sunset Blvd Los Angeles" },
+        { name: "Guelaguetza", meal: "quick", price: "$$", type: "Oaxacan · messicano", typeIcon: "🌮", note: "Uno dei nomi più noti per la cucina di Oaxaca a Los Angeles: mole, tlayudas e sapori messicani.", mapsQuery: "Guelaguetza 3014 W Olympic Blvd Los Angeles" },
+        { name: "Water Grill Santa Monica", meal: "serious", price: "$$$", lf: true, type: "Pesce", typeIcon: "🐟", note: "Segnato da Fortuna · Ocean Avenue, vicino al Santa Monica Pier. Cena di pesce più completa.", mapsQuery: "Water Grill Santa Monica 1401 Ocean Ave" },
+        { name: "The Little Door", meal: "serious", price: "$$$$", lf: true, type: "Mediterraneo · cena", typeIcon: "🍷", note: "Segnato da Fortuna · atmosfera romantica, più adatto a una cena con calma.", mapsQuery: "The Little Door 8164 W 3rd St Los Angeles" },
+        { name: "Musso & Frank Grill", meal: "serious", price: "$$$$", type: "Old Hollywood · steakhouse", typeIcon: "🥩", note: "Istituzione di Hollywood dal fascino storico: da scegliere se volete una vera cena Old Hollywood.", mapsQuery: "Musso & Frank Grill 6667 Hollywood Blvd Los Angeles" }
       ], days: [], tickets: []
     },
 
@@ -81,10 +87,18 @@ const TRIP = {
         { priority: "must", name: "Welcome to Fabulous Las Vegas Sign", note: "La foto simbolo della città.", mapsQuery: "Welcome to Fabulous Las Vegas Sign" }
       ],
       foods: [
-        { id: "vegas-shrimp", name: "Shrimp Cocktail", short: "Un grande classico della vecchia Las Vegas.", description: "Cocktail di gamberi freddi con salsa cocktail: semplice, rétro e storicamente legato ai casinò e alla vecchia cultura dei menu di Las Vegas.", image: "./assets/food/vegas-shrimp-cocktail.jpg", photoCredit: "Didriks / Wikimedia Commons · CC BY 2.0" },
-        { id: "vegas-primerib", name: "Prime Rib", short: "Arrosto di manzo spesso associato alle steakhouse e ai casinò classici.", description: "Taglio di manzo arrostito lentamente, servito spesso al sangue o media cottura. È uno dei piatti più rappresentativi della tradizione da steakhouse di Las Vegas.", image: "./assets/food/vegas-prime-rib.jpg", photoCredit: "Steven Miller / Wikimedia Commons · CC BY 2.0" }
+        { id: "vegas-shrimp", name: "Shrimp Cocktail", short: "Un grande classico della vecchia Las Vegas.", description: "Cocktail di gamberi freddi con salsa cocktail: semplice, rétro e storicamente legato ai casinò e alla vecchia cultura dei menu di Las Vegas.", whereToFind: [{ name: "Golden Gate Hotel & Casino", note: "Il shrimp cocktail è legato alla vecchia Las Vegas; Golden Gate è uno dei nomi storici associati a questa tradizione.", price: "$", mapsQuery: "Golden Gate Hotel Casino Las Vegas" }], image: "./assets/food/vegas-shrimp-cocktail.jpg", photoCredit: "Didriks / Wikimedia Commons · CC BY 2.0" },
+        { id: "vegas-primerib", name: "Prime Rib", short: "Arrosto di manzo spesso associato alle steakhouse e ai casinò classici.", description: "Taglio di manzo arrostito lentamente, servito spesso al sangue o media cottura. È uno dei piatti più rappresentativi della tradizione da steakhouse di Las Vegas.", whereToFind: [{ name: "Golden Steer Steakhouse", note: "Steakhouse old-school: scelta perfetta per vivere il lato classico della prime rib e della carne a Las Vegas.", price: "$$$$", mapsQuery: "Golden Steer Steakhouse Las Vegas" }], image: "./assets/food/vegas-prime-rib.jpg", photoCredit: "Steven Miller / Wikimedia Commons · CC BY 2.0" }
       ],
-      activities: [], restaurants: [], days: [], tickets: []
+      activities: [], restaurants: [
+        { name: "Tacos El Gordo", meal: "quick", price: "$", type: "Tacos · street food", typeIcon: "🌮", note: "Uno dei nomi più popolari della Strip per tacos in stile Tijuana: veloce, informale e relativamente economico.", mapsQuery: "Tacos El Gordo 3041 S Las Vegas Blvd" },
+        { name: "Secret Pizza", meal: "quick", price: "$", type: "Pizza al taglio", typeIcon: "🍕", note: "Pizzeria nascosta al Cosmopolitan: perfetta per una fetta veloce anche tardi.", mapsQuery: "Secret Pizza Cosmopolitan Las Vegas" },
+        { name: "Hash House A Go Go · LINQ", meal: "quick", price: "$$", type: "Americano · porzioni enormi", typeIcon: "🍳", note: "Piatti americani esagerati e porzioni gigantesche: più esperienza Vegas che cena elegante.", mapsQuery: "Hash House A Go Go LINQ Las Vegas" },
+        { name: "Mon Ami Gabi · Paris Las Vegas", meal: "serious", price: "$$$", type: "Bistrot francese", typeIcon: "🍷", note: "Comodissimo perché è nel vostro hotel. Patio sulla Strip con vista verso le fontane del Bellagio.", mapsQuery: "Mon Ami Gabi Paris Las Vegas" },
+        { name: "Golden Steer Steakhouse", meal: "serious", price: "$$$$", type: "Steakhouse storica", typeIcon: "🥩", note: "Una delle steakhouse classiche più iconiche di Las Vegas: atmosfera old-school e conto importante.", mapsQuery: "Golden Steer Steakhouse Las Vegas" },
+        { name: "Yardbird", meal: "serious", price: "$$$", type: "Southern · pollo", typeIcon: "🍗", note: "Al Venetian: cucina del Sud USA, fried chicken e piatti sostanziosi. Più rilassato di una steakhouse di lusso.", mapsQuery: "Yardbird Venetian Las Vegas" },
+        { name: "Eiffel Tower Restaurant", meal: "serious", price: "$$$$", type: "Francese · vista", typeIcon: "🍷", note: "Nel Paris Las Vegas: cena panoramica e romantica, da considerare solo se volete concedervi una serata costosa.", mapsQuery: "Eiffel Tower Restaurant Paris Las Vegas" }
+      ], days: [], tickets: []
     },
 
     {
@@ -103,10 +117,15 @@ const TRIP = {
         { priority: "must", name: "Horseshoe Bend", note: "Belvedere spettacolare sul Colorado, a pochi minuti da Page.", mapsQuery: "Horseshoe Bend Page Arizona" }
       ],
       foods: [
-        { id: "page-navajotaco", name: "Navajo Taco", short: "Frybread con fagioli, carne e condimenti.", description: "Una preparazione regionale basata sul frybread, normalmente coperto con fagioli, carne, lattuga, pomodoro, formaggio e altri condimenti. È molto diffuso nel Southwest e nelle comunità native.", image: "./assets/food/page-frybread.jpg", photoCredit: "Wikimedia Commons · Frybread / Navajo cuisine" },
-        { id: "page-frybread", name: "Frybread", short: "Pane fritto morbido e croccante, dolce o salato.", description: "Impasto semplice fritto fino a diventare dorato e gonfio. Può essere mangiato da solo, con miele o zucchero, oppure diventare la base del Navajo taco.", image: "./assets/food/page-frybread.jpg", photoCredit: "Wikimedia Commons" }
+        { id: "page-navajotaco", name: "Navajo Taco", short: "Frybread con fagioli, carne e condimenti.", description: "Una preparazione regionale basata sul frybread, normalmente coperto con fagioli, carne, lattuga, pomodoro, formaggio e altri condimenti. È molto diffuso nel Southwest e nelle comunità native.", whereToFind: [{ name: "Cameron Trading Post", note: "Storico stop Navajo sulla US-89, famoso per il Navajo Taco; utile soprattutto lungo il road trip.", price: "$$", mapsQuery: "Cameron Trading Post Arizona" }], image: "./assets/food/page-frybread.jpg", photoCredit: "Wikimedia Commons · Frybread / Navajo cuisine" },
+        { id: "page-frybread", name: "Frybread", short: "Pane fritto morbido e croccante, dolce o salato.", description: "Impasto semplice fritto fino a diventare dorato e gonfio. Può essere mangiato da solo, con miele o zucchero, oppure diventare la base del Navajo taco.", whereToFind: [{ name: "Cameron Trading Post", note: "Uno dei posti più classici della zona per provare frybread e Navajo Taco.", price: "$$", mapsQuery: "Cameron Trading Post Arizona" }], image: "./assets/food/page-frybread.jpg", photoCredit: "Wikimedia Commons" }
       ],
-      restaurants: [], days: [], tickets: []
+      restaurants: [
+        { name: "BirdHouse", meal: "quick", price: "$", type: "Fried chicken", typeIcon: "🍗", note: "Molto apprezzato a Page, semplice e veloce: ideale dopo una giornata tra canyon e strada.", mapsQuery: "BirdHouse 707 N Navajo Dr Page AZ" },
+        { name: "Big John's Texas BBQ", meal: "quick", price: "$$", type: "Barbecue", typeIcon: "🥩", note: "BBQ informale con brisket, ribs e porzioni abbondanti. Uno dei nomi più citati a Page.", mapsQuery: "Big John's Texas BBQ Page Arizona" },
+        { name: "El Tapatio", meal: "quick", price: "$$", type: "Messicano", typeIcon: "🌮", note: "Messicano molto frequentato: carne asada e piatti sostanziosi, comodo senza perdere troppo tempo.", mapsQuery: "El Tapatio Page Arizona" },
+        { name: "Sunset 89", meal: "serious", price: "$$", type: "Americano · island fusion", typeIcon: "🍽️", note: "Una scelta più tranquilla per sedersi a cena a Page, con menu più ampio rispetto ai fast casual.", mapsQuery: "Sunset 89 Page Arizona" }
+      ], days: [], tickets: []
     },
 
     {
@@ -123,10 +142,18 @@ const TRIP = {
         { priority: "discover", name: "The Venetian & Grand Canal", note: "Interni e canali tra i più scenografici della Strip.", mapsQuery: "The Venetian Las Vegas" }
       ],
       foods: [
-        { id: "vegas2-shrimp", name: "Shrimp Cocktail", short: "Un grande classico della vecchia Las Vegas.", description: "Cocktail di gamberi freddi con salsa cocktail: semplice, rétro e storicamente legato ai casinò e alla vecchia cultura dei menu di Las Vegas.", image: "./assets/food/vegas-shrimp-cocktail.jpg", photoCredit: "Didriks / Wikimedia Commons · CC BY 2.0" },
-        { id: "vegas2-primerib", name: "Prime Rib", short: "Arrosto di manzo da steakhouse classica.", description: "Taglio di manzo arrostito lentamente, uno dei piatti più rappresentativi delle steakhouse della città.", image: "./assets/food/vegas-prime-rib.jpg", photoCredit: "Steven Miller / Wikimedia Commons · CC BY 2.0" }
+        { id: "vegas2-shrimp", name: "Shrimp Cocktail", short: "Un grande classico della vecchia Las Vegas.", description: "Cocktail di gamberi freddi con salsa cocktail: semplice, rétro e storicamente legato ai casinò e alla vecchia cultura dei menu di Las Vegas.", whereToFind: [{ name: "Golden Gate Hotel & Casino", note: "Il shrimp cocktail è legato alla vecchia Las Vegas; Golden Gate è uno dei nomi storici associati a questa tradizione.", price: "$", mapsQuery: "Golden Gate Hotel Casino Las Vegas" }], image: "./assets/food/vegas-shrimp-cocktail.jpg", photoCredit: "Didriks / Wikimedia Commons · CC BY 2.0" },
+        { id: "vegas2-primerib", name: "Prime Rib", short: "Arrosto di manzo da steakhouse classica.", description: "Taglio di manzo arrostito lentamente, uno dei piatti più rappresentativi delle steakhouse della città.", whereToFind: [{ name: "Golden Steer Steakhouse", note: "Steakhouse old-school: scelta perfetta per vivere il lato classico della prime rib e della carne a Las Vegas.", price: "$$$$", mapsQuery: "Golden Steer Steakhouse Las Vegas" }], image: "./assets/food/vegas-prime-rib.jpg", photoCredit: "Steven Miller / Wikimedia Commons · CC BY 2.0" }
       ],
-      activities: [], restaurants: [], days: [], tickets: []
+      activities: [], restaurants: [
+        { name: "Tacos El Gordo", meal: "quick", price: "$", type: "Tacos · street food", typeIcon: "🌮", note: "Uno dei nomi più popolari della Strip per tacos in stile Tijuana: veloce, informale e relativamente economico.", mapsQuery: "Tacos El Gordo 3041 S Las Vegas Blvd" },
+        { name: "Secret Pizza", meal: "quick", price: "$", type: "Pizza al taglio", typeIcon: "🍕", note: "Pizzeria nascosta al Cosmopolitan: perfetta per una fetta veloce anche tardi.", mapsQuery: "Secret Pizza Cosmopolitan Las Vegas" },
+        { name: "Hash House A Go Go · LINQ", meal: "quick", price: "$$", type: "Americano · porzioni enormi", typeIcon: "🍳", note: "Piatti americani esagerati e porzioni gigantesche: più esperienza Vegas che cena elegante.", mapsQuery: "Hash House A Go Go LINQ Las Vegas" },
+        { name: "Mon Ami Gabi · Paris Las Vegas", meal: "serious", price: "$$$", type: "Bistrot francese", typeIcon: "🍷", note: "Comodissimo perché è nel vostro hotel. Patio sulla Strip con vista verso le fontane del Bellagio.", mapsQuery: "Mon Ami Gabi Paris Las Vegas" },
+        { name: "Golden Steer Steakhouse", meal: "serious", price: "$$$$", type: "Steakhouse storica", typeIcon: "🥩", note: "Una delle steakhouse classiche più iconiche di Las Vegas: atmosfera old-school e conto importante.", mapsQuery: "Golden Steer Steakhouse Las Vegas" },
+        { name: "Yardbird", meal: "serious", price: "$$$", type: "Southern · pollo", typeIcon: "🍗", note: "Al Venetian: cucina del Sud USA, fried chicken e piatti sostanziosi. Più rilassato di una steakhouse di lusso.", mapsQuery: "Yardbird Venetian Las Vegas" },
+        { name: "Eiffel Tower Restaurant", meal: "serious", price: "$$$$", type: "Francese · vista", typeIcon: "🍷", note: "Nel Paris Las Vegas: cena panoramica e romantica, da considerare solo se volete concedervi una serata costosa.", mapsQuery: "Eiffel Tower Restaurant Paris Las Vegas" }
+      ], days: [], tickets: []
     },
 
     {
@@ -143,13 +170,20 @@ const TRIP = {
         { priority: "discover", name: "Skydeck o 360 Chicago", note: "Sceglierei uno dei due osservatori per una vista dall'alto sulla città.", mapsQuery: "360 Chicago Observation Deck" }
       ],
       foods: [
-        { id: "chi-deepdish", name: "Deep-Dish Pizza", short: "La pizza alta e ricchissima simbolo di Chicago.", description: "Pizza cotta in una teglia profonda, con bordo alto, abbondante formaggio e salsa di pomodoro. È probabilmente il piatto più famoso associato alla città.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deep_Dish_Pizza.jpg/960px-Deep_Dish_Pizza.jpg", photoCredit: "Victorgrigas / Wikimedia Commons · CC BY-SA 3.0" },
-        { id: "chi-hotdog", name: "Chicago-Style Hot Dog", short: "Hot dog 'dragged through the garden' e niente ketchup.", description: "Salsiccia di manzo in bun al papavero con senape gialla, cipolla, relish, pomodoro, pickle, peperoncini sport peppers e sale al sedano. La versione tradizionale non prevede ketchup.", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Chicago-style_hot_dog.jpg/960px-Chicago-style_hot_dog.jpg", photoCredit: "Meg Marco / Wikimedia Commons · CC BY-SA 3.0" },
-        { id: "chi-beef", name: "Italian Beef", short: "Panino di manzo affettato sottile con jus e giardiniera.", description: "Panino con manzo cotto e affettato sottilissimo, bagnato nel suo jus e spesso completato con giardiniera piccante o peperoni dolci.", image: "./assets/food/chicago-italian-beef.jpg", photoCredit: "Krista / Wikimedia Commons · CC BY 2.0" }
+        { id: "chi-deepdish", name: "Deep-Dish Pizza", short: "La pizza alta e ricchissima simbolo di Chicago.", description: "Pizza cotta in una teglia profonda, con bordo alto, abbondante formaggio e salsa di pomodoro. È probabilmente il piatto più famoso associato alla città.", whereToFind: [{ name: "Lou Malnati's · River North", note: "Una delle istituzioni cittadine per la deep-dish, comoda rispetto al vostro hotel.", price: "$$", mapsQuery: "Lou Malnati's 439 N Wells St Chicago" }, { name: "Giordano's", note: "Versione stuffed, ancora più ricca e piena di formaggio.", price: "$$", mapsQuery: "Giordano's 130 E Randolph St Chicago" }], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Deep_Dish_Pizza.jpg/960px-Deep_Dish_Pizza.jpg", photoCredit: "Victorgrigas / Wikimedia Commons · CC BY-SA 3.0" },
+        { id: "chi-hotdog", name: "Chicago-Style Hot Dog", short: "Hot dog 'dragged through the garden' e niente ketchup.", description: "Salsiccia di manzo in bun al papavero con senape gialla, cipolla, relish, pomodoro, pickle, peperoncini sport peppers e sale al sedano. La versione tradizionale non prevede ketchup.", whereToFind: [{ name: "Portillo's · River North", note: "Chicago-style hot dog classico e molto comodo dalla Magnificent Mile.", price: "$", mapsQuery: "Portillo's 100 W Ontario St Chicago" }], image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Chicago-style_hot_dog.jpg/960px-Chicago-style_hot_dog.jpg", photoCredit: "Meg Marco / Wikimedia Commons · CC BY-SA 3.0" },
+        { id: "chi-beef", name: "Italian Beef", short: "Panino di manzo affettato sottile con jus e giardiniera.", description: "Panino con manzo cotto e affettato sottilissimo, bagnato nel suo jus e spesso completato con giardiniera piccante o peperoni dolci.", whereToFind: [{ name: "Al's #1 Italian Beef", note: "Tra i nomi storici dell'Italian beef; il marchio fa risalire la ricetta agli anni Trenta.", price: "$", mapsQuery: "Al's #1 Italian Beef 548 N Wells St Chicago" }, { name: "Portillo's · River North", note: "Alternativa comodissima per provarlo insieme al Chicago dog.", price: "$", mapsQuery: "Portillo's 100 W Ontario St Chicago" }], image: "./assets/food/chicago-italian-beef.jpg", photoCredit: "Krista / Wikimedia Commons · CC BY 2.0" }
       ],
       activities: [
         { priority: "must", lf: true, name: "Haunted Halsted Halloween Parade", date: "2026-10-31", time: "18:30–22:00", status: "Confermato 2026", icon: "🎃", note: "Halloween a Chicago: 29ª edizione della parata di Northalsted, gratuita per gli spettatori. Partenza zona Halsted & Aldine.", mapsQuery: "3300 N Halsted St Chicago" }
-      ], restaurants: [], days: [], tickets: []
+      ], restaurants: [
+        { name: "Portillo's · River North", meal: "quick", price: "$", type: "Chicago hot dog · Italian beef", typeIcon: "🌭", note: "Comodissimo dal vostro hotel e perfetto per assaggiare due simboli di Chicago senza perdere tempo.", mapsQuery: "Portillo's 100 W Ontario St Chicago" },
+        { name: "Al's #1 Italian Beef · Wells St", meal: "quick", price: "$", type: "Italian beef", typeIcon: "🥪", note: "Versione storica dell'Italian beef: panino bagnato nel jus, con giardiniera se vi piace piccante.", mapsQuery: "Al's #1 Italian Beef 548 N Wells St Chicago" },
+        { name: "Lou Malnati's · River North", meal: "quick", price: "$$", type: "Deep-dish pizza", typeIcon: "🍕", note: "Una delle scelte classiche per la deep-dish. Considerate i tempi di cottura: non è proprio una pizza 'al volo'.", mapsQuery: "Lou Malnati's 439 N Wells St Chicago" },
+        { name: "Giordano's · Millennium Park", meal: "quick", price: "$$", type: "Stuffed deep-dish", typeIcon: "🍕", note: "Altra istituzione cittadina, utile se volete confrontare lo stile stuffed con la deep-dish classica.", mapsQuery: "Giordano's 130 E Randolph St Chicago" },
+        { name: "The Purple Pig", meal: "serious", price: "$$$", type: "Mediterraneo · piccoli piatti", typeIcon: "🍷", note: "Su Michigan Avenue, quindi molto comodo dal Warwick Allerton. Ottimo per una cena più curata senza formalità eccessiva.", mapsQuery: "The Purple Pig 444 N Michigan Ave Chicago" },
+        { name: "Girl & The Goat", meal: "serious", price: "$$$", type: "Americano moderno", typeIcon: "🍽️", note: "Uno dei ristoranti più noti di West Loop: cena da prenotare se volete dedicare una serata al cibo.", mapsQuery: "Girl & The Goat 809 W Randolph St Chicago" }
+      ], days: [], tickets: []
     },
 
     {
@@ -200,11 +234,6 @@ const PROGRAM_GUIDE = {
       { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
       { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
       { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Al rientro lasciate la serata libera.", mapsQuery:"Alcatraz City Cruises Pier 33" }
-    ]},
-    { date:"2026-10-23", title:"Partenza per Los Angeles", theme:"Check-out, bagagli da stiva e volo SFO → LAX", items:[
-      { time:"07:45", kind:"recommended", icon:"🧳", title:"Check-out e partenza da Hotel Spero", note:"Partite con margine per il traffico del mattino. Obiettivo: essere a SFO intorno alle 09:00, circa 2 ore prima del volo, così avete tempo per consegnare i bagagli da stiva e superare i controlli.", mapsQuery:"San Francisco International Airport" },
-      { time:"09:00 circa", kind:"recommended", icon:"🛫", title:"Arrivo a SFO", note:"Bag drop, controlli TSA e poi gate. Per i voli domestici SFO/TSA raccomandano circa 2 ore di anticipo." },
-      { time:"11:00", kind:"booked", icon:"✈️", title:"Volo SFO → LAX", note:"Volo domestico · arrivo a Los Angeles alle 12:36." }
     ]}
   ],
   la: [
@@ -235,7 +264,7 @@ const PROGRAM_GUIDE = {
   ],
   vegas1: [
     { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Trasferimento e prima serata sulla Strip", items:[
-      { time:"08:00", kind:"recommended", icon:"🚗", title:"Check-out e partenza dal The Commerce", note:"Scendete dall’hotel con l’auto già caricata. Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
+      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da Los Angeles", note:"Con una pausa, considerate circa 4½–5 ore fino a Las Vegas." },
       { time:"13:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo e check-in al Paris Las Vegas", note:"Lasciate l'auto e muovetevi soprattutto a piedi sulla Strip." },
       { time:"16:00", kind:"recommended", icon:"🎰", title:"Las Vegas Strip", note:"Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery:"Las Vegas Strip" },
       { time:"Sera", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio e Strip illuminata", note:"Vegas rende soprattutto dopo il tramonto.", mapsQuery:"Bellagio Fountains" },
@@ -244,7 +273,7 @@ const PROGRAM_GUIDE = {
   ],
   page: [
     { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
-      { time:"07:00", kind:"recommended", icon:"🚗", title:"Check-out e partenza dal Paris Las Vegas", note:"Auto caricata e partenza verso il Grand Canyon. Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l’avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
+      { time:"06:30", kind:"recommended", icon:"🚗", title:"Partenza da Las Vegas", note:"Foto rapida al Welcome to Fabulous Las Vegas Sign solo se non l'avete già fatta.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
       { time:"11:00 circa", kind:"recommended", icon:"🏜️", title:"Grand Canyon South Rim", note:"Mather Point e Visitor Center: niente trekking lungo, puntiamo sui panorami.", mapsQuery:"Mather Point Grand Canyon" },
       { time:"14:00", kind:"recommended", icon:"🛣️", title:"Desert View Drive", note:"Viewpoint selezionati lungo la strada nella direzione di Page.", mapsQuery:"Desert View Drive Grand Canyon" },
       { time:"15:30", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima sosta panoramica prima di uscire dal parco verso est.", mapsQuery:"Desert View Watchtower" },
@@ -255,7 +284,7 @@ const PROGRAM_GUIDE = {
       { time:"11:15", kind:"booked", icon:"📍", title:"Arrivo da Ken's Tours", note:"Parcheggio e margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
       { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Meglio essere già in fila almeno 30 minuti prima." },
       { time:"12:00", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
-      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza da Page", note:"Dopo il tour recuperate l’auto e ripartite verso Las Vegas; arrivo previsto intorno alle 18:30." },
+      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza", note:"Poi Page → Las Vegas." },
       { time:"18:30 circa", kind:"recommended", icon:"🎰", title:"Arrivo a Las Vegas", note:"Seconda serata in città." }
     ]}
   ],
@@ -264,8 +293,7 @@ const PROGRAM_GUIDE = {
       { time:"19:00 circa", kind:"recommended", icon:"🌃", title:"Strip oppure Fremont Street", note:"Scegliete in base a ciò che vi manca e alla stanchezza dopo Page.", mapsQuery:"Fremont Street Experience" }
     ]},
     { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
-      { time:"Da definire", kind:"recommended", icon:"🧳", title:"Check-out e partenza dal Paris Las Vegas", note:"L’orario esatto verrà calcolato appena è confermato il nuovo volo LAS → ORD, includendo trasferimento a LAS, riconsegna dell’auto a noleggio, bagagli da stiva e controlli." },
-      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l’agenzia non conferma il nuovo volo." },
+      { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
       { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
     ]}
   ],
@@ -296,7 +324,7 @@ const PROGRAM_GUIDE = {
       { time:"19:30", kind:"recommended", icon:"🍕", title:"Deep-dish pizza", note:"Cena perfetta per salutare Chicago." }
     ]},
     { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
-      { time:"05:15", kind:"recommended", icon:"🧳", title:"Check-out e partenza dal Warwick Allerton", note:"Partenza prudente verso O’Hare: il volo per Punta Cana è internazionale e avete bagagli da stiva. Obiettivo: arrivare a ORD intorno alle 06:30, circa 3 ore prima della partenza." , mapsQuery:"Chicago O'Hare International Airport" },
+      { time:"Mattina presto", kind:"recommended", icon:"🧳", title:"Check-out e trasferimento a ORD", note:"Lasciate margine per traffico e controlli." },
       { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Arrivo a Punta Cana alle 16:02." }
     ]}
   ],
@@ -320,8 +348,7 @@ const PROGRAM_GUIDE = {
     { date:"2026-11-08", title:"Ultimo giorno pieno", theme:"Niente escursioni lunghe", items:[
       { time:"Tutto il giorno", kind:"recommended", icon:"❤️", title:"Resort, mare e valigie", note:"Ultima giornata tranquilla prima del rientro." }
     ]},
-    { date:"2026-11-09", title:"Rientro", theme:"Bayahibe → Punta Cana → Washington → Roma", items:[
-      { time:"08:30", kind:"recommended", icon:"🧳", title:"Check-out e pronti per il transfer", note:"Il transfer per PUJ è incluso: considerate le 08:30 come orario prudente per essere pronti. Se l’operatore comunica un pick-up precedente, vale naturalmente l’orario del transfer. Obiettivo: essere a PUJ circa 3 ore prima del volo internazionale.", mapsQuery:"Punta Cana International Airport" },
+    { date:"2026-11-09", title:"Rientro", theme:"Punta Cana → Washington → Roma", items:[
       { time:"12:56", kind:"booked", icon:"✈️", title:"PUJ → IAD", note:"Arrivo 15:55." },
       { time:"17:40", kind:"booked", icon:"✈️", title:"IAD → FCO", note:"Arrivo a Roma il 10 novembre alle 08:30." }
     ]}
