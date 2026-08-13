@@ -1434,7 +1434,7 @@ nav.tabbar button.active{
 }
 .honeymoon-heart-line{
   display:block;
-  width:min(94%, 520px);
+  width:min(54%, 280px);
   height:auto;
   margin:4px auto 0;
   object-fit:contain;
@@ -1444,9 +1444,9 @@ nav.tabbar button.active{
 @media (max-width:420px){
   .honeymoon-topbar{padding:22px 12px 16px;}
   .honeymoon-topbar h1{font-size:40px;letter-spacing:-.04em;}
-  .honeymoon-heart-line{width:96%;margin-top:3px;}
+  .honeymoon-heart-line{width:min(58%, 250px);margin-top:2px;}
 }
 @media (max-width:360px){
   .honeymoon-topbar h1{font-size:37px;}
-  .honeymoon-heart-line{width:98%;}
+  .honeymoon-heart-line{width:min(60%, 230px);}
 }
