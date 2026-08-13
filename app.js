@@ -432,24 +432,56 @@ function todayTripState(now=new Date(), forcedDate=null){
   return { iso, zone, localTime: forcedDate ? "Anteprima" : timeInTimeZone(zone, now), program };
 }
 
-function todayCardHtml(forcedDate=null){
-  const state = todayTripState(new Date(), forcedDate);
-  if (!state || !state.program) return "";
-  const { iso, zone, localTime, program } = state;
-  const matches = program.matches || [program];
-  const first = matches[0];
-  const day = first.day;
-  const openLegId = first.legId;
+
+function todayHeroImage(legId, iso){
+  const leg=TRIP.legs.find(x=>x.id===legId);
+  return leg?.image || "./assets/page.jpg";
+}
+function allProgramDays(){
+  const rows=[];
+  TRIP.legs.forEach(leg=>{
+    const days=(typeof PROGRAM_GUIDE!=="undefined" && PROGRAM_GUIDE[leg.id])||[];
+    days.forEach(day=>rows.push({leg,day}));
+  });
+  return rows.sort((a,b)=>a.day.date.localeCompare(b.day.date));
+}
+function todayTestCarouselHtml(activeDate="2026-10-28"){
+  const days=allProgramDays();
   return `
-    <button type="button" class="today-card today-card-compact" data-open-today-screen="${openLegId}" data-open-today-date="${iso}">
-      <div class="today-card-head">
-        <div class="today-card-copy"><small>${forcedDate ? "OGGI · MODALITÀ TEST" : "OGGI"} · ${fmtDateFull(iso)}</small><strong>${day.title}</strong><span>${day.theme || ""}</span></div>
-        <div class="today-live-stack">
-          <div class="today-local-time"><b>${localTime}</b><em>${zone === "America/Chicago" ? "Chicago" : zone === "America/Santo_Domingo" ? "Bayahibe" : (iso==="2026-10-28" ? "Grand Canyon / Page" : "Ovest USA")}</em></div>
-          <div class="today-weather city-live-loading" id="today-live-weather"><span>🌡️</span><strong>--°C</strong></div>
-        </div>
-        <span class="today-card-chevron">›</span>
-      </div>
+    <div class="today-test-carousel" aria-label="Anteprima giornate del viaggio">
+      ${days.map(({leg,day})=>`
+        <button type="button" class="today-preview-slide ${day.date===activeDate?"active":""}"
+          data-open-today-screen="${leg.id}" data-open-today-date="${day.date}"
+          style="--today-bg:url('${todayHeroImage(leg.id,day.date)}')">
+          <span class="today-preview-shade"></span>
+          <span class="today-preview-content">
+            <small>OGGI · MODALITÀ TEST · ${fmtDateFull(day.date)}</small>
+            <strong>${day.title}</strong>
+            <em>${day.theme||""}</em>
+          </span>
+          <span class="today-preview-arrow">›</span>
+        </button>`).join("")}
+    </div>
+    <div class="today-carousel-hint">Scorri le giornate →</div>`;
+}
+
+function todayCardHtml(forcedDate=null){
+  const state=todayTripState(new Date(),forcedDate);
+  if(!state||!state.program)return "";
+  const {iso,program}=state;
+  const first=(program.matches||[program])[0];
+  const day=first.day, legId=first.legId;
+  return `
+    <button type="button" class="today-card today-card-compact today-image-card"
+      data-open-today-screen="${legId}" data-open-today-date="${iso}"
+      style="--today-bg:url('${todayHeroImage(legId,iso)}')">
+      <span class="today-preview-shade"></span>
+      <span class="today-preview-content">
+        <small>OGGI · ${fmtDateFull(iso)}</small>
+        <strong>${day.title}</strong>
+        <em>${day.theme||""}</em>
+      </span>
+      <span class="today-preview-arrow">›</span>
     </button>`;
 }
 
@@ -492,7 +524,7 @@ function renderHome(){
       <span class="pretrip-card-copy"><small>Prima di partire</small><strong>Checklist pre-partenza</strong><em>Preparativi e valigia, senza dimenticare nulla</em></span>
       <span class="pretrip-card-arrow">›</span>
     </button>
-    ${todayCardHtml("2026-10-28")}` : todayCardHtml()}
+    ${todayTestCarouselHtml("2026-10-28")}` : todayCardHtml()}
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
@@ -504,11 +536,11 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.5";
+    version.textContent="Versione app 2.3.6";
     el.appendChild(version);
   }
   bindTodayCard(el);
-  refreshTodayWeather(checklistVisible() ? "2026-10-28" : null);
+  if(!checklistVisible()) refreshTodayWeather(null);
   startTodayHomeWatcher();
   bindPrivateAreaEntry();
   updatePrivateAreaEntry();
@@ -1956,7 +1988,7 @@ async function refreshTodayWeather(forcedDate=null){
 
 
 function openTodayScreen(legId, iso){
-  const leg=ITINERARY.find(x=>x.id===legId);
+  const leg=TRIP.legs.find(x=>x.id===legId);
   const days=(typeof PROGRAM_GUIDE!=="undefined" && PROGRAM_GUIDE[legId])||[];
   const day=days.find(d=>d.date===iso);
   if(!day)return;

@@ -2671,3 +2671,50 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   .today-screen-hero{padding:12px}
   .today-screen-hero h2{font-size:18px}
 }
+
+
+/* ==========================================================
+   v2.3.6 — Oggi laboratorio: carosello giornate + hero image
+   ========================================================== */
+.today-test-carousel{
+  display:flex;gap:10px;overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  margin:14px -2px 0;padding:2px 2px 4px;
+}
+.today-test-carousel::-webkit-scrollbar{display:none}
+.today-preview-slide,.today-image-card{
+  position:relative;overflow:hidden;
+  min-height:142px;border:0;border-radius:20px;
+  background-image:var(--today-bg);
+  background-size:cover;background-position:center;
+  color:#fff;text-align:left;cursor:pointer;
+  box-shadow:0 10px 24px -18px rgba(0,0,0,.48);
+}
+.today-preview-slide{
+  flex:0 0 min(84vw,390px);
+  scroll-snap-align:center;
+}
+.today-image-card{width:100%;display:block}
+.today-preview-shade{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(10,15,20,.72),rgba(10,15,20,.24));
+}
+.today-preview-content{
+  position:relative;z-index:1;
+  min-height:142px;box-sizing:border-box;
+  padding:18px 54px 17px 17px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.today-preview-content small{font-size:9px;font-weight:850;letter-spacing:.06em;opacity:.86}
+.today-preview-content strong{font-size:19px;line-height:1.08;margin-top:5px;text-shadow:0 1px 8px rgba(0,0,0,.28)}
+.today-preview-content em{font-size:11px;line-height:1.3;margin-top:6px;font-style:normal;opacity:.9}
+.today-preview-arrow{
+  position:absolute;z-index:2;right:16px;top:50%;transform:translateY(-50%);
+  font-size:29px;line-height:1;color:#fff;
+}
+.today-carousel-hint{
+  margin:2px 3px 14px;text-align:right;
+  font-size:9px;font-weight:750;opacity:.48;
+}
+.today-preview-slide.active{outline:2px solid rgba(255,255,255,.72);outline-offset:-4px}
