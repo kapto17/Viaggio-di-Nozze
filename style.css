@@ -2233,3 +2233,37 @@ nav.tabbar button svg{
     }
   }
 }
+
+
+/* ==========================================================
+   v2.1.7 — iPhone bottom bar realmente compatta
+   La safe area resta sotto la barra, non dentro la barra.
+   ========================================================== */
+@supports (-webkit-touch-callout: none){
+  @media (display-mode: standalone){
+    nav.tabbar{
+      bottom:calc(6px + env(safe-area-inset-bottom)) !important;
+      margin-bottom:0 !important;
+      padding:6px 5px !important;
+      min-height:0 !important;
+    }
+
+    nav.tabbar button{
+      min-height:42px !important;
+      padding:3px 2px !important;
+      gap:3px !important;
+    }
+  }
+}
+
+/* Icona bussola per "Da scoprire" */
+.accordion-icon .discover-compass{
+  display:block;
+  width:17px;
+  height:17px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}

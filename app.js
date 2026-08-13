@@ -999,7 +999,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
 
     ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
 
-    ${accordion("Da scoprire", discoverHtml, {icon:"◌", count:discoverPlaces.length, className:"accordion-discover"})}
+    ${accordion("Da scoprire", discoverHtml, {icon:`<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`, count:discoverPlaces.length, className:"accordion-discover"})}
 
     ${(() => {
       const c = (typeof CLOTHING_GUIDE !== "undefined" && CLOTHING_GUIDE[leg.accent]) || null;
