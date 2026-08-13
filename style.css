@@ -2456,3 +2456,40 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
     }
   }
 }
+
+
+/* ==========================================================
+   v2.2.10 — FIX iPHONE: stessa logica della v2.1.5,
+   adattata alla struttura attuale con il menu Temi.
+
+   Nella v2.1.5:
+     .honeymoon-topbar.home-only-hidden + main
+   funzionava perché MAIN era subito dopo la topbar.
+
+   Oggi tra topbar e main ci sono il backdrop e il pannello Temi,
+   quindi "+" non può più corrispondere. "~" sì.
+   ========================================================== */
+@supports (-webkit-touch-callout: none){
+  @media (display-mode: standalone){
+    .honeymoon-topbar.home-only-hidden ~ main{
+      padding-top:max(calc(env(safe-area-inset-top) + 14px), 58px) !important;
+    }
+
+    .honeymoon-topbar.home-only-hidden ~ main .screen.active > .back-btn{
+      margin-top:0 !important;
+      min-height:34px !important;
+      display:flex !important;
+      align-items:center !important;
+    }
+  }
+}
+
+@supports (padding-top: constant(safe-area-inset-top)){
+  @supports (-webkit-touch-callout: none){
+    @media (display-mode: standalone){
+      .honeymoon-topbar.home-only-hidden ~ main{
+        padding-top:max(calc(constant(safe-area-inset-top) + 14px), 58px) !important;
+      }
+    }
+  }
+}
