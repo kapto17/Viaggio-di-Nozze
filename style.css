@@ -1451,26 +1451,167 @@ nav.tabbar button.active{
   .honeymoon-heart-line{width:min(60%, 230px);}
 }
 
-/* v2.0.9 — TRAVEL ADVENTURE · mockup F */
-:root{--paper:#201D17;--paper-alt:#2A261E;--ink:#F8F0DF;--ink-soft:#CFC3AC;--brass:#D9A441;--brass-soft:#F0D08A;--line:rgba(240,208,138,.16);}
-body{background:#11100D;color:var(--ink);}
-#app{background:radial-gradient(circle at 50% -8%,rgba(167,111,43,.25),transparent 28%),linear-gradient(180deg,#28241C 0%,#1E1C17 38%,#252117 100%);}
-.honeymoon-topbar{min-height:auto;padding:28px 14px 12px;background:transparent;border-radius:0;box-shadow:none;overflow:visible;}
-.honeymoon-title-wrap{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.honeymoon-topbar h1{width:100%;max-width:100%;margin:0;padding:0;color:#FFF5E5;font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;font-size:34px;font-weight:500;line-height:1.08;letter-spacing:-.035em;text-align:center;white-space:normal;text-shadow:0 2px 12px rgba(0,0,0,.22);}
-.honeymoon-heart-line{display:block;width:min(42%,190px);height:auto;margin:3px auto 0;object-fit:contain;filter:sepia(1) saturate(2.2) hue-rotate(350deg) brightness(1.45);opacity:.92;}
-main{padding:12px 16px 96px;}
-.timezone-box{margin-top:0;padding:8px 0 4px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;}
-.timezone-box-title{margin:0 2px 12px;color:#FFF5E5;text-transform:uppercase;letter-spacing:.11em;font-size:12px;font-weight:850;}
+
+/* =============================================================
+   v2.0.10 — TRAVEL ADVENTURE · tema completo approvato
+   ============================================================= */
+:root{
+  --theme-bg:#2B271E;
+  --theme-bg-2:#211F18;
+  --theme-panel:#F3E8D3;
+  --theme-panel-2:#EADBC0;
+  --theme-ink:#2A2116;
+  --theme-muted:#6D6253;
+  --theme-gold:#D6A741;
+  --theme-gold-2:#F0CF82;
+  --theme-line:rgba(214,167,65,.22);
+}
+body{background:#15130F;color:#F8F0DF;}
+#app{
+  background:
+    linear-gradient(180deg,rgba(44,40,30,.22) 0%,rgba(43,39,30,.96) 330px,#28241C 100%);
+  color:#F8F0DF;
+}
+
+/* HERO */
+.honeymoon-topbar{
+  min-height:300px;
+  padding:48px 18px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(180deg,rgba(12,10,7,.12) 0%,rgba(18,15,10,.28) 45%,rgba(43,39,30,.92) 88%,#2B271E 100%),
+    url('./assets/hero-travel.jpg') center 44%/cover no-repeat;
+  border-radius:0;
+  box-shadow:none;
+  overflow:visible;
+}
+.honeymoon-title-wrap{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:translateY(6px)}
+.honeymoon-topbar h1{
+  display:block;width:100%;margin:0;padding:0 8px;
+  color:#FFF7E8;
+  font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;
+  font-size:38px;font-weight:500;line-height:1.06;letter-spacing:-.035em;text-align:center;
+  white-space:normal;text-shadow:0 3px 16px rgba(0,0,0,.42);
+}
+.honeymoon-heart-line{
+  display:block;width:min(58%,280px);height:auto;margin:9px auto 0;overflow:visible;
+}
+.honeymoon-heart-line path{
+  fill:none;stroke:var(--theme-gold-2);stroke-width:2.05;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;
+}
+.honeymoon-heart-line path:last-child{fill:none;}
+
+main{padding:10px 16px 96px;}
+.section-title{color:var(--theme-gold-2);font-weight:850;letter-spacing:.13em;}
+
+/* FUSI */
+.timezone-box{margin:0 0 16px;padding:0;background:transparent;border:0;box-shadow:none;backdrop-filter:none;}
+.timezone-box-title{margin:0 2px 12px;color:var(--theme-gold-2);font-size:12px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;}
 .timezone-box .world-clock-grid{gap:10px;}
-.timezone-box .world-clock-card,.timezone-box .world-clock-card:nth-child(2),.timezone-box .world-clock-card:nth-child(3),.timezone-box .world-clock-card:nth-child(4){border:1px solid rgba(218,170,85,.16);border-radius:16px;padding:12px 13px;background:linear-gradient(145deg,#F3E6CF,#E9D8BA);box-shadow:0 8px 22px -18px rgba(0,0,0,.8);}
-.timezone-box .world-clock-place{color:#6A4823}.timezone-box .world-clock-time{color:#171A20}.timezone-box .world-clock-date{color:#655D52}
-.home-route-strip{background:transparent}.route-track{border-color:rgba(240,208,138,.22)}.route-stop .dot{border-color:var(--brass);background:#242017}.route-stop.done .dot{background:var(--brass)}.route-stop .rs-label{color:#FFF5E5}.route-stop .rs-date{color:#CDBE9F}
-.section-title{color:#F0D08A;font-weight:850}
-.city-card,.feature-card,.checklist-hero-card{box-shadow:0 18px 34px -26px rgba(0,0,0,.9)}
-.city-card::after{background:linear-gradient(180deg,transparent 28%,rgba(16,14,10,.84) 100%)}
-nav.tabbar{background:rgba(28,25,19,.96);border-top:1px solid rgba(240,208,138,.14);box-shadow:0 -10px 28px -24px rgba(0,0,0,.9);backdrop-filter:blur(14px)}
-nav.tabbar button{color:#D7CBB3}nav.tabbar button.active{color:#F0D08A;background:transparent}nav.tabbar button svg{stroke:currentColor}
-@media (min-width:700px){body{background:#11100D}#app{box-shadow:0 0 70px rgba(0,0,0,.45)}}
-@media (max-width:420px){.honeymoon-topbar{padding:25px 12px 10px}.honeymoon-topbar h1{font-size:31px}.honeymoon-heart-line{width:min(40%,165px)}}
-@media (max-width:360px){.honeymoon-topbar h1{font-size:29px}.honeymoon-heart-line{width:min(38%,145px)}}
+.timezone-box .world-clock-card,
+.timezone-box .world-clock-card:nth-child(2),
+.timezone-box .world-clock-card:nth-child(3),
+.timezone-box .world-clock-card:nth-child(4){
+  padding:13px 14px;border:1px solid rgba(214,167,65,.18);border-radius:18px;
+  background:linear-gradient(145deg,#F7EEDC,#E9D8B8);box-shadow:0 10px 24px -20px rgba(0,0,0,.85);
+}
+.timezone-box .world-clock-place{color:#7A541B;font-size:11px;}
+.timezone-box .world-clock-time{color:#241C13;font-size:22px;}
+.timezone-box .world-clock-date{color:#706453;}
+
+/* TIMELINE */
+.home-route-strip{background:transparent;border:0;padding-top:14px;}
+.route-track{background:repeating-linear-gradient(90deg,var(--theme-gold) 0 4px,transparent 4px 8px);opacity:.6;}
+.route-stop{color:#FFF7E8;}
+.route-stop .dot{background:#2B271E;border-color:var(--theme-gold);}
+.route-stop.done .dot{background:var(--theme-gold);}
+.route-stop.active .dot{background:var(--theme-gold-2);border-color:var(--theme-gold-2);box-shadow:0 0 0 4px rgba(214,167,65,.15);}
+.route-stop .rs-label{color:#FFF7E8;}
+.route-stop .rs-date{color:#D3C5A8;}
+
+/* HOME CARDS */
+.pretrip-card{box-shadow:0 18px 34px -25px rgba(0,0,0,.75);border:1px solid rgba(240,207,130,.14);}
+.pretrip-card-overlay{background:linear-gradient(90deg,rgba(24,19,12,.83) 0%,rgba(24,19,12,.5) 56%,rgba(24,19,12,.15) 100%);}
+.pretrip-card-copy small,.city-card.photo-city-card .photo-city-card .city-card-kicker{color:var(--theme-gold-2);}
+.city-card.photo-city-card{border-color:rgba(240,207,130,.14);box-shadow:0 18px 34px -26px rgba(0,0,0,.8);}
+
+/* Pagine città e pannelli chiari */
+.city-header{background:#2B271E;color:#FFF7E8;}
+.city-header.photo-city-header{box-shadow:0 18px 34px -28px rgba(0,0,0,.9);}
+.city-header.photo-city-header .cd-dates,.city-header.photo-city-header .cd-hotel{color:#E8D8B9;}
+.back-btn{color:var(--theme-gold-2);}
+
+.ticket,.hotel-card,.activity-card,.food-section-link,.food-card,.city-accordion,
+.ticket-import-box,.local-ticket-card,.private-login-card,.budget-summary-card,.expense-form,.expense-item,
+.checklist-progress-wrap,.checklist-section,.currency-converter,.today-card,.today-preview-panel,.sos-info-card,
+.restaurant-detail-body,.food-detail-body,.place-detail-body,.program-day,.budget-city-accordion{
+  background:var(--theme-panel) !important;
+  color:var(--theme-ink) !important;
+  border-color:rgba(115,83,37,.15) !important;
+}
+.ticket .stub-top,.ticket .stub-bottom,.hotel-card,.activity-card,.food-card,.food-section-link,
+.city-accordion summary,.checklist-section summary,.expense-item,.sos-info-card{color:var(--theme-ink);}
+
+/* Testi secondari dentro card chiare */
+.ticket .ssub,.hotel-address,.hotel-dates,.activity-datetime,.activity-note,.food-section-note,.food-card-short,
+.accordion-count,.accordion-chevron,.clothing-row p,.clothing-note,.program-date,.program-theme,.program-note,
+.checklist-section summary small,.currency-rate-note,.today-card-head span,.today-local-time em,.today-mini-item p small,
+.sos-info-card small,.sos-info-card p,.private-login-card>p,.private-login-form label,.expense-form label,
+.budget-summary-card span,.budget-city-row small,.expense-copy span,.restaurant-detail-body p,.restaurant-live-info span{
+  color:var(--theme-muted) !important;
+}
+
+/* Accordion: togli gradienti bianchi del vecchio tema */
+.city-accordion summary,.accordion-must summary,.accordion-discover summary,.accordion-clothing summary,
+.accordion-program>summary{
+  background:linear-gradient(90deg,rgba(214,167,65,.10),rgba(255,255,255,.14)) !important;
+}
+.accordion-icon{background:rgba(214,167,65,.14) !important;color:#8B651D !important;}
+
+/* Bottoni */
+.mapbtn,.secondary-action,.local-ticket-actions button,.expense-actions button{
+  background:#FFF8E9;color:#49361C;border-color:rgba(122,84,27,.25);
+}
+.primary-action,.ticket-import-btn,.today-open-program,.restaurant-google-btn{
+  background:linear-gradient(180deg,#D7A83F,#B98724);color:#211A10;
+}
+.restaurant-maps-btn{background:#EFE0C4;color:#6E4B18;border-color:#D9C6A5;}
+
+/* Checklist */
+.checklist-profile-tabs{background:#3A3428;}
+.checklist-profile-tabs button{color:#D8C7A8;}
+.checklist-profile-tabs button.active{background:#F3E8D3;color:#7C581B;}
+.custom-check{background:#FFF8E9;border-color:#CDBB9C;}
+.checklist-item.checked .custom-check{background:var(--theme-gold);border-color:var(--theme-gold);color:#241C13;}
+.checklist-local-note,.checklist-hide-note,.budget-offline-note,.sos-note,.clothing-weather{background:#3A3428 !important;color:#E7D9BE !important;border-color:rgba(240,207,130,.10) !important;}
+
+/* Budget / SOS */
+.budget-hero,.sos-emergency-card{background:linear-gradient(135deg,#3A311F,#241F16);color:#FFF7E8;border:1px solid rgba(214,167,65,.18);}
+.budget-hero h2,.sos-emergency-card strong{color:#FFF7E8;}
+.sos-hero{background:linear-gradient(135deg,#3B3222,#2A251C);border-color:rgba(214,167,65,.18);color:#FFF7E8;}
+.sos-hero h2{color:#FFF7E8;}.sos-hero p{color:#D7C8AA;}.sos-hero small{color:var(--theme-gold-2);}
+
+/* Food/restaurant/place detail */
+.food-detail-body p,.place-detail-body p,.restaurant-detail-body p{color:var(--theme-ink) !important;}
+.place-detail-plan{background:#E8D7B8 !important;border-color:#D5BD8E !important;}
+.place-detail-plan strong{color:#7A551C !important;}.place-detail-plan span{color:#625443 !important;}
+
+/* Tab bar */
+nav.tabbar{background:rgba(30,27,21,.97);border-top:1px solid rgba(240,207,130,.14);box-shadow:0 -12px 30px -26px rgba(0,0,0,.95);backdrop-filter:blur(14px);}
+nav.tabbar button{color:#D4C6AA;}
+nav.tabbar button.active{color:var(--theme-gold-2);background:transparent;}
+nav.tabbar button.active svg{stroke:var(--theme-gold-2);}
+
+@media (min-width:700px){body{background:#15130F;}#app{box-shadow:0 0 80px rgba(0,0,0,.5);}}
+@media (max-width:420px){
+  .honeymoon-topbar{min-height:270px;padding:42px 14px 14px;}
+  .honeymoon-topbar h1{font-size:34px;}
+  .honeymoon-heart-line{width:min(62%,250px);margin-top:7px;}
+}
+@media (max-width:360px){
+  .honeymoon-topbar{min-height:250px;}
+  .honeymoon-topbar h1{font-size:31px;}
+  .honeymoon-heart-line{width:min(64%,225px);}
+}
