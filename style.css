@@ -2171,3 +2171,23 @@ nav.tabbar button svg{
   font-family:Arial,Helvetica,sans-serif;
   margin-bottom:2px;
 }
+
+
+/* ==========================================================
+   v2.1.4 — iPhone standalone safe area
+   Quando la cover Home è nascosta, i contenuti interattivi
+   partono sotto status bar / Dynamic Island / notch.
+   ========================================================== */
+.honeymoon-topbar.home-only-hidden + main{
+  padding-top:calc(14px + env(safe-area-inset-top)) !important;
+}
+
+.honeymoon-topbar.home-only-hidden + main .screen.active > .back-btn{
+  margin-top:2px;
+}
+
+@supports (padding-top: constant(safe-area-inset-top)){
+  .honeymoon-topbar.home-only-hidden + main{
+    padding-top:calc(14px + constant(safe-area-inset-top)) !important;
+  }
+}
