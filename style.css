@@ -2365,3 +2365,34 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
     padding-top:max(calc(constant(safe-area-inset-top) + 14px), 58px) !important;
   }
 }
+
+
+/* ==========================================================
+   v2.2.6 — Al volo / A tavola + hero ristoranti specifiche
+   ========================================================== */
+.restaurant-subaccordion>summary{
+  display:grid !important;
+  grid-template-columns:38px minmax(0,1fr) auto 20px !important;
+  align-items:center !important;
+  column-gap:10px !important;
+}
+.restaurant-subicon{
+  width:34px !important;
+  height:34px !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  line-height:1 !important;
+  font-size:17px !important;
+  justify-self:center !important;
+}
+.restaurant-subcopy{align-self:center !important;}
+.restaurant-subcount{justify-self:end !important;}
+.restaurant-subchevron{justify-self:center !important;}
+.restaurant-detail-hero{
+  background-size:cover !important;
+  background-position:center !important;
+}

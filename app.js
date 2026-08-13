@@ -963,8 +963,8 @@ function openCity(legId, pushHistory=true, restoreState=null){
       <div class="restaurant-subcontent">${items.map(renderRestaurantCard).join("")}</div>
     </details>` : "";
   const restaurantsHtml = (leg.restaurants||[]).length ? `
-    ${restaurantSubgroup("Pasto veloce", "Street food, panini e soste rapide", "⚡", quickRestaurants, "quick")}
-    ${restaurantSubgroup("Pasto più serio", "Ristoranti da godersi con più calma, soprattutto a cena", "🍽️", seriousRestaurants, "serious")}
+    ${restaurantSubgroup("Al volo", "Street food, panini e soste veloci", "⚡", quickRestaurants, "quick")}
+    ${restaurantSubgroup("A tavola", "Ristoranti per pranzi e cene con più calma", "🍽️", seriousRestaurants, "serious")}
   ` : "";
   const ticketsHtml = `${leg.tickets && leg.tickets.length ? leg.tickets.map(tk => `
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
@@ -1611,7 +1611,7 @@ function openRestaurantDetail(legId, restaurantName, pushHistory=true){
 
   el.innerHTML = `
     <button class="back-btn" id="back-from-restaurant">‹ ${leg.city}</button>
-    <div class="restaurant-detail-hero" style="background-image:linear-gradient(180deg, rgba(6,13,25,.10) 10%, rgba(6,13,25,.82) 100%), url('${leg.image || ""}')">
+    <div class="restaurant-detail-hero" style="background-image:linear-gradient(180deg, rgba(6,13,25,.10) 10%, rgba(6,13,25,.82) 100%), url('${restaurant.image || leg.image || ""}')">
       <div class="restaurant-detail-overlay">
         <div class="restaurant-detail-city">${leg.city}</div>
         <h2>${restaurant.name}</h2>
