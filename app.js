@@ -294,12 +294,17 @@ function timeInTimeZone(zone, now=new Date()){
 }
 
 function tripTimeZoneForDateGuess(now=new Date()){
-  // Le tappe USA occidentali condividono lo stesso offset nelle vostre date;
-  // poi si passa a Chicago e infine alla Repubblica Dominicana.
-  const chicagoDate = dateInTimeZone("America/Chicago", now);
-  const santoDate = dateInTimeZone("America/Santo_Domingo", now);
-  if (santoDate >= "2026-11-03") return "America/Santo_Domingo";
-  if (chicagoDate >= "2026-10-30") return "America/Chicago";
+  // Timeline basata sull'itinerario, non sul GPS del dispositivo.
+  // 03/11: il passaggio a Santo Domingo avviene all'arrivo reale (16:02 locali = 20:02 UTC).
+  const santoDomingoArrival = new Date("2026-11-03T20:02:00Z");
+  if (now >= santoDomingoArrival) return "America/Santo_Domingo";
+
+  // 30/10 LAS → ORD: finché l'orario definitivo del volo non è confermato,
+  // evitiamo il cambio anticipato causato dalla mezzanotte di Chicago e passiamo
+  // a Chicago solo quando è iniziato il 30 ottobre anche a Las Vegas.
+  // Quando avremo l'orario LAS→ORD sostituiremo questa soglia con l'arrivo reale a ORD.
+  const westDate = dateInTimeZone("America/Los_Angeles", now);
+  if (westDate >= "2026-10-30") return "America/Chicago";
   return "America/Los_Angeles";
 }
 
@@ -1083,8 +1088,15 @@ function openPrivateAccess(pushHistory=true){
     errorEl.textContent = "";
     try {
       await window.LFBudget.login($("#lf-email").value, $("#lf-password").value);
-      openBudget(false);
-      history.replaceState({ screen:"budget" }, "", "#budget");
+      const requested = sessionStorage.getItem("lf-private-target") || "budget";
+      sessionStorage.removeItem("lf-private-target");
+      if (requested === "sos") {
+        openSOS(false);
+        history.replaceState({ screen:"sos" }, "", "#sos");
+      } else {
+        openBudget(false);
+        history.replaceState({ screen:"budget" }, "", "#budget");
+      }
     } catch(err){
       console.error(err);
       errorEl.textContent = friendlyAuthError(err);
@@ -1333,36 +1345,39 @@ window.addEventListener("lf-firebase-ready", connectFirebaseBudget);
 
 
 // ---------- SOS & informazioni utili ----------
-function sosSuggestedArea(){
-  const now = new Date();
-  if (now < TODAY_CARD_START_AT) return "Entrambe le destinazioni";
-  const zone = tripTimeZoneForDateGuess(now);
-  return zone === "America/Santo_Domingo" ? "Repubblica Dominicana" : "Stati Uniti";
-}
-
 function openSOS(pushHistory=true){
+  // SOS condivide lo stesso accesso privato L&F del Budget.
+  // Il tasto resta sempre visibile, ma i contenuti si aprono solo dopo l'autenticazione.
+  if (!privateAuthState.authenticated){
+    sessionStorage.setItem("lf-private-target", "sos");
+    openPrivateAccess(pushHistory);
+    return;
+  }
+
   const el = $("#screen-sos");
-  const suggested = sosSuggestedArea();
   el.innerHTML = `
     <button class="back-btn" id="back-sos">‹ Indietro</button>
     <div class="sos-hero">
       <div class="sos-hero-icon">🆘</div>
-      <div><small>Sempre disponibile</small><h2>SOS & info utili</h2><p>Numeri pubblici di emergenza e assistenza consolare. Area suggerita: <strong>${suggested}</strong>.</p></div>
+      <div><small>Area privata L&amp;F</small><h2>SOS &amp; info utili</h2><p>Emergenze, assistenza consolare e riferimenti utili del viaggio.</p></div>
     </div>
 
     <div class="sos-emergency-card">
-      <span>Emergenza immediata</span><strong>911</strong><p>Polizia · ambulanza · vigili del fuoco negli Stati Uniti. In Repubblica Dominicana il sistema 9-1-1 è il riferimento d'emergenza nelle aree coperte.</p>
+      <span>Emergenza immediata</span><strong>911</strong><p>Polizia · ambulanza · vigili del fuoco negli Stati Uniti e servizio 9-1-1 nelle aree coperte della Repubblica Dominicana.</p>
       <a href="tel:911">Chiama 911</a>
     </div>
 
-    <div class="section-title">Assistenza italiana</div>
+    <div class="section-title">Assistenza italiana · tutti i contatti</div>
     <div class="sos-grid">
-      <div class="sos-info-card"><div class="sos-card-icon">🇮🇹</div><div><small>H24 · emergenze all'estero</small><strong>Unità di Crisi Farnesina</strong><p>+39 06 36225</p></div><a href="tel:+390636225">Chiama</a></div>
-      <div class="sos-info-card"><div class="sos-card-icon">🇺🇸</div><div><small>Fuori orario · USA</small><strong>Ambasciata d'Italia a Washington</strong><p>+1 202 612 4411<br>+1 202 257 3753</p></div><a href="tel:+12026124411">Chiama</a></div>
-      <div class="sos-info-card"><div class="sos-card-icon">🇩🇴</div><div><small>Emergenze consolari · Rep. Dominicana</small><strong>Ambasciata d'Italia a Santo Domingo</strong><p>+1 829 342 4942</p></div><a href="tel:+18293424942">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🇮🇹</div><div><small>Riferimento generale · emergenze all'estero</small><strong>Unità di Crisi Farnesina</strong><p>+39 06 36225</p></div><a href="tel:+390636225">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🌉</div><div><small>San Francisco · emergenze cittadini italiani</small><strong>Consolato Generale d'Italia a San Francisco</strong><p>+1 415 999 0094</p></div><a href="tel:+14159990094">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🌴</div><div><small>Los Angeles · Nevada · Arizona</small><strong>Consolato Generale d'Italia a Los Angeles</strong><p>+1 310 433 5422</p></div><a href="tel:+13104335422">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🏙️</div><div><small>Chicago · emergenze cittadini italiani</small><strong>Consolato Generale d'Italia a Chicago</strong><p>+1 312 909 0304</p></div><a href="tel:+13129090304">Chiama</a></div>
+      <div class="sos-info-card"><div class="sos-card-icon">🇩🇴</div><div><small>Repubblica Dominicana · emergenze consolari</small><strong>Ambasciata d'Italia a Santo Domingo</strong><p>+1 829 342 4942</p></div><a href="tel:+18293424942">Chiama</a></div>
     </div>
 
-    <div class="sos-note">Questa schermata è pubblica perché contiene solo contatti istituzionali e numeri di emergenza. Eventuali dati personali — polizza assicurativa, numero pratica, documenti o contatti privati — li terremo invece nell'area privata.</div>
+    <div class="section-title">Assicurazione viaggio</div>
+    <div class="sos-info-card"><div class="sos-card-icon">🛡️</div><div><small>Da completare</small><strong>Copertura assicurativa</strong><p>Inseriremo qui compagnia, numero polizza, assistenza H24 e riferimenti utili appena disponibili.</p></div></div>
   `;
   $("#back-sos")?.addEventListener("click", () => history.back());
   navigateTo("sos", {}, pushHistory);
