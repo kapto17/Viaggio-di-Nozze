@@ -1740,10 +1740,12 @@ document.addEventListener("DOMContentLoaded", init);
 const APP_THEMES = {
   classic: { themeColor:"#F6F1E8" },
   green:   { themeColor:"#27362D" },
-  rose:    { themeColor:"#FFF7F8" }
+  blue:    { themeColor:"#EAF5FF" }
 };
 
 function applyAppTheme(themeName, persist=true){
+  // "rose" era il vecchio tema Elegante Rosa: dalla v2.2.2 viene migrato a Blu Chicago.
+  if (themeName === "rose") themeName = "blue";
   const theme = APP_THEMES[themeName] ? themeName : "classic";
   document.documentElement.dataset.theme = theme;
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", APP_THEMES[theme].themeColor);

@@ -621,3 +621,286 @@ html[data-theme="classic"] .timezone-box .world-clock-time{
 html[data-theme="classic"] .timezone-box .world-clock-date{
   color:#6D7581 !important;
 }
+
+
+/* ==========================================================
+   v2.2.2 — TEMA BLU CHICAGO
+   Sostituisce definitivamente "Elegante Rosa".
+   Palette: cielo / bianco / blu profondo, con contrasto alto.
+   ========================================================== */
+
+/* Swatch menu */
+.theme-swatch-blue i:nth-child(1){background:#EAF5FF}
+.theme-swatch-blue i:nth-child(2){background:#FFFFFF}
+.theme-swatch-blue i:nth-child(3){background:#1769B2}
+
+/* Il vecchio rosa non è più un tema selezionabile. */
+.theme-swatch-rose{display:none !important;}
+
+/* ---------- TEMA 3: BLU CHICAGO ---------- */
+html[data-theme="blue"]{
+  --th-bg:#DCECF8;
+  --th-app:#F4FAFF;
+  --th-panel:#EEF7FE;
+  --th-panel-soft:#E3F1FB;
+  --th-card:#FFFFFF;
+  --th-text:#10253F;
+  --th-muted:#58718A;
+  --th-accent:#1769B2;
+  --th-accent-2:#57A1D8;
+  --th-border:#C9E0F0;
+  --th-nav:#FFFFFF;
+  --th-nav-text:#60758A;
+  --th-shadow:0 12px 30px -23px rgba(24,83,132,.28);
+}
+
+html[data-theme="blue"] body{
+  background:#DCECF8 !important;
+}
+
+html[data-theme="blue"] #app{
+  background:
+    linear-gradient(180deg,#F5FBFF 0%,#EAF5FC 48%,#F7FBFE 100%) !important;
+  color:#10253F !important;
+}
+
+html[data-theme="blue"] main{
+  color:#10253F !important;
+}
+
+/* HOME: skyline Chicago coerente col tema, usando l'immagine già presente nell'app */
+html[data-theme="blue"] .honeymoon-topbar{
+  min-height:192px !important;
+  padding:38px 22px 42px !important;
+  background-image:
+    linear-gradient(180deg,rgba(5,45,85,.06) 0%,rgba(7,48,86,.58) 100%),
+    url('./assets/chicago.jpg') !important;
+  background-size:cover !important;
+  background-position:center 45% !important;
+  border-radius:0 0 30px 30px !important;
+  box-shadow:0 18px 40px -30px rgba(17,73,119,.55) !important;
+}
+
+html[data-theme="blue"] .honeymoon-topbar h1{
+  color:#FFFFFF !important;
+  text-shadow:0 4px 18px rgba(4,37,71,.35) !important;
+}
+
+html[data-theme="blue"] .honeymoon-heart-line path{
+  stroke:#D9F0FF !important;
+}
+
+html[data-theme="blue"] .theme-menu-btn{
+  background:rgba(255,255,255,.91) !important;
+  color:#1769B2 !important;
+}
+
+/* Titoli */
+html[data-theme="blue"] .section-title,
+html[data-theme="blue"] .timezone-box-title{
+  color:#1769B2 !important;
+}
+
+/* Fusi: puliti, senza contenitore esterno */
+html[data-theme="blue"] .timezone-box{
+  margin:0 0 18px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html[data-theme="blue"] .timezone-box-title{
+  margin:0 2px 12px !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+}
+
+html[data-theme="blue"] .timezone-box .world-clock-grid{
+  gap:10px !important;
+}
+
+html[data-theme="blue"] .timezone-box .world-clock-card,
+html[data-theme="blue"] .timezone-box .world-clock-card:nth-child(2),
+html[data-theme="blue"] .timezone-box .world-clock-card:nth-child(3),
+html[data-theme="blue"] .timezone-box .world-clock-card:nth-child(4){
+  background:linear-gradient(145deg,#FFFFFF,#EAF5FD) !important;
+  border:1px solid #D4E8F5 !important;
+  border-radius:18px !important;
+  box-shadow:0 10px 24px -20px rgba(32,99,151,.30) !important;
+}
+
+html[data-theme="blue"] .timezone-box .world-clock-place{
+  color:#1769B2 !important;
+}
+
+html[data-theme="blue"] .timezone-box .world-clock-time{
+  color:#10253F !important;
+}
+
+html[data-theme="blue"] .timezone-box .world-clock-date{
+  color:#668099 !important;
+}
+
+/* Timeline */
+html[data-theme="blue"] .route-stop,
+html[data-theme="blue"] .route-stop .rs-label{
+  color:#17324F !important;
+}
+html[data-theme="blue"] .route-stop .rs-date{
+  color:#6A8197 !important;
+}
+html[data-theme="blue"] .route-stop .route-pin{
+  color:#57A1D8 !important;
+}
+html[data-theme="blue"] .route-stop.active .route-pin{
+  color:#1769B2 !important;
+}
+html[data-theme="blue"] .route-stop .route-pin circle{
+  fill:#F4FAFF !important;
+}
+
+/* Tendine: azzurro chiarissimo con titoli blu */
+html[data-theme="blue"] .city-accordion,
+html[data-theme="blue"] .budget-city-accordion{
+  background:#EEF7FE !important;
+  color:#10253F !important;
+  border:1px solid #CDE2F1 !important;
+  box-shadow:0 14px 30px -25px rgba(25,84,132,.35) !important;
+}
+
+html[data-theme="blue"] .city-accordion > summary,
+html[data-theme="blue"] .budget-city-accordion > summary,
+html[data-theme="blue"] .accordion-must > summary,
+html[data-theme="blue"] .accordion-discover > summary,
+html[data-theme="blue"] .accordion-clothing > summary,
+html[data-theme="blue"] .accordion-program > summary{
+  background:linear-gradient(90deg,#F5FBFF,#EAF5FD) !important;
+  color:#145D9F !important;
+  border-bottom-color:#D5E7F3 !important;
+}
+
+html[data-theme="blue"] .accordion-icon{
+  background:#DDEFFA !important;
+  color:#1769B2 !important;
+  border-color:#C6E1F2 !important;
+}
+
+/* Da non perdere: blu più deciso */
+html[data-theme="blue"] .accordion-must .accordion-icon{
+  background:#D6EAF8 !important;
+  color:#0C5FA7 !important;
+}
+
+/* Da scoprire: ciano-blu, sempre leggibile */
+html[data-theme="blue"] .accordion-discover .accordion-icon{
+  background:#DDF3F8 !important;
+  color:#24758D !important;
+}
+html[data-theme="blue"] .accordion-discover .discover-compass{
+  color:#24758D !important;
+  stroke:#24758D !important;
+}
+
+/* Card contenuto: bianco pieno per massimo contrasto */
+html[data-theme="blue"] .ticket,
+html[data-theme="blue"] .hotel-card,
+html[data-theme="blue"] .activity-card,
+html[data-theme="blue"] .food-section-link,
+html[data-theme="blue"] .food-card,
+html[data-theme="blue"] .ticket-import-box,
+html[data-theme="blue"] .local-ticket-card,
+html[data-theme="blue"] .program-day,
+html[data-theme="blue"] .restaurant-card,
+html[data-theme="blue"] .info-card,
+html[data-theme="blue"] .place-card,
+html[data-theme="blue"] .must-card,
+html[data-theme="blue"] .discover-card,
+html[data-theme="blue"] .food-detail-body,
+html[data-theme="blue"] .place-detail-body,
+html[data-theme="blue"] .restaurant-detail-body{
+  background:#FFFFFF !important;
+  color:#10253F !important;
+  border:1px solid #D7E7F2 !important;
+  box-shadow:0 12px 28px -24px rgba(26,81,124,.30) !important;
+}
+
+html[data-theme="blue"] .city-accordion p,
+html[data-theme="blue"] .food-detail-body p,
+html[data-theme="blue"] .place-detail-body p,
+html[data-theme="blue"] .restaurant-detail-body p,
+html[data-theme="blue"] .empty-note,
+html[data-theme="blue"] .ticket-import-note,
+html[data-theme="blue"] .local-ticket-empty{
+  color:#58718A !important;
+}
+
+/* Convertitore / Budget / SOS: azzurro tenue fuori, bianco dentro */
+html[data-theme="blue"] .currency-converter,
+html[data-theme="blue"] .sos-info-card,
+html[data-theme="blue"] .private-login-card,
+html[data-theme="blue"] .budget-summary-card,
+html[data-theme="blue"] .expense-form,
+html[data-theme="blue"] .expense-item,
+html[data-theme="blue"] .checklist-section,
+html[data-theme="blue"] .checklist-progress-wrap,
+html[data-theme="blue"] .today-card,
+html[data-theme="blue"] .today-preview-panel{
+  background:#EEF7FE !important;
+  color:#10253F !important;
+  border:1px solid #CFE3F1 !important;
+  box-shadow:0 12px 28px -24px rgba(26,81,124,.28) !important;
+}
+
+html[data-theme="blue"] .currency-converter *,
+html[data-theme="blue"] .sos-info-card *{
+  color:inherit;
+}
+
+html[data-theme="blue"] .currency-converter input,
+html[data-theme="blue"] .currency-converter select,
+html[data-theme="blue"] .private-login-card input,
+html[data-theme="blue"] .expense-form input,
+html[data-theme="blue"] .expense-form select{
+  background:#FFFFFF !important;
+  color:#10253F !important;
+  border:1px solid #C7DDEC !important;
+}
+
+/* Pulsanti */
+html[data-theme="blue"] .mapbtn,
+html[data-theme="blue"] .secondary-action,
+html[data-theme="blue"] .restaurant-maps-btn,
+html[data-theme="blue"] .local-ticket-actions button,
+html[data-theme="blue"] .expense-actions button{
+  background:#E4F2FB !important;
+  color:#1769B2 !important;
+  border:1px solid #C6E0F1 !important;
+}
+
+/* Barra inferiore: bianca, accento blu */
+html[data-theme="blue"] nav.tabbar{
+  background:rgba(255,255,255,.97) !important;
+  border-top:1px solid #D7E7F2 !important;
+  color:#63788D !important;
+  box-shadow:0 -9px 24px -21px rgba(31,89,134,.38) !important;
+}
+
+html[data-theme="blue"] nav.tabbar button{
+  color:#63788D !important;
+}
+html[data-theme="blue"] nav.tabbar button.active{
+  color:#1769B2 !important;
+  background:rgba(23,105,178,.07) !important;
+}
+html[data-theme="blue"] nav.tabbar button.active svg{
+  stroke:#1769B2 !important;
+}
+html[data-theme="blue"] nav.tabbar button.active .tab-dollar{
+  color:#1769B2 !important;
+}
