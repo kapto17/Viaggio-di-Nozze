@@ -15,6 +15,90 @@ const CITY_LABEL = {
   sd: "Bayahibe"
 };
 
+
+const CITY_LIVE = {
+  sf:{lat:37.7749,lon:-122.4194,tz:"America/Los_Angeles",label:"San Francisco"},
+  la:{lat:34.0522,lon:-118.2437,tz:"America/Los_Angeles",label:"Los Angeles"},
+  vegas:{lat:36.1699,lon:-115.1398,tz:"America/Los_Angeles",label:"Las Vegas"},
+  page:{lat:36.9147,lon:-111.4558,tz:"America/Phoenix",label:"Page"},
+  chicago:{lat:41.8781,lon:-87.6298,tz:"America/Chicago",label:"Chicago"},
+  sd:{lat:18.3690,lon:-68.8385,tz:"America/Santo_Domingo",label:"Bayahibe"}
+};
+let cityLiveClockTimer = null;
+
+function weatherIcon(code,isDay=true){
+  if(code===0)return isDay?"☀️":"🌙";
+  if([1,2].includes(code))return isDay?"🌤️":"☁️";
+  if(code===3)return "☁️";
+  if([45,48].includes(code))return "🌫️";
+  if([51,53,55,56,57].includes(code))return "🌦️";
+  if([61,63,65,66,67,80,81,82].includes(code))return "🌧️";
+  if([71,73,75,77,85,86].includes(code))return "❄️";
+  if([95,96,99].includes(code))return "⛈️";
+  return "🌡️";
+}
+function cityWeatherCacheKey(accent){return `lf-weather-${accent}`;}
+function setCityWeatherBadge(leg,payload){
+  const badge=$("#city-live-weather");
+  if(!badge||!payload)return;
+  const temp=Math.round(Number(payload.temperature_2m));
+  if(!Number.isFinite(temp))return;
+  badge.innerHTML=`<span>${weatherIcon(Number(payload.weather_code),Number(payload.is_day)===1)}</span><strong>${temp}°C</strong>`;
+  badge.classList.remove("city-live-loading");
+  badge.title="Meteo attuale della località";
+}
+function updateCityLocalClock(leg){
+  const info=CITY_LIVE[leg.accent],target=$("#city-live-time");
+  if(!info||!target)return;
+  try{
+    const value=new Intl.DateTimeFormat("it-IT",{timeZone:info.tz,hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date());
+    target.innerHTML=`<span>🕒</span><strong>${value}</strong>`;
+    target.title=`Ora locale · ${info.label}`;
+  }catch(e){}
+}
+async function refreshCityLiveInfo(leg){
+  const info=CITY_LIVE[leg.accent];
+  if(!info)return;
+  if(cityLiveClockTimer)clearInterval(cityLiveClockTimer);
+  updateCityLocalClock(leg);
+  cityLiveClockTimer=setInterval(()=>updateCityLocalClock(leg),30000);
+  try{
+    const cached=JSON.parse(localStorage.getItem(cityWeatherCacheKey(leg.accent))||"null");
+    if(cached&&cached.current)setCityWeatherBadge(leg,cached.current);
+  }catch(e){}
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${info.lat}&longitude=${info.lon}&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timezone=${encodeURIComponent(info.tz)}`;
+    const response=await fetch(url,{headers:{"Accept":"application/json"}});
+    if(!response.ok)throw new Error("Meteo non disponibile");
+    const data=await response.json();
+    if(data&&data.current){
+      setCityWeatherBadge(leg,data.current);
+      localStorage.setItem(cityWeatherCacheKey(leg.accent),JSON.stringify({savedAt:Date.now(),current:data.current}));
+    }
+  }catch(err){
+    const badge=$("#city-live-weather");
+    if(badge&&badge.classList.contains("city-live-loading")){
+      badge.innerHTML=`<span>🌡️</span><strong>--°</strong>`;
+      badge.title="Meteo non disponibile offline";
+    }
+  }
+}
+function rememberCityViewState(legId){
+  if(!$("#screen-city-detail")?.classList.contains("active"))return;
+  const openKeys=$$(".city-accordion[open]",$("#screen-city-detail")).map(el=>el.dataset.accordionKey).filter(Boolean);
+  const current=history.state||{screen:"city-detail",legId};
+  history.replaceState({...current,screen:"city-detail",legId,cityView:{scrollY:window.scrollY,openKeys}},"","#city-detail");
+}
+function restoreCityViewState(cityView){
+  if(!cityView)return;
+  const host=$("#screen-city-detail");
+  (cityView.openKeys||[]).forEach(key=>{
+    const detail=$(`.city-accordion[data-accordion-key="${CSS.escape(key)}"]`,host);
+    if(detail)detail.open=true;
+  });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,Number(cityView.scrollY)||0)));
+}
+
 const BUDGET_CITY_BY_LEG = {
   sfo: "San Francisco",
   la: "Los Angeles",
@@ -608,7 +692,7 @@ function renderRouteStrip(){
     const track = i < TRIP.legs.length - 1 ? `<div class="route-track"></div>` : "";
     return `
       <button class="route-stop ${active?"active":""} ${done?"done":""}" data-leg="${leg.id}">
-        <div class="dot" style="${active?`background:${ACCENT[leg.accent]};border-color:${ACCENT[leg.accent]}`:""}"></div>
+        <svg class="route-pin" viewBox="0 0 24 24" aria-hidden="true" style="${active?`color:${ACCENT[leg.accent]}`:""}"><path d="M12 22s7-7.1 7-13A7 7 0 1 0 5 9c0 5.9 7 13 7 13Z"></path><circle cx="12" cy="9" r="2.4"></circle></svg>
         <div class="rs-label">${CITY_LABEL[leg.accent]}</div>
         <div class="rs-date">${fmtDate(leg.dateFrom)}</div>
       </button>
@@ -778,7 +862,7 @@ function bindTicketImporter(leg){
 }
 
 // ---------- Rendering: dettaglio città ----------
-function openCity(legId, pushHistory=true){
+function openCity(legId, pushHistory=true, restoreState=null){
   const leg = TRIP.legs.find(l => l.id === legId);
   if (!leg) return;
   const el = $("#screen-city-detail");
@@ -801,8 +885,10 @@ function openCity(legId, pushHistory=true){
     </div>
   `).join("");
 
-  const accordion = (title, content, opts={}) => `
-    <details class="city-accordion ${opts.className || ""}" ${opts.open ? "open" : ""}>
+  const accordion = (title, content, opts={}) => {
+    const key=opts.key||title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+    return `
+    <details class="city-accordion ${opts.className || ""}" data-accordion-key="${key}" ${opts.open ? "open" : ""}>
       <summary>
         <span>${opts.icon ? `<span class="accordion-icon">${opts.icon}</span>` : ""}${title}</span>
         ${opts.count !== undefined ? `<span class="accordion-count">${opts.count}</span>` : ""}
@@ -810,6 +896,7 @@ function openCity(legId, pushHistory=true){
       </summary>
       <div class="accordion-content">${content}</div>
     </details>`;
+  };
 
   const programDays = (typeof PROGRAM_GUIDE !== "undefined" && PROGRAM_GUIDE[leg.id]) || [];
   const programHtml = programDays.length ? `
@@ -883,6 +970,10 @@ function openCity(legId, pushHistory=true){
   el.innerHTML = `
     <button class="back-btn" id="back-to-cities">‹ Tutte le tappe</button>
     <div class="city-header photo-city-header" style="--city-accent:${ACCENT[leg.accent]}; background-image:linear-gradient(180deg, rgba(6,13,25,.08) 12%, rgba(6,13,25,.78) 100%), url('${leg.image || ""}')">
+      <div class="city-live-row">
+        <div class="city-live-badge city-live-loading" id="city-live-weather"><span>🌡️</span><strong>--°</strong></div>
+        <div class="city-live-badge" id="city-live-time"><span>🕒</span><strong>--:--</strong></div>
+      </div>
       <div class="city-header-content">
         <h2>${leg.city}</h2>
         <div class="cd-dates">${fmtDate(leg.dateFrom)} – ${fmtDate(leg.dateTo)}</div>
@@ -941,37 +1032,43 @@ function openCity(legId, pushHistory=true){
   `;
   $("#back-to-cities").addEventListener("click", () => history.back());
   $$(`[data-food-leg="${leg.id}"]`, el).forEach(btn => {
-    btn.addEventListener("click", () => openFoodDetail(leg.id, btn.dataset.foodId));
+    btn.addEventListener("click", () => { rememberCityViewState(leg.id); openFoodDetail(leg.id, btn.dataset.foodId); });
   });
   $$(".place-ticket", el).forEach(card => {
     const open = (event) => {
       if (event && event.target && event.target.closest("a")) return;
+      rememberCityViewState(leg.id);
       openPlaceDetail(leg.id, card.dataset.placeName);
     };
     card.addEventListener("click", open);
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " "){
         event.preventDefault();
-        openPlaceDetail(leg.id, card.dataset.placeName);
+        rememberCityViewState(leg.id);
+      openPlaceDetail(leg.id, card.dataset.placeName);
       }
     });
   });
   $$(".restaurant-ticket", el).forEach(card => {
     const open = (event) => {
       if (event && event.target && event.target.closest("a")) return;
+      rememberCityViewState(leg.id);
       openRestaurantDetail(leg.id, card.dataset.restaurantName);
     };
     card.addEventListener("click", open);
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " "){
         event.preventDefault();
-        openRestaurantDetail(leg.id, card.dataset.restaurantName);
+        rememberCityViewState(leg.id);
+      openRestaurantDetail(leg.id, card.dataset.restaurantName);
       }
     });
   });
   bindTicketImporter(leg);
   renderLocalTickets(leg.id);
   navigateTo("city-detail", { legId: leg.id }, pushHistory);
+  refreshCityLiveInfo(leg);
+  if(restoreState?.cityView)restoreCityViewState(restoreState.cityView);
 }
 
 
@@ -1394,7 +1491,7 @@ function navigateTo(screen, payload={}, push=true){
 function renderNavigationState(state){
   const st = state || { screen:"home" };
   if (st.screen === "city-detail" && st.legId){
-    openCity(st.legId, false);
+    openCity(st.legId, false, st);
     return;
   }
   if (st.screen === "food-detail" && st.legId && st.foodId){

@@ -1615,3 +1615,44 @@ nav.tabbar button.active svg{stroke:var(--theme-gold-2);}
   .honeymoon-topbar h1{font-size:31px;}
   .honeymoon-heart-line{width:min(64%,225px);}
 }
+
+/* ===== v2.1.0 · verde oliva, pin timeline, meteo/ora località ===== */
+:root{
+  --theme-panel:#DCE4D0;--theme-panel-2:#C9D5B9;--theme-ink:#263124;
+  --theme-muted:#596653;--theme-green:#82966F;--theme-green-dark:#42533B;
+}
+.ticket,.hotel-card,.activity-card,.food-section-link,.food-card,.city-accordion,
+.ticket-import-box,.local-ticket-card,.private-login-card,.budget-summary-card,.expense-form,.expense-item,
+.checklist-progress-wrap,.checklist-section,.currency-converter,.today-card,.today-preview-panel,.sos-info-card,
+.restaurant-detail-body,.food-detail-body,.place-detail-body,.program-day,.budget-city-accordion{
+  background:linear-gradient(145deg,#E4EAD9,#D3DEC6)!important;color:var(--theme-ink)!important;
+  border-color:rgba(66,83,59,.22)!important;
+}
+.city-accordion summary,.accordion-must summary,.accordion-discover summary,.accordion-clothing summary,.accordion-program>summary{
+  background:linear-gradient(90deg,rgba(100,122,82,.17),rgba(255,255,255,.12))!important;color:var(--theme-ink)!important;
+}
+.accordion-content{color:var(--theme-ink)}
+.accordion-icon{background:rgba(83,108,67,.16)!important;color:var(--theme-green-dark)!important}
+.empty-note,.ticket-import-note,.local-ticket-empty{color:var(--theme-muted)!important}
+.mapbtn,.secondary-action,.local-ticket-actions button,.expense-actions button{background:#EDF2E7!important;color:#34452F!important;border-color:rgba(66,83,59,.26)!important}
+.restaurant-maps-btn{background:#D6E1CB!important;color:#34452F!important;border-color:#A9B99A!important}
+.custom-check{background:#EFF3E9!important;border-color:#9EAF90!important}
+.checklist-profile-tabs button.active{background:#DCE6D2!important;color:#34472F!important}
+.place-detail-plan{background:#CBD8BE!important;border-color:#AABF99!important}
+.place-detail-plan strong{color:#35482F!important}.place-detail-plan span{color:#506049!important}
+
+/* pin tipo Maps */
+.route-stop .route-pin{width:19px;height:19px;flex:0 0 19px;color:var(--theme-gold);overflow:visible;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+.route-stop .route-pin path{fill:currentColor;stroke:rgba(255,247,232,.35);stroke-width:.7}
+.route-stop .route-pin circle{fill:#26231C}
+.route-stop.done .route-pin{color:#BDA15D}
+.route-stop.active .route-pin{color:var(--theme-gold-2);filter:drop-shadow(0 0 5px rgba(240,207,130,.34))}
+
+/* meteo reale + ora locale nella hero città */
+.photo-city-header{position:relative;overflow:hidden}
+.city-live-row{position:absolute;top:12px;left:12px;right:12px;z-index:3;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;pointer-events:none}
+.city-live-badge{display:inline-flex;align-items:center;gap:6px;min-height:31px;padding:6px 10px;border:1px solid rgba(255,255,255,.22);border-radius:999px;background:rgba(24,30,20,.62);color:#FFF8E9;box-shadow:0 7px 20px -12px rgba(0,0,0,.9);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);font-size:12px;line-height:1}
+.city-live-badge span{font-size:14px}.city-live-badge strong{font-size:12px;letter-spacing:.015em}.city-live-loading{opacity:.82}
+.city-header-content{position:relative;z-index:2}
+.screen.active{animation:screenIn .16s ease-out}@keyframes screenIn{from{opacity:.86}to{opacity:1}}
+@media(max-width:380px){.city-live-row{top:9px;left:9px;right:9px}.city-live-badge{padding:5px 8px;gap:4px;font-size:11px}}
