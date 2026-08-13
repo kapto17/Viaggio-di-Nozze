@@ -1295,10 +1295,6 @@ nav.tabbar button.active{
 }
 .honeymoon-topbar::after{display:none;}
 .honeymoon-topbar h1{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
   margin:0;
   color:#B51F36;
   font-family:"Segoe Script","Snell Roundhand","Brush Script MT","Lucida Handwriting",cursive;
@@ -1308,34 +1304,19 @@ nav.tabbar button.active{
   letter-spacing:-.035em;
   text-shadow:none;
   white-space:nowrap;
+  text-align:center;
 }
-.honeymoon-topbar h1 span{display:block;}
-.honeymoon-heart{
-  display:inline-flex;
-  width:46px;
-  height:54px;
-  flex:0 0 46px;
-  align-items:center;
-  justify-content:center;
-  color:#B51F36;
-  margin-left:2px;
-}
-.honeymoon-heart svg{
-  width:100%;
-  height:100%;
-  overflow:visible;
-}
-.honeymoon-heart path{
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  vector-effect:non-scaling-stroke;
+.honeymoon-heart-line{
+  display:block;
+  width:min(100%, 560px);
+  height:auto;
+  margin:2px auto -2px;
+  object-fit:contain;
+  pointer-events:none;
 }
 @media (max-width:380px){
-  .honeymoon-topbar h1{font-size:46px;gap:6px;}
-  .honeymoon-heart{width:42px;height:50px;flex-basis:42px;}
+  .honeymoon-topbar h1{font-size:46px;}
+  .honeymoon-heart-line{width:112%;margin-left:-6%;max-width:none;}
 }
 
 /* Fusi orari svincolati dal vecchio contenitore bianco */
@@ -1392,7 +1373,6 @@ nav.tabbar button.active{
 
 @media (max-width:360px){
   .honeymoon-topbar h1{font-size:43px;gap:5px;}
-  .honeymoon-heart{width:39px;height:47px;flex-basis:39px;}
   .timezone-box .world-clock-card{padding:12px 11px;}
   .timezone-box .world-clock-time{font-size:20px;}
 }

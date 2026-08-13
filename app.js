@@ -404,14 +404,6 @@ function renderHome(){
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
 
-    ${privateAuthState.authenticated ? `
-    <div class="private-area-wrap">
-      <button class="private-area-entry unlocked" id="private-area-entry">
-        <span class="private-area-icon">💰</span>
-        <span class="private-area-copy"><strong>Budget L&amp;F</strong><small>Privato · sincronizzato tra i vostri telefoni</small></span>
-        <span class="private-area-arrow">›</span>
-      </button>
-    </div>` : ""}
   `;
 
   renderRouteStrip();
