@@ -2718,3 +2718,7 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   font-size:9px;font-weight:750;opacity:.48;
 }
 .today-preview-slide.active{outline:2px solid rgba(255,255,255,.72);outline-offset:-4px}
+
+/* v2.3.7 — azioni viaggio */
+.program-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.program-actions .program-map{margin-top:0}

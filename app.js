@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.6";
+    version.textContent="Versione app 2.3.7";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -567,7 +567,11 @@ function programDayHtml(day){
             <div class="program-copy">
               <div class="program-item-title">${item.title}</div>
               <div class="program-note">${item.note || ""}</div>
-              ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
+              ${(item.mapsQuery||item.uberDestination||item.lyftDestination) ? `<div class="program-actions">
+                ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
+                ${item.uberDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}">Uber</a>` : ""}
+                ${item.lyftDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://ride.lyft.com/ridetype?id=lyft&destination[address]=${encodeURIComponent(item.lyftDestination)}">Lyft</a>` : ""}
+              </div>` : ""}
             </div>
           </div>`).join("")}
       </div>
@@ -2010,7 +2014,7 @@ function openTodayScreen(legId, iso){
         <p>${day.theme||""}</p>
       </div>
       <div class="today-screen-live">
-        <div class="today-local-time"><b id="today-screen-clock">--:--</b><em>${iso==="2026-10-28"?"Grand Canyon / Page":leg?.city||""}</em></div>
+        <div class="today-local-time"><b id="today-screen-clock">--:--</b><em>${todayLiveInfo(iso,legId)?.label || leg?.city || ""}</em></div>
         <div class="today-weather city-live-loading" id="today-screen-weather"><span>🌡️</span><strong>--°C</strong></div>
       </div>
     </div>
@@ -2018,6 +2022,7 @@ function openTodayScreen(legId, iso){
 
   $$(".screen").forEach(s=>s.classList.remove("active"));
   screen.classList.add("active");
+  screen.dataset.legId=legId;
   document.querySelector(".honeymoon-topbar")?.classList.add("home-only-hidden");
   window.scrollTo({top:0,behavior:"instant"});
 
@@ -2028,20 +2033,37 @@ function openTodayScreen(legId, iso){
 async function refreshDedicatedTodayLive(iso){
   const clock=document.getElementById("today-screen-clock");
   const weather=document.getElementById("today-screen-weather");
-  const zone=iso==="2026-10-28"?"America/Phoenix":"America/Los_Angeles";
+  const screen=document.getElementById("screen-today");
+  const legId=screen?.dataset?.legId||"";
+  const info=todayLiveInfo(iso,legId);
+  const zone=info?.tz||"America/Los_Angeles";
   if(clock){
     const tick=()=>clock.textContent=new Intl.DateTimeFormat("it-IT",{timeZone:zone,hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date());
-    tick(); setTimeout(tick,30000);
+    tick();
   }
-  if(!weather)return;
-  const info=iso==="2026-10-28"?{lat:36.0544,lon:-112.1401,tz:"America/Phoenix"}:null;
-  if(!info)return;
+  if(!weather||!info)return;
   try{
     const url=`https://api.open-meteo.com/v1/forecast?latitude=${info.lat}&longitude=${info.lon}&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&timezone=${encodeURIComponent(info.tz)}`;
-    const r=await fetch(url,{headers:{"Accept":"application/json"}});
-    if(!r.ok)throw new Error();
+    const r=await fetch(url,{cache:"no-store",headers:{"Accept":"application/json"}});
+    if(!r.ok)throw new Error("weather");
     const c=(await r.json()).current;
     weather.innerHTML=`<span>${weatherIcon(Number(c.weather_code),Number(c.is_day)===1)}</span><strong>${Math.round(Number(c.temperature_2m))}°C</strong>`;
     weather.classList.remove("city-live-loading");
-  }catch(e){}
+  }catch(e){
+    weather.innerHTML=`<span>🌡️</span><strong>n/d</strong>`;
+  }
+}
+
+
+function todayLiveInfo(iso, legId){
+  const d=iso||"";
+  if(d>="2026-10-20" && d<="2026-10-23") return {lat:37.7749,lon:-122.4194,tz:"America/Los_Angeles",label:"San Francisco"};
+  if(d>="2026-10-23" && d<="2026-10-27") return {lat:34.0522,lon:-118.2437,tz:"America/Los_Angeles",label:"Los Angeles"};
+  if(d==="2026-10-28") return {lat:36.0544,lon:-112.1401,tz:"America/Phoenix",label:"Grand Canyon"};
+  if(d==="2026-10-29") return {lat:36.9147,lon:-111.4558,tz:"America/Phoenix",label:"Page"};
+  if(d==="2026-10-27" || d==="2026-10-30") return {lat:36.1699,lon:-115.1398,tz:"America/Los_Angeles",label:"Las Vegas"};
+  if(d>="2026-10-30" && d<="2026-11-03") return {lat:41.8781,lon:-87.6298,tz:"America/Chicago",label:"Chicago"};
+  if(d>="2026-11-03" && d<="2026-11-10") return {lat:18.3690,lon:-68.8380,tz:"America/Santo_Domingo",label:"Bayahibe"};
+  const leg=TRIP.legs.find(x=>x.id===legId);
+  return CITY_LIVE?.[leg?.accent]||null;
 }

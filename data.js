@@ -220,7 +220,8 @@ const PROGRAM_GUIDE = {
     { date:"2026-10-20", title:"Arrivo a San Francisco", theme:"Atterraggio e recupero energie", items:[
       { time:"19:25", kind:"booked", icon:"✈️", title:"Arrivo a SFO", note:"Immigrazione, bagagli e trasferimento verso Hotel Spero." },
       { time:"21:30 circa", kind:"recommended", icon:"🏨", title:"Check-in e cena leggera", note:"Niente visite programmate: meglio assorbire il fuso e partire bene il giorno dopo." }
-    ]},
+    ,
+      { time:"Dopo bagagli e controlli", kind:"recommended", icon:"🚕", title:"SFO → Hotel Spero", note:"Soluzione consigliata dopo il volo: Uber o Lyft direttamente fino all'hotel. Hotel Spero · 405 Taylor St, San Francisco, CA.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco", uberDestination:"Hotel Spero, 405 Taylor St, San Francisco, CA", lyftDestination:"Hotel Spero, 405 Taylor St, San Francisco, CA" }]},
     { date:"2026-10-21", title:"Golden Gate, Sausalito e costa", theme:"Tutto nella stessa zona, senza attraversare la città avanti e indietro", items:[
       { time:"09:00", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto e passeggiata sul ponte.", mapsQuery:"Golden Gate Bridge San Francisco" },
       { time:"11:30", kind:"recommended", icon:"⛵", title:"Sausalito", note:"Passeggiata sul waterfront e pranzo leggero.", mapsQuery:"Sausalito California" },
@@ -237,13 +238,18 @@ const PROGRAM_GUIDE = {
     ]}
   ],
   la: [
-    { date:"2026-10-23", title:"Arrivo e Downtown LA", theme:"Pomeriggio leggero dopo volo e ritiro auto", items:[
-      { time:"12:36", kind:"booked", icon:"✈️", title:"Arrivo a LAX", note:"Bagagli e ritiro SUV." },
+    { date:"2026-10-23", title:"Arrivo e Downtown LA", theme:"Dalla baia alla California del Sud: arrivo a Los Angeles e primo assaggio della città.", items:[
+      { time:"08:00", kind:"recommended", icon:"🚕", title:"Partenza da Hotel Spero", note:"Lasciate l'hotel con margine per traffico, bagagli e controlli del volo domestico delle 11:00.", mapsQuery:"San Francisco International Airport" },
+      { time:"08:30 circa", kind:"recommended", icon:"🛫", title:"Arrivo a SFO", note:"Check-in/bag drop se necessario e controlli di sicurezza. Obiettivo: essere al gate con ampio margine." },
+      { time:"11:00", kind:"recommended", icon:"✈️", title:"Volo SFO → LAX", note:"Partenza da San Francisco. Durata prevista 1h36." },
+      { time:"12:36", kind:"recommended", icon:"🛬", title:"Arrivo a Los Angeles · LAX", note:"Atterraggio previsto alle 12:36. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles." },
+      { time:"13:15 circa", kind:"recommended", icon:"🚌", title:"Navetta per LAX Rental Car Center", note:"Dal livello Arrivi/Lower Level, seguite i cartelli viola Rental Car Shuttles. Alamo opera nel Rental Car Center.", mapsQuery:"LAX Rental Car Center 5251 West 98th Street Los Angeles" },
+      { time:"13:30 circa", kind:"recommended", icon:"🚗", title:"Ritiro auto · Alamo", note:"Alamo · LAX Rental Car Center, 5251 W 98th St, Los Angeles, CA 90045. Dopo il ritiro inizia il viaggio in auto.", mapsQuery:"Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles" },
       { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta." },
       { time:"16:30", kind:"recommended", icon:"🏙️", title:"Downtown Los Angeles", note:"Grand Central Market / Walt Disney Concert Hall / centro, scegliendo in base all'energia.", mapsQuery:"Grand Central Market Los Angeles" },
-      { time:"19:30", kind:"recommended", icon:"🐟", title:"Cena in zona Downtown", note:"Water Grill è una delle scelte L&F e qui si incastra senza tornare apposta.", mapsQuery:"Water Grill Los Angeles" }
-    ]},
-    { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"LA cinematografica raggruppata per zone", items:[
+      { time:"19:30", kind:"recommended", icon:"🐟", title:"Cena in zona Downtown", note:"Water Grill è una delle scelte L&F e qui si incastra senza tornare apposta.", mapsQuery:"Water Grill Los Angeles" }]},
+    { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"Una giornata tra i grandi simboli di Los Angeles, da Hollywood ai luoghi più iconici della città.", items:[
+      { time:"08:30", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza con calma verso Hollywood Boulevard. Considerate circa 30–45 minuti in base al traffico del momento.", mapsQuery:"Hollywood Walk of Fame Hollywood Boulevard Los Angeles" },
       { time:"09:00", kind:"recommended", icon:"⭐", title:"Hollywood Boulevard", note:"Walk of Fame, TCL Chinese Theatre e Dolby Theatre. 2 ore circa sono sufficienti.", mapsQuery:"TCL Chinese Theatre Los Angeles" },
       { time:"11:45", kind:"recommended", icon:"🛍️", title:"Beverly Hills & Rodeo Drive", note:"Passeggiata e pranzo in zona.", mapsQuery:"Rodeo Drive Beverly Hills" },
       { time:"15:00", kind:"optional", icon:"💡", title:"Urban Light / LACMA", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA" },
