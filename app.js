@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.19";
+    version.textContent="Versione app 2.3.20";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2043,19 +2043,22 @@ const TODAY_MAP_CACHE_KEY="lf-today-map-geocache-v1";
 
 function todayMapItems(day){
   const all=(day?.items||[]);
+  const isOperational=item=>{
+    const t=String(item.title||"").toLowerCase();
+    const n=String(item.note||"").toLowerCase();
+    return /partenza|hotel|aeroporto|airport|volo|arrivo a |check[- ]?in|check[- ]?out|ritiro auto|riconsegna auto|noleggio|navetta|trasferimento|parcheggio/.test(t) ||
+           /partenza dall.hotel|verso l.aeroporto/.test(n);
+  };
   if(day?.date==="2026-10-20"){
     const hotel=all.find(item=>/check-in hotel spero/i.test(String(item.title||"")));
-    return hotel?[hotel]:[];
+    const dinner=all.find(item=>/uncle vito/i.test(String(item.title||"")));
+    return [hotel,dinner].filter(Boolean);
   }
   const visits=all.filter(item=>{
     if(!item.mapsQuery)return false;
     const t=String(item.title||"").toLowerCase();
-    const n=String(item.note||"").toLowerCase();
     if(day?.date==="2026-10-22" && /pranzo:/.test(t))return false;
-    const operational=
-      /partenza|hotel|aeroporto|airport|volo|arrivo a |check[- ]?in|check[- ]?out|ritiro auto|riconsegna auto|noleggio|navetta|trasferimento|parcheggio/.test(t) ||
-      /partenza dall.hotel|verso l.aeroporto/.test(n);
-    return !operational;
+    return !isOperational(item);
   });
   if(day?.date==="2026-10-23"){
     const hotel=all.find(item=>/check-in al the commerce/i.test(String(item.title||"")));
