@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.15";
+    version.textContent="Versione app 2.3.16";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2040,7 +2040,12 @@ async function refreshTodayWeather(forcedDate=null){
 const TODAY_MAP_CACHE_KEY="lf-today-map-geocache-v1";
 
 function todayMapItems(day){
-  return (day?.items||[]).filter(item=>{
+  const all=(day?.items||[]);
+  if(day?.date==="2026-10-20"){
+    const hotel=all.find(item=>/check-in hotel spero/i.test(String(item.title||"")));
+    return hotel?[hotel]:[];
+  }
+  return all.filter(item=>{
     if(!item.mapsQuery)return false;
     const t=String(item.title||"").toLowerCase();
     const n=String(item.note||"").toLowerCase();
@@ -2147,7 +2152,21 @@ async function renderTodayMap(day){
         el.innerHTML=`<span>${p.n}</span>`;
         new maplibregl.Marker({element:el,anchor:"center"})
           .setLngLat([p.lon,p.lat])
-          .setPopup(new maplibregl.Popup({offset:18,closeButton:false}).setText(`${p.n}. ${p.item.title}`))
+          .setPopup((()=>{
+            const popup=new maplibregl.Popup({offset:18,closeButton:false});
+            const ref=resolveProgramDetail(p.item);
+            if(ref){
+              const wrap=document.createElement("button");
+              wrap.type="button";
+              wrap.className="today-map-popup-link";
+              wrap.innerHTML=`<strong>${p.n}. ${p.item.title}</strong><span>Apri dettaglio ›</span>`;
+              wrap.addEventListener("click",()=>openProgramDetail(p.item));
+              popup.setDOMContent(wrap);
+            }else{
+              popup.setText(`${p.n}. ${p.item.title}`);
+            }
+            return popup;
+          })())
           .addTo(map);
       });
       if(coords.length===1){map.setCenter(coords[0]);map.setZoom(13.5);}
@@ -2200,7 +2219,6 @@ function openTodayScreen(legId, iso){
         <span id="today-map-note"></span>
       </div>
       <div id="today-map-canvas" class="today-map-canvas"><div class="today-map-loading">Caricamento mappa…</div></div>
-      <a class="today-map-open" target="_blank" rel="noopener" href="${todayGoogleRouteUrl(todayMapItems(day))}">📍 Apri percorso in Maps</a>
     </div>`;
 
   $$(".screen").forEach(s=>s.classList.remove("active"));

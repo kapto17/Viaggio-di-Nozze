@@ -2876,3 +2876,12 @@ nav.tabbar{
   transform:none;
   line-height:1;
 }
+
+/* v2.3.16 — popup mini-mappa apribile */
+.today-map-popup-link{
+  border:0;background:transparent;padding:0;margin:0;
+  font:inherit;color:inherit;text-align:left;cursor:pointer;
+  display:flex;flex-direction:column;gap:2px;
+}
+.today-map-popup-link strong{font-size:11px}
+.today-map-popup-link span{font-size:9px;font-weight:800;opacity:.62}
