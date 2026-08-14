@@ -2750,3 +2750,44 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
 .today-map-pin{width:28px;height:28px;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;background:var(--th-accent,#152238);color:#fff;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.25);font-size:11px;font-weight:900}
 .today-map-pin span{transform:rotate(45deg);display:block}
 .today-map-open{display:flex;align-items:center;justify-content:center;min-height:38px;margin-top:9px;border-radius:11px;text-decoration:none;font-size:11px;font-weight:850;background:var(--th-panel-soft,#f1eee7);color:var(--th-accent,#152238)}
+
+/* ==========================================================
+   v2.3.11 — mini-mappa Oggi più pulita
+   ========================================================== */
+.today-map-card{
+  padding:13px!important;
+  border-radius:21px!important;
+  overflow:hidden;
+}
+.today-map-canvas{
+  height:210px!important;
+  border-radius:16px!important;
+  border:1px solid rgba(25,35,45,.07);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);
+}
+.today-map-canvas .leaflet-tile-pane{
+  filter:saturate(.72) contrast(.94) brightness(1.035);
+}
+.today-map-canvas .leaflet-tooltip{
+  border:0!important;
+  border-radius:9px!important;
+  padding:5px 8px!important;
+  box-shadow:0 5px 16px rgba(20,25,30,.13)!important;
+  font-size:10px!important;
+  font-weight:750!important;
+}
+.today-map-pin{
+  width:27px!important;height:27px!important;
+  border-radius:50%!important;
+  transform:none!important;
+  line-height:23px!important;
+  background:var(--th-accent,#7a5963)!important;
+  border:2px solid rgba(255,255,255,.96)!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.22)!important;
+}
+.today-map-pin-wrap{margin-left:0!important;margin-top:0!important}
+.today-map-open{
+  min-height:40px!important;
+  margin-top:10px!important;
+  border-radius:13px!important;
+}

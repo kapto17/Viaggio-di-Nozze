@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.10";
+    version.textContent="Versione app 2.3.11";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2114,15 +2114,19 @@ async function renderTodayMap(day){
     for(let i=0;i<items.length;i++){
       try{
         const p=await geocodeTodayQuery(items[i].mapsQuery);
-        if(p)pts.push({...p,item:items[i],n:i+1});
+        if(p)pts.push({...p,item:items[i]});
       }catch(_){}
     }
     if(!pts.length)throw new Error("no points");
     box.innerHTML="";
     const map=L.map(box,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:true});
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(map);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
+      maxZoom:19,
+      subdomains:"abcd"
+    }).addTo(map);
     const bounds=[];
-    pts.forEach(p=>{
+    pts.forEach((p,idx)=>{
+      p.n=idx+1;
       const icon=L.divIcon({
         className:"today-map-pin-wrap",
         html:`<div class="today-map-pin"><span>${p.n}</span></div>`,
@@ -2131,7 +2135,16 @@ async function renderTodayMap(day){
       L.marker([p.lat,p.lon],{icon}).addTo(map).bindTooltip(`${p.n}. ${p.item.title}`);
       bounds.push([p.lat,p.lon]);
     });
-    if(bounds.length===1)map.setView(bounds[0],13);
+    if(bounds.length>1){
+      L.polyline(bounds,{
+        color:getComputedStyle(document.documentElement).getPropertyValue("--th-accent").trim()||"#7a5963",
+        weight:3,
+        opacity:.72,
+        dashArray:"2 7",
+        lineCap:"round"
+      }).addTo(map);
+    }
+    if(bounds.length===1)map.setView(bounds[0],14);
     else map.fitBounds(bounds,{padding:[24,24]});
     setTimeout(()=>map.invalidateSize(),100);
     if(note)note.textContent=`${pts.length} tappe`;
