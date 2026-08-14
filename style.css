@@ -2732,3 +2732,21 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
 .program-item-clickable .program-copy{transition:transform .12s ease}
 .program-item-clickable:active .program-copy{transform:scale(.992)}
 .program-detail-arrow{display:inline-block;margin-left:7px;font-size:17px;line-height:1;opacity:.48;vertical-align:-1px}
+
+/* v2.3.10 — crediti immagini nascosti definitivamente */
+.place-photo-source,.photo-credit{display:none!important}
+
+/* ==========================================================
+   v2.3.10 — La giornata sulla mappa
+   ========================================================== */
+.today-map-card{margin:16px 0 24px;padding:12px;border-radius:18px;background:var(--th-card,#fff);color:var(--th-text,#152238);border:1px solid var(--th-border,rgba(21,34,56,.10));box-shadow:0 12px 28px -24px rgba(15,35,55,.35)}
+.today-map-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:0 2px 9px}
+.today-map-head small{display:block;font-size:9px;font-weight:850;letter-spacing:.1em;opacity:.52}
+.today-map-head strong{display:block;margin-top:2px;font-size:14px}
+.today-map-head>span{font-size:10px;opacity:.55}
+.today-map-canvas{height:205px;border-radius:14px;overflow:hidden;background:var(--th-panel-soft,#f0eee8)}
+.today-map-loading,.today-map-empty{height:100%;display:grid;place-items:center;padding:20px;box-sizing:border-box;text-align:center;font-size:11px;opacity:.62}
+.today-map-pin-wrap{background:transparent!important;border:0!important}
+.today-map-pin{width:28px;height:28px;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);display:grid;place-items:center;background:var(--th-accent,#152238);color:#fff;border:2px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.25);font-size:11px;font-weight:900}
+.today-map-pin span{transform:rotate(45deg);display:block}
+.today-map-open{display:flex;align-items:center;justify-content:center;min-height:38px;margin-top:9px;border-radius:11px;text-decoration:none;font-size:11px;font-weight:850;background:var(--th-panel-soft,#f1eee7);color:var(--th-accent,#152238)}

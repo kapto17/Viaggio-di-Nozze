@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.9";
+    version.textContent="Versione app 2.3.10";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1723,12 +1723,11 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
       <p>${detail.text || place.note || ""}</p>
       ${(leg.activities || []).includes(place) && place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
       <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(place, place.name)}">📍 Apri in Google Maps</a>
-      <div class="place-photo-source" id="place-photo-source">Caricamento immagine…</div>
     </div>
   `;
 
   $("#back-from-place").addEventListener("click", () => history.back());
-  loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), $("#place-photo-source"));
+  loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), null);
   navigateTo("place-detail", { legId, placeName:place.name }, pushHistory);
   focusDetailHero("place-detail");
 }
@@ -2037,6 +2036,110 @@ async function refreshTodayWeather(forcedDate=null){
 }
 
 
+
+const TODAY_MAP_CACHE_KEY="lf-today-map-geocache-v1";
+
+function todayMapItems(day){
+  return (day?.items||[]).filter(item=>{
+    if(!item.mapsQuery)return false;
+    const t=String(item.title||"").toLowerCase();
+    if(/arrivo a sfo|arrivo a los angeles|volo |check-in|navetta per|ritiro auto/.test(t))return false;
+    return true;
+  });
+}
+
+function todayGoogleRouteUrl(items){
+  const q=items.map(x=>x.mapsQuery).filter(Boolean);
+  if(!q.length)return "";
+  if(q.length===1)return mapsUrl(q[0]);
+  const origin=encodeURIComponent(q[0]);
+  const destination=encodeURIComponent(q[q.length-1]);
+  const waypoints=q.slice(1,-1).map(encodeURIComponent).join("%7C");
+  return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints?`&waypoints=${waypoints}`:""}`;
+}
+
+function loadLeafletOnce(){
+  if(window.L)return Promise.resolve();
+  if(window.__lfLeafletPromise)return window.__lfLeafletPromise;
+  window.__lfLeafletPromise=new Promise((resolve,reject)=>{
+    if(!document.querySelector('link[data-lf-leaflet]')){
+      const link=document.createElement("link");
+      link.rel="stylesheet";
+      link.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+      link.dataset.lfLeaflet="1";
+      document.head.appendChild(link);
+    }
+    const script=document.createElement("script");
+    script.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.async=true;
+    script.onload=()=>resolve();
+    script.onerror=reject;
+    document.head.appendChild(script);
+  });
+  return window.__lfLeafletPromise;
+}
+
+function getTodayGeoCache(){
+  try{return JSON.parse(localStorage.getItem(TODAY_MAP_CACHE_KEY)||"{}")}catch(_){return {}}
+}
+function setTodayGeoCache(cache){
+  try{localStorage.setItem(TODAY_MAP_CACHE_KEY,JSON.stringify(cache))}catch(_){}
+}
+async function geocodeTodayQuery(query){
+  const cache=getTodayGeoCache();
+  if(cache[query])return cache[query];
+  const url=`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(query)}`;
+  const r=await fetch(url,{headers:{"Accept":"application/json"}});
+  if(!r.ok)throw new Error("geocode");
+  const rows=await r.json();
+  if(!rows?.length)return null;
+  const point={lat:Number(rows[0].lat),lon:Number(rows[0].lon)};
+  cache[query]=point;
+  setTodayGeoCache(cache);
+  return point;
+}
+
+async function renderTodayMap(day){
+  const box=document.getElementById("today-map-canvas");
+  const note=document.getElementById("today-map-note");
+  if(!box)return;
+  const items=todayMapItems(day);
+  if(!items.length){
+    box.innerHTML='<div class="today-map-empty">Nessuna tappa mappabile per questa giornata.</div>';
+    return;
+  }
+  try{
+    await loadLeafletOnce();
+    const pts=[];
+    for(let i=0;i<items.length;i++){
+      try{
+        const p=await geocodeTodayQuery(items[i].mapsQuery);
+        if(p)pts.push({...p,item:items[i],n:i+1});
+      }catch(_){}
+    }
+    if(!pts.length)throw new Error("no points");
+    box.innerHTML="";
+    const map=L.map(box,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:true});
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(map);
+    const bounds=[];
+    pts.forEach(p=>{
+      const icon=L.divIcon({
+        className:"today-map-pin-wrap",
+        html:`<div class="today-map-pin"><span>${p.n}</span></div>`,
+        iconSize:[30,38],iconAnchor:[15,36]
+      });
+      L.marker([p.lat,p.lon],{icon}).addTo(map).bindTooltip(`${p.n}. ${p.item.title}`);
+      bounds.push([p.lat,p.lon]);
+    });
+    if(bounds.length===1)map.setView(bounds[0],13);
+    else map.fitBounds(bounds,{padding:[24,24]});
+    setTimeout(()=>map.invalidateSize(),100);
+    if(note)note.textContent=`${pts.length} tappe`;
+  }catch(e){
+    box.innerHTML='<div class="today-map-empty">Mappa non disponibile offline. Puoi comunque aprire il percorso in Maps.</div>';
+  }
+}
+
 function openTodayScreen(legId, iso){
   const leg=TRIP.legs.find(x=>x.id===legId);
   const days=(typeof PROGRAM_GUIDE!=="undefined" && PROGRAM_GUIDE[legId])||[];
@@ -2064,7 +2167,15 @@ function openTodayScreen(legId, iso){
         <div class="today-weather city-live-loading" id="today-screen-weather"><span>🌡️</span><strong>--°C</strong></div>
       </div>
     </div>
-    <div class="today-screen-program">${programDayHtml(day)}</div>`;
+    <div class="today-screen-program">${programDayHtml(day)}</div>
+    <div class="today-map-card">
+      <div class="today-map-head">
+        <div><small>RIEPILOGO</small><strong>La giornata sulla mappa</strong></div>
+        <span id="today-map-note"></span>
+      </div>
+      <div id="today-map-canvas" class="today-map-canvas"><div class="today-map-loading">Caricamento mappa…</div></div>
+      <a class="today-map-open" target="_blank" rel="noopener" href="${todayGoogleRouteUrl(todayMapItems(day))}">📍 Apri percorso in Maps</a>
+    </div>`;
 
   $$(".screen").forEach(s=>s.classList.remove("active"));
   screen.classList.add("active");
@@ -2077,6 +2188,7 @@ function openTodayScreen(legId, iso){
     if(history.state?.screen==="today") history.back(); else showScreen("home");
   });
   refreshDedicatedTodayLive(iso);
+  renderTodayMap(day);
 }
 
 async function refreshDedicatedTodayLive(iso){
