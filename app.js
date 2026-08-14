@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.17";
+    version.textContent="Versione app 2.3.19";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1711,7 +1711,7 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
   el.innerHTML = `
     <button class="back-btn" id="back-from-place">‹ ${leg.city}</button>
     <div class="place-detail-hero">
-      <img id="place-detail-image" src="${leg.image || ""}" alt="${place.name}" loading="eager">
+      <img id="place-detail-image" src="${detail.image || leg.image || ""}" alt="${place.name}" loading="eager">
       <div class="place-detail-overlay">
         <div class="place-detail-city">${leg.city}</div>
         <h2>${place.name}</h2>
@@ -1727,7 +1727,9 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
   `;
 
   $("#back-from-place").addEventListener("click", () => history.back());
-  loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), null);
+  if(!detail.image){
+    loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), null);
+  }
   navigateTo("place-detail", { legId, placeName:place.name }, pushHistory);
   focusDetailHero("place-detail");
 }
@@ -2127,7 +2129,10 @@ async function renderTodayMap(day){
     const rawPts=[];
     for(let i=0;i<items.length;i++){
       try{
-        const p=await geocodeTodayQuery(items[i].mapsQuery);
+        const hasFixed=Number.isFinite(Number(items[i].mapLat)) && Number.isFinite(Number(items[i].mapLon));
+        const p=hasFixed
+          ? {lat:Number(items[i].mapLat),lon:Number(items[i].mapLon)}
+          : await geocodeTodayQuery(items[i].mapsQuery);
         if(p)rawPts.push({...p,item:items[i]});
       }catch(_){}
     }

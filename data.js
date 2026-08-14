@@ -32,8 +32,9 @@ const TRIP = {
         { id: "sf-burrito", name: "Mission Burrito", short: "Burrito grande e ricco nato nel Mission District.", description: "Burrito in stile Mission: tortilla di farina molto farcita con riso, fagioli, carne e condimenti. È uno dei cibi simbolo della cultura gastronomica di San Francisco.", whereToFind: [{ name: "La Taqueria", image: "./assets/food/sf-mission-burrito.jpg", note: "Una delle taquerias simbolo del Mission District.", price: "$", mapsQuery: "La Taqueria 2889 Mission St San Francisco" }], image: "./assets/food/sf-mission-burrito.jpg", photoCredit: "Ryan Michael / Wikimedia Commons · CC BY-SA 2.0" }
       ],
       restaurants: [
+        { name: "Uncle Vito's Pizzeria", meal: "quick", price: "$$", type: "Pizza · italiano", typeIcon: "🍕", note: "Scelta semplice per la prima sera: pizza e cucina italiana in zona Union Square, comoda da Hotel Spero.", mapsQuery: "Uncle Vito's Pizzeria San Francisco" },
         { name: "Wipeout Bar & Grill", meal: "quick", price: "$$", type: "Americano · burger · tacos", typeIcon: "🍔", note: "Al Pier 39, comodo dopo il rientro da Alcatraz per una cena informale senza deviazioni.", mapsQuery: "Wipeout Bar & Grill Pier 39 San Francisco" },
-        { name: "Khun Mae Thai Noodles", meal: "serious", price: "$$", type: "Thailandese · noodles", typeIcon: "🍜", note: "A pochi passi da Hotel Spero: scelta pratica per una cena semplice la sera dell’arrivo.", mapsQuery: "Khun Mae Thai Noodles 385 Taylor St San Francisco" },
+        
         { name: "Boudin Bakery · Fisherman's Wharf", image: "https://res.cloudinary.com/the-infatuation/image/upload/c_fill%2Cw_3840%2Car_4%3A3%2Cg_center%2Cf_auto/Drone_ydve3c", meal: "quick", price: "$$", type: "Sourdough · clam chowder", typeIcon: "🥣", note: "Classico facile sul waterfront: perfetto per provare clam chowder nella pagnotta di sourdough.", mapsQuery: "Boudin Bakery 160 Jefferson St San Francisco" },
         { name: "La Taqueria", image: "./assets/food/sf-mission-burrito.jpg", meal: "quick", price: "$", type: "Mission burrito · tacos", typeIcon: "🌯", note: "Storica taqueria del Mission District: scelta pratica per provare il lato più street di San Francisco.", mapsQuery: "La Taqueria 2889 Mission St San Francisco" },
         { name: "The Cheesecake Factory", image: "./assets/food/sf-clam-chowder.jpg", meal: "quick", price: "$$", lf: true, type: "Dolci · cucina americana", typeIcon: "🍰", note: "Segnato da Fortuna · Union Square, all'ultimo piano di Macy's. Buono anche per cheesecake + vista.", mapsQuery: "The Cheesecake Factory 251 Geary St San Francisco" },
@@ -62,7 +63,7 @@ const TRIP = {
         { priority: "must", name: "Santa Monica Pier", lf: true, note: "Molo sull'oceano, Route 66 e tramonto sulla Pacific Coast.", mapsQuery: "Santa Monica Pier" },
         { priority: "must", name: "Venice Beach", lf: true, note: "Boardwalk, spiaggia, palme e atmosfera tipicamente californiana.", mapsQuery: "Venice Beach Los Angeles" },
         { priority: "discover", name: "Beverly Hills & Rodeo Drive", note: "Quartiere elegante e passeggiata nella zona più famosa dello shopping di lusso.", mapsQuery: "Rodeo Drive Beverly Hills" },
-        { priority: "discover", name: "LACMA · Urban Light", lf: true, note: "La celebre installazione di lampioni davanti al Los Angeles County Museum of Art, bellissima anche la sera.", mapsQuery: "Urban Light LACMA Los Angeles" },
+        { priority: "discover", name: "LACMA · Urban Light", lf: true, note: "La celebre installazione di lampioni davanti al Los Angeles County Museum of Art, bellissima anche la sera.", mapsQuery: "Urban Light LACMA 5905 Wilshire Blvd Los Angeles" },
         { priority: "discover", name: "Santa Barbara", lf: true, note: "Città costiera a nord-ovest di Los Angeles, inserita dalla lista di Fortuna. Richiede una mezza/giornata dedicata e va valutata rispetto ai 4 giorni disponibili.", mapsQuery: "Santa Barbara California" },
         { priority: "discover", name: "Manhattan Beach", note: "Elegante località costiera del South Bay con lungo molo, spiaggia ampia e atmosfera rilassata.", mapsQuery: "Manhattan Beach Pier California" },
         { priority: "discover", name: "Redondo Beach Pier · The O.C.", note: "Molo del South Bay affacciato sul Pacifico; diverse location della serie The O.C. furono girate nell’area di Redondo Beach.", mapsQuery: "Redondo Beach Pier California" }
@@ -228,8 +229,8 @@ const PROGRAM_GUIDE = {
       { time:"19:25", kind:"recommended", icon:"🛬", title:"Arrivo a SFO", note:"Atterraggio a San Francisco. Dopo lo sbarco: controlli d’ingresso, ritiro bagagli e uscita dal terminal.", mapsQuery:"San Francisco International Airport" },
       { time:"Dopo i controlli", kind:"recommended", icon:"🚕", title:"Uber / Lyft verso Hotel Spero", note:"Una volta fuori dal terminal, chiamate Uber o Lyft direttamente verso Hotel Spero · 405 Taylor St. È il trasferimento più comodo dopo il volo.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco", uberDestination:"Hotel Spero 405 Taylor St San Francisco CA 94102", lyftDestination:"Hotel Spero 405 Taylor St San Francisco CA 94102" },
       { time:"All’arrivo", kind:"recommended", icon:"🏨", title:"Check-in Hotel Spero", note:"Check-in e sistemazione in camera. Nessun’altra visita programmata per la serata.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco" },
-      { time:"Dopo il check-in", kind:"recommended", icon:"🍜", title:"Khun Mae Thai Noodles", note:"Cena semplice a pochi passi dall’hotel, su Taylor Street: comoda per la prima sera dopo il lungo viaggio.", mapsQuery:"Khun Mae Thai Noodles 385 Taylor St San Francisco" }
-]},
+      { time:"Dopo il check-in", kind:"recommended", icon:"🍕", title:"Uncle Vito's Pizzeria", note:"Pizza semplice e senza troppi pensieri per la prima sera, in zona Union Square e comoda da Hotel Spero.", mapsQuery:"Uncle Vito's Pizzeria San Francisco" }
+    ]},
     { date:"2026-10-21", title:"Golden Gate, Sausalito e costa", theme:"Prima giornata alla scoperta di San Francisco, tra i suoi luoghi più iconici e l’atmosfera della baia.", items:[
       { time:"08:20", kind:"recommended", icon:"🚕", title:"Partenza da Hotel Spero", note:"Partenza verso il Golden Gate Bridge. Considerate circa 30–40 minuti in base al traffico; arrivo previsto intorno alle 09:00.", mapsQuery:"Golden Gate Bridge San Francisco" },
 { time:"09:00", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto e passeggiata sul ponte.", mapsQuery:"Golden Gate Bridge San Francisco" },
@@ -256,14 +257,14 @@ const PROGRAM_GUIDE = {
       { time:"12:36", kind:"recommended", icon:"🛬", title:"Arrivo a Los Angeles · LAX", note:"Atterraggio previsto alle 12:36. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles." },
       { time:"13:15 circa", kind:"recommended", icon:"🚌", title:"Navetta per LAX Rental Car Center", note:"Dal livello Arrivi/Lower Level, seguite i cartelli viola Rental Car Shuttles. Alamo opera nel Rental Car Center.", mapsQuery:"LAX Rental Car Center 5251 West 98th Street Los Angeles" },
       { time:"13:30 circa", kind:"recommended", icon:"🚗", title:"Ritiro auto · Alamo", note:"Alamo · LAX Rental Car Center, 5251 W 98th St, Los Angeles, CA 90045. Dopo il ritiro inizia il viaggio in auto.", mapsQuery:"Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles" },
-      { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta.", mapsQuery:"The Commerce Hotel 7272 E Gage Ave Commerce CA" },
+      { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040", mapLat:33.998348, mapLon:-118.145255 },
       { time:"16:30", kind:"recommended", icon:"🏙️", title:"Downtown Los Angeles", note:"Grand Central Market / Walt Disney Concert Hall / centro, scegliendo in base all'energia.", mapsQuery:"Grand Central Market Los Angeles" },
       { time:"19:30", kind:"recommended", icon:"🐟", title:"Cena in zona Downtown", note:"Water Grill è una delle scelte L&F e qui si incastra senza tornare apposta.", mapsQuery:"Water Grill Los Angeles" }]},
     { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"Una giornata tra i grandi simboli di Los Angeles, da Hollywood ai luoghi più iconici della città.", items:[
       { time:"08:30", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza con calma verso Hollywood Boulevard. Considerate circa 30–45 minuti in base al traffico del momento.", mapsQuery:"Hollywood Walk of Fame Hollywood Boulevard Los Angeles" },
       { time:"09:00", kind:"recommended", icon:"⭐", title:"Hollywood Boulevard", note:"Walk of Fame, TCL Chinese Theatre e Dolby Theatre. 2 ore circa sono sufficienti.", mapsQuery:"TCL Chinese Theatre Los Angeles" },
       { time:"11:45", kind:"recommended", icon:"🛍️", title:"Beverly Hills & Rodeo Drive", note:"Passeggiata e pranzo in zona.", mapsQuery:"Rodeo Drive Beverly Hills" },
-      { time:"15:00", kind:"optional", icon:"💡", title:"LACMA · Urban Light", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA" },
+      { time:"15:00", kind:"optional", icon:"💡", title:"LACMA · Urban Light", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA 5905 Wilshire Blvd Los Angeles", mapLat:34.062822, mapLon:-118.357929 },
       { time:"17:00", kind:"recommended", icon:"🌇", title:"Griffith Observatory", note:"Arrivate con la luce e restate fino al tramonto/sera.", mapsQuery:"Griffith Observatory" },
       { time:"20:00", kind:"optional", icon:"🍷", title:"The Little Door", note:"Cena più romantica e costosa: tenetela come opzione speciale, non obbligatoria.", mapsQuery:"The Little Door Los Angeles" }
     ]},
@@ -472,7 +473,7 @@ const PLACE_DETAILS = {
     text: "Redondo Beach Pier è uno dei moli storici del South Bay. Oltre al lungomare e alla vista sul Pacifico, la zona è interessante per voi perché diverse scene usate per rappresentare Newport Beach nella serie The O.C. furono girate a Redondo Beach e nei dintorni."
   },
   "LACMA · Urban Light": {
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/She%20Is%20Enchanted%20Within%20Urban%20Lights%5E%20In%20Explore%20May%2031-22%20-%20Flickr%20-%20Joey%20Z1.jpg",
+    image: "https://www-images.lacma.org/s3fs-public/styles/max_1300x1300/public/2021-08/SF2485_3.jpg?itok=OOmFd0O0",
     wikiTitle: "Urban Light",
     text: "Urban Light è l'installazione di Chris Burden collocata davanti al LACMA nel 2008. È composta da oltre duecento lampioni stradali storici restaurati, raccolti principalmente nell'area di Los Angeles. Di sera, quando tutte le luci sono accese, diventa uno dei set fotografici più riconoscibili della città."
   },
