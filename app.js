@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.13";
+    version.textContent="Versione app 2.3.14";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2138,18 +2138,10 @@ async function renderTodayMap(day){
 
     map.on("load",()=>{
       const coords=pts.map(p=>[p.lon,p.lat]);
-      if(coords.length>1){
-        map.addSource("today-route",{type:"geojson",data:{type:"Feature",geometry:{type:"LineString",coordinates:coords}}});
-        map.addLayer({id:"today-route-line",type:"line",source:"today-route",
-          paint:{
-            "line-color":getComputedStyle(document.documentElement).getPropertyValue("--th-accent").trim()||"#7a5963",
-            "line-width":3.5,"line-opacity":.75
-          }});
-      }
       pts.forEach(p=>{
         const el=document.createElement("div");
-        el.className="today-map-pin";
-        el.textContent=String(p.n);
+        el.className="today-maplibre-marker";
+        el.innerHTML=`<span>${p.n}</span>`;
         new maplibregl.Marker({element:el,anchor:"center"})
           .setLngLat([p.lon,p.lat])
           .setPopup(new maplibregl.Popup({offset:18,closeButton:false}).setText(`${p.n}. ${p.item.title}`))
@@ -2158,7 +2150,7 @@ async function renderTodayMap(day){
       if(coords.length===1){map.setCenter(coords[0]);map.setZoom(13.5);}
       else{
         const bounds=coords.reduce((b,c)=>b.extend(c),new maplibregl.LngLatBounds(coords[0],coords[0]));
-        map.fitBounds(bounds,{padding:38,maxZoom:13.8,duration:0});
+        map.fitBounds(bounds,{padding:{top:42,bottom:42,left:42,right:42},maxZoom:14,duration:0});
       }
       setTimeout(()=>map.resize(),80);
       if(note)note.textContent=`${pts.length} tappe`;

@@ -2847,3 +2847,32 @@ nav.tabbar{
 .today-map-canvas .maplibregl-ctrl-attrib{font-size:8px!important;opacity:.60}
 .today-map-canvas .maplibregl-popup-content{padding:7px 9px!important;border-radius:10px!important;font-size:10px!important;font-weight:750!important}
 .today-map-pin{width:30px!important;height:30px!important;display:grid!important;place-items:center!important;line-height:1!important;border-radius:50%!important;background:var(--th-accent,#7a5963)!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 4px 12px rgba(0,0,0,.26)!important;font-size:12px!important;font-weight:900!important;cursor:pointer}
+
+/* ==========================================================
+   v2.3.14 — MapLibre: soli pin, nessun percorso
+   ========================================================== */
+.today-maplibre-marker{
+  position:relative;
+  width:30px;
+  height:30px;
+  box-sizing:border-box;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--th-accent,#7a5963);
+  color:#fff;
+  border:2px solid #fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.28);
+  font-family:system-ui,-apple-system,sans-serif;
+  font-size:12px;
+  font-weight:900;
+  line-height:1;
+  cursor:pointer;
+  transform:none;
+}
+.today-maplibre-marker>span{
+  display:block;
+  transform:none;
+  line-height:1;
+}
