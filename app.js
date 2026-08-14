@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.12";
+    version.textContent="Versione app 2.3.13";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2058,25 +2058,25 @@ function todayGoogleRouteUrl(items){
   return `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints?`&waypoints=${waypoints}`:""}`;
 }
 
-function loadLeafletOnce(){
-  if(window.L)return Promise.resolve();
-  if(window.__lfLeafletPromise)return window.__lfLeafletPromise;
-  window.__lfLeafletPromise=new Promise((resolve,reject)=>{
-    if(!document.querySelector('link[data-lf-leaflet]')){
+function loadMapLibreOnce(){
+  if(window.maplibregl)return Promise.resolve();
+  if(window.__lfMapLibrePromise)return window.__lfMapLibrePromise;
+  window.__lfMapLibrePromise=new Promise((resolve,reject)=>{
+    if(!document.querySelector('link[data-lf-maplibre]')){
       const link=document.createElement("link");
       link.rel="stylesheet";
-      link.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-      link.dataset.lfLeaflet="1";
+      link.href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css";
+      link.dataset.lfMaplibre="1";
       document.head.appendChild(link);
     }
     const script=document.createElement("script");
-    script.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    script.src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js";
     script.async=true;
     script.onload=()=>resolve();
     script.onerror=reject;
     document.head.appendChild(script);
   });
-  return window.__lfLeafletPromise;
+  return window.__lfMapLibrePromise;
 }
 
 function getTodayGeoCache(){
@@ -2109,7 +2109,7 @@ async function renderTodayMap(day){
     return;
   }
   try{
-    await loadLeafletOnce();
+    await loadMapLibreOnce();
     const rawPts=[];
     for(let i=0;i<items.length;i++){
       try{
@@ -2119,45 +2119,53 @@ async function renderTodayMap(day){
     }
     if(!rawPts.length)throw new Error("no points");
 
-    // Alcuni step consecutivi puntano allo stesso luogo (es. "Partenza hotel"
-    // verso Golden Gate + "Golden Gate Bridge"). Due marker identici si
-    // sovrapponevano e il 2 nascondeva l'1. Teniamo un solo pin per coordinate.
     const seen=new Set();
     const pts=rawPts.filter(p=>{
       const key=`${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
       if(seen.has(key))return false;
-      seen.add(key);
-      return true;
+      seen.add(key); return true;
     });
+    pts.forEach((p,i)=>p.n=i+1);
+
     box.innerHTML="";
-    const map=L.map(box,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:true});
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-      maxZoom:19
-    }).addTo(map);
-    const bounds=[];
-    pts.forEach((p,idx)=>{
-      p.n=idx+1;
-      const icon=L.divIcon({
-        className:"today-map-pin-wrap",
-        html:`<div class="today-map-pin"><span>${p.n}</span></div>`,
-        iconSize:[30,38],iconAnchor:[15,36]
-      });
-      L.marker([p.lat,p.lon],{icon}).addTo(map).bindTooltip(`${p.n}. ${p.item.title}`);
-      bounds.push([p.lat,p.lon]);
+    const map=new maplibregl.Map({
+      container:box,
+      style:"https://tiles.openfreemap.org/styles/liberty",
+      attributionControl:true,
+      interactive:true
     });
-    if(bounds.length>1){
-      L.polyline(bounds,{
-        color:getComputedStyle(document.documentElement).getPropertyValue("--th-accent").trim()||"#7a5963",
-        weight:3,
-        opacity:.72,
-        dashArray:"2 7",
-        lineCap:"round"
-      }).addTo(map);
-    }
-    if(bounds.length===1)map.setView(bounds[0],14);
-    else map.fitBounds(bounds,{padding:[24,24]});
-    setTimeout(()=>map.invalidateSize(),100);
-    if(note)note.textContent=`${pts.length} tappe`;
+    map.scrollZoom.disable();
+
+    map.on("load",()=>{
+      const coords=pts.map(p=>[p.lon,p.lat]);
+      if(coords.length>1){
+        map.addSource("today-route",{type:"geojson",data:{type:"Feature",geometry:{type:"LineString",coordinates:coords}}});
+        map.addLayer({id:"today-route-line",type:"line",source:"today-route",
+          paint:{
+            "line-color":getComputedStyle(document.documentElement).getPropertyValue("--th-accent").trim()||"#7a5963",
+            "line-width":3.5,"line-opacity":.75
+          }});
+      }
+      pts.forEach(p=>{
+        const el=document.createElement("div");
+        el.className="today-map-pin";
+        el.textContent=String(p.n);
+        new maplibregl.Marker({element:el,anchor:"center"})
+          .setLngLat([p.lon,p.lat])
+          .setPopup(new maplibregl.Popup({offset:18,closeButton:false}).setText(`${p.n}. ${p.item.title}`))
+          .addTo(map);
+      });
+      if(coords.length===1){map.setCenter(coords[0]);map.setZoom(13.5);}
+      else{
+        const bounds=coords.reduce((b,c)=>b.extend(c),new maplibregl.LngLatBounds(coords[0],coords[0]));
+        map.fitBounds(bounds,{padding:38,maxZoom:13.8,duration:0});
+      }
+      setTimeout(()=>map.resize(),80);
+      if(note)note.textContent=`${pts.length} tappe`;
+    });
+    map.on("error",e=>{
+      if(!map.loaded()) box.innerHTML='<div class="today-map-empty">Mappa non disponibile. Puoi comunque aprire il percorso in Maps.</div>';
+    });
   }catch(e){
     box.innerHTML='<div class="today-map-empty">Mappa non disponibile offline. Puoi comunque aprire il percorso in Maps.</div>';
   }

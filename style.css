@@ -2840,3 +2840,10 @@ nav.tabbar{
   background:color-mix(in srgb,var(--th-accent,#152238) 9%,white)!important;
   border:1px solid color-mix(in srgb,var(--th-accent,#152238) 15%,transparent)!important;
 }
+
+/* v2.3.13 — OpenFreeMap Liberty + MapLibre */
+.today-map-canvas{height:220px!important;background:#dbe7ec!important;border-radius:17px!important;overflow:hidden!important}
+.today-map-canvas .maplibregl-canvas{border-radius:17px}
+.today-map-canvas .maplibregl-ctrl-attrib{font-size:8px!important;opacity:.60}
+.today-map-canvas .maplibregl-popup-content{padding:7px 9px!important;border-radius:10px!important;font-size:10px!important;font-weight:750!important}
+.today-map-pin{width:30px!important;height:30px!important;display:grid!important;place-items:center!important;line-height:1!important;border-radius:50%!important;background:var(--th-accent,#7a5963)!important;color:#fff!important;border:2px solid #fff!important;box-shadow:0 4px 12px rgba(0,0,0,.26)!important;font-size:12px!important;font-weight:900!important;cursor:pointer}
