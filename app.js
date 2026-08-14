@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.11";
+    version.textContent="Versione app 2.3.12";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2110,19 +2110,29 @@ async function renderTodayMap(day){
   }
   try{
     await loadLeafletOnce();
-    const pts=[];
+    const rawPts=[];
     for(let i=0;i<items.length;i++){
       try{
         const p=await geocodeTodayQuery(items[i].mapsQuery);
-        if(p)pts.push({...p,item:items[i]});
+        if(p)rawPts.push({...p,item:items[i]});
       }catch(_){}
     }
-    if(!pts.length)throw new Error("no points");
+    if(!rawPts.length)throw new Error("no points");
+
+    // Alcuni step consecutivi puntano allo stesso luogo (es. "Partenza hotel"
+    // verso Golden Gate + "Golden Gate Bridge"). Due marker identici si
+    // sovrapponevano e il 2 nascondeva l'1. Teniamo un solo pin per coordinate.
+    const seen=new Set();
+    const pts=rawPts.filter(p=>{
+      const key=`${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+      if(seen.has(key))return false;
+      seen.add(key);
+      return true;
+    });
     box.innerHTML="";
     const map=L.map(box,{zoomControl:false,attributionControl:false,scrollWheelZoom:false,dragging:true});
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
-      maxZoom:19,
-      subdomains:"abcd"
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
+      maxZoom:19
     }).addTo(map);
     const bounds=[];
     pts.forEach((p,idx)=>{

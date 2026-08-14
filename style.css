@@ -2791,3 +2791,52 @@ html.ios-standalone .honeymoon-topbar.home-only-hidden + main .screen.active > .
   margin-top:10px!important;
   border-radius:13px!important;
 }
+
+
+/* ==========================================================
+   v2.3.12 — mini-mappa Oggi: fix layering + colori + pin
+   ========================================================== */
+
+/* Leaflet usa z-index elevati di default: la barra dell'app deve vincere. */
+nav.tabbar{
+  position:sticky!important;
+  z-index:1000!important;
+}
+.today-map-card{
+  position:relative!important;
+  z-index:1!important;
+  margin-bottom:calc(92px + env(safe-area-inset-bottom))!important;
+}
+.today-map-canvas,
+.today-map-canvas .leaflet-pane,
+.today-map-canvas .leaflet-control{
+  z-index:auto;
+}
+.today-map-canvas .leaflet-map-pane{z-index:1!important}
+.today-map-canvas .leaflet-tile-pane{z-index:1!important;filter:none!important}
+.today-map-canvas .leaflet-overlay-pane{z-index:2!important}
+.today-map-canvas .leaflet-marker-pane{z-index:3!important}
+.today-map-canvas .leaflet-tooltip-pane{z-index:4!important}
+
+/* Torniamo a una mappa colorata, ma il contenitore resta elegante. */
+.today-map-canvas{
+  background:#dfe9df!important;
+  border:1px solid rgba(25,35,45,.10)!important;
+  box-shadow:0 5px 16px -13px rgba(20,30,40,.40)!important;
+}
+.today-map-head strong{
+  font-size:15px!important;
+}
+.today-map-pin{
+  width:29px!important;
+  height:29px!important;
+  line-height:25px!important;
+  font-size:12px!important;
+  background:var(--th-accent,#7a5963)!important;
+  border:2px solid #fff!important;
+  box-shadow:0 4px 11px rgba(0,0,0,.27)!important;
+}
+.today-map-open{
+  background:color-mix(in srgb,var(--th-accent,#152238) 9%,white)!important;
+  border:1px solid color-mix(in srgb,var(--th-accent,#152238) 15%,transparent)!important;
+}
