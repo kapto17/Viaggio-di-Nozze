@@ -32,6 +32,7 @@ const TRIP = {
         { id: "sf-burrito", name: "Mission Burrito", short: "Burrito grande e ricco nato nel Mission District.", description: "Burrito in stile Mission: tortilla di farina molto farcita con riso, fagioli, carne e condimenti. È uno dei cibi simbolo della cultura gastronomica di San Francisco.", whereToFind: [{ name: "La Taqueria", image: "./assets/food/sf-mission-burrito.jpg", note: "Una delle taquerias simbolo del Mission District.", price: "$", mapsQuery: "La Taqueria 2889 Mission St San Francisco" }], image: "./assets/food/sf-mission-burrito.jpg", photoCredit: "Ryan Michael / Wikimedia Commons · CC BY-SA 2.0" }
       ],
       restaurants: [
+        { name: "Wipeout Bar & Grill", meal: "quick", price: "$$", type: "Americano · burger · tacos", typeIcon: "🍔", note: "Al Pier 39, comodo dopo il rientro da Alcatraz per una cena informale senza deviazioni.", mapsQuery: "Wipeout Bar & Grill Pier 39 San Francisco" },
         { name: "Khun Mae Thai Noodles", meal: "serious", price: "$$", type: "Thailandese · noodles", typeIcon: "🍜", note: "A pochi passi da Hotel Spero: scelta pratica per una cena semplice la sera dell’arrivo.", mapsQuery: "Khun Mae Thai Noodles 385 Taylor St San Francisco" },
         { name: "Boudin Bakery · Fisherman's Wharf", image: "https://res.cloudinary.com/the-infatuation/image/upload/c_fill%2Cw_3840%2Car_4%3A3%2Cg_center%2Cf_auto/Drone_ydve3c", meal: "quick", price: "$$", type: "Sourdough · clam chowder", typeIcon: "🥣", note: "Classico facile sul waterfront: perfetto per provare clam chowder nella pagnotta di sourdough.", mapsQuery: "Boudin Bakery 160 Jefferson St San Francisco" },
         { name: "La Taqueria", image: "./assets/food/sf-mission-burrito.jpg", meal: "quick", price: "$", type: "Mission burrito · tacos", typeIcon: "🌯", note: "Storica taqueria del Mission District: scelta pratica per provare il lato più street di San Francisco.", mapsQuery: "La Taqueria 2889 Mission St San Francisco" },
@@ -62,13 +63,16 @@ const TRIP = {
         { priority: "must", name: "Venice Beach", lf: true, note: "Boardwalk, spiaggia, palme e atmosfera tipicamente californiana.", mapsQuery: "Venice Beach Los Angeles" },
         { priority: "discover", name: "Beverly Hills & Rodeo Drive", note: "Quartiere elegante e passeggiata nella zona più famosa dello shopping di lusso.", mapsQuery: "Rodeo Drive Beverly Hills" },
         { priority: "discover", name: "LACMA · Urban Light", lf: true, note: "La celebre installazione di lampioni davanti al Los Angeles County Museum of Art, bellissima anche la sera.", mapsQuery: "Urban Light LACMA Los Angeles" },
-        { priority: "discover", name: "Santa Barbara", lf: true, note: "Città costiera a nord-ovest di Los Angeles, inserita dalla lista di Fortuna. Richiede una mezza/giornata dedicata e va valutata rispetto ai 4 giorni disponibili.", mapsQuery: "Santa Barbara California" }
+        { priority: "discover", name: "Santa Barbara", lf: true, note: "Città costiera a nord-ovest di Los Angeles, inserita dalla lista di Fortuna. Richiede una mezza/giornata dedicata e va valutata rispetto ai 4 giorni disponibili.", mapsQuery: "Santa Barbara California" },
+        { priority: "discover", name: "Manhattan Beach", note: "Elegante località costiera del South Bay con lungo molo, spiaggia ampia e atmosfera rilassata.", mapsQuery: "Manhattan Beach Pier California" },
+        { priority: "discover", name: "Redondo Beach Pier · The O.C.", note: "Molo del South Bay affacciato sul Pacifico; diverse location della serie The O.C. furono girate nell’area di Redondo Beach.", mapsQuery: "Redondo Beach Pier California" }
       ],
       foods: [
         { id: "la-tacos", name: "Tacos al pastor", short: "Street food messicano, parte essenziale della scena gastronomica di LA.", description: "Tortillas con carne al pastor arrostita sul trompo, cipolla, coriandolo, salsa e spesso ananas. A Los Angeles i taco truck e le taquerias sono una parte fondamentale della cucina cittadina.", whereToFind: [{ name: "Guelaguetza", image: "./assets/food/la-tacos-al-pastor.jpg", note: "Per una tappa messicana più strutturata e molto legata alla cultura gastronomica di LA.", price: "$$", mapsQuery: "Guelaguetza Los Angeles" }], image: "./assets/food/la-tacos-al-pastor.jpg", photoCredit: "T.Tseng / Wikimedia Commons · CC BY 2.0" },
         { id: "la-frenchdip", name: "French Dip Sandwich", short: "Panino con roast beef servito con il suo jus.", description: "Panino caldo ripieno di carne arrosto, tradizionalmente accompagnato da un jus in cui intingerlo. Los Angeles rivendica la nascita di questo sandwich all'inizio del Novecento.", whereToFind: [{ name: "Philippe The Original", image: "https://res.cloudinary.com/the-infatuation/image/upload/v1720197943/LA_PhilippeTheOriginal_Exterior_JessieClapp-2_kdalmq.jpg", note: "Dal 1908; rivendica la nascita del French Dip ed è ancora il posto storico dove provarlo.", price: "$", mapsQuery: "Philippe The Original Los Angeles" }], image: "./assets/food/la-french-dip.jpg", photoCredit: "Jpatokal / Wikimedia Commons · CC BY-SA" }
       ],
       restaurants: [
+        { name: "Sea Level Restaurant & Lounge", meal: "serious", price: "$$$", type: "Californiano · seafood · waterfront", typeIcon: "🐟", note: "Sul porto di Redondo Beach: scelta comoda per chiudere la giornata South Bay direttamente sull’acqua.", mapsQuery: "Sea Level Restaurant and Lounge 655 N Harbor Dr Redondo Beach CA" },
         { name: "Philippe The Original", image: "https://res.cloudinary.com/the-infatuation/image/upload/v1720197943/LA_PhilippeTheOriginal_Exterior_JessieClapp-2_kdalmq.jpg", meal: "quick", price: "$", type: "French Dip · panini", typeIcon: "🥪", note: "Dal 1908. È uno dei due locali storicamente legati alla nascita del French Dip; oggi è la scelta storica più semplice da provare.", mapsQuery: "Philippe The Original 1001 N Alameda St Los Angeles" },
         { name: "In-N-Out Burger · Hollywood", image: "./assets/food/la-french-dip.jpg", meal: "quick", price: "$", type: "Burger californiano", typeIcon: "🍔", note: "Un classico della California per un pasto rapido ed economico tra una visita e l'altra.", mapsQuery: "In-N-Out Burger 7009 Sunset Blvd Los Angeles" },
         { name: "Guelaguetza", image: "./assets/food/la-tacos-al-pastor.jpg", meal: "quick", price: "$$", type: "Oaxacan · messicano", typeIcon: "🌮", note: "Uno dei nomi più noti per la cucina di Oaxaca a Los Angeles: mole, tlayudas e sapori messicani.", mapsQuery: "Guelaguetza 3014 W Olympic Blvd Los Angeles" },
@@ -240,7 +244,8 @@ const PROGRAM_GUIDE = {
       { time:"11:30", kind:"recommended", icon:"🦭", title:"Pier 39 e Fisherman's Wharf", note:"Leoni marini, waterfront e atmosfera tipica.", mapsQuery:"Pier 39 San Francisco" },
       { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
       { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
-      { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Al rientro lasciate la serata libera.", mapsQuery:"Alcatraz City Cruises Pier 33" }
+      { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Partenza da Pier 33 e rientro sullo stesso waterfront.", mapsQuery:"Alcatraz Island San Francisco" },
+      { time:"Dopo il tour", kind:"recommended", icon:"🍔", title:"Wipeout Bar & Grill · Pier 39", note:"Cena informale sul waterfront dopo Alcatraz: burger, tacos e piatti semplici senza allontanarsi dalla zona.", mapsQuery:"Wipeout Bar & Grill Pier 39 San Francisco" }
     ]}
   ],
   la: [
@@ -251,14 +256,14 @@ const PROGRAM_GUIDE = {
       { time:"12:36", kind:"recommended", icon:"🛬", title:"Arrivo a Los Angeles · LAX", note:"Atterraggio previsto alle 12:36. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles." },
       { time:"13:15 circa", kind:"recommended", icon:"🚌", title:"Navetta per LAX Rental Car Center", note:"Dal livello Arrivi/Lower Level, seguite i cartelli viola Rental Car Shuttles. Alamo opera nel Rental Car Center.", mapsQuery:"LAX Rental Car Center 5251 West 98th Street Los Angeles" },
       { time:"13:30 circa", kind:"recommended", icon:"🚗", title:"Ritiro auto · Alamo", note:"Alamo · LAX Rental Car Center, 5251 W 98th St, Los Angeles, CA 90045. Dopo il ritiro inizia il viaggio in auto.", mapsQuery:"Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles" },
-      { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta." },
+      { time:"15:00 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite senza fretta.", mapsQuery:"The Commerce Hotel 7272 E Gage Ave Commerce CA" },
       { time:"16:30", kind:"recommended", icon:"🏙️", title:"Downtown Los Angeles", note:"Grand Central Market / Walt Disney Concert Hall / centro, scegliendo in base all'energia.", mapsQuery:"Grand Central Market Los Angeles" },
       { time:"19:30", kind:"recommended", icon:"🐟", title:"Cena in zona Downtown", note:"Water Grill è una delle scelte L&F e qui si incastra senza tornare apposta.", mapsQuery:"Water Grill Los Angeles" }]},
     { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"Una giornata tra i grandi simboli di Los Angeles, da Hollywood ai luoghi più iconici della città.", items:[
       { time:"08:30", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza con calma verso Hollywood Boulevard. Considerate circa 30–45 minuti in base al traffico del momento.", mapsQuery:"Hollywood Walk of Fame Hollywood Boulevard Los Angeles" },
       { time:"09:00", kind:"recommended", icon:"⭐", title:"Hollywood Boulevard", note:"Walk of Fame, TCL Chinese Theatre e Dolby Theatre. 2 ore circa sono sufficienti.", mapsQuery:"TCL Chinese Theatre Los Angeles" },
       { time:"11:45", kind:"recommended", icon:"🛍️", title:"Beverly Hills & Rodeo Drive", note:"Passeggiata e pranzo in zona.", mapsQuery:"Rodeo Drive Beverly Hills" },
-      { time:"15:00", kind:"optional", icon:"💡", title:"Urban Light / LACMA", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA" },
+      { time:"15:00", kind:"optional", icon:"💡", title:"LACMA · Urban Light", note:"Solo se vi va: è una deviazione breve prima del Griffith.", mapsQuery:"Urban Light LACMA" },
       { time:"17:00", kind:"recommended", icon:"🌇", title:"Griffith Observatory", note:"Arrivate con la luce e restate fino al tramonto/sera.", mapsQuery:"Griffith Observatory" },
       { time:"20:00", kind:"optional", icon:"🍷", title:"The Little Door", note:"Cena più romantica e costosa: tenetela come opzione speciale, non obbligatoria.", mapsQuery:"The Little Door Los Angeles" }
     ]},
@@ -267,7 +272,8 @@ const PROGRAM_GUIDE = {
 { time:"09:00", kind:"recommended", icon:"🎡", title:"Santa Monica Pier", note:"Molo, Route 66, spiaggia e Third Street Promenade.", mapsQuery:"Santa Monica Pier" },
       { time:"11:30", kind:"recommended", icon:"🏖️", title:"Venice Beach", note:"Boardwalk, Muscle Beach e Venice Canals.", mapsQuery:"Venice Beach Los Angeles" },
       { time:"14:30", kind:"optional", icon:"🌴", title:"Manhattan Beach", note:"Sosta breve lungo la strada, solo se avete tempo.", mapsQuery:"Manhattan Beach Pier" },
-      { time:"16:00", kind:"recommended", icon:"📺", title:"Redondo Beach Pier · The O.C.", note:"Molte scene della serie ambientate a Newport sono state girate qui: è la scelta più efficiente per vedere location riconoscibili.", mapsQuery:"Redondo Beach Pier" }
+      { time:"16:00", kind:"recommended", icon:"📺", title:"Redondo Beach Pier · The O.C.", note:"Molte scene della serie ambientate a Newport sono state girate qui: è la scelta più efficiente per vedere location riconoscibili.", mapsQuery:"Redondo Beach Pier" },
+      { time:"19:00", kind:"recommended", icon:"🍽️", title:"Sea Level Restaurant & Lounge", note:"Cena sul waterfront a Redondo Beach: chiude la giornata sulla costa senza tornare indietro verso il centro di Los Angeles.", mapsQuery:"Sea Level Restaurant and Lounge 655 N Harbor Dr Redondo Beach CA" }
     ]},
     { date:"2026-10-26", title:"Universal Studios Hollywood", theme:"Giornata intera già prenotata", items:[
       { time:"07:45", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza verso Universal Studios. Orario prudente da adeguare all’apertura ufficiale del 26 ottobre; conviene arrivare prima dei cancelli.", mapsQuery:"Universal Studios Hollywood" },
@@ -457,7 +463,16 @@ const PLACE_DETAILS = {
     wikiTitle: "Rodeo Drive",
     text: "Beverly Hills si sviluppò rapidamente all'inizio del Novecento e divenne presto sinonimo della Los Angeles più elegante. Rodeo Drive, in particolare, è conosciuta a livello internazionale per boutique di alta moda, hotel e architetture curate. Anche senza fare shopping, vale una passeggiata per vedere uno dei volti più cinematografici della città."
   },
+  "Manhattan Beach": {
+    wikiTitle: "Manhattan Beach, California",
+    text: "Manhattan Beach è una delle località più piacevoli del South Bay di Los Angeles. Il suo molo si allunga nel Pacifico alla fine di Manhattan Beach Boulevard ed è circondato da una grande spiaggia, piste pedonali e un centro compatto pieno di locali. È una sosta ideale lungo la costa senza trasformarla in una visita troppo lunga."
+  },
+  "Redondo Beach Pier · The O.C.": {
+    wikiTitle: "Redondo Beach Pier",
+    text: "Redondo Beach Pier è uno dei moli storici del South Bay. Oltre al lungomare e alla vista sul Pacifico, la zona è interessante per voi perché diverse scene usate per rappresentare Newport Beach nella serie The O.C. furono girate a Redondo Beach e nei dintorni."
+  },
   "LACMA · Urban Light": {
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/She%20Is%20Enchanted%20Within%20Urban%20Lights%5E%20In%20Explore%20May%2031-22%20-%20Flickr%20-%20Joey%20Z1.jpg",
     wikiTitle: "Urban Light",
     text: "Urban Light è l'installazione di Chris Burden collocata davanti al LACMA nel 2008. È composta da oltre duecento lampioni stradali storici restaurati, raccolti principalmente nell'area di Los Angeles. Di sera, quando tutte le luci sono accese, diventa uno dei set fotografici più riconoscibili della città."
   },

@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.16";
+    version.textContent="Versione app 2.3.17";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2045,15 +2045,21 @@ function todayMapItems(day){
     const hotel=all.find(item=>/check-in hotel spero/i.test(String(item.title||"")));
     return hotel?[hotel]:[];
   }
-  return all.filter(item=>{
+  const visits=all.filter(item=>{
     if(!item.mapsQuery)return false;
     const t=String(item.title||"").toLowerCase();
     const n=String(item.note||"").toLowerCase();
+    if(day?.date==="2026-10-22" && /pranzo:/.test(t))return false;
     const operational=
       /partenza|hotel|aeroporto|airport|volo|arrivo a |check[- ]?in|check[- ]?out|ritiro auto|riconsegna auto|noleggio|navetta|trasferimento|parcheggio/.test(t) ||
       /partenza dall.hotel|verso l.aeroporto/.test(n);
     return !operational;
   });
+  if(day?.date==="2026-10-23"){
+    const hotel=all.find(item=>/check-in al the commerce/i.test(String(item.title||"")));
+    return hotel?[hotel,...visits]:visits;
+  }
+  return visits;
 }
 
 function todayGoogleRouteUrl(items){
