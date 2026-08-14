@@ -23,6 +23,7 @@ const TRIP = {
         { priority: "discover", name: "Painted Ladies", note: "Le case vittoriane più fotografate di Alamo Square.", mapsQuery: "Painted Ladies San Francisco" },
         { priority: "must", name: "Sausalito", lf: true, note: "Passeggiata sul waterfront dall’altra parte del Golden Gate, con vista sulla baia e su San Francisco.", mapsQuery: "Sausalito California" },
         { priority: "discover", name: "Golden Gate Park · Panhandle", lf: true, note: "Il lungo corridoio verde che introduce al Golden Gate Park, ideale per una passeggiata.", mapsQuery: "Panhandle San Francisco" },
+        { priority: "discover", name: "Ocean Beach", note: "Lunga spiaggia sul Pacifico sul lato occidentale di San Francisco, ideale per una passeggiata e per il tramonto.", mapsQuery: "Ocean Beach San Francisco" },
         { priority: "discover", name: "Gray Whale Cove State Beach", lf: true, note: "Baia scenografica tra scogliere sulla costa a sud di San Francisco; è fuori città e richiede una deviazione dedicata.", mapsQuery: "Gray Whale Cove State Beach California" },
         { priority: "discover", name: "Santa Cruz", lf: true, note: "Città costiera a sud di San Francisco. Inserita dalla lista di Fortuna: da valutare come escursione dedicata perché non è sul vostro trasferimento in aereo verso Los Angeles.", mapsQuery: "Santa Cruz California" }
       ],

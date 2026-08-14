@@ -536,7 +536,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.14";
+    version.textContent="Versione app 2.3.15";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2043,8 +2043,11 @@ function todayMapItems(day){
   return (day?.items||[]).filter(item=>{
     if(!item.mapsQuery)return false;
     const t=String(item.title||"").toLowerCase();
-    if(/arrivo a sfo|arrivo a los angeles|volo |check-in|navetta per|ritiro auto/.test(t))return false;
-    return true;
+    const n=String(item.note||"").toLowerCase();
+    const operational=
+      /partenza|hotel|aeroporto|airport|volo|arrivo a |check[- ]?in|check[- ]?out|ritiro auto|riconsegna auto|noleggio|navetta|trasferimento|parcheggio/.test(t) ||
+      /partenza dall.hotel|verso l.aeroporto/.test(n);
+    return !operational;
   });
 }
 
