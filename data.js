@@ -375,8 +375,15 @@ const PROGRAM_GUIDE = {
       { time:"20:30", kind:"recommended", icon:"🍕", title:"Giordano's · Millennium Park", note:"Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.", mapsQuery:"Giordano's 130 E Randolph St Chicago", mapLat:41.8845, mapLon:-87.6232, detailRestaurant:"Giordano's · Millennium Park" }
     ]},
     { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
-      { time:"Mattina presto", kind:"recommended", icon:"🧳", title:"Check-out e trasferimento a ORD", note:"Lasciate margine per traffico e controlli." },
-      { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Arrivo a Punta Cana alle 16:02." }
+      { time:"05:45", kind:"recommended", icon:"⏰", title:"Sveglia e ultime cose", note:"Colazione rapida e controllo finale della camera. Il volo è internazionale: oggi niente programma turistico." },
+      { time:"06:15", kind:"recommended", icon:"🧳", title:"Check-out Warwick Allerton", note:"Check-out e partenza senza tirare i tempi." },
+      { time:"06:30", kind:"recommended", icon:"🚕", title:"Partenza per Chicago O'Hare", note:"Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.", mapsQuery:"Chicago O'Hare International Airport Terminal 1", mapLat:41.9742, mapLon:-87.9073, mapForce:true },
+      { time:"07:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a ORD · Terminal 1", note:"Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.", mapsQuery:"O'Hare International Airport Terminal 1", mapLat:41.9773, mapLon:-87.9048, mapForce:true },
+      { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Volo prenotato per Punta Cana. Arrivo previsto alle 16:02 ora locale." },
+      { time:"16:02", kind:"booked", icon:"🇩🇴", title:"Arrivo a Punta Cana · PUJ", note:"Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso." },
+      { time:"17:15–17:30 circa", kind:"recommended", icon:"🚐", title:"Trasferimento PUJ → Bayahibe", note:"Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto." },
+      { time:"18:15–18:45 circa", kind:"recommended", icon:"🏝️", title:"Arrivo al Viva Dominicus Palace", note:"Check-in, sistemazione e finalmente inizio della parte relax del viaggio." },
+      { time:"20:30", kind:"recommended", icon:"🍽️", title:"Cena al resort", note:"Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago." }
     ]}
   ],
   bayahibe: [
@@ -385,23 +392,49 @@ const PROGRAM_GUIDE = {
       { time:"Sera", kind:"recommended", icon:"🌴", title:"Resort e cena", note:"Niente programmi: avete appena attraversato mezzo continente." }
     ]},
     { date:"2026-11-04", title:"Resort", theme:"Giornata volutamente vuota", items:[
-      { time:"Tutto il giorno", kind:"recommended", icon:"🏖️", title:"Mare, piscina e relax", note:"Questa non è una giornata sprecata: è parte del viaggio." }
+      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
+      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
     ]},
     { date:"2026-11-05", title:"Isola Saona", theme:"L'escursione principale del soggiorno caraibico", items:[
-      { time:"Mattina", kind:"recommended", icon:"🚤", title:"Escursione a Isola Saona", note:"Giornata in barca tra spiagge e piscine naturali. Da prenotare quando scegliamo l'operatore.", mapsQuery:"Saona Island Dominican Republic" }
+      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
+      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
     ]},
     { date:"2026-11-06", title:"Resort", theme:"Relax senza agenda", items:[
-      { time:"Tutto il giorno", kind:"recommended", icon:"🍹", title:"Spiaggia e all inclusive", note:"Nessun obbligo." }
+      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
+      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
     ]},
     { date:"2026-11-07", title:"Giornata facoltativa", theme:"Solo se avete voglia di muovervi", items:[
-      { time:"Da decidere", kind:"optional", icon:"🌿", title:"Cotubanamá / Bayahibe village", note:"Escursione naturalistica o passeggiata nel borgo; altrimenti restate al resort.", mapsQuery:"Cotubanama National Park Dominican Republic" }
+      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
+      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
     ]},
     { date:"2026-11-08", title:"Ultimo giorno pieno", theme:"Niente escursioni lunghe", items:[
-      { time:"Tutto il giorno", kind:"recommended", icon:"❤️", title:"Resort, mare e valigie", note:"Ultima giornata tranquilla prima del rientro." }
+      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
+      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
+      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
     ]},
     { date:"2026-11-09", title:"Rientro", theme:"Punta Cana → Washington → Roma", items:[
-      { time:"12:56", kind:"booked", icon:"✈️", title:"PUJ → IAD", note:"Arrivo 15:55." },
-      { time:"17:40", kind:"booked", icon:"✈️", title:"IAD → FCO", note:"Arrivo a Roma il 10 novembre alle 08:30." }
+      { time:"07:00", kind:"recommended", icon:"⏰", title:"Sveglia e colazione", note:"Ultimo giorno: niente escursioni. Colazione, doccia e controllo bagagli/documenti senza fretta." },
+      { time:"08:00", kind:"recommended", icon:"🧳", title:"Check-out e bagagli pronti", note:"Tenete passaporti, telefoni, power bank e documenti di viaggio nel bagaglio a mano." },
+      { time:"08:15", kind:"recommended", icon:"🚐", title:"Partenza dal Viva Dominicus Palace", note:"Per il volo delle 12:56 da PUJ preferisco un margine largo: Bayahibe → Punta Cana Airport richiede normalmente circa 50–60 minuti." },
+      { time:"09:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a Punta Cana · PUJ", note:"Circa 3 ore e 40 minuti prima del decollo: check-in, bagagli, controlli di uscita e gate senza rischiare l'intero rientro." },
+      { time:"12:56", kind:"booked", icon:"✈️", title:"Volo PUJ → IAD", note:"United · arrivo previsto a Washington Dulles alle 15:55." },
+      { time:"15:55", kind:"booked", icon:"🇺🇸", title:"Arrivo a Washington Dulles · IAD", note:"Scalo molto stretto: 1 ora e 45 minuti. Essendo il primo ingresso negli USA, bisogna seguire subito immigrazione/CBP e le indicazioni per la coincidenza. Niente soste inutili." },
+      { time:"17:40", kind:"booked", icon:"✈️", title:"Volo IAD → FCO", note:"Coincidenza per Roma. Arrivo a Fiumicino il 10 novembre alle 08:30." },
+      { time:"08:30 · 10 nov", kind:"booked", icon:"🇮🇹", title:"Arrivo a Roma Fiumicino", note:"Fine del viaggio di nozze ❤️" }
     ]}
   ]
 };

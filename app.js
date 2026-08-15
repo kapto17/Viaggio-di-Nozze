@@ -541,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.6";
+    version.textContent="Versione app 2.4.7";
     el.appendChild(version);
   }
   bindTodayCard(el);
