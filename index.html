@@ -18,7 +18,56 @@
 <link rel="stylesheet" href="themes.css?v=53">
 
 <style>
-.home-journey-map{margin:18px 0 8px;border-radius:22px;overflow:hidden;box-shadow:0 10px 28px rgba(19,42,69,.12);background:#f5f0df}.home-journey-map picture{display:block;width:100%}.home-journey-map img{display:block;width:100%;height:auto;object-fit:contain}@media(max-width:600px){.home-journey-map{width:100%;margin:16px 0 8px;border-radius:20px;min-height:320px;display:flex;align-items:center;justify-content:center;background:#f5f0df}.home-journey-map picture{display:block;width:100%;height:100%}.home-journey-map img{width:100%;height:320px;object-fit:contain;object-position:center center}}@media(max-width:390px){.home-journey-map{min-height:300px}.home-journey-map img{height:300px}}
+/* v2.3.25 — Home Classico: illustrazione fornita dall'utente come hero */
+html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:calc(100% - 28px)!important;
+  height:auto!important;
+  min-height:0!important;
+  aspect-ratio:1536 / 1162;
+  margin:12px 14px 18px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:22px!important;
+  background-color:#efe2bd!important;
+  background-image:url("./assets/classic-home-map.webp")!important;
+  background-repeat:no-repeat!important;
+  background-position:center center!important;
+  background-size:contain!important;
+  box-shadow:0 10px 28px rgba(19,42,69,.12)!important;
+}
+
+/* Nel Classico la mappa sostituisce completamente titolo e decorazione. */
+html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .honeymoon-title-wrap{
+  display:none!important;
+}
+
+/* Il menu temi resta disponibile, sovrapposto senza coprire la mappa. */
+html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .theme-menu-btn{
+  position:absolute!important;
+  z-index:4!important;
+  top:max(12px, env(safe-area-inset-top))!important;
+  left:12px!important;
+  margin:0!important;
+  padding:8px!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.88)!important;
+  box-shadow:0 3px 12px rgba(20,30,40,.16)!important;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+
+@media(max-width:600px){
+  html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
+    width:calc(100% - 20px)!important;
+    margin:10px 10px 16px!important;
+    border-radius:20px!important;
+    /* Mantiene l'intera immagine: nessun crop su smartphone. */
+    aspect-ratio:1536 / 1162;
+    background-size:contain!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -103,6 +152,6 @@
 
 <script src="data.js?v=84"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=85"></script>
+<script src="app.js?v=86"></script>
 </body>
 </html>
