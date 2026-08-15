@@ -256,14 +256,29 @@ function defaultChecklistSections(){
 function loadChecklistSections(profile){
   try {
     const saved = JSON.parse(localStorage.getItem(checklistItemsStorageKey(profile)) || "null");
-    if (Array.isArray(saved) && saved.length) return saved;
+    if (Array.isArray(saved) && saved.length) return ensureTravelChecklistItems(profile,saved);
   } catch(e){}
-  return defaultChecklistSections();
+  return ensureTravelChecklistItems(profile,defaultChecklistSections());
 }
 
 function saveChecklistSections(profile, sections){
   localStorage.setItem(checklistItemsStorageKey(profile), JSON.stringify(sections));
 }
+
+function ensureTravelChecklistItems(profile,sections){
+  const add=(sectionId,text)=>{
+    const sec=sections.find(s=>s.id===sectionId);
+    if(!sec)return;
+    if(sec.items.some(x=>(typeof x==="string"?x:x.text)===text))return;
+    sec.items.push({id:`travel-${normalizeProgramRef(text).replaceAll(" ","-")}`,text});
+  };
+  ["Calze a compressione","Cuscino cervicale","Felpa per il volo","Borraccia vuota"].forEach(x=>add("clothes",x));
+  ["Power bank","Cavo USB di riserva","Adattatore prese USA"].forEach(x=>add("tech",x));
+  if(profile==="Fortuna")add("tech","AirTag");
+  if(profile==="Lorenzo")add("tech","SmartTag");
+  return sections;
+}
+
 
 function escapeHtml(value){
   return String(value ?? "")
@@ -541,7 +556,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.10";
+    version.textContent="Versione app 2.4.11";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -636,6 +651,7 @@ function programDayHtml(day){
       <div class="program-timeline">
         ${(day.items || []).map(item => {
           const ref=resolveProgramDetail(item);
+          const ticketTarget=ticketTargetForProgramItem(item);
           const payload=encodeURIComponent(JSON.stringify(item));
           return `
           <div class="program-item ${item.kind || "recommended"} ${ref?"program-item-clickable":""}"
@@ -650,6 +666,7 @@ function programDayHtml(day){
                 ${item.uberDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}">Uber</a>` : ""}
                 ${item.lyftDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://ride.lyft.com/ridetype?id=lyft&destination[address]=${encodeURIComponent(item.lyftDestination)}">Lyft</a>` : ""}
               </div>` : ""}
+              ${ticketTarget ? `<div class="program-actions" data-ticket-target="${escapeHtml(ticketTarget.key)}" data-ticket-label="${escapeHtml(ticketTarget.label)}"></div>` : ""}
             </div>
           </div>`}).join("")}
       </div>
@@ -872,7 +889,7 @@ function renderCitiesList(){
 
 // ---------- Biglietti locali (IndexedDB) ----------
 const TICKET_DB_NAME = "viaggio-nozze-local";
-const TICKET_DB_VERSION = 1;
+const TICKET_DB_VERSION = 2;
 const TICKET_STORE = "tickets";
 
 function openTicketDb(){
@@ -880,21 +897,27 @@ function openTicketDb(){
     const req = indexedDB.open(TICKET_DB_NAME, TICKET_DB_VERSION);
     req.onupgradeneeded = () => {
       const db = req.result;
+      let store;
       if (!db.objectStoreNames.contains(TICKET_STORE)){
-        const store = db.createObjectStore(TICKET_STORE, { keyPath: "id", autoIncrement: true });
+        store = db.createObjectStore(TICKET_STORE, { keyPath: "id", autoIncrement: true });
         store.createIndex("legId", "legId", { unique:false });
+      } else {
+        store = req.transaction.objectStore(TICKET_STORE);
       }
+      if (!store.indexNames.contains("targetKey")) store.createIndex("targetKey", "targetKey", { unique:false });
     };
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   });
 }
 
-async function saveLocalTicket(legId, file, label=""){
+async function saveLocalTicket(legId, file, label="", targetKey="", targetLabel=""){
   const db = await openTicketDb();
   const rec = {
     legId,
     label: label || file.name,
+    targetKey,
+    targetLabel,
     fileName: file.name,
     mimeType: file.type || "application/octet-stream",
     size: file.size,
@@ -918,6 +941,83 @@ async function getLocalTickets(legId){
     req.onsuccess = () => resolve((req.result || []).sort((a,b)=>a.createdAt-b.createdAt));
     req.onerror = () => reject(req.error);
   });
+}
+
+function ticketKey(legId,label){
+  return `${legId}::${normalizeProgramRef(label)}`;
+}
+function ticketTargetsForLeg(leg){
+  const seen=new Set(),out=[];
+  const add=label=>{
+    if(!label)return;
+    const key=ticketKey(leg.id,label);
+    if(seen.has(key))return;
+    seen.add(key); out.push({key,label});
+  };
+  (leg.tickets||[]).forEach(x=>add(x.name));
+  (leg.activities||[]).forEach(x=>add(x.name));
+  (leg.transport||[]).forEach(x=>add(x.title));
+  return out;
+}
+function ticketTargetForProgramItem(item){
+  const ref=resolveProgramDetail(item);
+  if(ref)return {key:ticketKey(ref.legId,ref.name),label:ref.name,legId:ref.legId};
+  const title=normalizeProgramRef(item?.title);
+  if(!title)return null;
+  for(const leg of TRIP.legs){
+    for(const t of ticketTargetsForLeg(leg)){
+      const n=normalizeProgramRef(t.label);
+      if(n===title || (n && (title.includes(n)||n.includes(title)))) return {...t,legId:leg.id};
+    }
+  }
+  return null;
+}
+async function getTicketsForTarget(targetKey){
+  if(!targetKey)return [];
+  const db=await openTicketDb();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction(TICKET_STORE,"readonly");
+    const req=tx.objectStore(TICKET_STORE).index("targetKey").getAll(targetKey);
+    req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>a.createdAt-b.createdAt));
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function openTicketRecord(rec){
+  if(!rec)return;
+  const url=URL.createObjectURL(rec.blob);
+  window.open(url,"_blank");
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+async function openTicketsForTarget(targetKey,targetLabel="Biglietti"){
+  const tickets=await getTicketsForTarget(targetKey);
+  if(!tickets.length)return;
+  if(tickets.length===1){await openTicketRecord(tickets[0]);return;}
+  document.getElementById("ticket-picker-dialog")?.remove();
+  const dlg=document.createElement("dialog");
+  dlg.id="ticket-picker-dialog";
+  dlg.style.cssText="border:0;border-radius:20px;padding:0;max-width:min(92vw,430px);width:100%;box-shadow:0 18px 60px #0006";
+  dlg.innerHTML=`<div style="padding:20px"><div style="font-size:12px;opacity:.65;font-weight:800">🎟️ BIGLIETTI</div><h3 style="margin:6px 0 14px">${escapeHtml(targetLabel)}</h3>${tickets.map(t=>`<button type="button" data-pick-ticket="${t.id}" style="display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;border:1px solid #ddd;background:#fff;font:inherit">📄 ${escapeHtml(t.label||t.fileName)}</button>`).join("")}<button type="button" data-close-ticket-dialog style="width:100%;margin-top:10px;padding:10px;border:0;background:transparent;font:inherit">Chiudi</button></div>`;
+  document.body.appendChild(dlg);
+  dlg.querySelector("[data-close-ticket-dialog]").onclick=()=>dlg.close();
+  dlg.querySelectorAll("[data-pick-ticket]").forEach(b=>b.onclick=async()=>{const rec=await getLocalTicket(b.dataset.pickTicket);dlg.close();await openTicketRecord(rec);});
+  dlg.addEventListener("close",()=>dlg.remove());
+  dlg.showModal();
+}
+async function decorateTicketButtons(root=document){
+  for(const host of root.querySelectorAll("[data-ticket-target]")){
+    try{
+      const tickets=await getTicketsForTarget(host.dataset.ticketTarget);
+      let btn=host.querySelector(".linked-ticket-btn");
+      if(!tickets.length){btn?.remove();continue;}
+      if(!btn){
+        btn=document.createElement("button");
+        btn.type="button"; btn.className="program-map linked-ticket-btn";
+        host.appendChild(btn);
+      }
+      btn.textContent=`🎟️ ${tickets.length>1?"Biglietti":"Biglietto"}`;
+      btn.onclick=e=>{e.stopPropagation();openTicketsForTarget(host.dataset.ticketTarget,host.dataset.ticketLabel||"Biglietti");};
+    }catch(_){}
+  }
 }
 
 async function getLocalTicket(id){
@@ -960,7 +1060,7 @@ async function renderLocalTickets(legId){
         <div class="local-ticket-icon">${t.mimeType.includes("pdf") ? "📄" : "🎟️"}</div>
         <div class="local-ticket-info">
           <div class="local-ticket-name">${t.label || t.fileName}</div>
-          <div class="local-ticket-meta">${t.fileName} · ${formatFileSize(t.size)}</div>
+          <div class="local-ticket-meta">${t.targetLabel ? `Associato a: ${escapeHtml(t.targetLabel)} · ` : "Non associato · "}${t.fileName} · ${formatFileSize(t.size)}</div>
           <div class="local-ticket-actions">
             <button class="local-ticket-open" data-ticket-open="${t.id}">Apri</button>
             <button class="local-ticket-delete" data-ticket-delete="${t.id}">Elimina</button>
@@ -992,29 +1092,27 @@ async function renderLocalTickets(legId){
 }
 
 function bindTicketImporter(leg){
-  const input = $("#ticket-file-" + leg.id);
-  const button = $("#ticket-import-" + leg.id);
-  if (!input || !button) return;
-
-  button.addEventListener("click", () => input.click());
-  input.addEventListener("change", async () => {
-    const files = Array.from(input.files || []);
-    if (!files.length) return;
-    button.disabled = true;
-    button.textContent = "Salvataggio…";
-    try {
-      for (const file of files){
-        await saveLocalTicket(leg.id, file, file.name.replace(/\.[^.]+$/, ""));
-      }
-      input.value = "";
+  const input=$("#ticket-file-"+leg.id);
+  const button=$("#ticket-import-"+leg.id);
+  const select=$("#ticket-target-"+leg.id);
+  if(!input||!button||!select)return;
+  button.addEventListener("click",()=>{
+    if(!select.value){alert("Prima scegli a cosa vuoi associare il biglietto.");select.focus();return;}
+    input.click();
+  });
+  input.addEventListener("change",async()=>{
+    const files=Array.from(input.files||[]);
+    if(!files.length)return;
+    const opt=select.options[select.selectedIndex];
+    const targetKey=select.value, targetLabel=opt?.dataset?.label||opt?.textContent||"";
+    button.disabled=true;button.textContent="Salvataggio…";
+    try{
+      for(const file of files)await saveLocalTicket(leg.id,file,file.name.replace(/\.[^.]+$/,""),targetKey,targetLabel);
+      input.value="";
       await renderLocalTickets(leg.id);
-    } catch(err){
-      console.error(err);
-      alert("Non sono riuscito a salvare il file sul telefono.");
-    } finally {
-      button.disabled = false;
-      button.textContent = "📎 Importa biglietto";
-    }
+      await decorateTicketButtons(document);
+    }catch(err){console.error(err);alert("Non sono riuscito a salvare il file sul telefono.");}
+    finally{button.disabled=false;button.textContent="📎 Importa biglietto";}
   });
 }
 
@@ -1106,7 +1204,12 @@ function openCity(legId, pushHistory=true, restoreState=null){
     `).join("") : ""}
     <div class="ticket-import-box">
       <div class="ticket-import-title">Biglietti offline</div>
-      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub.</div>
+      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub. Scegli prima a quale prenotazione appartengono.</div>
+      <select id="ticket-target-${leg.id}" class="ticket-import-btn" style="width:100%;margin:10px 0;text-align:left">
+        <option value="">Associa a…</option>
+        ${ticketTargetsForLeg(leg).map(t=>`<option value="${escapeHtml(t.key)}" data-label="${escapeHtml(t.label)}">${escapeHtml(t.label)}</option>`).join("")}
+        <option value="${leg.id}::altro" data-label="Altro">Altro</option>
+      </select>
       <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*" multiple>
       <button id="ticket-import-${leg.id}" class="ticket-import-btn">📎 Importa biglietto</button>
       <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
@@ -1211,6 +1314,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
   });
   bindTicketImporter(leg);
   renderLocalTickets(leg.id);
+  decorateTicketButtons(el);
   navigateTo("city-detail", { legId: leg.id }, pushHistory);
   refreshCityLiveInfo(leg);
   if(restoreState?.cityView)restoreCityViewState(restoreState.cityView);
@@ -1755,10 +1859,12 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
       <p>${detail.text || place.note || ""}</p>
       ${(leg.activities || []).includes(place) && place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
       <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(place, place.name)}">📍 Apri in Google Maps</a>
+      <div class="program-actions" data-ticket-target="${escapeHtml(ticketKey(leg.id,place.name))}" data-ticket-label="${escapeHtml(place.name)}"></div>
     </div>
   `;
 
   $("#back-from-place").addEventListener("click", () => history.back());
+  decorateTicketButtons(el);
   if(!detail.image){
     loadWikipediaPlaceImage(detail, leg.image, $("#place-detail-image"), null);
   }
@@ -1794,11 +1900,13 @@ function openRestaurantDetail(legId, restaurantName, pushHistory=true){
       <div class="restaurant-detail-actions">
         <a class="restaurant-google-btn" target="_blank" rel="noopener" href="${googleSearchUrl(searchQuery)}">🔎 Info, recensioni e prezzi su Google</a>
         <a class="restaurant-maps-btn" target="_blank" rel="noopener" href="${mapsUrl(restaurant.mapsQuery || restaurant.name + " " + leg.city)}">📍 Apri in Google Maps</a>
+        <div class="program-actions" data-ticket-target="${escapeHtml(ticketKey(leg.id,restaurant.name))}" data-ticket-label="${escapeHtml(restaurant.name)}"></div>
       </div>
     </div>
   `;
 
   $("#back-from-restaurant").addEventListener("click", () => history.back());
+  decorateTicketButtons(el);
   navigateTo("restaurant-detail", { legId, restaurantName:restaurant.name }, pushHistory);
   focusDetailHero("restaurant-detail");
 }
@@ -2279,6 +2387,7 @@ function openTodayScreen(legId, iso){
   });
   refreshDedicatedTodayLive(iso);
   renderTodayMap(day);
+  decorateTicketButtons(screen);
 }
 
 async function refreshDedicatedTodayLive(iso){
