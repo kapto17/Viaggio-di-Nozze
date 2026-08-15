@@ -379,18 +379,15 @@ const PROGRAM_GUIDE = {
       { time:"06:15", kind:"recommended", icon:"🧳", title:"Check-out Warwick Allerton", note:"Check-out e partenza senza tirare i tempi." },
       { time:"06:30", kind:"recommended", icon:"🚕", title:"Partenza per Chicago O'Hare", note:"Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.", mapsQuery:"Chicago O'Hare International Airport Terminal 1", mapLat:41.9742, mapLon:-87.9073, mapForce:true },
       { time:"07:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a ORD · Terminal 1", note:"Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.", mapsQuery:"O'Hare International Airport Terminal 1", mapLat:41.9773, mapLon:-87.9048, mapForce:true },
-      { time:"09:30", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"Volo prenotato per Punta Cana. Arrivo previsto alle 16:02 ora locale." },
-      { time:"16:02", kind:"booked", icon:"🇩🇴", title:"Arrivo a Punta Cana · PUJ", note:"Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso." },
-      { time:"17:15–17:30 circa", kind:"recommended", icon:"🚐", title:"Trasferimento PUJ → Bayahibe", note:"Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto." },
-      { time:"18:15–18:45 circa", kind:"recommended", icon:"🏝️", title:"Arrivo al Viva Dominicus Palace", note:"Check-in, sistemazione e finalmente inizio della parte relax del viaggio." },
+      { time:"09:17", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"United UA1862 · orario attualmente pubblicato: arrivo previsto alle 15:57 ora locale." },
+      { time:"15:57", kind:"booked", icon:"🇩🇴", title:"Arrivo a Punta Cana · PUJ", note:"Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso." },
+      { time:"17:10–17:25 circa", kind:"recommended", icon:"🚐", title:"Trasferimento PUJ → Bayahibe", note:"Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto." },
+      { time:"18:10–18:40 circa", kind:"recommended", icon:"🏝️", title:"Arrivo al Viva Dominicus Palace", note:"Check-in, sistemazione e finalmente inizio della parte relax del viaggio." },
       { time:"20:30", kind:"recommended", icon:"🍽️", title:"Cena al resort", note:"Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago." }
     ]}
   ],
   bayahibe: [
-    { date:"2026-11-03", title:"Arrivo a Bayahibe", theme:"Transfer, resort e decompressione", items:[
-      { time:"16:02", kind:"booked", icon:"✈️", title:"Arrivo a Punta Cana", note:"Transfer per Bayahibe incluso." },
-      { time:"Sera", kind:"recommended", icon:"🌴", title:"Resort e cena", note:"Niente programmi: avete appena attraversato mezzo continente." }
-    ]},
+    
     { date:"2026-11-04", title:"Resort", theme:"Giornata volutamente vuota", items:[
       { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
       { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
