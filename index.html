@@ -61,7 +61,10 @@ html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .theme-menu-
 @media(max-width:600px){
   html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
     width:calc(100% - 20px)!important;
-    margin:10px 10px 16px!important;
+    margin-top:calc(env(safe-area-inset-top) + 8px)!important;
+    margin-right:10px!important;
+    margin-bottom:16px!important;
+    margin-left:10px!important;
     border-radius:20px!important;
     /* Mantiene l'intera immagine: nessun crop su smartphone. */
     aspect-ratio:1536 / 1162;
@@ -86,16 +89,16 @@ html[data-theme="classic"] .world-clock-card{
   backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
 }
-html[data-theme="classic"] .world-clock-card:nth-child(1){
+html[data-theme="classic"] .world-clock-card[data-clock-index="0"]{
   background:linear-gradient(145deg,#fffaf1 0%,#f8efe1 100%)!important;
 }
-html[data-theme="classic"] .world-clock-card:nth-child(2){
+html[data-theme="classic"] .world-clock-card[data-clock-index="1"]{
   background:linear-gradient(145deg,#fff7f4 0%,#f8e8e4 100%)!important;
 }
-html[data-theme="classic"] .world-clock-card:nth-child(3){
+html[data-theme="classic"] .world-clock-card[data-clock-index="2"]{
   background:linear-gradient(145deg,#f8fbff 0%,#e9eef7 100%)!important;
 }
-html[data-theme="classic"] .world-clock-card:nth-child(4){
+html[data-theme="classic"] .world-clock-card[data-clock-index="3"]{
   background:linear-gradient(145deg,#fbfaf1 0%,#edf1df 100%)!important;
 }
 html[data-theme="classic"] .world-clock-card strong,
@@ -191,6 +194,6 @@ html[data-theme="classic"] .world-clock-card span{
 
 <script src="data.js?v=84"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=88"></script>
+<script src="app.js?v=89"></script>
 </body>
 </html>
