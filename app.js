@@ -528,7 +528,7 @@ function renderHome(){
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
-    <div class="home-journey-map"><img src="./assets/home-trip-map.webp" alt="Il nostro viaggio: San Francisco, Los Angeles, Las Vegas, Page e Grand Canyon, Chicago e Bayahibe"></div>
+    <div class="home-journey-map"><picture><source media="(max-width:600px)" srcset="./assets/home-trip-map-mobile.webp"><img src="./assets/home-trip-map.webp" alt="Il nostro viaggio: San Francisco, Los Angeles, Las Vegas, Page e Grand Canyon, Chicago e Bayahibe"></picture></div>
 `;
 
   renderRouteStrip();
@@ -537,7 +537,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.22";
+    version.textContent="Versione app 2.3.23";
     el.appendChild(version);
   }
   bindTodayCard(el);
