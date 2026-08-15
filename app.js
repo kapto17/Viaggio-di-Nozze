@@ -541,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.8";
+    version.textContent="Versione app 2.4.9";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2155,7 +2155,8 @@ async function renderTodayMap(day){
   if(!box)return;
   const items=todayMapItems(day);
   if(!items.length){
-    box.innerHTML='<div class="today-map-empty">Nessuna tappa mappabile per questa giornata.</div>';
+    const card=box.closest(".today-map-card") || box.parentElement;
+    if(card) card.style.display="none";
     return;
   }
   try{

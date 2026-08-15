@@ -339,10 +339,7 @@ const PROGRAM_GUIDE = {
     ]}
   ],
   chicago: [
-    { date:"2026-10-30", title:"Arrivo a Chicago", theme:"Dipende dal nuovo volo da Las Vegas", items:[
-      { time:"Da definire", kind:"booked", icon:"✈️", title:"Arrivo a ORD", note:"Quando l'agenzia conferma l'orario, rifiniamo questa serata." },
-      { time:"Sera", kind:"recommended", icon:"🏨", title:"Warwick Allerton", note:"Check-in e prima passeggiata su Michigan Avenue solo se l'orario lo consente." }
-    ]},
+    
     { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Turismo leggero di giorno, Haunted Halsted come evento principale", special:true, items:[
       { time:"09:20", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Prima giornata piena a Chicago: si parte a piedi, senza sveglia aggressiva.", mapsQuery:"Magnificent Mile Chicago" },
       { time:"09:30", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Passeggiata lungo Michigan Avenue partendo praticamente dalla porta dell'hotel.", mapsQuery:"Magnificent Mile Chicago", mapLat:41.8954, mapLon:-87.6243, detailPlace:"Magnificent Mile" },
