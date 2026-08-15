@@ -122,7 +122,11 @@ const TRIP = {
       places: [
         { priority: "must", name: "Mather Point", note: "Primo grande panorama del South Rim, vicino al Visitor Center.", mapsQuery: "Mather Point Grand Canyon" },
         { priority: "must", name: "Desert View Drive", note: "Strada panoramica del South Rim percorribile in auto privata, perfetta per proseguire verso Page.", mapsQuery: "Desert View Drive Grand Canyon" },
-        { priority: "must", name: "Desert View Watchtower", note: "Ultima tappa panoramica ideale prima di uscire dal Grand Canyon verso est.", mapsQuery: "Desert View Watchtower" },
+        { priority: "must", name: "Pipe Creek Vista", note: "Primo pullout panoramico procedendo verso est sulla Desert View Drive; sosta breve e immediata.", mapsQuery: "Pipe Creek Vista Grand Canyon" },
+        { priority: "must", name: "Grandview Point", note: "Viewpoint molto panoramico con visuale da est a ovest e scorci del Colorado River.", mapsQuery: "Grandview Point Grand Canyon" },
+        { priority: "must", name: "Moran Point", note: "Belvedere noto per i colori e per la lettura molto chiara dei diversi strati geologici del canyon.", mapsQuery: "Moran Point Grand Canyon" },
+        { priority: "must", name: "Navajo Point", note: "Il viewpoint più alto del South Rim, con vista sulla Watchtower e sul Colorado verso nord.", mapsQuery: "Navajo Point Grand Canyon" },
+        { priority: "must", name: "Desert View Watchtower", note: "Ultima grande tappa panoramica prima di uscire dal Grand Canyon verso est e proseguire per Page.", mapsQuery: "Desert View Watchtower" },
         { priority: "must", name: "Horseshoe Bend", note: "Belvedere spettacolare sul Colorado, a pochi minuti da Page.", mapsQuery: "Horseshoe Bend Page Arizona" }
       ],
       foods: [
@@ -298,14 +302,14 @@ const PROGRAM_GUIDE = {
     { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
       { time:"07:00", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"Check-out e partenza verso il Grand Canyon South Rim. È la giornata più lunga del road trip.", mapsQuery:"Grand Canyon Visitor Center South Rim" },
       { time:"11:30 circa", kind:"recommended", icon:"🅿️", title:"Visitor Center · parcheggio", note:"Lasciate l'auto nei parcheggi 1–4 del Visitor Center. Da qui Mather Point è a circa 5 minuti a piedi.", mapsQuery:"Grand Canyon Visitor Center" },
-      { time:"11:45", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon" },
+      { time:"11:45", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon", mapLat:36.0619, mapLon:-112.1078, detailPlace:"Mather Point" },
       { time:"12:30", kind:"recommended", icon:"🥪", title:"Pausa pranzo veloce", note:"Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive." },
-      { time:"13:15", kind:"recommended", icon:"🚗", title:"Inizio Desert View Drive", note:"Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.", mapsQuery:"Desert View Drive Grand Canyon" },
-      { time:"13:35", kind:"recommended", icon:"📍", title:"Pipe Creek Vista", note:"Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.", mapsQuery:"Pipe Creek Vista Grand Canyon" },
-      { time:"14:05", kind:"recommended", icon:"📍", title:"Grandview Point", note:"Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.", mapsQuery:"Grandview Point Grand Canyon" },
-      { time:"14:45", kind:"recommended", icon:"📍", title:"Moran Point", note:"Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.", mapsQuery:"Moran Point Grand Canyon" },
-      { time:"15:20", kind:"recommended", icon:"📍", title:"Navajo Point", note:"È il viewpoint più alto del South Rim e offre già una splendida vista della Desert View Watchtower.", mapsQuery:"Navajo Point Grand Canyon" },
-      { time:"15:45", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.", mapsQuery:"Desert View Watchtower" },
+      { time:"13:15", kind:"recommended", icon:"🚗", title:"Inizio Desert View Drive", note:"Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.", mapsQuery:"Desert View Drive Grand Canyon", detailPlace:"Desert View Drive", mapSkip:true },
+      { time:"13:35", kind:"recommended", icon:"📍", title:"Pipe Creek Vista", note:"Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.", mapsQuery:"Pipe Creek Vista Grand Canyon", mapLat:36.0588, mapLon:-112.0932, detailPlace:"Pipe Creek Vista" },
+      { time:"14:05", kind:"recommended", icon:"📍", title:"Grandview Point", note:"Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.", mapsQuery:"Grandview Point Grand Canyon", mapLat:35.9988, mapLon:-111.9877, detailPlace:"Grandview Point" },
+      { time:"14:45", kind:"recommended", icon:"📍", title:"Moran Point", note:"Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.", mapsQuery:"Moran Point Grand Canyon", mapLat:36.0134, mapLon:-111.8455, detailPlace:"Moran Point" },
+      { time:"15:20", kind:"recommended", icon:"📍", title:"Navajo Point", note:"È il viewpoint più alto del South Rim e offre già una splendida vista della Desert View Watchtower.", mapsQuery:"Navajo Point Grand Canyon", mapLat:36.0407, mapLon:-111.8262, detailPlace:"Navajo Point" },
+      { time:"15:45", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.", mapsQuery:"Desert View Watchtower", mapLat:36.0440, mapLon:-111.8260, detailPlace:"Desert View Watchtower" },
       { time:"16:30 circa", kind:"recommended", icon:"🚗", title:"Partenza per Page", note:"Uscita dall'East Entrance e proseguimento verso Page. Lipan Point non è inserito: il NPS ne prevede la chiusura fino al 23 dicembre 2026.", mapsQuery:"Lake Powell Resort Page Arizona" },
       { time:"19:00 circa", kind:"recommended", icon:"🏨", title:"Arrivo a Page", note:"Ingresso nell'area Glen Canyon/Lake Powell, check-in al Lake Powell Resort, cena e riposo.", mapsQuery:"Lake Powell Resort Page Arizona" }
     ]},
@@ -394,6 +398,11 @@ const PROGRAM_GUIDE = {
 // Le immagini vengono recuperate da Wikipedia/Wikimedia quando c'è connessione;
 // l'immagine della città resta come fallback e la risposta viene poi conservata dalla cache della PWA.
 const PLACE_DETAILS = {
+  "Pipe Creek Vista": { text: "Primo belvedere sviluppato sulla Desert View Drive procedendo verso est. È una sosta breve, comoda direttamente in auto, con il canyon incorniciato tra Mather Point e Yaki Point. Può essere più affollato degli overlook successivi perché è il primo pullout panoramico dopo il bivio." },
+  "Grandview Point": { text: "Uno dei viewpoint più ampi del South Rim: la vista si apre da est a ovest e permette di intravedere diverse anse del Colorado River. Per il vostro programma è una sosta panoramica, non l'inizio del ripido Grandview Trail." },
+  "Moran Point": { text: "Viewpoint dedicato al pittore Thomas Moran. Qui i diversi gruppi di rocce e le variazioni di colore del canyon sono particolarmente leggibili; è una tappa ideale da 15–20 minuti lungo il percorso verso est." },
+  "Navajo Point": { text: "È il viewpoint più alto del South Rim, a 7.461 piedi. Guarda verso la Desert View Watchtower e offre una vista molto ampia verso ovest e a nord lungo il Colorado River. È l'ultima sosta panoramica prima della Watchtower." },
+
   "Alcatraz Night Tour": {
     wikiTitle: "Alcatraz Island",
     text: "Alcatraz è una piccola isola nella baia di San Francisco, celebre soprattutto per il penitenziario federale che ospitò detenuti come Al Capone. Il carcere rimase attivo dal 1934 al 1963 e oggi si visita attraversando celle, corridoi e spazi di servizio. Il tour serale aggiunge un'atmosfera particolare grazie alla luce sulla baia e agli accessi più tranquilli ad alcune aree."

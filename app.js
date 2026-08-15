@@ -541,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.1";
+    version.textContent="Versione app 2.4.2";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2034,12 +2034,10 @@ if("serviceWorker" in navigator){
         });
       });
 
-      let reloading = false;
-      navigator.serviceWorker.addEventListener("controllerchange", ()=>{
-        if(reloading) return;
-        reloading = true;
-        window.location.reload();
-      });
+      // Non ricaricare automaticamente una PWA già aperta:
+      // il vecchio reload faceva ripartire init() e riportava l'utente alla Home.
+      // Il nuovo Service Worker verrà usato senza interrompere la schermata corrente.
+      navigator.serviceWorker.addEventListener("controllerchange", ()=>{});
     }catch(e){}
   });
 }
@@ -2087,7 +2085,7 @@ function todayMapItems(day){
     return [hotel,dinner].filter(Boolean);
   }
   const visits=all.filter(item=>{
-    if(!item.mapsQuery)return false;
+    if(!item.mapsQuery || item.mapSkip)return false;
     const t=String(item.title||"").toLowerCase();
     if(day?.date==="2026-10-22" && /pranzo:/.test(t))return false;
     return !isOperational(item);
