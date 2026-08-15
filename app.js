@@ -333,7 +333,12 @@ function clocksHtml(){
   return `
     <div class="world-clock-grid">
       ${HOME_CLOCKS.map((c, i) => `
-        <div class="world-clock-card" data-clock-index="${i}">
+        <div class="world-clock-card world-clock-${i}" data-clock-index="${i}" style="background:${[
+          "linear-gradient(145deg,#fffaf1 0%,#f8efe1 100%)",
+          "linear-gradient(145deg,#fff7f4 0%,#f8e8e4 100%)",
+          "linear-gradient(145deg,#f8fbff 0%,#e9eef7 100%)",
+          "linear-gradient(145deg,#fbfaf1 0%,#edf1df 100%)"
+        ][i]} !important;">
           <div class="world-clock-place"><span>${c.flag}</span>${c.label}</div>
           <div class="world-clock-time">--:--:--</div>
           <div class="world-clock-date">---</div>
@@ -536,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.29";
+    version.textContent="Versione app 2.3.30";
     el.appendChild(version);
   }
   bindTodayCard(el);
