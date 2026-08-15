@@ -541,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.3.30";
+    version.textContent="Versione app 2.4.0";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -559,10 +559,37 @@ function normalizeProgramRef(s){
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
     .replace(/&/g," and ").replace(/[^a-z0-9]+/g," ").trim();
 }
+function isProgramOperationalItem(item){
+  const t=normalizeProgramRef(item?.title);
+  return /^(partenza|arrivo|volo|check in|check out|navetta|ritiro auto|riconsegna|trasferimento|parcheggio)/.test(t);
+}
+
 function resolveProgramDetail(item){
-  const title=normalizeProgramRef(item?.title);
-  const mq=normalizeProgramRef(item?.mapsQuery);
+  if(!item)return null;
+
+  // Collegamenti espliciti: usati nei casi in cui il titolo della timeline
+  // è volutamente diverso dal nome della scheda.
+  if(item.detailPlace){
+    for(const leg of TRIP.legs){
+      const obj=[...(leg.places||[]),...(leg.activities||[])].find(x=>x.name===item.detailPlace);
+      if(obj)return {legId:leg.id,type:"place",name:obj.name};
+    }
+  }
+  if(item.detailRestaurant){
+    for(const leg of TRIP.legs){
+      const obj=(leg.restaurants||[]).find(x=>x.name===item.detailRestaurant);
+      if(obj)return {legId:leg.id,type:"restaurant",name:obj.name};
+    }
+  }
+
+  // Gli step logistici non devono mai diventare cliccabili solo perché la
+  // loro destinazione Maps coincide con un'attrazione.
+  if(isProgramOperationalItem(item))return null;
+
+  const title=normalizeProgramRef(item.title);
+  const mq=normalizeProgramRef(item.mapsQuery);
   if(!title && !mq)return null;
+
   let best=null,score=0;
   for(const leg of TRIP.legs){
     const candidates=[
