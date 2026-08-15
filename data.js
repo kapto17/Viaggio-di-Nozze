@@ -316,18 +316,17 @@ const PROGRAM_GUIDE = {
       { time:"19:45", kind:"recommended", icon:"🍽️", title:"Rainbow Room · Lake Powell Resort", note:"Cena direttamente nel resort, senza riprendere l'auto. È la scelta più comoda dopo il Grand Canyon, con grandi vetrate affacciate su Wahweap Bay.", mapsQuery:"Rainbow Room 100 Lakeshore Dr Page AZ 86040", mapLat:37.0066, mapLon:-111.4864, detailRestaurant:"Rainbow Room" }
     ]},
     { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
-      { time:"08:15", kind:"recommended", icon:"🚗", title:"Partenza da Lake Powell Resort", note:"Partenza verso Horseshoe Bend. È vicino a Page, quindi non serve anticipare inutilmente la sveglia.", mapsQuery:"Horseshoe Bend Page Arizona" },
-{ time:"08:30", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Circa 1½ ore complessive tra parcheggio, passeggiata e foto.", mapsQuery:"Horseshoe Bend Page Arizona" },
-      { time:"11:15", kind:"booked", icon:"📍", title:"Arrivo da Ken's Tours", note:"Parcheggio e margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
-      { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Meglio essere già in fila almeno 30 minuti prima." },
-      { time:"12:00", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato.", mapsQuery:"Ken's Tours Lower Antelope Canyon" },
-      { time:"13:30", kind:"recommended", icon:"🥪", title:"Pranzo veloce e partenza", note:"Poi Page → Las Vegas." },
-      { time:"18:30 circa", kind:"recommended", icon:"🎰", title:"Arrivo a Las Vegas", note:"Seconda serata in città." }
-    ]}
-  ],
-  vegas2: [
-    { date:"2026-10-29", title:"Seconda serata a Las Vegas", theme:"Completate ciò che non avete visto il 27", items:[
-      { time:"19:00 circa", kind:"recommended", icon:"🌃", title:"Strip oppure Fremont Street", note:"Scegliete in base a ciò che vi manca e alla stanchezza dopo Page.", mapsQuery:"Fremont Street Experience" }
+      { time:"08:15", kind:"recommended", icon:"🚗", title:"Partenza dal Lake Powell Resort", note:"Partenza con calma verso Horseshoe Bend: dal resort considerate circa 25 minuti di auto.", mapsQuery:"Horseshoe Bend Parking Lot Page Arizona" },
+      { time:"08:40", kind:"recommended", icon:"🅿️", title:"Parcheggio Horseshoe Bend", note:"Parcheggio, poi sentiero di circa 1,2 km per raggiungere il viewpoint.", mapsQuery:"Horseshoe Bend Parking Lot Page Arizona", mapLat:36.8762, mapLon:-111.5027, mapSkip:true },
+      { time:"08:50–10:25", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Tempo comodo per andata e ritorno a piedi, panorama e foto senza correre.", mapsQuery:"Horseshoe Bend Page Arizona", mapLat:36.8792, mapLon:-111.5104, detailPlace:"Horseshoe Bend" },
+      { time:"10:35", kind:"recommended", icon:"🚗", title:"Partenza per Ken's Tours", note:"Da Horseshoe Bend a Ken's Tours il trasferimento è breve; teniamo comunque un buon margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapSkip:true },
+      { time:"10:55 circa", kind:"booked", icon:"🅿️", title:"Parcheggio Ken's Tours", note:"Arrivo con largo margine. Il check-in ufficiale è 30 minuti prima del tour.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapLat:36.9026, mapLon:-111.4112, mapForce:true },
+      { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Check-in alle finestre sul lato nord dell'edificio Ken's Tours. Alle 11:50 bisogna essere già pronti per la partenza." },
+      { time:"12:00–13:00 circa", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato. Il General Tour dura normalmente circa 50–60 minuti.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapSkip:true, detailPlace:"Lower Antelope Canyon" },
+      { time:"13:15", kind:"recommended", icon:"🍗", title:"BirdHouse", note:"Pranzo veloce a Page dopo il canyon: fried chicken, informale e con prezzi più contenuti. Non perdiamo troppo tempo prima della lunga tratta per Las Vegas.", mapsQuery:"BirdHouse 707 N Navajo Dr Page AZ", mapLat:36.9220, mapLon:-111.4590, detailRestaurant:"BirdHouse" },
+      { time:"13:50 circa", kind:"recommended", icon:"🚗", title:"Partenza per Las Vegas", note:"Page → Las Vegas. Il 29 ottobre Arizona e Nevada hanno lo stesso orario, quindi non ci sono cambi d'ora da calcolare.", mapsQuery:"Paris Las Vegas", mapSkip:true },
+      { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
+      { time:"20:00 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris. Dopo metà road trip il portafoglio ringrazia.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" }
     ]},
     { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
       { time:"Da definire", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"L’orario verrà calcolato appena l’agenzia conferma il nuovo volo LAS → ORD. La giornata partirà comunque dall’hotel.", mapsQuery:"Harry Reid International Airport Las Vegas" },

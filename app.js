@@ -541,7 +541,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.3";
+    version.textContent="Versione app 2.4.4";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2086,6 +2086,7 @@ function todayMapItems(day){
   }
   const visits=all.filter(item=>{
     if(!item.mapsQuery || item.mapSkip)return false;
+    if(item.mapForce)return true;
     const t=String(item.title||"").toLowerCase();
     if(day?.date==="2026-10-22" && /pranzo:/.test(t))return false;
     return !isOperational(item);
