@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v87";
+const CACHE_NAME = "viaggio-nozze-v88";
 const ASSETS = [
   "./",
   "./index.html",
@@ -23,7 +23,7 @@ const ASSETS = [
   "./assets/chicago.jpg",
   "./assets/bayahibe.jpg",
   "./assets/hero-travel.jpg",
-  "./assets/classic-home-map.webp",
+  "./assets/classic-home-map-v2.webp",
   "./assets/food/sf-clam-chowder.jpg",
   "./assets/food/sf-mission-burrito.jpg",
   "./assets/food/la-tacos-al-pastor.jpg",

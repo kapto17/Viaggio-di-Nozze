@@ -31,7 +31,7 @@ html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
   overflow:hidden!important;
   border-radius:22px!important;
   background-color:#efe2bd!important;
-  background-image:url("./assets/classic-home-map.webp")!important;
+  background-image:url("./assets/classic-home-map-v2.webp")!important;
   background-repeat:no-repeat!important;
   background-position:center center!important;
   background-size:contain!important;
@@ -69,6 +69,45 @@ html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .theme-menu-
   }
 }
 </style>
+
+<style>
+/* v2.3.27 — Fusi orari, solo tema Classico */
+html[data-theme="classic"] .timezone-box{
+  background:transparent!important;
+  border:none!important;
+  box-shadow:none!important;
+}
+html[data-theme="classic"] .timezone-box-title{
+  color:var(--ink)!important;
+}
+html[data-theme="classic"] .world-clock-card{
+  border:1px solid rgba(176,76,91,.16)!important;
+  box-shadow:0 7px 18px -15px rgba(69,43,43,.35)!important;
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+html[data-theme="classic"] .world-clock-card:nth-child(1){
+  background:linear-gradient(145deg,#fffaf1 0%,#f8efe1 100%)!important;
+}
+html[data-theme="classic"] .world-clock-card:nth-child(2){
+  background:linear-gradient(145deg,#fff7f4 0%,#f8e8e4 100%)!important;
+}
+html[data-theme="classic"] .world-clock-card:nth-child(3){
+  background:linear-gradient(145deg,#f8fbff 0%,#e9eef7 100%)!important;
+}
+html[data-theme="classic"] .world-clock-card:nth-child(4){
+  background:linear-gradient(145deg,#fbfaf1 0%,#edf1df 100%)!important;
+}
+html[data-theme="classic"] .world-clock-card strong,
+html[data-theme="classic"] .world-clock-card b{
+  color:#172238!important;
+}
+html[data-theme="classic"] .world-clock-card small,
+html[data-theme="classic"] .world-clock-card span{
+  color:#5f6670!important;
+}
+</style>
+
 </head>
 <body>
 <div id="offline-badge" class="offline-badge">● Modalità offline — dati locali</div>
@@ -152,6 +191,6 @@ html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .theme-menu-
 
 <script src="data.js?v=84"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=87"></script>
+<script src="app.js?v=88"></script>
 </body>
 </html>
