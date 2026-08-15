@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v97";
+const CACHE_NAME = "viaggio-nozze-v98";
 const ASSETS = [
   "./",
   "./index.html",
@@ -23,6 +23,14 @@ const ASSETS = [
   "./assets/chicago.jpg",
   "./assets/bayahibe.jpg",
   "./assets/hero-travel.jpg",
+  "./assets/restaurants/quartino.webp",
+  "./assets/restaurants/drews-on-halsted.webp",
+  "./assets/places/art-institute-chicago.webp",
+  "./assets/places/360-chicago.webp",
+  "./assets/places/buckingham-fountain.webp",
+  "./assets/places/navy-pier.webp",
+  "./assets/places/cloud-gate.webp",
+  "./assets/places/millennium-park.webp",
   "./assets/restaurants/rainbow-room.webp",
   "./assets/places/navajo-point.webp",
   "./assets/places/moran-point.webp",
