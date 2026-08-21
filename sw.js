@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v109";
+const CACHE_NAME = "viaggio-nozze-v110";
 const ASSETS = [
   "./",
   "./index.html",
@@ -51,7 +51,9 @@ const ASSETS = [
   "./assets/food/chicago-italian-beef.jpg",
   "./assets/food/bayahibe-mangu.jpg",
   "./assets/food/bayahibe-pescado-frito.jpg",
-  "./assets/food/bayahibe-tostones-camarones.jpg"
+  "./assets/food/bayahibe-tostones-camarones.jpg",
+  "./assets/restaurants/wildberry-water-tower.webp",
+  "./assets/restaurants/purple-pig.jpg",
 ];
 
 self.addEventListener("install", (event) => {

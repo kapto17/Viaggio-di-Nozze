@@ -44,3 +44,6 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 - Fonte: https://commons.wikimedia.org/wiki/File:Sphere_Las_Vegas_(53473119340).jpg
 
 - `assets/caesars-palace-las-vegas.jpg` — “Exterior of Caesars Palace (Las Vegas) 2026-05-13 2.jpg”, Yelderberry, Wikimedia Commons, CC BY-SA 4.0.
+
+- Wildberry Pancakes and Cafe · Water Tower Place — foto ufficiale Wildberry Cafe, usata nella scheda locale offline dell'app. Fonte: https://wildberrycafe.com/locations/chicago-water-tower-place
+- The Purple Pig · Chicago — foto ufficiale The Purple Pig Restaurant Group, usata nella scheda locale offline dell'app. Fonte: https://thepurplepigrestaurantgroup.com/locations/chicago/
