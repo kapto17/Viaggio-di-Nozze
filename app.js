@@ -556,7 +556,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.11";
+    version.textContent="Versione app 2.4.12";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -661,6 +661,7 @@ function programDayHtml(day){
             <div class="program-copy">
               <div class="program-item-title">${item.title}${ref?`<span class="program-detail-arrow">›</span>`:""}</div>
               <div class="program-note">${item.note || ""}</div>
+              ${item.transportTip ? `<div class="program-transport-tip">${item.transportTip}</div>` : ""}
               ${(item.mapsQuery||item.uberDestination||item.lyftDestination) ? `<div class="program-actions">
                 ${item.mapsQuery ? `<a class="program-map" target="_blank" rel="noopener" href="${mapsUrl(item.mapsQuery)}">📍 Maps</a>` : ""}
                 ${item.uberDestination ? `<a class="program-map" target="_blank" rel="noopener" href="https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(item.uberDestination)}">Uber</a>` : ""}
