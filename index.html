@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="L&F Viaggio">
-<link rel="stylesheet" href="style.css?v=78">
+<link rel="stylesheet" href="style.css?v=79">
 <link rel="stylesheet" href="themes.css?v=53">
 
 <style>
@@ -130,11 +130,11 @@ html[data-theme="classic"] .world-clock-card span{
   </div>
 
   <div id="theme-panel-backdrop" class="theme-panel-backdrop" hidden></div>
-  <aside id="theme-panel" class="theme-panel" aria-hidden="true" aria-label="Scelta tema">
+  <aside id="theme-panel" class="theme-panel" aria-hidden="true" aria-label="Menu app">
     <div class="theme-panel-head">
       <div>
-        <small>PERSONALIZZA</small>
-        <h2>Tema dell'app</h2>
+        <small>MENU</small>
+        <h2>Viaggio di Nozze</h2>
       </div>
       <button id="theme-panel-close" class="theme-panel-close" type="button" aria-label="Chiudi">×</button>
     </div>
@@ -156,6 +156,12 @@ html[data-theme="classic"] .world-clock-card span{
       <span class="theme-swatch theme-swatch-blue"><i></i><i></i><i></i></span>
       <span><strong>Blu Chicago</strong><small>Cielo, bianco e blu profondo</small></span>
       <b class="theme-check">✓</b>
+    </button>
+
+    <button id="archived-checklist-btn" class="theme-choice menu-checklist-choice" type="button" hidden>
+      <span class="menu-checklist-icon" aria-hidden="true">🧳</span>
+      <span><strong>Checklist</strong><small>Rivedi preparativi e spunte</small></span>
+      <b class="menu-checklist-arrow">›</b>
     </button>
   </aside>
 
@@ -192,8 +198,8 @@ html[data-theme="classic"] .world-clock-card span{
   </nav>
 </div>
 
-<script src="data.js?v=103"></script>
+<script src="data.js?v=104"></script>
 <script type="module" src="firebase-budget.js?v=32"></script>
-<script src="app.js?v=103"></script>
+<script src="app.js?v=104"></script>
 </body>
 </html>

@@ -156,7 +156,6 @@ function localISODate(){
 }
 
 const CHECKLIST_HIDE_AT = new Date("2026-10-20T14:00:00Z"); // 20/10/2026 ore 16:00 in Italia (CEST)
-const CHECKLIST_EXPIRED_KEY = "lf-checklist-expired-v13";
 let checklistCountdownTimer = null;
 const CHECKLIST_PROFILES = ["Lorenzo", "Fortuna"];
 const CHECKLIST_SECTIONS = [
@@ -184,12 +183,7 @@ const CHECKLIST_SECTIONS = [
 ];
 
 function checklistVisible(){
-  if (localStorage.getItem(CHECKLIST_EXPIRED_KEY) === "1") return false;
-  if (Date.now() >= CHECKLIST_HIDE_AT.getTime()){
-    localStorage.setItem(CHECKLIST_EXPIRED_KEY, "1");
-    return false;
-  }
-  return true;
+  return Date.now() < CHECKLIST_HIDE_AT.getTime();
 }
 
 function checklistCountdownText(){
@@ -212,13 +206,8 @@ function updateChecklistCountdown(){
       clearInterval(checklistCountdownTimer);
       checklistCountdownTimer = null;
     }
-    if ($("#screen-checklist")?.classList.contains("active")) {
-      renderHome();
-      history.replaceState({ screen:"home" }, "", "#home");
-      showScreen("home");
-    } else if ($("#screen-home")?.classList.contains("active")) {
-      renderHome();
-    }
+    updateChecklistArchiveEntry();
+    if ($("#screen-home")?.classList.contains("active")) renderHome();
   }
 }
 
@@ -465,26 +454,6 @@ function allProgramDays(){
   });
   return rows.sort((a,b)=>a.day.date.localeCompare(b.day.date));
 }
-function todayTestCarouselHtml(activeDate="2026-10-28"){
-  const days=allProgramDays();
-  return `
-    <div class="today-test-carousel" aria-label="Anteprima giornate del viaggio">
-      ${days.map(({leg,day})=>`
-        <button type="button" class="today-preview-slide ${day.date===activeDate?"active":""}"
-          data-open-today-screen="${leg.id}" data-open-today-date="${day.date}"
-          style="--today-bg:url('${todayHeroImage(leg.id,day.date)}')">
-          <span class="today-preview-shade"></span>
-          <span class="today-preview-content">
-            <small>OGGI · MODALITÀ TEST · ${fmtDateFull(day.date)}</small>
-            <strong>${day.title}</strong>
-            <em>${day.theme||""}</em>
-          </span>
-          <span class="today-preview-arrow">›</span>
-        </button>`).join("")}
-    </div>
-    <div class="today-carousel-hint">Scorri le giornate →</div>`;
-}
-
 function todayCardHtml(forcedDate=null){
   const state=todayTripState(new Date(),forcedDate);
   if(!state||!state.program)return "";
@@ -543,8 +512,7 @@ function renderHome(){
       <span class="pretrip-card-overlay"></span>
       <span class="pretrip-card-copy"><small>Prima di partire</small><strong>Checklist pre-partenza</strong><em>Preparativi e valigia, senza dimenticare nulla</em></span>
       <span class="pretrip-card-arrow">›</span>
-    </button>
-    ${todayTestCarouselHtml("2026-10-28")}` : todayCardHtml()}
+    </button>` : todayCardHtml()}
 
     <div class="section-title">Tappe</div>
     ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
@@ -556,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.12";
+    version.textContent="Versione app 2.4.13";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -731,11 +699,6 @@ function updateChecklistProgressDom(el){
 
 function renderChecklist(){
   const el = $("#screen-checklist");
-  if (!checklistVisible()){
-    renderHome();
-    showScreen("home");
-    return;
-  }
   const openSections = currentOpenChecklistSections(el);
   const firstRender = !el.querySelector(".checklist-section");
   const state = loadChecklistState(activeChecklistProfile);
@@ -747,7 +710,7 @@ function renderChecklist(){
       <div><small>20 ottobre 2026</small><h2>Checklist pre-partenza</h2><p>Preparativi e valigia di ${escapeHtml(activeChecklistProfile)}</p></div>
     </div>
     <div class="checklist-local-note">📱 Voci e spunte sono salvate solo su questo smartphone e non vengono sincronizzate con l'altro telefono.</div>
-    <div class="checklist-countdown"><span>⏳ Tempo alla partenza</span><strong id="checklist-countdown-value">${checklistCountdownText()}</strong><small>La checklist si nasconderà il 20 ottobre 2026 alle 16:00.</small></div>
+    ${checklistVisible() ? `<div class="checklist-countdown"><span>⏳ Tempo alla partenza</span><strong id="checklist-countdown-value">${checklistCountdownText()}</strong><small>Dalla Home sarà sostituita dalla sezione OGGI il 20 ottobre 2026 alle 16:01.</small></div>` : `<div class="checklist-local-note checklist-archive-note">🧳 Checklist archiviata · le spunte restano salvate su questo smartphone e puoi consultarle o modificarle in qualsiasi momento.</div>`}
     <div class="checklist-profile-tabs">
       ${CHECKLIST_PROFILES.map(p => `<button class="${p===activeChecklistProfile?'active':''}" data-check-profile="${p}">${p}</button>`).join("")}
     </div>
@@ -786,9 +749,9 @@ function renderChecklist(){
         </details>`;
       }).join("")}
     </div>
-    <div class="checklist-hide-note">✨ Questa sezione sparirà automaticamente dall'app il 20 ottobre 2026 alle 16:00.</div>`;
+    ${checklistVisible() ? `<div class="checklist-hide-note">✨ Dal 20 ottobre alle 16:01 la Home mostrerà OGGI; la checklist resterà disponibile dal menu ☰.</div>` : ``}`;
 
-  startChecklistCountdown();
+  if (checklistVisible()) startChecklistCountdown();
 
   $("#back-checklist").addEventListener("click", () => history.back());
   $$("[data-check-profile]", el).forEach(btn => btn.addEventListener("click", () => {
@@ -852,9 +815,13 @@ function renderChecklist(){
 }
 
 function openChecklist(pushHistory=true){
-  if (!checklistVisible()) return;
   renderChecklist();
   navigateTo("checklist", {}, pushHistory);
+}
+
+function updateChecklistArchiveEntry(){
+  const btn = document.getElementById("archived-checklist-btn");
+  if (btn) btn.hidden = checklistVisible();
 }
 
 // ---------- Rendering: Route strip ----------
@@ -1995,6 +1962,11 @@ function init(){
   startChecklistCountdown();
   bindSecretPrivateAccess();
   updatePrivateTabsVisibility();
+  updateChecklistArchiveEntry();
+  document.getElementById("archived-checklist-btn")?.addEventListener("click", () => {
+    closeThemePanel();
+    openChecklist(true);
+  });
 
   // La prima voce della history è la Home: da una tappa il tasto Indietro
   // del Galaxy torna davvero alla schermata precedente anziché chiudere la PWA.

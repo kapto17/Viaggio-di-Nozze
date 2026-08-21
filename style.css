@@ -2886,3 +2886,10 @@ nav.tabbar{
 }
 .today-map-popup-link strong{font-size:11px}
 .today-map-popup-link span{font-size:9px;font-weight:800;opacity:.62}
+
+
+/* ---------- v2.4.13 · checklist archiviata nel menu ---------- */
+.menu-checklist-choice{margin-top:14px!important;border-top:1px solid rgba(120,100,80,.14)!important;}
+.menu-checklist-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:rgba(214,181,106,.16);}
+.menu-checklist-arrow{font-size:23px;font-weight:500;opacity:.55;}
+.checklist-archive-note{margin-bottom:12px!important;}
