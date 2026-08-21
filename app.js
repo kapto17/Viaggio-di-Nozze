@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.18";
+    version.textContent="Versione app 2.4.19";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -550,30 +550,35 @@ function isProgramOperationalItem(item){
 function resolveProgramDetail(item){
   if(!item)return null;
 
-  // Collegamenti espliciti: usati nei casi in cui il titolo della timeline
-  // è volutamente diverso dal nome della scheda.
+  // Prima scelta: collegamento dichiarato esplicitamente nella timeline.
+  // In questo modo una voce può aprire solo la scheda che abbiamo deciso noi.
   if(item.detailPlace){
     for(const leg of TRIP.legs){
       const obj=[...(leg.places||[]),...(leg.activities||[])].find(x=>x.name===item.detailPlace);
       if(obj)return {legId:leg.id,type:"place",name:obj.name};
     }
+    return null;
   }
   if(item.detailRestaurant){
     for(const leg of TRIP.legs){
       const obj=(leg.restaurants||[]).find(x=>x.name===item.detailRestaurant);
       if(obj)return {legId:leg.id,type:"restaurant",name:obj.name};
     }
+    return null;
   }
 
-  // Gli step logistici non devono mai diventare cliccabili solo perché la
-  // loro destinazione Maps coincide con un'attrazione.
+  // Sveglie, voli, trasferimenti, partenze, check-in ecc. non devono mai
+  // diventare cliccabili in base alla destinazione Maps.
   if(isProgramOperationalItem(item))return null;
 
+  // Fallback prudente: accettiamo SOLO una corrispondenza esatta del titolo
+  // o della query Maps. Nessun matching parziale/fuzzy: meglio una riga non
+  // cliccabile che aprire la scheda sbagliata.
   const title=normalizeProgramRef(item.title);
   const mq=normalizeProgramRef(item.mapsQuery);
   if(!title && !mq)return null;
 
-  let best=null,score=0;
+  const matches=[];
   for(const leg of TRIP.legs){
     const candidates=[
       ...(leg.places||[]).map(x=>({type:"place",obj:x})),
@@ -581,21 +586,17 @@ function resolveProgramDetail(item){
       ...(leg.restaurants||[]).map(x=>({type:"restaurant",obj:x}))
     ];
     for(const c of candidates){
-      const name=normalizeProgramRef(c.obj.name);
-      const cmq=normalizeProgramRef(c.obj.mapsQuery);
-      let s=0;
-      if(name===title)s=100;
-      else if(name && (title.includes(name)||name.includes(title)))s=85;
-      else if(cmq && mq && (cmq.includes(mq)||mq.includes(cmq)))s=75;
-      else {
-        const words=name.split(" ").filter(w=>w.length>3);
-        const hits=words.filter(w=>title.includes(w)||mq.includes(w)).length;
-        if(words.length && hits>=Math.min(2,words.length))s=55+hits;
+      const sameTitle=title && normalizeProgramRef(c.obj.name)===title;
+      const sameMaps=mq && normalizeProgramRef(c.obj.mapsQuery)===mq;
+      if(sameTitle || sameMaps){
+        matches.push({legId:leg.id,type:c.type,name:c.obj.name});
       }
-      if(s>score){score=s;best={legId:leg.id,type:c.type,name:c.obj.name};}
     }
   }
-  return score>=55?best:null;
+
+  // Se più schede coincidono, non indoviniamo.
+  const unique=[...new Map(matches.map(x=>[`${x.legId}|${x.type}|${x.name}`,x])).values()];
+  return unique.length===1 ? unique[0] : null;
 }
 function openProgramDetail(item){
   const ref=resolveProgramDetail(item);

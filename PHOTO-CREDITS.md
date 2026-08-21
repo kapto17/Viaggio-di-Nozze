@@ -47,3 +47,15 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 
 - Wildberry Pancakes and Cafe · Water Tower Place — foto ufficiale Wildberry Cafe, usata nella scheda locale offline dell'app. Fonte: https://wildberrycafe.com/locations/chicago-water-tower-place
 - The Purple Pig · Chicago — foto ufficiale The Purple Pig Restaurant Group, usata nella scheda locale offline dell'app. Fonte: https://thepurplepigrestaurantgroup.com/locations/chicago/
+
+## Chicago Water Tower
+- File: `assets/places/chicago-water-tower.jpg`
+- Foto: Adsitm / Wikimedia Commons
+- Licenza: CC BY-SA 3.0
+- Fonte: https://commons.wikimedia.org/wiki/File:Chicago_Water_tower.jpg
+
+## Starbucks Reserve Roastery Chicago
+- File: `assets/places/starbucks-reserve-roastery-chicago.jpg`
+- Foto: Another Believer / Wikimedia Commons
+- Licenza: CC BY-SA 4.0
+- Fonte: https://commons.wikimedia.org/wiki/File:Chicago,_Illinois,_U.S._(2023)_-_033.jpg

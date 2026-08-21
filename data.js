@@ -187,6 +187,8 @@ const TRIP = {
         { priority: "must", name: "Architecture River Cruise", note: "Una delle esperienze più caratteristiche per vedere l'architettura di Chicago dal fiume.", mapsQuery: "Chicago Architecture Center River Cruise" },
         { priority: "must", name: "Art Institute of Chicago", note: "Uno dei grandi musei d’arte degli Stati Uniti, direttamente accanto a Millennium Park.", mapsQuery: "Art Institute of Chicago" },
         { priority: "must", name: "Magnificent Mile", note: "Michigan Avenue: siete già praticamente lì con il vostro hotel.", mapsQuery: "Magnificent Mile Chicago" },
+        { priority: "discover", name: "Chicago Water Tower", note: "Storico edificio in pietra calcarea sulla Magnificent Mile, tra i pochi edifici pubblici dell'area sopravvissuti al Grande Incendio del 1871.", mapsQuery: "Chicago Water Tower" },
+        { priority: "discover", name: "Starbucks Reserve Roastery", note: "La grande Roastery di Chicago su Michigan Avenue: cinque piani dedicati a caffè, torrefazione, food e cocktail.", mapsQuery: "Starbucks Reserve Roastery Chicago 646 N Michigan Ave" },
         { priority: "discover", name: "Navy Pier", note: "Molo sul lago Michigan, piacevole soprattutto nel pomeriggio e verso il tramonto.", mapsQuery: "Navy Pier Chicago" },
         { priority: "discover", name: "Grant Park & Buckingham Fountain", note: "Il grande parco sul lago a sud di Millennium Park, con la monumentale Buckingham Fountain.", mapsQuery: "Buckingham Fountain Chicago" },
         { priority: "discover", name: "360 Chicago", note: "Osservatorio al 875 N Michigan: è vicinissimo al Warwick Allerton e quindi comodissimo da inserire.", mapsQuery: "360 Chicago Observation Deck" }
@@ -379,8 +381,8 @@ const PROGRAM_GUIDE = {
     { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Colazione con calma, River North e Haunted Halsted come evento principale", special:true, items:[
       { time:"08:20", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Mattinata senza sveglia aggressiva: Wildberry è a pochi minuti dall’hotel.", transportTip:"🚶 A piedi · ~5 min", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago" },
       { time:"08:30", kind:"recommended", icon:"🥞", title:"Wildberry Pancakes and Cafe", note:"Bella colazione americana con calma: pancakes, French toast, Benedict, omelette e skillet. Sede Water Tower Place, 196 E Pearson St.", transportTip:"🚶 A piedi · ~3 min verso Water Tower", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago", detailRestaurant:"Wildberry Pancakes and Cafe · Water Tower" },
-      { time:"09:50", kind:"recommended", icon:"🏛️", title:"Chicago Water Tower", note:"Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici sopravvissuti al Grande Incendio del 1871.", transportTip:"🚶 A piedi · pochi minuti", mapsQuery:"Chicago Water Tower" },
-      { time:"10:15", kind:"recommended", icon:"☕", title:"Starbucks Reserve Roastery", note:"Entriamo per vedere la grande Roastery su più piani di Michigan Avenue. Non è una seconda colazione: bastano 30–45 minuti per curiosare.", transportTip:"🚶 A piedi · ~5 min", mapsQuery:"Starbucks Reserve Roastery Chicago 646 N Michigan Ave" },
+      { time:"09:50", kind:"recommended", icon:"🏛️", title:"Chicago Water Tower", note:"Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici sopravvissuti al Grande Incendio del 1871.", transportTip:"🚶 A piedi · pochi minuti", mapsQuery:"Chicago Water Tower", detailPlace:"Chicago Water Tower" },
+      { time:"10:15", kind:"recommended", icon:"☕", title:"Starbucks Reserve Roastery", note:"Entriamo per vedere la grande Roastery su più piani di Michigan Avenue. Non è una seconda colazione: bastano 30–45 minuti per curiosare.", transportTip:"🚶 A piedi · ~5 min", mapsQuery:"Starbucks Reserve Roastery Chicago 646 N Michigan Ave", detailPlace:"Starbucks Reserve Roastery" },
       { time:"11:15–12:45", kind:"optional", icon:"🛍️", title:"Tempo libero · River North / hotel", note:"Niente altra attrazione obbligatoria prima di pranzo: negozi, due passi o rientro al Warwick per riposare e prepararci alla parte Halloween." },
       { time:"13:30", kind:"recommended", icon:"🌭", title:"Portillo's · River North", note:"Pranzo con calma all’orario giusto per noi: Chicago-style hot dog o Italian beef.", transportTip:"🚶 A piedi dal Warwick/River North", mapsQuery:"Portillo's 100 W Ontario St Chicago", mapLat:41.8930, mapLon:-87.6312, detailRestaurant:"Portillo's · River North" },
       { time:"14:45", kind:"recommended", icon:"🏨", title:"Rientro al Warwick Allerton", note:"Riposo e cambio prima di Halloween. Evitiamo di attraversare il Loop inutilmente nel pomeriggio del 31." },
@@ -488,6 +490,17 @@ const PLACE_DETAILS = {
     officialLabel: "🎟️ Biglietti ufficiali"
   },
   "Art Institute of Chicago": { image: "./assets/places/art-institute-chicago.webp", text: "Uno dei grandi musei d'arte degli Stati Uniti, sulla Michigan Avenue accanto a Grant Park. Il lunedì l'apertura al pubblico è alle 11:00; nel vostro programma lo trattiamo come visita di circa due ore e mezza, concentrandovi sulle opere e sezioni che vi interessano davvero." },
+
+  "Chicago Water Tower": {
+    image: "./assets/places/chicago-water-tower.jpg",
+    text: "La Chicago Water Tower, all'incrocio tra Michigan Avenue e Chicago Avenue, è uno dei simboli storici della città. Costruita in stile neogotico, insieme alla vicina Pumping Station fu tra i pochissimi edifici pubblici dell'area a sopravvivere al Grande Incendio del 1871. Nel vostro itinerario è una tappa breve e perfetta tra Wildberry e la Roastery: basta vederla dall'esterno e fare qualche foto."
+  },
+  "Starbucks Reserve Roastery": {
+    image: "./assets/places/starbucks-reserve-roastery-chicago.jpg",
+    text: "La Starbucks Reserve Roastery di Chicago si trova al 646 N Michigan Avenue, sulla Magnificent Mile. Aperta nel 2019, occupa cinque piani dedicati alla torrefazione, ai caffè Reserve, al cibo e ai cocktail. Nel vostro programma non la trattiamo come una seconda colazione: 30–45 minuti sono sufficienti per vedere gli interni, la grande attrezzatura di torrefazione e curiosare tra i vari piani.",
+    officialUrl: "https://www.starbucksreserve.com/locations/chicago-roastery",
+    officialLabel: "☕ Sito ufficiale"
+  },
 
   "Millennium Park": { image: "./assets/places/millennium-park.webp", text: "Millennium Park è il cuore contemporaneo del Loop, tra Michigan Avenue e il lago. Oltre a Cloud Gate ospita il Jay Pritzker Pavilion di Frank Gehry, Crown Fountain e Lurie Garden. Nel vostro itinerario del 2 novembre è una passeggiata compatta prima dell’Art Institute: tutto è concentrato nella stessa area." },
   "Cloud Gate · The Bean": { image: "./assets/places/cloud-gate.webp", text: "Cloud Gate, soprannominata The Bean, è la grande scultura in acciaio lucidato di Anish Kapoor nel Millennium Park. La superficie riflette e deforma lo skyline di Chicago; si può camminare tutto intorno e sotto l'arco centrale." },
