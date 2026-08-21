@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.15";
+    version.textContent="Versione app 2.4.16";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -728,7 +728,7 @@ function renderChecklist(){
       <button type="button" id="checklist-edit-toggle">${checklistEditMode ? "✓ Fine" : "✎ Modifica elenco"}</button>
     </div>
     <details class="today-preview-panel">
-      <summary><span>👁️ Prova la schermata OGGI prima della partenza</span><span class="accordion-chevron">⌄</span></summary>
+      <summary><span>👁️ Anteprima giornate OGGI</span><span class="accordion-chevron">⌄</span></summary>
       <div class="today-preview-content">
         <label for="today-preview-date">Giorno da simulare</label>
         <select id="today-preview-date">
@@ -1834,8 +1834,10 @@ function openPlaceDetail(legId, placeName, pushHistory=true){
     <div class="place-detail-body">
       <div class="place-detail-kicker">${place.priority === "must" || (leg.activities || []).includes(place) ? "Da non perdere" : "Da scoprire"}</div>
       <p>${detail.text || place.note || ""}</p>
+      ${detail.price ? `<div class="place-detail-plan"><strong>💵 Prezzo indicativo</strong><span>${detail.price}</span></div>` : ""}
       ${(leg.activities || []).includes(place) && place.note ? `<div class="place-detail-plan"><strong>Nel vostro itinerario</strong><span>${place.note}</span></div>` : ""}
       <a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${itemMapsUrl(place, place.name)}">📍 Apri in Google Maps</a>
+      ${detail.officialUrl ? `<a class="place-detail-mapbtn" target="_blank" rel="noopener" href="${detail.officialUrl}">${detail.officialLabel || "🎟️ Sito ufficiale"}</a>` : ""}
       <div class="program-actions" data-ticket-target="${escapeHtml(ticketKey(leg.id,place.name))}" data-ticket-label="${escapeHtml(place.name)}"></div>
     </div>
   `;

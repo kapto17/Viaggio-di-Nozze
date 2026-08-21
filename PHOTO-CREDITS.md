@@ -29,3 +29,16 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 - Tostones rellenos con camarones — Arlene Campusano / Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Tostones_rellenos_con_camarones.jpg
 
 - `assets/high-roller-las-vegas.jpg` — “High Roller ferris wheel at night”, LasVegasGuy / EconomicOldenburger, Wikimedia Commons, CC BY-SA 4.0.
+
+
+## Bellagio Conservatory & Botanical Gardens
+- File: `assets/bellagio-conservatory.jpg`
+- Foto: Tomás Del Coro / Wikimedia Commons
+- Licenza: CC BY-SA 2.0
+- Fonte: https://commons.wikimedia.org/wiki/File:Bellagio_Conservatory_%26_Botanical_Gardens_(14480862512).jpg
+
+## Sphere Las Vegas
+- File: `assets/sphere-las-vegas.jpg`
+- Foto: Matt Walter / Wikimedia Commons
+- Licenza: CC BY 2.0
+- Fonte: https://commons.wikimedia.org/wiki/File:Sphere_Las_Vegas_(53473119340).jpg

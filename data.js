@@ -93,7 +93,9 @@ const TRIP = {
       places: [
         { priority: "must", name: "Las Vegas Strip", note: "Passeggiata serale tra i resort più iconici: Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery: "Las Vegas Strip" },
         { priority: "must", name: "Fontane del Bellagio", note: "Uno degli spettacoli più riconoscibili della Strip.", mapsQuery: "Bellagio Fountains" },
-        { priority: "must", name: "Welcome to Fabulous Las Vegas Sign", note: "La foto simbolo della città.", mapsQuery: "Welcome to Fabulous Las Vegas Sign" }
+        { priority: "must", name: "Welcome to Fabulous Las Vegas Sign", note: "La foto simbolo della città.", mapsQuery: "Welcome to Fabulous Las Vegas Sign" },
+        { priority: "discover", name: "Bellagio Conservatory", note: "Giardino scenografico interno al Bellagio, gratuito e facile da inserire durante la passeggiata sulla Strip.", mapsQuery: "Bellagio Conservatory & Botanical Gardens" },
+        { priority: "discover", name: "Sphere", note: "L'enorme venue sferica rivestita di LED: nel vostro programma la vedete dall'esterno al calare del buio, senza spettacolo a pagamento.", mapsQuery: "Sphere Las Vegas" }
       ],
       foods: [
         { id: "vegas-shrimp", name: "Shrimp Cocktail", short: "Un grande classico della vecchia Las Vegas.", description: "Cocktail di gamberi freddi con salsa cocktail: semplice, rétro e storicamente legato ai casinò e alla vecchia cultura dei menu di Las Vegas.", whereToFind: [{ name: "Golden Gate Hotel & Casino", note: "Il shrimp cocktail è legato alla vecchia Las Vegas; Golden Gate è uno dei nomi storici associati a questa tradizione.", price: "$", mapsQuery: "Golden Gate Hotel Casino Las Vegas" }], image: "./assets/food/vegas-shrimp-cocktail.jpg", photoCredit: "Didriks / Wikimedia Commons · CC BY 2.0" },
@@ -299,10 +301,10 @@ const PROGRAM_GUIDE = {
       { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
       { time:"13:00 circa", kind:"recommended", icon:"📸", title:"Welcome to Fabulous Las Vegas Sign", note:"Prima tappa prima dell'hotel: siete già in auto arrivando da Los Angeles. Foto al cartello e poi proseguite verso il Paris.", mapsQuery:"Welcome to Fabulous Las Vegas Sign", detailPlace:"Welcome to Fabulous Las Vegas Sign" },
       { time:"13:30–14:00", kind:"recommended", icon:"🏨", title:"Paris Las Vegas · check-in", note:"Parcheggio, bagagli e check-in se la camera è disponibile. Da qui lasciate l'auto ferma e proseguite soprattutto a piedi sulla Strip.", mapsQuery:"Paris Las Vegas" },
-      { time:"15:00 circa", kind:"recommended", icon:"🌿", title:"Bellagio Conservatory", note:"Ingresso gratuito. Visita al Conservatory & Botanical Gardens e breve giro nel Bellagio.", mapsQuery:"Bellagio Conservatory & Botanical Gardens" },
+      { time:"15:00 circa", kind:"recommended", icon:"🌿", title:"Bellagio Conservatory", note:"Ingresso gratuito. Visita al Conservatory & Botanical Gardens e breve giro nel Bellagio.", mapsQuery:"Bellagio Conservatory & Botanical Gardens", detailPlace:"Bellagio Conservatory" },
       { time:"16:00 circa", kind:"recommended", icon:"🏛️", title:"Caesars Palace & Forum Shops", note:"Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops, senza trasformarla in una visita troppo lunga.", mapsQuery:"Caesars Palace Forum Shops" },
       { time:"17:00 circa", kind:"recommended", icon:"🛶", title:"The Venetian & Grand Canal", note:"Interni, canali e Grand Canal Shoppes: una delle ambientazioni più scenografiche della Strip.", mapsQuery:"The Venetian Las Vegas" },
-      { time:"18:00–18:30", kind:"recommended", icon:"🌐", title:"Sphere · esterno", note:"Sosta esterna quando inizia a fare buio per vedere la Sphere illuminata, fare foto e video. Nessuno spettacolo a pagamento previsto.", mapsQuery:"Sphere Las Vegas" },
+      { time:"18:00–18:30", kind:"recommended", icon:"🌐", title:"Sphere · esterno", note:"Sosta esterna quando inizia a fare buio per vedere la Sphere illuminata, fare foto e video. Nessuno spettacolo a pagamento previsto.", mapsQuery:"Sphere Las Vegas", detailPlace:"Sphere" },
       { time:"19:30 circa", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio + Strip illuminata", note:"Rientro verso il centro della Strip per vedere uno spettacolo delle fontane e godersi Las Vegas completamente illuminata.", mapsQuery:"Bellagio Fountains", detailPlace:"Fontane del Bellagio" },
       { time:"20:30 circa", kind:"recommended", icon:"🍷", title:"Mon Ami Gabi · Paris Las Vegas", note:"Cena comoda direttamente al Paris: bistrot francese con patio sulla Strip e vista verso le fontane del Bellagio.", mapsQuery:"Mon Ami Gabi 3655 S Las Vegas Blvd Las Vegas NV 89109", mapLat:36.112855, mapLon:-115.172414, detailRestaurant:"Mon Ami Gabi · Paris Las Vegas" },
       { time:"22:00 circa", kind:"recommended", icon:"🚗", title:"Paris → Fremont Street", note:"Dopo cena riprendete la vostra auto e raggiungete Downtown Las Vegas. Parcheggio in zona Fremont Street Experience.", mapsQuery:"Fremont Street Experience Parking Garage" },
@@ -342,11 +344,7 @@ const PROGRAM_GUIDE = {
       { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris. Dopo metà road trip il portafoglio ringrazia.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
       { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." }
     ]},
-    { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
-      { time:"Da definire", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"L’orario verrà calcolato appena l’agenzia conferma il nuovo volo LAS → ORD. La giornata partirà comunque dall’hotel.", mapsQuery:"Harry Reid International Airport Las Vegas" },
-{ time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
-      { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
-    ]}
+
   ],
   vegas2: [
     { date:"2026-10-29", title:"Page → Las Vegas", theme:"Rientro a Las Vegas e serata volutamente leggera", items:[
@@ -455,7 +453,13 @@ const PROGRAM_GUIDE = {
 // Le immagini vengono recuperate da Wikipedia/Wikimedia quando c'è connessione;
 // l'immagine della città resta come fallback e la risposta viene poi conservata dalla cache della PWA.
 const PLACE_DETAILS = {
-  "High Roller": { image: "./assets/high-roller-las-vegas.jpg", text: "La High Roller è la grande ruota panoramica del LINQ Promenade, nel cuore della Strip. Sale fino a circa 550 piedi (168 metri) e completa un giro in circa 30 minuti all'interno di cabine panoramiche chiuse. L'abbiamo inserita la sera del 29 ottobre: è vicina al Paris e permette di vedere Las Vegas illuminata dall'alto senza impegnare troppo la serata." },
+  "High Roller": {
+    image: "./assets/high-roller-las-vegas.jpg",
+    text: "La High Roller è la grande ruota panoramica del LINQ Promenade, nel cuore della Strip. Sale fino a circa 550 piedi (168 metri) e completa un giro in circa 30 minuti all'interno di cabine panoramiche chiuse. L'abbiamo inserita la sera del 29 ottobre: è vicina al Paris e permette di vedere Las Vegas illuminata dall'alto senza impegnare troppo la serata.",
+    price: "Indicativamente da $39 a persona per il biglietto Anytime serale (circa $78 in due), prima di tasse/commissioni e di eventuale peak pricing.",
+    officialUrl: "https://www.ticketmaster.com/High-Roller-Wheel-at-the-Linq-tickets/artist/2333410",
+    officialLabel: "🎟️ Biglietti ufficiali"
+  },
   "Art Institute of Chicago": { image: "./assets/places/art-institute-chicago.webp", text: "Uno dei grandi musei d'arte degli Stati Uniti, sulla Michigan Avenue accanto a Grant Park. Il lunedì l'apertura al pubblico è alle 11:00; nel vostro programma lo trattiamo come visita di circa due ore e mezza, concentrandovi sulle opere e sezioni che vi interessano davvero." },
 
   "Millennium Park": { image: "./assets/places/millennium-park.webp", text: "Millennium Park è il cuore contemporaneo del Loop, tra Michigan Avenue e il lago. Oltre a Cloud Gate ospita il Jay Pritzker Pavilion di Frank Gehry, Crown Fountain e Lurie Garden. Nel vostro itinerario del 31 ottobre è una passeggiata compatta: tutto è concentrato nella stessa area." },
@@ -591,8 +595,12 @@ const PLACE_DETAILS = {
     text: "Fremont Street è il cuore della vecchia Downtown Las Vegas, dove aprirono alcuni dei casinò storici della città. Negli anni Novanta una parte della strada fu trasformata nella Fremont Street Experience, una grande area pedonale coperta da uno schermo luminoso. È molto diversa dalla Strip: più compatta, rumorosa e volutamente retrò."
   },
   "Bellagio Conservatory": {
-    wikiTitle: "Bellagio (resort)",
+    image: "./assets/bellagio-conservatory.jpg",
     text: "Il Conservatory & Botanical Gardens del Bellagio è uno spazio interno che viene completamente ridisegnato più volte l'anno con fiori, piante e grandi installazioni scenografiche. Ogni allestimento segue un tema stagionale e trasforma l'ambiente in una vera scenografia. È una visita breve, gratuita e facile da abbinare alle fontane."
+  },
+  "Sphere": {
+    image: "./assets/sphere-las-vegas.jpg",
+    text: "Sphere è la grande struttura sferica a est della Strip, riconoscibile soprattutto per l'Exosphere: l'enorme superficie LED esterna che cambia continuamente immagini e animazioni. Nel vostro itinerario non è previsto uno spettacolo: la tappa del 27 ottobre serve proprio a vederla illuminata dall'esterno, fare foto e video e poi continuare la serata sulla Strip."
   },
   "The Venetian & Grand Canal": {
     wikiTitle: "The Venetian Las Vegas",
