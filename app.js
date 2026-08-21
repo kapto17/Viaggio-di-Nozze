@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.14";
+    version.textContent="Versione app 2.4.15";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -600,6 +600,15 @@ function resolveProgramDetail(item){
 function openProgramDetail(item){
   const ref=resolveProgramDetail(item);
   if(!ref)return false;
+
+  // Se il dettaglio viene aperto dalla timeline del Programma consigliato
+  // dentro una città, conserva accordion aperti e posizione di scroll.
+  // Al ritorno con "Indietro" l'utente ritrova esattamente la vista precedente.
+  if($("#screen-city-detail")?.classList.contains("active")){
+    const currentLegId=history.state?.legId || ref.legId;
+    rememberCityViewState(currentLegId);
+  }
+
   if(ref.type==="restaurant")openRestaurantDetail(ref.legId,ref.name);
   else openPlaceDetail(ref.legId,ref.name);
   return true;
