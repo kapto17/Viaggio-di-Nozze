@@ -27,3 +27,5 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 - Mangú — Ll1324 / Wikimedia Commons, CC0: https://commons.wikimedia.org/wiki/File:Dominican_Mangu.jpg
 - Pescado frito — Arlene Campusano / Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Pecao_frito.jpg
 - Tostones rellenos con camarones — Arlene Campusano / Wikimedia Commons, CC BY-SA 4.0: https://commons.wikimedia.org/wiki/File:Tostones_rellenos_con_camarones.jpg
+
+- `assets/high-roller-las-vegas.jpg` — “High Roller ferris wheel at night”, LasVegasGuy / EconomicOldenburger, Wikimedia Commons, CC BY-SA 4.0.

@@ -152,6 +152,7 @@ const TRIP = {
       ],
       places: [
         { priority: "must", name: "Fremont Street Experience", note: "Per vedere anche il lato Old Vegas, diverso dalla Strip.", mapsQuery: "Fremont Street Experience" },
+        { priority: "must", lf: true, name: "High Roller", note: "Ruota panoramica del LINQ: giro di circa 30 minuti con vista a 360° sulla Strip illuminata. Inserita la sera del 29 ottobre.", mapsQuery: "High Roller Las Vegas" },
         { priority: "discover", name: "Bellagio Conservatory", note: "Giardino scenografico interno al Bellagio, facile da inserire durante una passeggiata sulla Strip.", mapsQuery: "Bellagio Conservatory & Botanical Gardens" },
         { priority: "discover", name: "The Venetian & Grand Canal", note: "Interni e canali tra i più scenografici della Strip.", mapsQuery: "The Venetian Las Vegas" }
       ],
@@ -294,13 +295,19 @@ const PROGRAM_GUIDE = {
     ]}
   ],
   vegas1: [
-    { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Trasferimento e prima serata sulla Strip", items:[
-      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.", mapsQuery:"Paris Las Vegas" },
-      { time:"13:30 circa", kind:"recommended", icon:"🏨", title:"Arrivo e check-in al Paris Las Vegas", note:"Lasciate l'auto e muovetevi soprattutto a piedi sulla Strip." },
-      { time:"16:00", kind:"recommended", icon:"🎰", title:"Las Vegas Strip", note:"Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery:"Las Vegas Strip" },
-      { time:"Sera", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio e Strip illuminata", note:"Vegas rende soprattutto dopo il tramonto.", mapsQuery:"Bellagio Fountains" },
+    { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Las Vegas essenziale: icone della Strip e Old Vegas in una sola giornata", items:[
+      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
+      { time:"13:00 circa", kind:"recommended", icon:"📸", title:"Welcome to Fabulous Las Vegas Sign", note:"Prima tappa prima dell'hotel: siete già in auto arrivando da Los Angeles. Foto al cartello e poi proseguite verso il Paris.", mapsQuery:"Welcome to Fabulous Las Vegas Sign", detailPlace:"Welcome to Fabulous Las Vegas Sign" },
+      { time:"13:30–14:00", kind:"recommended", icon:"🏨", title:"Paris Las Vegas · check-in", note:"Parcheggio, bagagli e check-in se la camera è disponibile. Da qui lasciate l'auto ferma e proseguite soprattutto a piedi sulla Strip.", mapsQuery:"Paris Las Vegas" },
+      { time:"15:00 circa", kind:"recommended", icon:"🌿", title:"Bellagio Conservatory", note:"Ingresso gratuito. Visita al Conservatory & Botanical Gardens e breve giro nel Bellagio.", mapsQuery:"Bellagio Conservatory & Botanical Gardens" },
+      { time:"16:00 circa", kind:"recommended", icon:"🏛️", title:"Caesars Palace & Forum Shops", note:"Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops, senza trasformarla in una visita troppo lunga.", mapsQuery:"Caesars Palace Forum Shops" },
+      { time:"17:00 circa", kind:"recommended", icon:"🛶", title:"The Venetian & Grand Canal", note:"Interni, canali e Grand Canal Shoppes: una delle ambientazioni più scenografiche della Strip.", mapsQuery:"The Venetian Las Vegas" },
+      { time:"18:00–18:30", kind:"recommended", icon:"🌐", title:"Sphere · esterno", note:"Sosta esterna quando inizia a fare buio per vedere la Sphere illuminata, fare foto e video. Nessuno spettacolo a pagamento previsto.", mapsQuery:"Sphere Las Vegas" },
+      { time:"19:30 circa", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio + Strip illuminata", note:"Rientro verso il centro della Strip per vedere uno spettacolo delle fontane e godersi Las Vegas completamente illuminata.", mapsQuery:"Bellagio Fountains", detailPlace:"Fontane del Bellagio" },
       { time:"20:30 circa", kind:"recommended", icon:"🍷", title:"Mon Ami Gabi · Paris Las Vegas", note:"Cena comoda direttamente al Paris: bistrot francese con patio sulla Strip e vista verso le fontane del Bellagio.", mapsQuery:"Mon Ami Gabi 3655 S Las Vegas Blvd Las Vegas NV 89109", mapLat:36.112855, mapLon:-115.172414, detailRestaurant:"Mon Ami Gabi · Paris Las Vegas" },
-      { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: atmosfera horror", note:"Se vi avanza tempo durante uno dei due passaggi a Vegas, Universal Horror Unleashed ad AREA15 è un'esperienza horror permanente; non la inserisco nel percorso base.", mapsQuery:"Universal Horror Unleashed Las Vegas" }
+      { time:"22:00 circa", kind:"recommended", icon:"🚗", title:"Paris → Fremont Street", note:"Dopo cena riprendete la vostra auto e raggiungete Downtown Las Vegas. Parcheggio in zona Fremont Street Experience.", mapsQuery:"Fremont Street Experience Parking Garage" },
+      { time:"22:15–23:30", kind:"recommended", icon:"🎰", title:"Fremont Street Experience", note:"Viva Vision, casinò storici e atmosfera Old Vegas. Una visita breve ma sufficiente per vedere il lato di Las Vegas più diverso dalla Strip.", mapsQuery:"Fremont Street Experience" },
+      { time:"23:30 circa", kind:"recommended", icon:"🚗", title:"Rientro al Paris", note:"Rientro in auto e riposo: il 28 ottobre la partenza per il Grand Canyon è alle 07:00.", mapsQuery:"Paris Las Vegas" }
     ]}
   ],
   page: [
@@ -310,6 +317,7 @@ const PROGRAM_GUIDE = {
       { time:"12:05", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon", mapLat:36.0619, mapLon:-112.1078, detailPlace:"Mather Point" },
       { time:"12:40", kind:"recommended", icon:"🥪", title:"Pausa pranzo veloce", note:"Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive." },
       { time:"13:20", kind:"recommended", icon:"🚗", title:"Inizio Desert View Drive", note:"Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.", mapsQuery:"Desert View Drive Grand Canyon", detailPlace:"Desert View Drive", mapSkip:true },
+      { time:"⚠️ Nota guida", kind:"recommended", icon:"⚠️", title:"Strade consentite con l’auto", note:"Seguite Desert View Drive (SR-64). Non imboccate Hermit Road o Yaki Point Road con l’auto privata; all’interno del parco seguite sempre la segnaletica NPS anche se il navigatore suggerisse diversamente." },
       { time:"13:30", kind:"recommended", icon:"📍", title:"Pipe Creek Vista", note:"Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.", mapsQuery:"Pipe Creek Vista Grand Canyon", mapLat:36.0588, mapLon:-112.0932, detailPlace:"Pipe Creek Vista" },
       { time:"14:00", kind:"recommended", icon:"📍", title:"Grandview Point", note:"Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.", mapsQuery:"Grandview Point Grand Canyon", mapLat:35.9988, mapLon:-111.9877, detailPlace:"Grandview Point" },
       { time:"14:40", kind:"recommended", icon:"📍", title:"Moran Point", note:"Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.", mapsQuery:"Moran Point Grand Canyon", mapLat:36.0134, mapLon:-111.8455, detailPlace:"Moran Point" },
@@ -330,12 +338,22 @@ const PROGRAM_GUIDE = {
       { time:"13:15", kind:"recommended", icon:"🍗", title:"BirdHouse", note:"Pranzo veloce a Page dopo il canyon: fried chicken, informale e con prezzi più contenuti. Non perdiamo troppo tempo prima della lunga tratta per Las Vegas.", mapsQuery:"BirdHouse 707 N Navajo Dr Page AZ", mapLat:36.9220, mapLon:-111.4590, detailRestaurant:"BirdHouse" },
       { time:"13:50 circa", kind:"recommended", icon:"🚗", title:"Partenza per Las Vegas", note:"Page → Las Vegas. Il 29 ottobre Arizona e Nevada hanno lo stesso orario, quindi non ci sono cambi d'ora da calcolare.", mapsQuery:"Paris Las Vegas", mapSkip:true },
       { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
-      { time:"20:00 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris. Dopo metà road trip il portafoglio ringrazia.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" }
+      { time:"19:30 circa", kind:"recommended", icon:"🎡", title:"High Roller", note:"Una sola attrazione prima di cena: giro panoramico di circa 30 minuti al LINQ con vista a 360° sulla Strip illuminata. Se il rientro da Page slitta o siete stanchi, resta facilmente sacrificabile.", mapsQuery:"High Roller Las Vegas", mapLat:36.1176, mapLon:-115.1681, detailPlace:"High Roller" },
+      { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris. Dopo metà road trip il portafoglio ringrazia.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
+      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." }
     ]},
     { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Giornata volutamente flessibile finché il volo non sarà cambiato/confermato", items:[
       { time:"Da definire", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"L’orario verrà calcolato appena l’agenzia conferma il nuovo volo LAS → ORD. La giornata partirà comunque dall’hotel.", mapsQuery:"Harry Reid International Airport Las Vegas" },
 { time:"Da definire", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Orario lasciato vuoto finché l'agenzia non conferma il nuovo volo." },
       { time:"Se resta tempo", kind:"optional", icon:"🎰", title:"Ultime ore a Las Vegas", note:"Solo attività vicine all'hotel/aeroporto: niente programmi che rischino il volo." }
+    ]}
+  ],
+  vegas2: [
+    { date:"2026-10-29", title:"Page → Las Vegas", theme:"Rientro a Las Vegas e serata volutamente leggera", items:[
+      { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico da Page includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
+      { time:"19:30 circa", kind:"recommended", icon:"🎡", title:"High Roller", note:"Una sola attrazione prima di cena: giro panoramico di circa 30 minuti al LINQ con vista a 360° sulla Strip illuminata. Se il rientro da Page slitta o siete stanchi, resta facilmente sacrificabile.", mapsQuery:"High Roller Las Vegas", mapLat:36.1176, mapLon:-115.1681, detailPlace:"High Roller" },
+      { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente semplice ed economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
+      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." }
     ]}
   ],
   chicago: [
@@ -437,6 +455,7 @@ const PROGRAM_GUIDE = {
 // Le immagini vengono recuperate da Wikipedia/Wikimedia quando c'è connessione;
 // l'immagine della città resta come fallback e la risposta viene poi conservata dalla cache della PWA.
 const PLACE_DETAILS = {
+  "High Roller": { image: "./assets/high-roller-las-vegas.jpg", text: "La High Roller è la grande ruota panoramica del LINQ Promenade, nel cuore della Strip. Sale fino a circa 550 piedi (168 metri) e completa un giro in circa 30 minuti all'interno di cabine panoramiche chiuse. L'abbiamo inserita la sera del 29 ottobre: è vicina al Paris e permette di vedere Las Vegas illuminata dall'alto senza impegnare troppo la serata." },
   "Art Institute of Chicago": { image: "./assets/places/art-institute-chicago.webp", text: "Uno dei grandi musei d'arte degli Stati Uniti, sulla Michigan Avenue accanto a Grant Park. Il lunedì l'apertura al pubblico è alle 11:00; nel vostro programma lo trattiamo come visita di circa due ore e mezza, concentrandovi sulle opere e sezioni che vi interessano davvero." },
 
   "Millennium Park": { image: "./assets/places/millennium-park.webp", text: "Millennium Park è il cuore contemporaneo del Loop, tra Michigan Avenue e il lago. Oltre a Cloud Gate ospita il Jay Pritzker Pavilion di Frank Gehry, Crown Fountain e Lurie Garden. Nel vostro itinerario del 31 ottobre è una passeggiata compatta: tutto è concentrato nella stessa area." },
