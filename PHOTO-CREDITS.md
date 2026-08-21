@@ -42,3 +42,5 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 - Foto: Matt Walter / Wikimedia Commons
 - Licenza: CC BY 2.0
 - Fonte: https://commons.wikimedia.org/wiki/File:Sphere_Las_Vegas_(53473119340).jpg
+
+- `assets/caesars-palace-las-vegas.jpg` — “Exterior of Caesars Palace (Las Vegas) 2026-05-13 2.jpg”, Yelderberry, Wikimedia Commons, CC BY-SA 4.0.

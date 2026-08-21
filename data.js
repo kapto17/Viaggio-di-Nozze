@@ -92,6 +92,7 @@ const TRIP = {
       transport: [{ date: "2026-10-27", time: "Da definire", type: "car", title: "Los Angeles → Las Vegas", subtitle: "In auto", mapsQuery: "Las Vegas, NV" }],
       places: [
         { priority: "must", name: "Las Vegas Strip", note: "Passeggiata serale tra i resort più iconici: Bellagio, Caesars Palace, Venetian e dintorni.", mapsQuery: "Las Vegas Strip" },
+        { priority: "must", name: "Caesars Palace & Forum Shops", note: "Uno dei resort simbolo della Strip, con scenografie ispirate all’antica Roma e i grandi Forum Shops.", mapsQuery: "Caesars Palace Las Vegas" },
         { priority: "must", name: "Fontane del Bellagio", note: "Uno degli spettacoli più riconoscibili della Strip.", mapsQuery: "Bellagio Fountains" },
         { priority: "must", name: "Welcome to Fabulous Las Vegas Sign", note: "La foto simbolo della città.", mapsQuery: "Welcome to Fabulous Las Vegas Sign" },
         { priority: "discover", name: "Bellagio Conservatory", note: "Giardino scenografico interno al Bellagio, gratuito e facile da inserire durante la passeggiata sulla Strip.", mapsQuery: "Bellagio Conservatory & Botanical Gardens" },
@@ -150,7 +151,8 @@ const TRIP = {
       hotel: { name: "Paris Las Vegas", address: "3655 Las Vegas Blvd S, Las Vegas, NV 89109", mapsUrl: "https://www.google.com/maps/search/?api=1&query=Paris+Las+Vegas+3655+Las+Vegas+Blvd+S+Las+Vegas+NV+89109", checkin: "2026-10-29", checkout: "2026-10-30", hotelFee: { perNight: 62.30, label: "Resort fee + tasse", note: "circa $62,30 a notte ($54,95 + tasse) · totale previsto: circa $62,30" } },
       transport: [
         { date: "2026-10-29", time: "Da definire", type: "car", title: "Page → Las Vegas", subtitle: "In auto, ritorno", mapsQuery: "Las Vegas, NV" },
-        { date: "2026-10-30", time: "", type: "car", title: "Riconsegna SUV a noleggio", subtitle: "Riconsegna all'aeroporto di Las Vegas (LAS)", mapsQuery: "Harry Reid International Airport car rental return" }
+        { date: "2026-10-30", time: "06:30 circa", type: "car", title: "Riconsegna SUV a noleggio", subtitle: "Riconsegna all'aeroporto di Las Vegas (LAS) prima del volo delle 09:58", mapsQuery: "Harry Reid International Airport car rental return" },
+        { date: "2026-10-30", time: "09:58", type: "flight", title: "Volo LAS → ORD", subtitle: "Las Vegas → Chicago O’Hare · arrivo 15:53 ora locale", mapsQuery: "Chicago O'Hare International Airport" }
       ],
       places: [
         { priority: "must", name: "Fremont Street Experience", note: "Per vedere anche il lato Old Vegas, diverso dalla Strip.", mapsQuery: "Fremont Street Experience" },
@@ -177,7 +179,7 @@ const TRIP = {
       id: "chicago", city: "Chicago", accent: "chicago", image: "./assets/chicago.jpg",
       dateFrom: "2026-10-30", dateTo: "2026-11-03",
       hotel: { name: "Warwick Allerton - Chicago", address: "701 N Michigan Ave, Chicago, IL 60611", mapsUrl: "https://www.google.com/maps/search/?api=1&query=Warwick+Allerton+Chicago+701+N+Michigan+Ave+Chicago+IL+60611", checkin: "2026-10-30", checkout: "2026-11-03", hotelFee: { perNight: 29.35, label: "Resort fee", note: "$29,35 a notte · totale previsto per 4 notti: $117,40 · deposito cauzionale escluso dal budget" } },
-      transport: [{ date: "2026-10-30", time: "", type: "flight", title: "Volo LAS → ORD", subtitle: "Orario in attesa di conferma/cambio con l'agenzia", mapsQuery: "Chicago O'Hare International Airport" }],
+      transport: [{ date: "2026-10-30", time: "09:58", type: "flight", title: "Volo LAS → ORD", subtitle: "Las Vegas → Chicago O’Hare · arrivo 15:53 ora locale", mapsQuery: "Chicago O'Hare International Airport" }],
       places: [
         { priority: "must", name: "Millennium Park", note: "Il grande parco urbano del Loop: Pritzker Pavilion, Crown Fountain, giardini e architettura contemporanea.", mapsQuery: "Millennium Park Chicago" },
         { priority: "must", name: "Cloud Gate · The Bean", note: "La scultura-specchio simbolo di Chicago, nel cuore di Millennium Park.", mapsQuery: "Cloud Gate Chicago" },
@@ -212,9 +214,9 @@ const TRIP = {
       dateFrom: "2026-11-03", dateTo: "2026-11-09",
       hotel: { name: "Viva Dominicus Palace by Wyndham", address: "Dominicus, Bayahibe, La Romana, Repubblica Dominicana", mapsUrl: "https://www.google.com/maps/search/?api=1&query=Viva+Dominicus+Palace+by+Wyndham+Bayahibe+Dominican+Republic", checkin: "2026-11-03", checkout: "2026-11-09", hotelFee: { perNight: 0, label: "Fee hotel", note: "Nessuna resort fee separata verificata al momento per il vostro pacchetto all-inclusive" } },
       transport: [
-        { date: "2026-11-03", time: "09:30", type: "flight", title: "Volo ORD → PUJ", subtitle: "Chicago O'Hare → Punta Cana · Durata 4 h 32 min", arriveTime: "16:02", arriveNote: "Arrivo a Punta Cana (PUJ) il 03/11 · transfer per Bayahibe incluso nel pacchetto", mapsQuery: "Punta Cana International Airport" },
-        { date: "2026-11-09", time: "12:56", type: "flight", title: "Volo PUJ → IAD", subtitle: "Punta Cana → Washington Dulles · Durata 3 h 59 min", arriveTime: "15:55", arriveNote: "Scalo a Washington: 1 h 45 min", mapsQuery: "Washington Dulles International Airport" },
-        { date: "2026-11-09", time: "17:40", type: "flight", title: "Volo IAD → FCO", subtitle: "Washington Dulles → Roma Fiumicino · Durata 8 h 50 min", arriveTime: "08:30", arriveNote: "Arrivo a Roma martedì 10/11/2026", mapsQuery: "Leonardo da Vinci–Fiumicino Airport" }
+        { date: "2026-11-03", time: "09:17", type: "flight", title: "Volo ORD → PUJ", subtitle: "Chicago O'Hare → Punta Cana · Durata 4 h 32 min", arriveTime: "15:57", arriveNote: "Arrivo a Punta Cana (PUJ) il 03/11 · transfer per Bayahibe incluso nel pacchetto", mapsQuery: "Punta Cana International Airport" },
+        { date: "2026-11-09", time: "12:56", type: "flight", title: "Volo PUJ → IAD", subtitle: "Punta Cana → Washington Dulles · Durata 3 h 59 min", arriveTime: "15:55", arriveNote: "Scalo a Washington: 2 h 05 min", mapsQuery: "Washington Dulles International Airport" },
+        { date: "2026-11-09", time: "18:00", type: "flight", title: "Volo IAD → FCO", subtitle: "Washington Dulles → Roma Fiumicino · Durata 8 h 50 min", arriveTime: "08:30", arriveNote: "Arrivo a Roma martedì 10/11/2026", mapsQuery: "Leonardo da Vinci–Fiumicino Airport" }
       ],
       places: [
         { priority: "must", name: "Isola Saona", note: "L'escursione più iconica della zona: spiagge caraibiche, catamarano/motoscafo e piscine naturali.", mapsQuery: "Saona Island Dominican Republic" },
@@ -259,7 +261,8 @@ const PROGRAM_GUIDE = {
       { time:"13:00", kind:"recommended", icon:"🐟", title:"Pranzo: Fog Harbor oppure Scoma's", note:"Sceglietene uno: sono entrambi nella zona, senza fare deviazioni." },
       { time:"16:50", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33", note:"Meglio arrivare con largo anticipo per il tour serale.", mapsQuery:"Alcatraz City Cruises Pier 33" },
       { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Partenza da Pier 33 e rientro sullo stesso waterfront.", mapsQuery:"Alcatraz Island San Francisco" },
-      { time:"20:45 circa", kind:"recommended", icon:"🍔", title:"Wipeout Bar & Grill · Pier 39", note:"Cena informale sul waterfront dopo Alcatraz: burger, tacos e piatti semplici senza allontanarsi dalla zona.", mapsQuery:"Wipeout Bar & Grill Pier 39 San Francisco" }
+      { time:"20:45 circa", kind:"recommended", icon:"🍔", title:"Wipeout Bar & Grill · Pier 39", note:"Cena informale sul waterfront dopo Alcatraz: burger, tacos e piatti semplici senza allontanarsi dalla zona.", mapsQuery:"Wipeout Bar & Grill Pier 39 San Francisco" },
+      { time:"06:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 23 ottobre", note:"Domani lasciamo Hotel Spero alle 08:00 per il volo SFO → LAX delle 11:00. Sveglia alle 06:45: circa 1h15 per prepararci; colazione per strada o in aeroporto." }
     ]}
   ],
   la: [
@@ -293,7 +296,8 @@ const PROGRAM_GUIDE = {
       { time:"07:45", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Partenza verso Universal Studios. Orario prudente da adeguare all’apertura ufficiale del 26 ottobre; conviene arrivare prima dei cancelli.", mapsQuery:"Universal Studios Hollywood" },
 { time:"Apertura", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Arrivate poco prima dell'apertura e dedicate il giorno al parco.", mapsQuery:"Universal Studios Hollywood" },
       { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween: case decorate a Burbank", note:"Se avete ancora energia, Burbank organizza ogni anno un Halloween Outdoor Decorating Contest con una destination guide delle case partecipanti. È vicino a Universal: controlliamo la guida 2026 poco prima del viaggio.", mapsQuery:"Burbank California" },
-      { time:"20:00 circa", kind:"recommended", icon:"🥩", title:"Musso & Frank Grill", note:"Cena Old Hollywood dopo gli Universal. Storico ristorante su Hollywood Boulevard: una chiusura di giornata più rilassata rispetto a un altro evento serale.", mapsQuery:"Musso & Frank Grill 6667 Hollywood Blvd Los Angeles", mapLat:34.101763, mapLon:-118.335026 }
+      { time:"20:00 circa", kind:"recommended", icon:"🥩", title:"Musso & Frank Grill", note:"Cena Old Hollywood dopo gli Universal. Storico ristorante su Hollywood Boulevard: una chiusura di giornata più rilassata rispetto a un altro evento serale.", mapsQuery:"Musso & Frank Grill 6667 Hollywood Blvd Los Angeles", mapLat:34.101763, mapLon:-118.335026 },
+      { time:"06:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 27 ottobre", note:"Domani partenza dal The Commerce alle 08:00 verso Las Vegas. Sveglia alle 06:45: circa 1h15 per prepararci e caricare l’auto; colazione lungo la strada." }
     ]}
   ],
   vegas1: [
@@ -302,14 +306,15 @@ const PROGRAM_GUIDE = {
       { time:"13:00 circa", kind:"recommended", icon:"📸", title:"Welcome to Fabulous Las Vegas Sign", note:"Prima tappa prima dell'hotel: siete già in auto arrivando da Los Angeles. Foto al cartello e poi proseguite verso il Paris.", mapsQuery:"Welcome to Fabulous Las Vegas Sign", detailPlace:"Welcome to Fabulous Las Vegas Sign" },
       { time:"13:30–14:00", kind:"recommended", icon:"🏨", title:"Paris Las Vegas · check-in", note:"Parcheggio, bagagli e check-in se la camera è disponibile. Da qui lasciate l'auto ferma e proseguite soprattutto a piedi sulla Strip.", mapsQuery:"Paris Las Vegas" },
       { time:"15:00 circa", kind:"recommended", icon:"🌿", title:"Bellagio Conservatory", note:"Ingresso gratuito. Visita al Conservatory & Botanical Gardens e breve giro nel Bellagio.", mapsQuery:"Bellagio Conservatory & Botanical Gardens", detailPlace:"Bellagio Conservatory" },
-      { time:"16:00 circa", kind:"recommended", icon:"🏛️", title:"Caesars Palace & Forum Shops", note:"Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops, senza trasformarla in una visita troppo lunga.", mapsQuery:"Caesars Palace Forum Shops" },
+      { time:"16:00 circa", kind:"recommended", icon:"🏛️", title:"Caesars Palace & Forum Shops", note:"Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops, senza trasformarla in una visita troppo lunga.", mapsQuery:"Caesars Palace Forum Shops", detailPlace:"Caesars Palace & Forum Shops" },
       { time:"17:00 circa", kind:"recommended", icon:"🛶", title:"The Venetian & Grand Canal", note:"Interni, canali e Grand Canal Shoppes: una delle ambientazioni più scenografiche della Strip.", mapsQuery:"The Venetian Las Vegas" },
       { time:"18:00–18:30", kind:"recommended", icon:"🌐", title:"Sphere · esterno", note:"Sosta esterna quando inizia a fare buio per vedere la Sphere illuminata, fare foto e video. Nessuno spettacolo a pagamento previsto.", mapsQuery:"Sphere Las Vegas", detailPlace:"Sphere" },
       { time:"19:30 circa", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio + Strip illuminata", note:"Rientro verso il centro della Strip per vedere uno spettacolo delle fontane e godersi Las Vegas completamente illuminata.", mapsQuery:"Bellagio Fountains", detailPlace:"Fontane del Bellagio" },
       { time:"20:30 circa", kind:"recommended", icon:"🍷", title:"Mon Ami Gabi · Paris Las Vegas", note:"Cena comoda direttamente al Paris: bistrot francese con patio sulla Strip e vista verso le fontane del Bellagio.", mapsQuery:"Mon Ami Gabi 3655 S Las Vegas Blvd Las Vegas NV 89109", mapLat:36.112855, mapLon:-115.172414, detailRestaurant:"Mon Ami Gabi · Paris Las Vegas" },
       { time:"22:00 circa", kind:"recommended", icon:"🚗", title:"Paris → Fremont Street", note:"Dopo cena riprendete la vostra auto e raggiungete Downtown Las Vegas. Parcheggio in zona Fremont Street Experience.", mapsQuery:"Fremont Street Experience Parking Garage" },
       { time:"22:15–23:30", kind:"recommended", icon:"🎰", title:"Fremont Street Experience", note:"Viva Vision, casinò storici e atmosfera Old Vegas. Una visita breve ma sufficiente per vedere il lato di Las Vegas più diverso dalla Strip.", mapsQuery:"Fremont Street Experience" },
-      { time:"23:30 circa", kind:"recommended", icon:"🚗", title:"Rientro al Paris", note:"Rientro in auto e riposo: il 28 ottobre la partenza per il Grand Canyon è alle 07:00.", mapsQuery:"Paris Las Vegas" }
+      { time:"23:30 circa", kind:"recommended", icon:"🚗", title:"Rientro al Paris", note:"Rientro in auto e riposo: il 28 ottobre la partenza per il Grand Canyon è alle 07:00.", mapsQuery:"Paris Las Vegas" },
+      { time:"05:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 28 ottobre", note:"Domani partenza dal Paris alle 07:00 verso il Grand Canyon. Sveglia alle 05:45: circa 1h15 per prepararci, recuperare l’auto e partire; colazione lungo il tragitto." }
     ]}
   ],
   page: [
@@ -327,7 +332,8 @@ const PROGRAM_GUIDE = {
       { time:"15:40", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.", mapsQuery:"Desert View Watchtower", mapLat:36.0440, mapLon:-111.8260, detailPlace:"Desert View Watchtower" },
       { time:"16:30 circa", kind:"recommended", icon:"🚗", title:"Partenza per Page", note:"Uscita dall'East Entrance e proseguimento verso Page. Lipan Point non è inserito: il NPS ne prevede la chiusura fino al 23 dicembre 2026.", mapsQuery:"Lake Powell Resort Page Arizona" },
       { time:"19:00 circa", kind:"recommended", icon:"🏨", title:"Arrivo al Lake Powell Resort", note:"Check-in e qualche minuto per sistemarsi dopo la lunga giornata di guida e viewpoint.", mapsQuery:"Lake Powell Resort 100 Lakeshore Dr Page AZ" },
-      { time:"20:00", kind:"recommended", icon:"🍽️", title:"Rainbow Room · Lake Powell Resort", note:"Cena direttamente nel resort, senza riprendere l'auto. È la scelta più comoda dopo il Grand Canyon, con grandi vetrate affacciate su Wahweap Bay.", mapsQuery:"Rainbow Room 100 Lakeshore Dr Page AZ 86040", mapLat:37.0066, mapLon:-111.4864, detailRestaurant:"Rainbow Room" }
+      { time:"20:00", kind:"recommended", icon:"🍽️", title:"Rainbow Room · Lake Powell Resort", note:"Cena direttamente nel resort, senza riprendere l'auto. È la scelta più comoda dopo il Grand Canyon, con grandi vetrate affacciate su Wahweap Bay.", mapsQuery:"Rainbow Room 100 Lakeshore Dr Page AZ 86040", mapLat:37.0066, mapLon:-111.4864, detailRestaurant:"Rainbow Room" },
+      { time:"07:00 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 29 ottobre", note:"Domani partenza dal Lake Powell Resort alle 08:15 per Horseshoe Bend e Lower Antelope Canyon. Sveglia alle 07:00: circa 1h15 per prepararci; colazione rapida lungo il percorso." }
     ]},
     { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
       { time:"08:15", kind:"recommended", icon:"🚗", title:"Partenza dal Lake Powell Resort", note:"Partenza con calma verso Horseshoe Bend: dal resort considerate circa 25 minuti di auto.", mapsQuery:"Horseshoe Bend Parking Lot Page Arizona" },
@@ -351,7 +357,8 @@ const PROGRAM_GUIDE = {
       { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico da Page includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
       { time:"19:30 circa", kind:"recommended", icon:"🎡", title:"High Roller", note:"Una sola attrazione prima di cena: giro panoramico di circa 30 minuti al LINQ con vista a 360° sulla Strip illuminata. Se il rientro da Page slitta o siete stanchi, resta facilmente sacrificabile.", mapsQuery:"High Roller Las Vegas", mapLat:36.1176, mapLon:-115.1681, detailPlace:"High Roller" },
       { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente semplice ed economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
-      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." }
+      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." },
+      { time:"05:15 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 30 ottobre", note:"Domani volo LAS → ORD alle 09:58. Puntiamo a lasciare il Paris verso le 06:30, riconsegnare il SUV e arrivare in aeroporto con margine. Sveglia alle 05:15; colazione in aeroporto." }
     ]}
   ],
   chicago: [
@@ -385,10 +392,11 @@ const PROGRAM_GUIDE = {
       { time:"14:45", kind:"recommended", icon:"🍿", title:"Garrett Popcorn / pausa", note:"Snack leggero mentre tornate verso Michigan Avenue; teniamoci spazio per la deep-dish serale.", transportTip:"🚇 CTA/bus · ~15 min verso 360 Chicago" },
       { time:"16:00", kind:"recommended", icon:"🔭", title:"360 Chicago", note:"Vista dall'alto al 875 N Michigan. È praticamente accanto al vostro hotel, quindi è la scelta più efficiente rispetto allo Skydeck.", transportTip:"🚶 A piedi · 3–5 min fino all’hotel", mapsQuery:"360 Chicago Observation Deck", mapLat:41.8988, mapLon:-87.6230, detailPlace:"360 Chicago" },
       { time:"17:30", kind:"recommended", icon:"🏨", title:"Rientro al Warwick Allerton", note:"Ultimo riposo in hotel prima della cena finale a Chicago.", transportTip:"🚇 CTA/bus · ~15–20 min verso Giordano's" },
-      { time:"20:30", kind:"recommended", icon:"🍕", title:"Giordano's · Millennium Park", note:"Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.", transportTip:"🚕 Uber consigliato per il rientro serale · ~10 min", mapsQuery:"Giordano's 130 E Randolph St Chicago", mapLat:41.8845, mapLon:-87.6232, detailRestaurant:"Giordano's · Millennium Park" }
+      { time:"20:30", kind:"recommended", icon:"🍕", title:"Giordano's · Millennium Park", note:"Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.", transportTip:"🚕 Uber consigliato per il rientro serale · ~10 min", mapsQuery:"Giordano's 130 E Randolph St Chicago", mapLat:41.8845, mapLon:-87.6232, detailRestaurant:"Giordano's · Millennium Park" },
+      { time:"05:15 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 3 novembre", note:"Domani volo ORD → PUJ alle 09:17. Partenza dal Warwick Allerton prevista alle 06:30: sveglia alle 05:15, circa 1h15 per prepararci e fare check-out; colazione in aeroporto." }
     ]},
     { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
-      { time:"05:45", kind:"recommended", icon:"⏰", title:"Sveglia e ultime cose", note:"Colazione rapida e controllo finale della camera. Il volo è internazionale: oggi niente programma turistico." },
+      { time:"05:15", kind:"recommended", icon:"⏰", title:"Sveglia e ultime cose", note:"Controllo finale della camera e preparazione per il check-out. Colazione direttamente in aeroporto; oggi niente programma turistico." },
       { time:"06:15", kind:"recommended", icon:"🧳", title:"Check-out Warwick Allerton", note:"Check-out e partenza senza tirare i tempi." },
       { time:"06:30", kind:"recommended", icon:"🚕", title:"Partenza per Chicago O'Hare", note:"Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.", transportTip:"🚕 Uber/taxi consigliato · ~30–45 min", mapsQuery:"Chicago O'Hare International Airport Terminal 1", mapLat:41.9742, mapLon:-87.9073, mapForce:true },
       { time:"07:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a ORD · Terminal 1", note:"Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.", mapsQuery:"O'Hare International Airport Terminal 1", mapLat:41.9773, mapLon:-87.9048, mapForce:true },
@@ -442,8 +450,8 @@ const PROGRAM_GUIDE = {
       { time:"08:15", kind:"recommended", icon:"🚐", title:"Partenza dal Viva Dominicus Palace", note:"Per il volo delle 12:56 da PUJ preferisco un margine largo: Bayahibe → Punta Cana Airport richiede normalmente circa 50–60 minuti." },
       { time:"09:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a Punta Cana · PUJ", note:"Circa 3 ore e 40 minuti prima del decollo: check-in, bagagli, controlli di uscita e gate senza rischiare l'intero rientro." },
       { time:"12:56", kind:"booked", icon:"✈️", title:"Volo PUJ → IAD", note:"United · arrivo previsto a Washington Dulles alle 15:55." },
-      { time:"15:55", kind:"booked", icon:"🇺🇸", title:"Arrivo a Washington Dulles · IAD", note:"Scalo molto stretto: 1 ora e 45 minuti. Essendo il primo ingresso negli USA, bisogna seguire subito immigrazione/CBP e le indicazioni per la coincidenza. Niente soste inutili." },
-      { time:"17:40", kind:"booked", icon:"✈️", title:"Volo IAD → FCO", note:"Coincidenza per Roma. Arrivo a Fiumicino il 10 novembre alle 08:30." },
+      { time:"15:55", kind:"booked", icon:"🇺🇸", title:"Arrivo a Washington Dulles · IAD", note:"Scalo: 2 ore e 05 minuti. Essendo il primo ingresso negli USA, bisogna seguire subito immigrazione/CBP e le indicazioni per la coincidenza. Niente soste inutili." },
+      { time:"18:00", kind:"booked", icon:"✈️", title:"Volo IAD → FCO", note:"Coincidenza per Roma. Arrivo a Fiumicino il 10 novembre alle 08:30." },
       { time:"08:30 · 10 nov", kind:"booked", icon:"🇮🇹", title:"Arrivo a Roma Fiumicino", note:"Fine del viaggio di nozze ❤️" }
     ]}
   ]
@@ -453,6 +461,10 @@ const PROGRAM_GUIDE = {
 // Le immagini vengono recuperate da Wikipedia/Wikimedia quando c'è connessione;
 // l'immagine della città resta come fallback e la risposta viene poi conservata dalla cache della PWA.
 const PLACE_DETAILS = {
+  "Caesars Palace & Forum Shops": {
+    image: "./assets/caesars-palace-las-vegas.jpg",
+    text: "Aperto nel 1966, Caesars Palace è uno dei resort più iconici della Las Vegas Strip. Il complesso richiama l’antica Roma con colonne, statue, fontane e grandi spazi scenografici. Durante la tappa del 27 ottobre faremo una passeggiata negli interni e nei Forum Shops, il centro commerciale collegato al resort con oltre 160 negozi e ristoranti, senza trasformare la visita in una lunga sessione di shopping."
+  },
   "High Roller": {
     image: "./assets/high-roller-las-vegas.jpg",
     text: "La High Roller è la grande ruota panoramica del LINQ Promenade, nel cuore della Strip. Sale fino a circa 550 piedi (168 metri) e completa un giro in circa 30 minuti all'interno di cabine panoramiche chiuse. L'abbiamo inserita la sera del 29 ottobre: è vicina al Paris e permette di vedere Las Vegas illuminata dall'alto senza impegnare troppo la serata.",
