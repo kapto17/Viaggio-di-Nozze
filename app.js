@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.23";
+    version.textContent="Versione app 2.4.24";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -549,6 +549,8 @@ function isProgramOperationalItem(item){
 
 function resolveProgramDetail(item){
   if(!item)return null;
+  // Gli spostamenti sono collegamenti fra tappe, non destinazioni apribili.
+  if(item.kind==="transfer")return null;
 
   // Prima scelta: collegamento dichiarato esplicitamente nella timeline.
   // In questo modo una voce può aprire solo la scheda che abbiamo deciso noi.
@@ -628,6 +630,17 @@ function programDayHtml(day){
       </div>
       <div class="program-timeline">
         ${(day.items || []).map(item => {
+          if(item.kind==="transfer"){
+            return '<div class="program-transfer-row">' +
+              '<div class="program-transfer-time">' + (item.time || "") + '</div>' +
+              '<div class="program-transfer-rail"><span>' + (item.icon || "↕") + '</span></div>' +
+              '<div class="program-transfer-copy">' +
+                '<div class="program-transfer-title">' + (item.title || "Spostamento") + '</div>' +
+                '<div class="program-transfer-note">' + (item.note || "") + '</div>' +
+                (item.mapsQuery ? '<a class="program-transfer-map" target="_blank" rel="noopener" href="' + mapsUrl(item.mapsQuery) + '">📍 Apri Maps</a>' : "") +
+              '</div>' +
+            '</div>';
+          }
           const ref=resolveProgramDetail(item);
           const ticketTarget=ticketTargetForProgramItem(item);
           const payload=encodeURIComponent(JSON.stringify(item));
