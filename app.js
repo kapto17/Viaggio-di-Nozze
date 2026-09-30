@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.24";
+    version.textContent="Versione app 2.4.25";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -2191,6 +2191,7 @@ function todayMapItems(day){
     return [hotel,dinner].filter(Boolean);
   }
   const visits=all.filter(item=>{
+    if(item.kind==="transfer")return false;
     if(!item.mapsQuery || item.mapSkip)return false;
     if(item.mapForce)return true;
     const t=String(item.title||"").toLowerCase();
