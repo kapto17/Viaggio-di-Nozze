@@ -1,0 +1,39 @@
+name: Run Chicago itinerary update v2
+
+on:
+  push:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply Chicago update
+        shell: bash
+        run: |
+          awk '/python3 - <<'\''PY'\''/{flag=1;next} /^          PY$/{flag=0} flag{sub(/^          /,""); print}' .github/workflows/update-chicago.yml > /tmp/update_chicago.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/update_chicago.py')
+          s=p.read_text()
+          s=s.replace("text.index('\\n  chicago: [', pg)", "text.index('\\n  \\\"chicago\\\": [', pg)")
+          s=s.replace("text.index('\\n  bayahibe:', start)", "text.index('\\n  \\\"bayahibe\\\":', start)")
+          p.write_text(s)
+          PY
+          python3 /tmp/update_chicago.py
+          node --check data.js
+          node --check app.js
+          node --check sw.js
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/update-chicago.yml .github/workflows/run-chicago-update.yml .github/workflows/run-chicago-update-v2.yml
+          git add data.js app.js sw.js
+          git commit -m "Review Chicago itinerary and bump app to 2.4.26 [skip ci]"
+          git push
