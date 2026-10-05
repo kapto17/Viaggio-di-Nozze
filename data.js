@@ -246,277 +246,2143 @@ const TRIP = {
 // "booked" = orario/prenotazione da rispettare; "recommended" = percorso consigliato;
 // "optional" = bonus da fare solo se resta tempo/energia.
 const PROGRAM_GUIDE = {
-  sfo: [
-    { date:"2026-10-20", title:"Arrivo a San Francisco", theme:"Atterraggio, hotel e prima cena senza forzare i tempi dell'immigrazione.", items:[
-      { time:"19:25", kind:"recommended", icon:"🛬", title:"Arrivo a SFO", note:"Atterraggio a San Francisco. Dopo lo sbarco: controlli d’ingresso, ritiro bagagli e uscita dal terminal.", mapsQuery:"San Francisco International Airport" },
-      { time:"Dopo i controlli", kind:"transfer", icon:"🚕", title:"Spostamento · SFO → Hotel Spero", note:"🚕 Uber/Lyft consigliato · circa 22 km · normalmente 25–35 min dopo essere usciti dal terminal. Con traffico serale può servire più tempo.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco", uberDestination:"Hotel Spero 405 Taylor St San Francisco CA 94102", lyftDestination:"Hotel Spero 405 Taylor St San Francisco CA 94102" },
-      { time:"All’arrivo", kind:"recommended", icon:"🏨", title:"Check-in Hotel Spero", note:"Check-in e sistemazione in camera. Nessun’altra visita programmata per la serata.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco" },
-      { time:"21:30 circa", kind:"recommended", icon:"🍕", title:"Uncle Vito's Pizzeria", note:"Prima cena solo se siete usciti dall'hotel in tempo. 🚶 Circa 700 m · 10 min a piedi dall'Hotel Spero. Il martedì chiude alle 22:00: se l'immigrazione vi rallenta, non correte e scegliete qualcosa di aperto più tardi vicino all'hotel.", mapsQuery:"Uncle Vito's Pizzeria 700 Bush St San Francisco CA 94108", mapLat:37.79062, mapLon:-122.40917, detailRestaurant:"Uncle Vito's Pizzeria" }
-    ]},
-    { date:"2026-10-21", title:"Icone di San Francisco e tramonto al Golden Gate", theme:"Painted Ladies e Panhandle al mattino, Golden Gate e Sausalito, poi tramonto fotografico da Battery Spencer.", items:[
-      { time:"08:30", kind:"transfer", icon:"🚕", title:"Spostamento · Hotel Spero → Painted Ladies", note:"🚕 Uber/Lyft consigliato · circa 4 km · 10–15 min. Con i mezzi pubblici considerate circa 25–30 min.", mapsQuery:"Painted Ladies San Francisco" },
-      { time:"09:00", kind:"recommended", icon:"🏘️", title:"Painted Ladies", note:"Foto da Alamo Square e breve passeggiata. Per questa tappa bastano circa 30 minuti.", mapsQuery:"Painted Ladies San Francisco", detailPlace:"Painted Ladies" },
-      { time:"09:35", kind:"transfer", icon:"🚶", title:"Spostamento · Painted Ladies → Panhandle", note:"🚶 A piedi consigliato · circa 1,3 km · 18–20 min. È un tratto semplice che evita di prendere un mezzo per pochi minuti.", mapsQuery:"Panhandle San Francisco" },
-      { time:"10:00", kind:"recommended", icon:"🌳", title:"Golden Gate Park · Panhandle", note:"Passeggiata di circa 40 minuti nel corridoio verde che introduce al Golden Gate Park.", mapsQuery:"Panhandle San Francisco", detailPlace:"Golden Gate Park · Panhandle" },
-      { time:"10:45", kind:"transfer", icon:"🚕", title:"Spostamento · Panhandle → Golden Gate Bridge", note:"🚕 Uber/Lyft consigliato · circa 5 km · 12–18 min. È più rapido dei mezzi e vi porta direttamente al Welcome Center / Toll Plaza.", mapsQuery:"Golden Gate Bridge Welcome Center San Francisco" },
-      { time:"11:10", kind:"recommended", icon:"🌉", title:"Golden Gate Bridge", note:"Belvedere, foto, Welcome Center e passeggiata sul ponte. Tenete circa 1 ora / 1 ora e 15 minuti.", mapsQuery:"Golden Gate Bridge Welcome Center San Francisco", detailPlace:"Golden Gate Bridge" },
-      { time:"12:25", kind:"transfer", icon:"🚌", title:"Spostamento · Golden Gate Bridge → Sausalito", note:"🚌 Golden Gate Transit 120 consigliato · circa 7 km · 13 min di bus, più l'attesa. Alternativa 🚕 Uber/Lyft: circa 7–10 min. A piedi sarebbero circa 7,2 km / 1h25: non conviene.", mapsQuery:"Sausalito California" },
-      { time:"13:00", kind:"recommended", icon:"⛵", title:"Sausalito", note:"Waterfront, passeggiata e pranzo con calma. Avete circa 3 ore prima di tornare verso il Golden Gate per il tramonto.", mapsQuery:"Sausalito California", detailPlace:"Sausalito" },
-      { time:"16:15", kind:"transfer", icon:"🚕", title:"Spostamento · Sausalito → Battery Spencer", note:"🚕 Uber/Lyft consigliato · circa 6 km · 10–15 min. È il modo più semplice per arrivare al punto panoramico senza perdere la golden hour.", mapsQuery:"Battery Spencer California" },
-      { time:"16:35", kind:"recommended", icon:"📸", title:"Battery Spencer · Golden Gate al tramonto", note:"Momento fotografico della giornata. Arrivate con largo anticipo per golden hour, foto del ponte e skyline. 🌅 Tramonto previsto alle 18:23; restate qualche minuto anche dopo per le luci del ponte.", mapsQuery:"Battery Spencer California" },
-      { time:"18:35", kind:"transfer", icon:"🚕", title:"Spostamento · Battery Spencer → Beach Chalet", note:"🚕 Uber/Lyft consigliato · circa 11 km · 25–35 min attraversando di nuovo il Golden Gate. Il traffico sul ponte può allungare il tragitto.", mapsQuery:"Beach Chalet Brewery & Restaurant San Francisco" },
-      { time:"19:10 circa", kind:"recommended", icon:"🍺", title:"Beach Chalet Brewery & Restaurant", note:"Locale L&F. Usatelo come birra/aperitivo dopo il tramonto, non come cena anticipata. ⚠️ Il mercoledì chiude alle 21:00. Se arrivate tardi, fate solo una breve sosta.", mapsQuery:"Beach Chalet Brewery & Restaurant San Francisco", detailRestaurant:"Beach Chalet Brewery & Restaurant" },
-      { time:"20:00", kind:"transfer", icon:"🚕", title:"Spostamento · Beach Chalet → Union Square", note:"🚕 Uber/Lyft consigliato · circa 8 km · 20–30 min. Destinazione: Macy's Union Square per la cena.", mapsQuery:"The Cheesecake Factory 251 Geary St San Francisco" },
-      { time:"20:40", kind:"recommended", icon:"🍰", title:"The Cheesecake Factory · Union Square", note:"Cena L&F all'8° piano di Macy's, vicino all'hotel. Dal lunedì al giovedì chiude alle 22:00: arrivando intorno alle 20:40 avete tempo per cenare senza anticipare troppo.", mapsQuery:"The Cheesecake Factory 251 Geary St San Francisco", detailRestaurant:"The Cheesecake Factory" }
-    ]},
-    { date:"2026-10-22", title:"Lombard Street, Chinatown, waterfront e Alcatraz", theme:"Cable car e foto classica a Lombard al mattino, poi discesa naturale verso Chinatown, waterfront e Night Tour.", items:[
-      { time:"08:25", kind:"transfer", icon:"🚋", title:"Spostamento · Hotel Spero → Lombard Street", note:"🚶 Circa 650 m · 8–10 min fino a Powell & Geary, poi 🚋 Powell–Hyde cable car fino a Hyde & Lombard: circa 16 min di corsa più l'attesa. È il modo più bello per arrivare in cima alla crooked street.", mapsQuery:"Hyde St & Lombard St San Francisco" },
-      { time:"09:05", kind:"recommended", icon:"📸", title:"Lombard Street", note:"Partite dalla cima a Hyde Street per la vista sulla baia, poi scendete lungo le scalinate laterali. 📸 La foto più iconica si fa dal basso, a Leavenworth Street, guardando verso l'alto: è lì che i tornanti si leggono meglio tutti insieme. Tenete 35–40 minuti.", mapsQuery:"Lombard St & Leavenworth St San Francisco", detailPlace:"Lombard Street" },
-      { time:"09:45", kind:"transfer", icon:"🚶", title:"Spostamento · Lombard Street → Chinatown", note:"🚶 A piedi consigliato · circa 1,1 km · 16 min dal fondo di Lombard verso Chinatown. Alternativa bus 30: circa 6 min di corsa più attesa.", mapsQuery:"Dragon Gate Chinatown San Francisco" },
-      { time:"10:05", kind:"recommended", icon:"🏮", title:"Chinatown", note:"Grant Avenue, Dragon Gate e qualche vicolo del quartiere. Tenete circa 1 ora.", mapsQuery:"Chinatown San Francisco", detailPlace:"Chinatown" },
-      { time:"11:10", kind:"transfer", icon:"🚶", title:"Spostamento · Chinatown → Ferry Building", note:"🚶 A piedi · circa 1,3 km · 15–20 min in discesa verso l'Embarcadero. Alternativa bus 1: circa 10 min.", mapsQuery:"Ferry Building San Francisco" },
-      { time:"11:30", kind:"recommended", icon:"🏙️", title:"Ferry Building", note:"Mercato, architettura e waterfront. Circa 40–45 minuti.", mapsQuery:"Ferry Building San Francisco" },
-      { time:"12:15", kind:"transfer", icon:"🚶", title:"Spostamento · Ferry Building → Pier 39", note:"🚶 A piedi consigliato lungo l'Embarcadero · circa 1,9 km · 23–25 min. È già parte della visita, con vista continua sulla baia.", mapsQuery:"Pier 39 San Francisco" },
-      { time:"12:45", kind:"recommended", icon:"🦭", title:"Pier 39 e Fisherman's Wharf", note:"Leoni marini, molo e waterfront. Dedicate circa 1 ora / 1 ora e un quarto.", mapsQuery:"Pier 39 San Francisco", detailPlace:"Fisherman's Wharf & Pier 39" },
-      { time:"14:00", kind:"recommended", icon:"🐟", title:"Pranzo L&F · Fog Harbor oppure Scoma's", note:"Entrambi restano perché sono L&F. Fog Harbor è direttamente a Pier 39 e chiude alle 21:00; Scoma's è circa 1 km più avanti verso Pier 47 e chiude alle 21:30. A pranzo gli orari di chiusura non sono un problema." },
-      { time:"15:20", kind:"recommended", icon:"🌊", title:"Fisherman's Wharf · tempo libero", note:"Passeggiata, negozi, foto e Ghirardelli se vi va. Questo margine vi lascia respirare prima dell'imbarco.", mapsQuery:"Fisherman's Wharf San Francisco" },
-      { time:"16:40", kind:"transfer", icon:"🚶", title:"Spostamento · Fisherman's Wharf → Pier 33", note:"🚶 A piedi · circa 1,3 km · 15–20 min lungo il waterfront. Alternativa F-Market: circa 10–15 min complessivi.", mapsQuery:"Alcatraz City Cruises Pier 33 San Francisco" },
-      { time:"17:00", kind:"recommended", icon:"☕", title:"Margine sul waterfront", note:"Siete già in zona Pier 33. Usate questi minuti per bagno, acqua/caffè e per presentarvi senza fretta all'imbarco." },
-      { time:"17:25", kind:"booked", icon:"🚢", title:"Arrivo a Pier 33 · imbarco", note:"Alcatraz City Cruises raccomanda di essere presenti almeno 30 minuti prima della partenza delle 17:55.", mapsQuery:"Alcatraz City Cruises Pier 33" },
-      { time:"17:55", kind:"booked", icon:"🌙", title:"Alcatraz Night Tour", note:"Prenotato. Durata indicativa 2–3 ore. 📸 Il 22 ottobre il tramonto è alle 18:22: durante il Night Tour avrete la possibilità di fotografare la baia e il Golden Gate nella luce del tramonto. Portate giacca antivento.", mapsQuery:"Alcatraz Island San Francisco", detailPlace:"Alcatraz Night Tour" },
-      { time:"Al rientro", kind:"transfer", icon:"🚕", title:"Spostamento · Pier 33 → Union Square / Hotel Spero", note:"🚕 Uber/Lyft: circa 3 km · 5–10 min. Alternativa F-Market + tratto a piedi: circa 25–30 min. Dopo il tour non conto su Wipeout: il giovedì chiude alle 21:00.", mapsQuery:"Hotel Spero 405 Taylor St San Francisco" },
-      { time:"21:15 circa", kind:"recommended", icon:"🍜", title:"Cena tardi · zona Union Square", note:"Cena senza fretta vicino all'hotel. Una scelta affidabile è HINODEYA Ramen & Bar, 219 O'Farrell St: il giovedì è aperto fino all'1:30.", mapsQuery:"HINODEYA Ramen & Bar 219 O'Farrell St San Francisco CA 94102" },
-      { time:"06:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 23 ottobre", note:"Domani lasciamo Hotel Spero alle 08:00 per il volo SFO → LAX delle 11:00. Sveglia alle 06:45: circa 1h15 per prepararci; colazione per strada o in aeroporto." }
-    ]}
+  "sfo": [
+    {
+      "date": "2026-10-20",
+      "title": "Arrivo a San Francisco",
+      "theme": "Atterraggio, hotel e prima cena senza forzare i tempi dell'immigrazione.",
+      "items": [
+        {
+          "time": "19:25",
+          "kind": "recommended",
+          "icon": "🛬",
+          "title": "Arrivo a SFO",
+          "note": "Atterraggio a San Francisco. Dopo lo sbarco: controlli d’ingresso, ritiro bagagli e uscita dal terminal.",
+          "mapsQuery": "San Francisco International Airport"
+        },
+        {
+          "time": "Dopo i controlli",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · SFO → Hotel Spero",
+          "note": "🚕 Uber/Lyft consigliato · circa 22 km · normalmente 25–35 min dopo essere usciti dal terminal. Con traffico serale può servire più tempo.",
+          "mapsQuery": "Hotel Spero 405 Taylor St San Francisco",
+          "uberDestination": "Hotel Spero 405 Taylor St San Francisco CA 94102",
+          "lyftDestination": "Hotel Spero 405 Taylor St San Francisco CA 94102"
+        },
+        {
+          "time": "All’arrivo",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Check-in Hotel Spero",
+          "note": "Check-in e sistemazione in camera. Nessun’altra visita programmata per la serata.",
+          "mapsQuery": "Hotel Spero 405 Taylor St San Francisco"
+        },
+        {
+          "time": "21:30 circa",
+          "kind": "recommended",
+          "icon": "🍕",
+          "title": "Uncle Vito's Pizzeria",
+          "note": "Prima cena solo se siete usciti dall'hotel in tempo. 🚶 Circa 700 m · 10 min a piedi dall'Hotel Spero. Il martedì chiude alle 22:00: se l'immigrazione vi rallenta, non correte e scegliete qualcosa di aperto più tardi vicino all'hotel.",
+          "mapsQuery": "Uncle Vito's Pizzeria 700 Bush St San Francisco CA 94108",
+          "mapLat": 37.79062,
+          "mapLon": -122.40917,
+          "detailRestaurant": "Uncle Vito's Pizzeria"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-21",
+      "title": "Icone di San Francisco e tramonto al Golden Gate",
+      "theme": "Painted Ladies e Panhandle al mattino, Golden Gate e Sausalito, poi tramonto fotografico da Battery Spencer.",
+      "items": [
+        {
+          "time": "08:30",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Hotel Spero → Painted Ladies",
+          "note": "🚕 Uber/Lyft consigliato · circa 4 km · 10–15 min. Con i mezzi pubblici considerate circa 25–30 min.",
+          "mapsQuery": "Painted Ladies San Francisco"
+        },
+        {
+          "time": "09:00",
+          "kind": "recommended",
+          "icon": "🏘️",
+          "title": "Painted Ladies",
+          "note": "Foto da Alamo Square e breve passeggiata. Per questa tappa bastano circa 30 minuti.",
+          "mapsQuery": "Painted Ladies San Francisco",
+          "detailPlace": "Painted Ladies"
+        },
+        {
+          "time": "09:35",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Painted Ladies → Panhandle",
+          "note": "🚶 A piedi consigliato · circa 1,3 km · 18–20 min. È un tratto semplice che evita di prendere un mezzo per pochi minuti.",
+          "mapsQuery": "Panhandle San Francisco"
+        },
+        {
+          "time": "10:00",
+          "kind": "recommended",
+          "icon": "🌳",
+          "title": "Golden Gate Park · Panhandle",
+          "note": "Passeggiata di circa 40 minuti nel corridoio verde che introduce al Golden Gate Park.",
+          "mapsQuery": "Panhandle San Francisco",
+          "detailPlace": "Golden Gate Park · Panhandle"
+        },
+        {
+          "time": "10:45",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Panhandle → Golden Gate Bridge",
+          "note": "🚕 Uber/Lyft consigliato · circa 5 km · 12–18 min. È più rapido dei mezzi e vi porta direttamente al Welcome Center / Toll Plaza.",
+          "mapsQuery": "Golden Gate Bridge Welcome Center San Francisco"
+        },
+        {
+          "time": "11:10",
+          "kind": "recommended",
+          "icon": "🌉",
+          "title": "Golden Gate Bridge",
+          "note": "Belvedere, foto, Welcome Center e passeggiata sul ponte. Tenete circa 1 ora / 1 ora e 15 minuti.",
+          "mapsQuery": "Golden Gate Bridge Welcome Center San Francisco",
+          "detailPlace": "Golden Gate Bridge"
+        },
+        {
+          "time": "12:25",
+          "kind": "transfer",
+          "icon": "🚌",
+          "title": "Spostamento · Golden Gate Bridge → Sausalito",
+          "note": "🚌 Golden Gate Transit 120 consigliato · circa 7 km · 13 min di bus, più l'attesa. Alternativa 🚕 Uber/Lyft: circa 7–10 min. A piedi sarebbero circa 7,2 km / 1h25: non conviene.",
+          "mapsQuery": "Sausalito California"
+        },
+        {
+          "time": "13:00",
+          "kind": "recommended",
+          "icon": "⛵",
+          "title": "Sausalito",
+          "note": "Waterfront, passeggiata e pranzo con calma. Avete circa 3 ore prima di tornare verso il Golden Gate per il tramonto.",
+          "mapsQuery": "Sausalito California",
+          "detailPlace": "Sausalito"
+        },
+        {
+          "time": "16:15",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Sausalito → Battery Spencer",
+          "note": "🚕 Uber/Lyft consigliato · circa 6 km · 10–15 min. È il modo più semplice per arrivare al punto panoramico senza perdere la golden hour.",
+          "mapsQuery": "Battery Spencer California"
+        },
+        {
+          "time": "16:35",
+          "kind": "recommended",
+          "icon": "📸",
+          "title": "Battery Spencer · Golden Gate al tramonto",
+          "note": "Momento fotografico della giornata. Arrivate con largo anticipo per golden hour, foto del ponte e skyline. 🌅 Tramonto previsto alle 18:23; restate qualche minuto anche dopo per le luci del ponte.",
+          "mapsQuery": "Battery Spencer California"
+        },
+        {
+          "time": "18:35",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Battery Spencer → Beach Chalet",
+          "note": "🚕 Uber/Lyft consigliato · circa 11 km · 25–35 min attraversando di nuovo il Golden Gate. Il traffico sul ponte può allungare il tragitto.",
+          "mapsQuery": "Beach Chalet Brewery & Restaurant San Francisco"
+        },
+        {
+          "time": "19:10 circa",
+          "kind": "recommended",
+          "icon": "🍺",
+          "title": "Beach Chalet Brewery & Restaurant",
+          "note": "Locale L&F. Usatelo come birra/aperitivo dopo il tramonto, non come cena anticipata. ⚠️ Il mercoledì chiude alle 21:00. Se arrivate tardi, fate solo una breve sosta.",
+          "mapsQuery": "Beach Chalet Brewery & Restaurant San Francisco",
+          "detailRestaurant": "Beach Chalet Brewery & Restaurant"
+        },
+        {
+          "time": "20:00",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Beach Chalet → Union Square",
+          "note": "🚕 Uber/Lyft consigliato · circa 8 km · 20–30 min. Destinazione: Macy's Union Square per la cena.",
+          "mapsQuery": "The Cheesecake Factory 251 Geary St San Francisco"
+        },
+        {
+          "time": "20:40",
+          "kind": "recommended",
+          "icon": "🍰",
+          "title": "The Cheesecake Factory · Union Square",
+          "note": "Cena L&F all'8° piano di Macy's, vicino all'hotel. Dal lunedì al giovedì chiude alle 22:00: arrivando intorno alle 20:40 avete tempo per cenare senza anticipare troppo.",
+          "mapsQuery": "The Cheesecake Factory 251 Geary St San Francisco",
+          "detailRestaurant": "The Cheesecake Factory"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-22",
+      "title": "Lombard Street, Chinatown, waterfront e Alcatraz",
+      "theme": "Cable car e foto classica a Lombard al mattino, poi discesa naturale verso Chinatown, waterfront e Night Tour.",
+      "items": [
+        {
+          "time": "08:25",
+          "kind": "transfer",
+          "icon": "🚋",
+          "title": "Spostamento · Hotel Spero → Lombard Street",
+          "note": "🚶 Circa 650 m · 8–10 min fino a Powell & Geary, poi 🚋 Powell–Hyde cable car fino a Hyde & Lombard: circa 16 min di corsa più l'attesa. È il modo più bello per arrivare in cima alla crooked street.",
+          "mapsQuery": "Hyde St & Lombard St San Francisco"
+        },
+        {
+          "time": "09:05",
+          "kind": "recommended",
+          "icon": "📸",
+          "title": "Lombard Street",
+          "note": "Partite dalla cima a Hyde Street per la vista sulla baia, poi scendete lungo le scalinate laterali. 📸 La foto più iconica si fa dal basso, a Leavenworth Street, guardando verso l'alto: è lì che i tornanti si leggono meglio tutti insieme. Tenete 35–40 minuti.",
+          "mapsQuery": "Lombard St & Leavenworth St San Francisco",
+          "detailPlace": "Lombard Street"
+        },
+        {
+          "time": "09:45",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Lombard Street → Chinatown",
+          "note": "🚶 A piedi consigliato · circa 1,1 km · 16 min dal fondo di Lombard verso Chinatown. Alternativa bus 30: circa 6 min di corsa più attesa.",
+          "mapsQuery": "Dragon Gate Chinatown San Francisco"
+        },
+        {
+          "time": "10:05",
+          "kind": "recommended",
+          "icon": "🏮",
+          "title": "Chinatown",
+          "note": "Grant Avenue, Dragon Gate e qualche vicolo del quartiere. Tenete circa 1 ora.",
+          "mapsQuery": "Chinatown San Francisco",
+          "detailPlace": "Chinatown"
+        },
+        {
+          "time": "11:10",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Chinatown → Ferry Building",
+          "note": "🚶 A piedi · circa 1,3 km · 15–20 min in discesa verso l'Embarcadero. Alternativa bus 1: circa 10 min.",
+          "mapsQuery": "Ferry Building San Francisco"
+        },
+        {
+          "time": "11:30",
+          "kind": "recommended",
+          "icon": "🏙️",
+          "title": "Ferry Building",
+          "note": "Mercato, architettura e waterfront. Circa 40–45 minuti.",
+          "mapsQuery": "Ferry Building San Francisco"
+        },
+        {
+          "time": "12:15",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Ferry Building → Pier 39",
+          "note": "🚶 A piedi consigliato lungo l'Embarcadero · circa 1,9 km · 23–25 min. È già parte della visita, con vista continua sulla baia.",
+          "mapsQuery": "Pier 39 San Francisco"
+        },
+        {
+          "time": "12:45",
+          "kind": "recommended",
+          "icon": "🦭",
+          "title": "Pier 39 e Fisherman's Wharf",
+          "note": "Leoni marini, molo e waterfront. Dedicate circa 1 ora / 1 ora e un quarto.",
+          "mapsQuery": "Pier 39 San Francisco",
+          "detailPlace": "Fisherman's Wharf & Pier 39"
+        },
+        {
+          "time": "14:00",
+          "kind": "recommended",
+          "icon": "🐟",
+          "title": "Pranzo L&F · Fog Harbor oppure Scoma's",
+          "note": "Entrambi restano perché sono L&F. Fog Harbor è direttamente a Pier 39 e chiude alle 21:00; Scoma's è circa 1 km più avanti verso Pier 47 e chiude alle 21:30. A pranzo gli orari di chiusura non sono un problema."
+        },
+        {
+          "time": "15:20",
+          "kind": "recommended",
+          "icon": "🌊",
+          "title": "Fisherman's Wharf · tempo libero",
+          "note": "Passeggiata, negozi, foto e Ghirardelli se vi va. Questo margine vi lascia respirare prima dell'imbarco.",
+          "mapsQuery": "Fisherman's Wharf San Francisco"
+        },
+        {
+          "time": "16:40",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Fisherman's Wharf → Pier 33",
+          "note": "🚶 A piedi · circa 1,3 km · 15–20 min lungo il waterfront. Alternativa F-Market: circa 10–15 min complessivi.",
+          "mapsQuery": "Alcatraz City Cruises Pier 33 San Francisco"
+        },
+        {
+          "time": "17:00",
+          "kind": "recommended",
+          "icon": "☕",
+          "title": "Margine sul waterfront",
+          "note": "Siete già in zona Pier 33. Usate questi minuti per bagno, acqua/caffè e per presentarvi senza fretta all'imbarco."
+        },
+        {
+          "time": "17:25",
+          "kind": "booked",
+          "icon": "🚢",
+          "title": "Arrivo a Pier 33 · imbarco",
+          "note": "Alcatraz City Cruises raccomanda di essere presenti almeno 30 minuti prima della partenza delle 17:55.",
+          "mapsQuery": "Alcatraz City Cruises Pier 33"
+        },
+        {
+          "time": "17:55",
+          "kind": "booked",
+          "icon": "🌙",
+          "title": "Alcatraz Night Tour",
+          "note": "Prenotato. Durata indicativa 2–3 ore. 📸 Il 22 ottobre il tramonto è alle 18:22: durante il Night Tour avrete la possibilità di fotografare la baia e il Golden Gate nella luce del tramonto. Portate giacca antivento.",
+          "mapsQuery": "Alcatraz Island San Francisco",
+          "detailPlace": "Alcatraz Night Tour"
+        },
+        {
+          "time": "Al rientro",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Spostamento · Pier 33 → Union Square / Hotel Spero",
+          "note": "🚕 Uber/Lyft: circa 3 km · 5–10 min. Alternativa F-Market + tratto a piedi: circa 25–30 min. Dopo il tour non conto su Wipeout: il giovedì chiude alle 21:00.",
+          "mapsQuery": "Hotel Spero 405 Taylor St San Francisco"
+        },
+        {
+          "time": "21:15 circa",
+          "kind": "recommended",
+          "icon": "🍜",
+          "title": "Cena tardi · zona Union Square",
+          "note": "Cena senza fretta vicino all'hotel. Una scelta affidabile è HINODEYA Ramen & Bar, 219 O'Farrell St: il giovedì è aperto fino all'1:30.",
+          "mapsQuery": "HINODEYA Ramen & Bar 219 O'Farrell St San Francisco CA 94102"
+        },
+        {
+          "time": "06:45 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 23 ottobre",
+          "note": "Domani lasciamo Hotel Spero alle 08:00 per il volo SFO → LAX delle 11:00. Sveglia alle 06:45: circa 1h15 per prepararci; colazione per strada o in aeroporto."
+        }
+      ]
+    }
   ],
-  la: [
-    { date:"2026-10-23", title:"Arrivo e Downtown LA", theme:"Auto a noleggio, check-in e un piccolo circuito a piedi tra i classici di Downtown prima di cena.", items:[
-      { time:"08:00", kind:"recommended", icon:"🚕", title:"Partenza da Hotel Spero", note:"Lasciate l'hotel con margine per traffico, bagagli e controlli del volo domestico delle 11:00.", mapsQuery:"San Francisco International Airport" },
-      { time:"08:30 circa", kind:"recommended", icon:"🛫", title:"Arrivo a SFO", note:"Check-in/bag drop se necessario e controlli di sicurezza. Obiettivo: essere al gate con ampio margine." },
-      { time:"11:00", kind:"recommended", icon:"✈️", title:"Volo SFO → LAX", note:"Partenza da San Francisco. Durata prevista 1h36." },
-      { time:"12:36", kind:"recommended", icon:"🛬", title:"Arrivo a Los Angeles · LAX", note:"Atterraggio previsto alle 12:36. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles." },
-      { time:"13:20 circa", kind:"transfer", icon:"🚌", title:"Spostamento · terminal LAX → Rental Car Center", note:"🚌 Navetta Rental Car · considerate circa 15–25 min tra attesa, percorso e discesa al Rental Car Center.", mapsQuery:"LAX Rental Car Center 5251 West 98th Street Los Angeles" },
-      { time:"14:00 circa", kind:"recommended", icon:"🚗", title:"Ritiro auto · Alamo", note:"Orario realistico dopo bagagli, shuttle e pratica di noleggio. Da qui avete l'auto fino alla riconsegna a Las Vegas.", mapsQuery:"Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles" },
-      { time:"14:20 circa", kind:"transfer", icon:"🚗", title:"Spostamento · LAX Rental Car Center → The Commerce Hotel", note:"🚗 In auto · circa 30 km · 35–60 min a seconda del traffico. Non programmate nulla di rigido prima del check-in.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040" },
-      { time:"15:30 circa", kind:"recommended", icon:"🏨", title:"Check-in al The Commerce", note:"Lasciate i bagagli e ripartite solo se i tempi di aeroporto e noleggio sono andati bene.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040", mapLat:33.998348, mapLon:-118.145255 },
-      { time:"16:10", kind:"transfer", icon:"🚗", title:"Spostamento · The Commerce → Downtown LA", note:"🚗 In auto · circa 16 km · 20–35 min. Parcheggiate nell'area Grand Central Market / Broadway e poi lasciate l'auto ferma per il piccolo circuito a piedi.", mapsQuery:"Grand Central Market Parking 308 S Hill St Los Angeles CA 90013" },
-      { time:"16:45", kind:"recommended", icon:"🏛️", title:"Bradbury Building", note:"È praticamente di fronte al Grand Central Market. Il venerdì le visite terminano alle 17:00: se arrivate in tempo entrate per vedere l'atrio; se il volo vi ha rallentato, limitatevi all'esterno.", mapsQuery:"Bradbury Building 304 S Broadway Los Angeles CA 90013" },
-      { time:"17:05", kind:"transfer", icon:"🚶", title:"Spostamento · Bradbury Building → Grand Central Market", note:"🚶 A piedi · circa 100 m · 2 min: basta attraversare Broadway.", mapsQuery:"Grand Central Market 317 S Broadway Los Angeles CA 90013" },
-      { time:"17:10", kind:"recommended", icon:"🌮", title:"Grand Central Market", note:"Giro nel mercato storico aperto dal 1917. Tenete 30–35 minuti: il mercato resta aperto fino alle 21:00.", mapsQuery:"Grand Central Market 317 S Broadway Los Angeles CA 90013" },
-      { time:"17:45", kind:"transfer", icon:"🚶", title:"Spostamento · Grand Central Market → Angels Flight", note:"🚶 A piedi · circa 150 m · 2–3 min verso l'ingresso inferiore di Angels Flight su Hill Street.", mapsQuery:"Angels Flight Railway 351 S Hill St Los Angeles CA 90013" },
-      { time:"17:50", kind:"recommended", icon:"🚋", title:"Angels Flight", note:"Salite con la storica funicolare. Il tragitto è brevissimo, ma è uno dei simboli di Downtown e funziona bene come collegamento verso Bunker Hill.", mapsQuery:"Angels Flight Railway Los Angeles" },
-      { time:"18:10", kind:"transfer", icon:"🚶", title:"Spostamento · Angels Flight → Walt Disney Concert Hall", note:"🚶 A piedi · circa 750 m · 10 min da California Plaza verso Grand Avenue.", mapsQuery:"Walt Disney Concert Hall 111 S Grand Ave Los Angeles CA 90012" },
-      { time:"18:20", kind:"recommended", icon:"🎼", title:"Walt Disney Concert Hall & Grand Park", note:"Esterni del Walt Disney Concert Hall e breve passeggiata nell'area di Grand Avenue / Grand Park. Circa 45–50 minuti.", mapsQuery:"Walt Disney Concert Hall Los Angeles" },
-      { time:"19:15", kind:"transfer", icon:"🚗", title:"Spostamento · recupero auto → Water Grill", note:"🚶 Tornate verso il parcheggio di Grand Central Market, poi 🚗 circa 1,5 km / 5–10 min fino al Water Grill. Il ristorante offre valet.", mapsQuery:"Water Grill 544 S Grand Ave Los Angeles CA 90071" },
-      { time:"20:30", kind:"recommended", icon:"🐟", title:"Water Grill · Downtown", note:"Cena di pesce in Downtown. Il venerdì chiude alle 23:00, quindi l'orario delle 20:30 è comodo.", mapsQuery:"Water Grill 544 S Grand Ave Los Angeles CA 90071", detailRestaurant:"Water Grill · Downtown" },
-      { time:"Dopo cena", kind:"transfer", icon:"🚗", title:"Rientro · Water Grill → The Commerce Hotel", note:"🚗 In auto · circa 16 km · 20–30 min in condizioni normali serali.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040" }
-    ]},
-    { date:"2026-10-24", title:"Hollywood, Beverly Hills e Griffith", theme:"Pancake da Du-par's, Hollywood, Sunset Strip, Beverly Hills e Griffith al tramonto, sempre con l'auto.", items:[
-      { time:"07:30", kind:"transfer", icon:"🚗", title:"Spostamento · The Commerce → Du-par's", note:"🚗 In auto · circa 25 km · 30–45 min. Parcheggiate nell'area Original Farmers Market / The Grove.", mapsQuery:"Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036" },
-      { time:"08:10", kind:"recommended", icon:"🥞", title:"Colazione da Du-par's Restaurant & Bakery", note:"Colazione scelta da Fortuna: circa 1 ora per provare con calma i celebri buttermilk hot cakes. Siete già dentro l'Original Farmers Market.", mapsQuery:"Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036", mapLat:34.071635, mapLon:-118.360402, detailRestaurant:"Du-par's Restaurant & Bakery" },
-      { time:"09:15", kind:"transfer", icon:"🚗", title:"Spostamento · Du-par's → Hollywood Boulevard", note:"🚗 In auto · circa 5 km · 15–25 min. Parcheggio consigliato: Ovation Hollywood, direttamente su Hollywood & Highland.", mapsQuery:"Ovation Hollywood Parking 1736 Orange Dr Los Angeles CA 90028" },
-      { time:"09:45", kind:"recommended", icon:"⭐", title:"Hollywood Boulevard", note:"Walk of Fame, TCL Chinese Theatre e Dolby Theatre. Circa 2 ore, con l'auto lasciata nel garage di Ovation Hollywood.", mapsQuery:"TCL Chinese Theatre Los Angeles", detailPlace:"Hollywood Walk of Fame" },
-      { time:"11:50", kind:"transfer", icon:"🚗", title:"Spostamento · Hollywood → Beverly Hills via Sunset Strip", note:"🚗 Circa 9 km · 20–30 min. Fate apposta il tratto su Sunset Boulevard / Sunset Strip: così vedete anche questo pezzo iconico di LA senza aggiungere una visita separata.", mapsQuery:"Rodeo Drive Beverly Hills CA" },
-      { time:"12:20", kind:"recommended", icon:"🛍️", title:"Beverly Hills & Rodeo Drive", note:"Passeggiata, foto al Beverly Hills Sign e pranzo in zona. Tenete circa 2 ore / 2 ore e mezza.", mapsQuery:"Rodeo Drive Beverly Hills", detailPlace:"Beverly Hills & Rodeo Drive" },
-      { time:"14:20", kind:"transfer", icon:"🚗", title:"Spostamento · Beverly Hills → LACMA · Urban Light", note:"🚗 Circa 5 km · 10–15 min. Calcolate qualche minuto extra per trovare parcheggio in zona Museum Row.", mapsQuery:"Urban Light LACMA 5905 Wilshire Blvd Los Angeles CA 90036" },
-      { time:"14:40", kind:"recommended", icon:"💡", title:"LACMA · Urban Light", note:"Sosta fotografica da 35–40 minuti davanti all'installazione di Chris Burden.", mapsQuery:"Urban Light LACMA 5905 Wilshire Blvd Los Angeles", mapLat:34.062822, mapLon:-118.357929, detailPlace:"LACMA · Urban Light" },
-      { time:"15:20", kind:"transfer", icon:"🚗", title:"Spostamento · LACMA → Griffith Observatory", note:"🚗 Circa 13,5 km · 25–40 min; il sabato aggiungete margine per la salita e soprattutto per il parcheggio vicino all'Osservatorio.", mapsQuery:"Griffith Observatory Los Angeles" },
-      { time:"16:15", kind:"recommended", icon:"🌇", title:"Griffith Observatory & Hollywood Sign", note:"Arrivate prima della golden hour. Panorama, Hollywood Sign e tramonto previsto intorno alle 18:08; restate anche dopo il tramonto per vedere accendersi la città.", mapsQuery:"Griffith Observatory", detailPlace:"Griffith Observatory & Hollywood Sign" },
-      { time:"19:20", kind:"transfer", icon:"🚗", title:"Spostamento · Griffith Observatory → Musso & Frank", note:"🚗 Circa 7 km · 20–30 min con il traffico di Hollywood. Musso & Frank dispone di parcheggio convalidato sul retro.", mapsQuery:"Musso & Frank Grill 6667 Hollywood Blvd Los Angeles CA 90028" },
-      { time:"20:30", kind:"recommended", icon:"🥩", title:"Musso & Frank Grill", note:"Cena Old Hollywood con calma. Il sabato è aperto fino alle 23:00.", mapsQuery:"Musso & Frank Grill 6667 Hollywood Blvd Los Angeles", mapLat:34.101763, mapLon:-118.335026, detailRestaurant:"Musso & Frank Grill" },
-      { time:"Dopo cena", kind:"transfer", icon:"🚗", title:"Rientro · Musso & Frank → The Commerce Hotel", note:"🚗 In auto · circa 20 km · 25–35 min in serata.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040" }
-    ]},
-    { date:"2026-10-25", title:"Costa e location di The O.C.", theme:"Santa Monica → Venice → Manhattan Beach → Redondo, sempre verso sud senza tornare indietro.", items:[
-      { time:"08:10", kind:"transfer", icon:"🚗", title:"Spostamento · The Commerce → Santa Monica", note:"🚗 Circa 35 km · 35–50 min la domenica. ⚠️ Durante il vostro viaggio le rampe Moomat Ahiko Way del Pier sono chiuse per lavori: puntate a un parcheggio Downtown, ad esempio Structure 8 · 1571 2nd St, e seguite le deviazioni.", mapsQuery:"Parking Structure 8 1571 2nd St Santa Monica CA 90401" },
-      { time:"09:00", kind:"recommended", icon:"🎡", title:"Santa Monica Pier", note:"Molo, Route 66, spiaggia e Third Street Promenade. Tenete circa 2 ore.", mapsQuery:"Santa Monica Pier", detailPlace:"Santa Monica Pier" },
-      { time:"11:15", kind:"transfer", icon:"🚗", title:"Spostamento · Santa Monica → Venice Beach", note:"🚗 Circa 4 km · 10–15 min, più il tempo per parcheggiare. Non conviene lasciare l'auto a Santa Monica perché poi dovete proseguire verso South Bay.", mapsQuery:"Venice Beach Parking Los Angeles CA" },
-      { time:"11:40", kind:"recommended", icon:"🏖️", title:"Venice Beach", note:"Boardwalk, Muscle Beach e Venice Canals. Circa 2 ore / 2 ore e mezza, includendo una pausa pranzo leggera.", mapsQuery:"Venice Beach Los Angeles", detailPlace:"Venice Beach" },
-      { time:"14:05", kind:"transfer", icon:"🚗", title:"Spostamento · Venice Beach → Manhattan Beach", note:"🚗 Circa 16 km · 20–30 min. La tratta base è veloce, ma considerate semafori e ricerca parcheggio vicino al pier.", mapsQuery:"Manhattan Beach Pier California" },
-      { time:"14:35", kind:"optional", icon:"🌴", title:"Manhattan Beach", note:"Sosta di circa 1 ora sul molo e sul lungomare.", mapsQuery:"Manhattan Beach Pier", detailPlace:"Manhattan Beach" },
-      { time:"15:40", kind:"transfer", icon:"🚗", title:"Spostamento · Manhattan Beach → Redondo Beach Pier", note:"🚗 Circa 6 km · 10–15 min. Parcheggiate direttamente nella Pier & Plaza Parking Structure.", mapsQuery:"Redondo Beach Pier Parking 100 W Torrance Blvd Redondo Beach CA 90277" },
-      { time:"16:00", kind:"recommended", icon:"📺", title:"Redondo Beach Pier · The O.C.", note:"Passeggiata sul pier e nelle location legate a The O.C.; restate per il tramonto intorno alle 18:07 e fate aperitivo con calma sul waterfront.", mapsQuery:"Redondo Beach Pier", detailPlace:"Redondo Beach Pier · The O.C." },
-      { time:"18:30", kind:"optional", icon:"🍸", title:"Aperitivo sul waterfront", note:"Sea Level resta tra i ristoranti della città ma la domenica la cucina chiude alle 21:00. Se vi piace, questo è il momento giusto per usarlo come aperitivo senza anticipare la cena.", mapsQuery:"Sea Level Restaurant and Lounge 655 N Harbor Dr Redondo Beach CA 90277", detailRestaurant:"Sea Level Restaurant & Lounge" },
-      { time:"20:30", kind:"recommended", icon:"🐟", title:"Tony's On The Pier", note:"Cena sul pier senza dover anticipare i vostri orari: la domenica la sala ristorante chiude alle 22:00 e il cocktail lounge resta aperto almeno fino a mezzanotte.", mapsQuery:"Tony's On The Pier 210 Fisherman's Wharf Redondo Beach CA 90277", detailRestaurant:"Tony's On The Pier" },
-      { time:"Dopo cena", kind:"transfer", icon:"🚗", title:"Rientro · Redondo Beach → The Commerce Hotel", note:"🚗 Circa 40 km · 35–50 min, a seconda del traffico sulla 110/105.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040" }
-    ]},
-    { date:"2026-10-26", title:"Universal Studios Hollywood", theme:"Giornata prenotata agli Universal; gli orari esatti del parco vanno verificati sul calendario ufficiale poco prima.", items:[
-      { time:"08:15", kind:"transfer", icon:"🚗", title:"Spostamento · The Commerce → Universal Studios Hollywood", note:"🚗 Circa 27 km · 35–50 min il lunedì mattina. Puntate direttamente al parcheggio di Universal CityWalk e aggiungete tempo per raggiungere i cancelli.", mapsQuery:"Universal Studios Hollywood Parking 100 Universal City Plaza Universal City CA" },
-      { time:"Giornata", kind:"booked", icon:"🎬", title:"Universal Studios Hollywood", note:"Biglietti già prenotati. Gli orari di apertura cambiano per giorno e stagione e Universal li pubblica normalmente circa 4 settimane prima: controlliamo il calendario ufficiale prima della partenza invece di fissare oggi un 10:00–18:00 non garantito.", mapsQuery:"Universal Studios Hollywood", detailPlace:"Universal Studios Hollywood" },
-      { time:"Dopo il parco", kind:"transfer", icon:"🚗", title:"Spostamento · Universal → Burbank (solo se compatibile)", note:"🚗 Circa 8 km · 15–20 min. Fatelo solo se il parco chiude abbastanza presto e avete ancora energia; altrimenti saltate direttamente alla cena.", mapsQuery:"Burbank California" },
-      { time:"Sera", kind:"optional", icon:"🎃", title:"Bonus Halloween · case decorate a Burbank", note:"Solo se compatibile con l'orario reale di chiusura degli Universal. Poco prima del viaggio controlliamo la destination guide 2026 delle case partecipanti.", mapsQuery:"Burbank California" },
-      { time:"19:45 circa", kind:"transfer", icon:"🚗", title:"Spostamento · Universal/Burbank → The Little Door", note:"🚗 Da Universal considerate circa 13 km · 25–40 min; da Burbank circa 16 km · 25–40 min. Se siete in ritardo, eliminate Burbank e andate direttamente al ristorante.", mapsQuery:"The Little Door 8164 W 3rd St West Hollywood CA 90048" },
-      { time:"20:30", kind:"recommended", icon:"🍷", title:"The Little Door", note:"Cena L&F romantica. Il lunedì è aperto 18:00–22:00 e la prenotazione è richiesta: 20:30 è compatibile, ma non arriverei più tardi.", mapsQuery:"The Little Door 8164 W 3rd St West Hollywood CA 90048", detailRestaurant:"The Little Door" },
-      { time:"Dopo cena", kind:"transfer", icon:"🚗", title:"Rientro · The Little Door → The Commerce Hotel", note:"🚗 Circa 20 km · 30–40 min in serata.", mapsQuery:"The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040" },
-      { time:"06:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 27 ottobre", note:"Domani partenza dal The Commerce alle 08:00 verso Las Vegas. Sveglia alle 06:45: circa 1h15 per prepararci e caricare l’auto; colazione lungo la strada." }
-    ]}
+  "la": [
+    {
+      "date": "2026-10-23",
+      "title": "Arrivo e Downtown LA",
+      "theme": "Auto a noleggio, check-in e un piccolo circuito a piedi tra i classici di Downtown prima di cena.",
+      "items": [
+        {
+          "time": "08:00",
+          "kind": "recommended",
+          "icon": "🚕",
+          "title": "Partenza da Hotel Spero",
+          "note": "Lasciate l'hotel con margine per traffico, bagagli e controlli del volo domestico delle 11:00.",
+          "mapsQuery": "San Francisco International Airport"
+        },
+        {
+          "time": "08:30 circa",
+          "kind": "recommended",
+          "icon": "🛫",
+          "title": "Arrivo a SFO",
+          "note": "Check-in/bag drop se necessario e controlli di sicurezza. Obiettivo: essere al gate con ampio margine."
+        },
+        {
+          "time": "11:00",
+          "kind": "recommended",
+          "icon": "✈️",
+          "title": "Volo SFO → LAX",
+          "note": "Partenza da San Francisco. Durata prevista 1h36."
+        },
+        {
+          "time": "12:36",
+          "kind": "recommended",
+          "icon": "🛬",
+          "title": "Arrivo a Los Angeles · LAX",
+          "note": "Atterraggio previsto alle 12:36. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles."
+        },
+        {
+          "time": "13:20 circa",
+          "kind": "transfer",
+          "icon": "🚌",
+          "title": "Spostamento · terminal LAX → Rental Car Center",
+          "note": "🚌 Navetta Rental Car · considerate circa 15–25 min tra attesa, percorso e discesa al Rental Car Center.",
+          "mapsQuery": "LAX Rental Car Center 5251 West 98th Street Los Angeles"
+        },
+        {
+          "time": "14:00 circa",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Ritiro auto · Alamo",
+          "note": "Orario realistico dopo bagagli, shuttle e pratica di noleggio. Da qui avete l'auto fino alla riconsegna a Las Vegas.",
+          "mapsQuery": "Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles"
+        },
+        {
+          "time": "14:20 circa",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · LAX Rental Car Center → The Commerce Hotel",
+          "note": "🚗 In auto · circa 30 km · 35–60 min a seconda del traffico. Non programmate nulla di rigido prima del check-in.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
+        },
+        {
+          "time": "15:30 circa",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Check-in al The Commerce",
+          "note": "Lasciate i bagagli e ripartite solo se i tempi di aeroporto e noleggio sono andati bene.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040",
+          "mapLat": 33.998348,
+          "mapLon": -118.145255
+        },
+        {
+          "time": "16:10",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · The Commerce → Downtown LA",
+          "note": "🚗 In auto · circa 16 km · 20–35 min. Parcheggiate nell'area Grand Central Market / Broadway e poi lasciate l'auto ferma per il piccolo circuito a piedi.",
+          "mapsQuery": "Grand Central Market Parking 308 S Hill St Los Angeles CA 90013"
+        },
+        {
+          "time": "16:45",
+          "kind": "recommended",
+          "icon": "🏛️",
+          "title": "Bradbury Building",
+          "note": "È praticamente di fronte al Grand Central Market. Il venerdì le visite terminano alle 17:00: se arrivate in tempo entrate per vedere l'atrio; se il volo vi ha rallentato, limitatevi all'esterno.",
+          "mapsQuery": "Bradbury Building 304 S Broadway Los Angeles CA 90013"
+        },
+        {
+          "time": "17:05",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Bradbury Building → Grand Central Market",
+          "note": "🚶 A piedi · circa 100 m · 2 min: basta attraversare Broadway.",
+          "mapsQuery": "Grand Central Market 317 S Broadway Los Angeles CA 90013"
+        },
+        {
+          "time": "17:10",
+          "kind": "recommended",
+          "icon": "🌮",
+          "title": "Grand Central Market",
+          "note": "Giro nel mercato storico aperto dal 1917. Tenete 30–35 minuti: il mercato resta aperto fino alle 21:00.",
+          "mapsQuery": "Grand Central Market 317 S Broadway Los Angeles CA 90013"
+        },
+        {
+          "time": "17:45",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Grand Central Market → Angels Flight",
+          "note": "🚶 A piedi · circa 150 m · 2–3 min verso l'ingresso inferiore di Angels Flight su Hill Street.",
+          "mapsQuery": "Angels Flight Railway 351 S Hill St Los Angeles CA 90013"
+        },
+        {
+          "time": "17:50",
+          "kind": "recommended",
+          "icon": "🚋",
+          "title": "Angels Flight",
+          "note": "Salite con la storica funicolare. Il tragitto è brevissimo, ma è uno dei simboli di Downtown e funziona bene come collegamento verso Bunker Hill.",
+          "mapsQuery": "Angels Flight Railway Los Angeles"
+        },
+        {
+          "time": "18:10",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Angels Flight → Walt Disney Concert Hall",
+          "note": "🚶 A piedi · circa 750 m · 10 min da California Plaza verso Grand Avenue.",
+          "mapsQuery": "Walt Disney Concert Hall 111 S Grand Ave Los Angeles CA 90012"
+        },
+        {
+          "time": "18:20",
+          "kind": "recommended",
+          "icon": "🎼",
+          "title": "Walt Disney Concert Hall & Grand Park",
+          "note": "Esterni del Walt Disney Concert Hall e breve passeggiata nell'area di Grand Avenue / Grand Park. Circa 45–50 minuti.",
+          "mapsQuery": "Walt Disney Concert Hall Los Angeles"
+        },
+        {
+          "time": "19:15",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · recupero auto → Water Grill",
+          "note": "🚶 Tornate verso il parcheggio di Grand Central Market, poi 🚗 circa 1,5 km / 5–10 min fino al Water Grill. Il ristorante offre valet.",
+          "mapsQuery": "Water Grill 544 S Grand Ave Los Angeles CA 90071"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🐟",
+          "title": "Water Grill · Downtown",
+          "note": "Cena di pesce in Downtown. Il venerdì chiude alle 23:00, quindi l'orario delle 20:30 è comodo.",
+          "mapsQuery": "Water Grill 544 S Grand Ave Los Angeles CA 90071",
+          "detailRestaurant": "Water Grill · Downtown"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Rientro · Water Grill → The Commerce Hotel",
+          "note": "🚗 In auto · circa 16 km · 20–30 min in condizioni normali serali.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "title": "Hollywood, Beverly Hills e Griffith",
+      "theme": "Pancake da Du-par's, Hollywood, Sunset Strip, Beverly Hills e Griffith al tramonto, sempre con l'auto.",
+      "items": [
+        {
+          "time": "07:30",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · The Commerce → Du-par's",
+          "note": "🚗 In auto · circa 25 km · 30–45 min. Parcheggiate nell'area Original Farmers Market / The Grove.",
+          "mapsQuery": "Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036"
+        },
+        {
+          "time": "08:10",
+          "kind": "recommended",
+          "icon": "🥞",
+          "title": "Colazione da Du-par's Restaurant & Bakery",
+          "note": "Colazione scelta da Fortuna: circa 1 ora per provare con calma i celebri buttermilk hot cakes. Siete già dentro l'Original Farmers Market.",
+          "mapsQuery": "Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036",
+          "mapLat": 34.071635,
+          "mapLon": -118.360402,
+          "detailRestaurant": "Du-par's Restaurant & Bakery"
+        },
+        {
+          "time": "09:15",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Du-par's → Hollywood Boulevard",
+          "note": "🚗 In auto · circa 5 km · 15–25 min. Parcheggio consigliato: Ovation Hollywood, direttamente su Hollywood & Highland.",
+          "mapsQuery": "Ovation Hollywood Parking 1736 Orange Dr Los Angeles CA 90028"
+        },
+        {
+          "time": "09:45",
+          "kind": "recommended",
+          "icon": "⭐",
+          "title": "Hollywood Boulevard",
+          "note": "Walk of Fame, TCL Chinese Theatre e Dolby Theatre. Circa 2 ore, con l'auto lasciata nel garage di Ovation Hollywood.",
+          "mapsQuery": "TCL Chinese Theatre Los Angeles",
+          "detailPlace": "Hollywood Walk of Fame"
+        },
+        {
+          "time": "11:50",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Hollywood → Beverly Hills via Sunset Strip",
+          "note": "🚗 Circa 9 km · 20–30 min. Fate apposta il tratto su Sunset Boulevard / Sunset Strip: così vedete anche questo pezzo iconico di LA senza aggiungere una visita separata.",
+          "mapsQuery": "Rodeo Drive Beverly Hills CA"
+        },
+        {
+          "time": "12:20",
+          "kind": "recommended",
+          "icon": "🛍️",
+          "title": "Beverly Hills & Rodeo Drive",
+          "note": "Passeggiata, foto al Beverly Hills Sign e pranzo in zona. Tenete circa 2 ore / 2 ore e mezza.",
+          "mapsQuery": "Rodeo Drive Beverly Hills",
+          "detailPlace": "Beverly Hills & Rodeo Drive"
+        },
+        {
+          "time": "14:20",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Beverly Hills → LACMA · Urban Light",
+          "note": "🚗 Circa 5 km · 10–15 min. Calcolate qualche minuto extra per trovare parcheggio in zona Museum Row.",
+          "mapsQuery": "Urban Light LACMA 5905 Wilshire Blvd Los Angeles CA 90036"
+        },
+        {
+          "time": "14:40",
+          "kind": "recommended",
+          "icon": "💡",
+          "title": "LACMA · Urban Light",
+          "note": "Sosta fotografica da 35–40 minuti davanti all'installazione di Chris Burden.",
+          "mapsQuery": "Urban Light LACMA 5905 Wilshire Blvd Los Angeles",
+          "mapLat": 34.062822,
+          "mapLon": -118.357929,
+          "detailPlace": "LACMA · Urban Light"
+        },
+        {
+          "time": "15:20",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · LACMA → Griffith Observatory",
+          "note": "🚗 Circa 13,5 km · 25–40 min; il sabato aggiungete margine per la salita e soprattutto per il parcheggio vicino all'Osservatorio.",
+          "mapsQuery": "Griffith Observatory Los Angeles"
+        },
+        {
+          "time": "16:15",
+          "kind": "recommended",
+          "icon": "🌇",
+          "title": "Griffith Observatory & Hollywood Sign",
+          "note": "Arrivate prima della golden hour. Panorama, Hollywood Sign e tramonto previsto intorno alle 18:08; restate anche dopo il tramonto per vedere accendersi la città.",
+          "mapsQuery": "Griffith Observatory",
+          "detailPlace": "Griffith Observatory & Hollywood Sign"
+        },
+        {
+          "time": "19:20",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Griffith Observatory → Musso & Frank",
+          "note": "🚗 Circa 7 km · 20–30 min con il traffico di Hollywood. Musso & Frank dispone di parcheggio convalidato sul retro.",
+          "mapsQuery": "Musso & Frank Grill 6667 Hollywood Blvd Los Angeles CA 90028"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🥩",
+          "title": "Musso & Frank Grill",
+          "note": "Cena Old Hollywood con calma. Il sabato è aperto fino alle 23:00.",
+          "mapsQuery": "Musso & Frank Grill 6667 Hollywood Blvd Los Angeles",
+          "mapLat": 34.101763,
+          "mapLon": -118.335026,
+          "detailRestaurant": "Musso & Frank Grill"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Rientro · Musso & Frank → The Commerce Hotel",
+          "note": "🚗 In auto · circa 20 km · 25–35 min in serata.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-25",
+      "title": "Costa e location di The O.C.",
+      "theme": "Santa Monica → Venice → Manhattan Beach → Redondo, sempre verso sud senza tornare indietro.",
+      "items": [
+        {
+          "time": "08:10",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · The Commerce → Santa Monica",
+          "note": "🚗 Circa 35 km · 35–50 min la domenica. ⚠️ Durante il vostro viaggio le rampe Moomat Ahiko Way del Pier sono chiuse per lavori: puntate a un parcheggio Downtown, ad esempio Structure 8 · 1571 2nd St, e seguite le deviazioni.",
+          "mapsQuery": "Parking Structure 8 1571 2nd St Santa Monica CA 90401"
+        },
+        {
+          "time": "09:00",
+          "kind": "recommended",
+          "icon": "🎡",
+          "title": "Santa Monica Pier",
+          "note": "Molo, Route 66, spiaggia e Third Street Promenade. Tenete circa 2 ore.",
+          "mapsQuery": "Santa Monica Pier",
+          "detailPlace": "Santa Monica Pier"
+        },
+        {
+          "time": "11:15",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Santa Monica → Venice Beach",
+          "note": "🚗 Circa 4 km · 10–15 min, più il tempo per parcheggiare. Non conviene lasciare l'auto a Santa Monica perché poi dovete proseguire verso South Bay.",
+          "mapsQuery": "Venice Beach Parking Los Angeles CA"
+        },
+        {
+          "time": "11:40",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Venice Beach",
+          "note": "Boardwalk, Muscle Beach e Venice Canals. Circa 2 ore / 2 ore e mezza, includendo una pausa pranzo leggera.",
+          "mapsQuery": "Venice Beach Los Angeles",
+          "detailPlace": "Venice Beach"
+        },
+        {
+          "time": "14:05",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Venice Beach → Manhattan Beach",
+          "note": "🚗 Circa 16 km · 20–30 min. La tratta base è veloce, ma considerate semafori e ricerca parcheggio vicino al pier.",
+          "mapsQuery": "Manhattan Beach Pier California"
+        },
+        {
+          "time": "14:35",
+          "kind": "optional",
+          "icon": "🌴",
+          "title": "Manhattan Beach",
+          "note": "Sosta di circa 1 ora sul molo e sul lungomare.",
+          "mapsQuery": "Manhattan Beach Pier",
+          "detailPlace": "Manhattan Beach"
+        },
+        {
+          "time": "15:40",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Manhattan Beach → Redondo Beach Pier",
+          "note": "🚗 Circa 6 km · 10–15 min. Parcheggiate direttamente nella Pier & Plaza Parking Structure.",
+          "mapsQuery": "Redondo Beach Pier Parking 100 W Torrance Blvd Redondo Beach CA 90277"
+        },
+        {
+          "time": "16:00",
+          "kind": "recommended",
+          "icon": "📺",
+          "title": "Redondo Beach Pier · The O.C.",
+          "note": "Passeggiata sul pier e nelle location legate a The O.C.; restate per il tramonto intorno alle 18:07 e fate aperitivo con calma sul waterfront.",
+          "mapsQuery": "Redondo Beach Pier",
+          "detailPlace": "Redondo Beach Pier · The O.C."
+        },
+        {
+          "time": "18:30",
+          "kind": "optional",
+          "icon": "🍸",
+          "title": "Aperitivo sul waterfront",
+          "note": "Sea Level resta tra i ristoranti della città ma la domenica la cucina chiude alle 21:00. Se vi piace, questo è il momento giusto per usarlo come aperitivo senza anticipare la cena.",
+          "mapsQuery": "Sea Level Restaurant and Lounge 655 N Harbor Dr Redondo Beach CA 90277",
+          "detailRestaurant": "Sea Level Restaurant & Lounge"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🐟",
+          "title": "Tony's On The Pier",
+          "note": "Cena sul pier senza dover anticipare i vostri orari: la domenica la sala ristorante chiude alle 22:00 e il cocktail lounge resta aperto almeno fino a mezzanotte.",
+          "mapsQuery": "Tony's On The Pier 210 Fisherman's Wharf Redondo Beach CA 90277",
+          "detailRestaurant": "Tony's On The Pier"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Rientro · Redondo Beach → The Commerce Hotel",
+          "note": "🚗 Circa 40 km · 35–50 min, a seconda del traffico sulla 110/105.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-26",
+      "title": "Universal Studios Hollywood",
+      "theme": "Giornata prenotata agli Universal; gli orari esatti del parco vanno verificati sul calendario ufficiale poco prima.",
+      "items": [
+        {
+          "time": "08:15",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · The Commerce → Universal Studios Hollywood",
+          "note": "🚗 Circa 27 km · 35–50 min il lunedì mattina. Puntate direttamente al parcheggio di Universal CityWalk e aggiungete tempo per raggiungere i cancelli.",
+          "mapsQuery": "Universal Studios Hollywood Parking 100 Universal City Plaza Universal City CA"
+        },
+        {
+          "time": "Giornata",
+          "kind": "booked",
+          "icon": "🎬",
+          "title": "Universal Studios Hollywood",
+          "note": "Biglietti già prenotati. Gli orari di apertura cambiano per giorno e stagione e Universal li pubblica normalmente circa 4 settimane prima: controlliamo il calendario ufficiale prima della partenza invece di fissare oggi un 10:00–18:00 non garantito.",
+          "mapsQuery": "Universal Studios Hollywood",
+          "detailPlace": "Universal Studios Hollywood"
+        },
+        {
+          "time": "Dopo il parco",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Universal → Burbank (solo se compatibile)",
+          "note": "🚗 Circa 8 km · 15–20 min. Fatelo solo se il parco chiude abbastanza presto e avete ancora energia; altrimenti saltate direttamente alla cena.",
+          "mapsQuery": "Burbank California"
+        },
+        {
+          "time": "Sera",
+          "kind": "optional",
+          "icon": "🎃",
+          "title": "Bonus Halloween · case decorate a Burbank",
+          "note": "Solo se compatibile con l'orario reale di chiusura degli Universal. Poco prima del viaggio controlliamo la destination guide 2026 delle case partecipanti.",
+          "mapsQuery": "Burbank California"
+        },
+        {
+          "time": "19:45 circa",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Universal/Burbank → The Little Door",
+          "note": "🚗 Da Universal considerate circa 13 km · 25–40 min; da Burbank circa 16 km · 25–40 min. Se siete in ritardo, eliminate Burbank e andate direttamente al ristorante.",
+          "mapsQuery": "The Little Door 8164 W 3rd St West Hollywood CA 90048"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍷",
+          "title": "The Little Door",
+          "note": "Cena L&F romantica. Il lunedì è aperto 18:00–22:00 e la prenotazione è richiesta: 20:30 è compatibile, ma non arriverei più tardi.",
+          "mapsQuery": "The Little Door 8164 W 3rd St West Hollywood CA 90048",
+          "detailRestaurant": "The Little Door"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Rientro · The Little Door → The Commerce Hotel",
+          "note": "🚗 Circa 20 km · 30–40 min in serata.",
+          "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
+        },
+        {
+          "time": "06:45 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 27 ottobre",
+          "note": "Domani partenza dal The Commerce alle 08:00 verso Las Vegas. Sveglia alle 06:45: circa 1h15 per prepararci e caricare l’auto; colazione lungo la strada."
+        }
+      ]
+    }
   ],
-  vegas1: [
-    { date:"2026-10-27", title:"Los Angeles → Las Vegas", theme:"Las Vegas essenziale: icone della Strip e Old Vegas in una sola giornata", items:[
-      { time:"08:00", kind:"recommended", icon:"🚗", title:"Partenza da The Commerce Hotel", note:"Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.", mapsQuery:"Welcome to Fabulous Las Vegas Sign" },
-      { time:"13:00 circa", kind:"recommended", icon:"📸", title:"Welcome to Fabulous Las Vegas Sign", note:"Prima tappa prima dell'hotel: siete già in auto arrivando da Los Angeles. Foto al cartello e poi proseguite verso il Paris.", mapsQuery:"Welcome to Fabulous Las Vegas Sign", detailPlace:"Welcome to Fabulous Las Vegas Sign" },
-      { time:"13:30–14:00", kind:"recommended", icon:"🏨", title:"Paris Las Vegas · check-in", note:"Parcheggio, bagagli e check-in se la camera è disponibile. Da qui lasciate l'auto ferma e proseguite soprattutto a piedi sulla Strip.", mapsQuery:"Paris Las Vegas" },
-      { time:"15:00 circa", kind:"recommended", icon:"🌿", title:"Bellagio Conservatory", note:"Ingresso gratuito. Visita al Conservatory & Botanical Gardens e breve giro nel Bellagio.", mapsQuery:"Bellagio Conservatory & Botanical Gardens", detailPlace:"Bellagio Conservatory" },
-      { time:"16:00 circa", kind:"recommended", icon:"🏛️", title:"Caesars Palace & Forum Shops", note:"Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops, senza trasformarla in una visita troppo lunga.", mapsQuery:"Caesars Palace Forum Shops", detailPlace:"Caesars Palace & Forum Shops" },
-      { time:"17:00 circa", kind:"recommended", icon:"🛶", title:"The Venetian & Grand Canal", note:"Interni, canali e Grand Canal Shoppes: una delle ambientazioni più scenografiche della Strip.", mapsQuery:"The Venetian Las Vegas" },
-      { time:"18:00–18:30", kind:"recommended", icon:"🌐", title:"Sphere · esterno", note:"Sosta esterna quando inizia a fare buio per vedere la Sphere illuminata, fare foto e video. Nessuno spettacolo a pagamento previsto.", mapsQuery:"Sphere Las Vegas", detailPlace:"Sphere" },
-      { time:"19:30 circa", kind:"recommended", icon:"⛲", title:"Fontane del Bellagio + Strip illuminata", note:"Rientro verso il centro della Strip per vedere uno spettacolo delle fontane e godersi Las Vegas completamente illuminata.", mapsQuery:"Bellagio Fountains", detailPlace:"Fontane del Bellagio" },
-      { time:"20:30 circa", kind:"recommended", icon:"🍷", title:"Mon Ami Gabi · Paris Las Vegas", note:"Cena comoda direttamente al Paris: bistrot francese con patio sulla Strip e vista verso le fontane del Bellagio.", mapsQuery:"Mon Ami Gabi 3655 S Las Vegas Blvd Las Vegas NV 89109", mapLat:36.112855, mapLon:-115.172414, detailRestaurant:"Mon Ami Gabi · Paris Las Vegas" },
-      { time:"22:00 circa", kind:"recommended", icon:"🚗", title:"Paris → Fremont Street", note:"Dopo cena riprendete la vostra auto e raggiungete Downtown Las Vegas. Parcheggio in zona Fremont Street Experience.", mapsQuery:"Fremont Street Experience Parking Garage" },
-      { time:"22:15–23:30", kind:"recommended", icon:"🎰", title:"Fremont Street Experience", note:"Viva Vision, casinò storici e atmosfera Old Vegas. Una visita breve ma sufficiente per vedere il lato di Las Vegas più diverso dalla Strip.", mapsQuery:"Fremont Street Experience" },
-      { time:"23:30 circa", kind:"recommended", icon:"🚗", title:"Rientro al Paris", note:"Rientro in auto e riposo: il 28 ottobre la partenza per il Grand Canyon è alle 07:00.", mapsQuery:"Paris Las Vegas" },
-      { time:"05:45 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 28 ottobre", note:"Domani partenza dal Paris alle 07:00 verso il Grand Canyon. Sveglia alle 05:45: circa 1h15 per prepararci, recuperare l’auto e partire; colazione lungo il tragitto." }
-    ]}
+  "vegas1": [
+    {
+      "date": "2026-10-27",
+      "title": "Los Angeles → Las Vegas",
+      "theme": "Las Vegas essenziale: Strip quasi tutta a piedi, poi auto solo per Old Vegas.",
+      "items": [
+        {
+          "time": "08:00",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza da The Commerce Hotel",
+          "note": "Check-out e partenza direttamente dall’hotel verso Las Vegas. Con una pausa, considerate circa 4½–5 ore.",
+          "mapsQuery": "Welcome to Fabulous Las Vegas Sign"
+        },
+        {
+          "time": "13:00 circa",
+          "kind": "recommended",
+          "icon": "📸",
+          "title": "Welcome to Fabulous Las Vegas Sign",
+          "note": "Prima tappa entrando a Las Vegas da sud: foto al cartello prima di raggiungere l’hotel.",
+          "mapsQuery": "Welcome to Fabulous Las Vegas Sign",
+          "detailPlace": "Welcome to Fabulous Las Vegas Sign"
+        },
+        {
+          "time": "13:20",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Welcome Sign → Paris Las Vegas",
+          "note": "🚗 In auto · circa 3–4 km · 10–15 min considerando traffico sulla Strip e ingresso al parcheggio del Paris.",
+          "mapsQuery": "Paris Las Vegas 3655 Las Vegas Blvd S Las Vegas NV 89109"
+        },
+        {
+          "time": "13:40–14:00",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Paris Las Vegas · check-in",
+          "note": "Parcheggio, bagagli e check-in se la camera è disponibile. Da questo momento lasciate l’auto ferma: il centro della Strip si gira meglio a piedi.",
+          "mapsQuery": "Paris Las Vegas"
+        },
+        {
+          "time": "14:40",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Paris → Bellagio",
+          "note": "🚶 A piedi consigliato · circa 0,8–1 km · 10–15 min usando i passaggi pedonali della Strip. Non conviene spostare l’auto per una tratta così breve.",
+          "mapsQuery": "Bellagio Conservatory & Botanical Gardens"
+        },
+        {
+          "time": "15:00",
+          "kind": "recommended",
+          "icon": "🌿",
+          "title": "Bellagio Conservatory",
+          "note": "Ingresso gratuito. Dedicate circa 40–45 minuti al Conservatory & Botanical Gardens e a un breve giro nel Bellagio.",
+          "mapsQuery": "Bellagio Conservatory & Botanical Gardens",
+          "detailPlace": "Bellagio Conservatory"
+        },
+        {
+          "time": "15:45",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Bellagio → Caesars Palace",
+          "note": "🚶 A piedi · circa 650 m · 10–15 min. Si attraversa Flamingo Road con il ponte pedonale sopraelevato.",
+          "mapsQuery": "Caesars Palace Forum Shops Las Vegas"
+        },
+        {
+          "time": "16:00",
+          "kind": "recommended",
+          "icon": "🏛️",
+          "title": "Caesars Palace & Forum Shops",
+          "note": "Passeggiata tra gli interni del Caesars Palace e una parte dei Forum Shops. Circa 45–50 minuti sono sufficienti per vedere l’essenziale senza perdersi nei negozi.",
+          "mapsQuery": "Caesars Palace Forum Shops",
+          "detailPlace": "Caesars Palace & Forum Shops"
+        },
+        {
+          "time": "16:55",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Caesars Palace → The Venetian",
+          "note": "🚶 A piedi consigliato · circa 1 km · 12–18 min. Meglio il lato est della Strip, passando da LINQ e Harrah’s: evita la zona dei lavori dell’ex Mirage.",
+          "mapsQuery": "The Venetian Las Vegas"
+        },
+        {
+          "time": "17:15",
+          "kind": "recommended",
+          "icon": "🛶",
+          "title": "The Venetian & Grand Canal",
+          "note": "Interni, canali e Grand Canal Shoppes. Tenete circa 45–50 minuti: basta per vedere la parte scenografica senza fare il giro in gondola.",
+          "mapsQuery": "The Venetian Las Vegas",
+          "detailPlace": "The Venetian & Grand Canal"
+        },
+        {
+          "time": "18:05",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Venetian → Sphere",
+          "note": "🚶 A piedi · circa 0,9–1 km · 12–17 min. Seguite le indicazioni interne/esterne del Venetian verso Sphere: è troppo vicina per usare l’auto.",
+          "mapsQuery": "Sphere Las Vegas"
+        },
+        {
+          "time": "18:25",
+          "kind": "recommended",
+          "icon": "🌐",
+          "title": "Sphere · esterno",
+          "note": "Sosta fotografica quando è ormai buio: Exosphere illuminata, foto e video. Circa 25–30 minuti; nessuno spettacolo a pagamento previsto.",
+          "mapsQuery": "Sphere Las Vegas",
+          "detailPlace": "Sphere"
+        },
+        {
+          "time": "18:55",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Sphere → Bellagio",
+          "note": "🚶 A piedi consigliato se avete ancora gambe · circa 2,4 km · 25–30 min passando nuovamente verso Venetian/LINQ. Alternativa 🚕 taxi/Uber: circa 5–10 min più l’eventuale attesa.",
+          "mapsQuery": "Bellagio Fountains Las Vegas"
+        },
+        {
+          "time": "19:30",
+          "kind": "recommended",
+          "icon": "⛲",
+          "title": "Fontane del Bellagio + Strip illuminata",
+          "note": "Guardate uno spettacolo delle fontane e godetevi la Strip completamente illuminata. In questa fascia serale gli spettacoli sono molto frequenti, quindi non serve inseguire un singolo minuto preciso.",
+          "mapsQuery": "Bellagio Fountains",
+          "detailPlace": "Fontane del Bellagio"
+        },
+        {
+          "time": "20:00",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Bellagio → Paris Las Vegas",
+          "note": "🚶 A piedi · circa 0,8 km · 10–12 min attraversando Las Vegas Boulevard con i passaggi pedonali. Siete già diretti al ristorante del vostro hotel.",
+          "mapsQuery": "Mon Ami Gabi Paris Las Vegas"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍷",
+          "title": "Mon Ami Gabi · Paris Las Vegas",
+          "note": "Cena al vostro orario abituale, direttamente al Paris: bistrot francese con patio sulla Strip e vista verso il Bellagio.",
+          "mapsQuery": "Mon Ami Gabi 3655 S Las Vegas Blvd Las Vegas NV 89109",
+          "mapLat": 36.112855,
+          "mapLon": -115.172414,
+          "detailRestaurant": "Mon Ami Gabi · Paris Las Vegas"
+        },
+        {
+          "time": "21:45 circa",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Spostamento · Paris → Fremont Street",
+          "note": "🚗 Riprendete l’auto · circa 11 km · 15–20 min. Parcheggio consigliato: Fremont Street Experience Garage, 111 S 4th St. L’ingresso è da 4th Street tra Carson e Fremont.",
+          "mapsQuery": "Fremont Street Experience Parking Garage 111 S 4th St Las Vegas NV 89101"
+        },
+        {
+          "time": "22:10–23:15",
+          "kind": "recommended",
+          "icon": "🎰",
+          "title": "Fremont Street Experience",
+          "note": "Old Vegas, casinò storici, neon e Canopy. I contenuti principali del Viva Vision partono all’inizio di ogni ora: arrivando intorno alle 22:10 avete tempo di passeggiare e vedere quello delle 23:00.",
+          "mapsQuery": "Fremont Street Experience",
+          "detailPlace": "Fremont Street Experience"
+        },
+        {
+          "time": "23:15 circa",
+          "kind": "transfer",
+          "icon": "🚗",
+          "title": "Rientro · Fremont Street → Paris Las Vegas",
+          "note": "🚗 In auto · circa 11 km · 15–20 min. Rientro diretto: domani la partenza per il Grand Canyon è alle 07:00.",
+          "mapsQuery": "Paris Las Vegas"
+        },
+        {
+          "time": "05:45 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 28 ottobre",
+          "note": "Domani partenza dal Paris alle 07:00 verso il Grand Canyon. Sveglia alle 05:45: circa 1h15 per prepararci, recuperare l’auto e partire; colazione lungo il tragitto."
+        }
+      ]
+    }
   ],
-  page: [
-    { date:"2026-10-28", title:"Las Vegas → Grand Canyon → Page", theme:"La giornata più impegnativa: partenza presto e percorso lineare verso est", items:[
-      { time:"07:00", kind:"recommended", icon:"🚗", title:"Partenza dal Paris Las Vegas", note:"Check-out e partenza verso il Grand Canyon South Rim. È la giornata più lunga del road trip.", mapsQuery:"Grand Canyon Visitor Center South Rim" },
-      { time:"11:45–12:00", kind:"recommended", icon:"🅿️", title:"Visitor Center · parcheggio", note:"Lasciate l'auto nei parcheggi 1–4 del Visitor Center. Da qui Mather Point è a circa 5 minuti a piedi.", mapsQuery:"Grand Canyon Visitor Center" },
-      { time:"12:05", kind:"recommended", icon:"🏜️", title:"Mather Point", note:"Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.", mapsQuery:"Mather Point Grand Canyon", mapLat:36.0619, mapLon:-112.1078, detailPlace:"Mather Point" },
-      { time:"12:40", kind:"recommended", icon:"🥪", title:"Pausa pranzo veloce", note:"Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive." },
-      { time:"13:20", kind:"recommended", icon:"🚗", title:"Inizio Desert View Drive", note:"Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.", mapsQuery:"Desert View Drive Grand Canyon", detailPlace:"Desert View Drive", mapSkip:true },
-      { time:"⚠️ Nota guida", kind:"recommended", icon:"⚠️", title:"Strade consentite con l’auto", note:"Seguite Desert View Drive (SR-64). Non imboccate Hermit Road o Yaki Point Road con l’auto privata; all’interno del parco seguite sempre la segnaletica NPS anche se il navigatore suggerisse diversamente." },
-      { time:"13:30", kind:"recommended", icon:"📍", title:"Pipe Creek Vista", note:"Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.", mapsQuery:"Pipe Creek Vista Grand Canyon", mapLat:36.0588, mapLon:-112.0932, detailPlace:"Pipe Creek Vista" },
-      { time:"14:00", kind:"recommended", icon:"📍", title:"Grandview Point", note:"Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.", mapsQuery:"Grandview Point Grand Canyon", mapLat:35.9988, mapLon:-111.9877, detailPlace:"Grandview Point" },
-      { time:"14:40", kind:"recommended", icon:"📍", title:"Moran Point", note:"Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.", mapsQuery:"Moran Point Grand Canyon", mapLat:36.0134, mapLon:-111.8455, detailPlace:"Moran Point" },
-      { time:"15:15", kind:"recommended", icon:"📍", title:"Navajo Point", note:"È il viewpoint più alto del South Rim e offre già una splendida vista della Desert View Watchtower.", mapsQuery:"Navajo Point Grand Canyon", mapLat:36.0407, mapLon:-111.8262, detailPlace:"Navajo Point" },
-      { time:"15:40", kind:"recommended", icon:"🗼", title:"Desert View Watchtower", note:"Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.", mapsQuery:"Desert View Watchtower", mapLat:36.0440, mapLon:-111.8260, detailPlace:"Desert View Watchtower" },
-      { time:"16:30 circa", kind:"recommended", icon:"🚗", title:"Partenza per Page", note:"Uscita dall'East Entrance e proseguimento verso Page. Lipan Point non è inserito: il NPS ne prevede la chiusura fino al 23 dicembre 2026.", mapsQuery:"Lake Powell Resort Page Arizona" },
-      { time:"19:00 circa", kind:"recommended", icon:"🏨", title:"Arrivo al Lake Powell Resort", note:"Check-in e qualche minuto per sistemarsi dopo la lunga giornata di guida e viewpoint.", mapsQuery:"Lake Powell Resort 100 Lakeshore Dr Page AZ" },
-      { time:"20:00", kind:"recommended", icon:"🍽️", title:"Rainbow Room · Lake Powell Resort", note:"Cena direttamente nel resort, senza riprendere l'auto. È la scelta più comoda dopo il Grand Canyon, con grandi vetrate affacciate su Wahweap Bay.", mapsQuery:"Rainbow Room 100 Lakeshore Dr Page AZ 86040", mapLat:37.0066, mapLon:-111.4864, detailRestaurant:"Rainbow Room" },
-      { time:"07:00 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 29 ottobre", note:"Domani partenza dal Lake Powell Resort alle 08:15 per Horseshoe Bend e Lower Antelope Canyon. Sveglia alle 07:00: circa 1h15 per prepararci; colazione rapida lungo il percorso." }
-    ]},
-    { date:"2026-10-29", title:"Horseshoe Bend e Antelope Canyon", theme:"Mattina a Page, poi ritorno verso Las Vegas", items:[
-      { time:"08:15", kind:"recommended", icon:"🚗", title:"Partenza dal Lake Powell Resort", note:"Partenza con calma verso Horseshoe Bend: dal resort considerate circa 25 minuti di auto.", mapsQuery:"Horseshoe Bend Parking Lot Page Arizona" },
-      { time:"08:40", kind:"recommended", icon:"🅿️", title:"Parcheggio Horseshoe Bend", note:"Parcheggio, poi sentiero di circa 1,2 km per raggiungere il viewpoint.", mapsQuery:"Horseshoe Bend Parking Lot Page Arizona", mapLat:36.8762, mapLon:-111.5027, mapSkip:true },
-      { time:"08:50–10:25", kind:"recommended", icon:"🐎", title:"Horseshoe Bend", note:"Tempo comodo per andata e ritorno a piedi, panorama e foto senza correre.", mapsQuery:"Horseshoe Bend Page Arizona", mapLat:36.8792, mapLon:-111.5104, detailPlace:"Horseshoe Bend" },
-      { time:"10:35", kind:"recommended", icon:"🚗", title:"Partenza per Ken's Tours", note:"Da Horseshoe Bend a Ken's Tours il trasferimento è breve; teniamo comunque un buon margine prima del check-in.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapSkip:true },
-      { time:"10:55 circa", kind:"booked", icon:"🅿️", title:"Parcheggio Ken's Tours", note:"Arrivo con largo margine. Il check-in ufficiale è 30 minuti prima del tour.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapLat:36.9026, mapLon:-111.4112, mapForce:true },
-      { time:"11:30", kind:"booked", icon:"✅", title:"Check-in Lower Antelope Canyon", note:"Check-in alle finestre sul lato nord dell'edificio Ken's Tours. Alle 11:50 bisogna essere già pronti per la partenza." },
-      { time:"12:00–13:00 circa", kind:"booked", icon:"✨", title:"Lower Antelope Canyon", note:"Tour prenotato. Il General Tour dura normalmente circa 50–60 minuti.", mapsQuery:"Ken's Tours Lower Antelope Canyon", mapSkip:true, detailPlace:"Lower Antelope Canyon" },
-      { time:"13:15", kind:"recommended", icon:"🍗", title:"BirdHouse", note:"Pranzo veloce a Page dopo il canyon: fried chicken, informale e con prezzi più contenuti. Non perdiamo troppo tempo prima della lunga tratta per Las Vegas.", mapsQuery:"BirdHouse 707 N Navajo Dr Page AZ", mapLat:36.9220, mapLon:-111.4590, detailRestaurant:"BirdHouse" },
-      { time:"13:50 circa", kind:"recommended", icon:"🚗", title:"Partenza per Las Vegas", note:"Page → Las Vegas. Il 29 ottobre Arizona e Nevada hanno lo stesso orario, quindi non ci sono cambi d'ora da calcolare.", mapsQuery:"Paris Las Vegas", mapSkip:true },
-      { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
-      { time:"19:30 circa", kind:"recommended", icon:"🎡", title:"High Roller", note:"Una sola attrazione prima di cena: giro panoramico di circa 30 minuti al LINQ con vista a 360° sulla Strip illuminata. Se il rientro da Page slitta o siete stanchi, resta facilmente sacrificabile.", mapsQuery:"High Roller Las Vegas", mapLat:36.1176, mapLon:-115.1681, detailPlace:"High Roller" },
-      { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris. Dopo metà road trip il portafoglio ringrazia.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
-      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." }
-    ]},
-
+  "page": [
+    {
+      "date": "2026-10-28",
+      "title": "Las Vegas → Grand Canyon → Page",
+      "theme": "La giornata più impegnativa: partenza presto e percorso lineare verso est",
+      "items": [
+        {
+          "time": "07:00",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza dal Paris Las Vegas",
+          "note": "Check-out e partenza verso il Grand Canyon South Rim. È la giornata più lunga del road trip.",
+          "mapsQuery": "Grand Canyon Visitor Center South Rim"
+        },
+        {
+          "time": "11:45–12:00",
+          "kind": "recommended",
+          "icon": "🅿️",
+          "title": "Visitor Center · parcheggio",
+          "note": "Lasciate l'auto nei parcheggi 1–4 del Visitor Center. Da qui Mather Point è a circa 5 minuti a piedi.",
+          "mapsQuery": "Grand Canyon Visitor Center"
+        },
+        {
+          "time": "12:05",
+          "kind": "recommended",
+          "icon": "🏜️",
+          "title": "Mather Point",
+          "note": "Primo grande impatto con il canyon. Panorama amplissimo e sosta fotografica senza trekking impegnativo.",
+          "mapsQuery": "Mather Point Grand Canyon",
+          "mapLat": 36.0619,
+          "mapLon": -112.1078,
+          "detailPlace": "Mather Point"
+        },
+        {
+          "time": "12:40",
+          "kind": "recommended",
+          "icon": "🥪",
+          "title": "Pausa pranzo veloce",
+          "note": "Pausa breve nell'area Visitor Center prima di riprendere l'auto: il pomeriggio è dedicato alla Desert View Drive."
+        },
+        {
+          "time": "13:20",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Inizio Desert View Drive",
+          "note": "Da qui si procede sempre verso est, nella stessa direzione di Page. La strada panoramica è percorribile con la vostra auto.",
+          "mapsQuery": "Desert View Drive Grand Canyon",
+          "detailPlace": "Desert View Drive",
+          "mapSkip": true
+        },
+        {
+          "time": "⚠️ Nota guida",
+          "kind": "recommended",
+          "icon": "⚠️",
+          "title": "Strade consentite con l’auto",
+          "note": "Seguite Desert View Drive (SR-64). Non imboccate Hermit Road o Yaki Point Road con l’auto privata; all’interno del parco seguite sempre la segnaletica NPS anche se il navigatore suggerisse diversamente."
+        },
+        {
+          "time": "13:30",
+          "kind": "recommended",
+          "icon": "📍",
+          "title": "Pipe Creek Vista",
+          "note": "Prima sosta breve lungo la Desert View Drive. Bel colpo d'occhio sul canyon; 10–15 minuti sono sufficienti.",
+          "mapsQuery": "Pipe Creek Vista Grand Canyon",
+          "mapLat": 36.0588,
+          "mapLon": -112.0932,
+          "detailPlace": "Pipe Creek Vista"
+        },
+        {
+          "time": "14:00",
+          "kind": "recommended",
+          "icon": "📍",
+          "title": "Grandview Point",
+          "note": "Uno dei viewpoint più panoramici della strada, con vista ampia da est a ovest e scorci del Colorado River.",
+          "mapsQuery": "Grandview Point Grand Canyon",
+          "mapLat": 35.9988,
+          "mapLon": -111.9877,
+          "detailPlace": "Grandview Point"
+        },
+        {
+          "time": "14:40",
+          "kind": "recommended",
+          "icon": "📍",
+          "title": "Moran Point",
+          "note": "Sosta da 15–20 minuti: qui sono particolarmente evidenti colori e strati geologici differenti del canyon.",
+          "mapsQuery": "Moran Point Grand Canyon",
+          "mapLat": 36.0134,
+          "mapLon": -111.8455,
+          "detailPlace": "Moran Point"
+        },
+        {
+          "time": "15:15",
+          "kind": "recommended",
+          "icon": "📍",
+          "title": "Navajo Point",
+          "note": "È il viewpoint più alto del South Rim e offre già una splendida vista della Desert View Watchtower.",
+          "mapsQuery": "Navajo Point Grand Canyon",
+          "mapLat": 36.0407,
+          "mapLon": -111.8262,
+          "detailPlace": "Navajo Point"
+        },
+        {
+          "time": "15:40",
+          "kind": "recommended",
+          "icon": "🗼",
+          "title": "Desert View Watchtower",
+          "note": "Ultima grande tappa del Grand Canyon: breve passeggiata dal parcheggio, vista sul grande gomito del Colorado e sulla Watchtower.",
+          "mapsQuery": "Desert View Watchtower",
+          "mapLat": 36.044,
+          "mapLon": -111.826,
+          "detailPlace": "Desert View Watchtower"
+        },
+        {
+          "time": "16:30 circa",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza per Page",
+          "note": "Uscita dall'East Entrance e proseguimento verso Page. Lipan Point non è inserito: il NPS ne prevede la chiusura fino al 23 dicembre 2026.",
+          "mapsQuery": "Lake Powell Resort Page Arizona"
+        },
+        {
+          "time": "19:00 circa",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Arrivo al Lake Powell Resort",
+          "note": "Check-in e qualche minuto per sistemarsi dopo la lunga giornata di guida e viewpoint.",
+          "mapsQuery": "Lake Powell Resort 100 Lakeshore Dr Page AZ"
+        },
+        {
+          "time": "20:00",
+          "kind": "recommended",
+          "icon": "🍽️",
+          "title": "Rainbow Room · Lake Powell Resort",
+          "note": "Cena direttamente nel resort, senza riprendere l'auto. È la scelta più comoda dopo il Grand Canyon, con grandi vetrate affacciate su Wahweap Bay.",
+          "mapsQuery": "Rainbow Room 100 Lakeshore Dr Page AZ 86040",
+          "mapLat": 37.0066,
+          "mapLon": -111.4864,
+          "detailRestaurant": "Rainbow Room"
+        },
+        {
+          "time": "07:00 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 29 ottobre",
+          "note": "Domani partenza dal Lake Powell Resort alle 08:15 per Horseshoe Bend e Lower Antelope Canyon. Sveglia alle 07:00: circa 1h15 per prepararci; colazione rapida lungo il percorso."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-29",
+      "title": "Horseshoe Bend e Antelope Canyon",
+      "theme": "Mattina a Page, poi ritorno verso Las Vegas",
+      "items": [
+        {
+          "time": "08:15",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza dal Lake Powell Resort",
+          "note": "Partenza con calma verso Horseshoe Bend: dal resort considerate circa 25 minuti di auto.",
+          "mapsQuery": "Horseshoe Bend Parking Lot Page Arizona"
+        },
+        {
+          "time": "08:40",
+          "kind": "recommended",
+          "icon": "🅿️",
+          "title": "Parcheggio Horseshoe Bend",
+          "note": "Parcheggio, poi sentiero di circa 1,2 km per raggiungere il viewpoint.",
+          "mapsQuery": "Horseshoe Bend Parking Lot Page Arizona",
+          "mapLat": 36.8762,
+          "mapLon": -111.5027,
+          "mapSkip": true
+        },
+        {
+          "time": "08:50–10:25",
+          "kind": "recommended",
+          "icon": "🐎",
+          "title": "Horseshoe Bend",
+          "note": "Tempo comodo per andata e ritorno a piedi, panorama e foto senza correre.",
+          "mapsQuery": "Horseshoe Bend Page Arizona",
+          "mapLat": 36.8792,
+          "mapLon": -111.5104,
+          "detailPlace": "Horseshoe Bend"
+        },
+        {
+          "time": "10:35",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza per Ken's Tours",
+          "note": "Da Horseshoe Bend a Ken's Tours il trasferimento è breve; teniamo comunque un buon margine prima del check-in.",
+          "mapsQuery": "Ken's Tours Lower Antelope Canyon",
+          "mapSkip": true
+        },
+        {
+          "time": "10:55 circa",
+          "kind": "booked",
+          "icon": "🅿️",
+          "title": "Parcheggio Ken's Tours",
+          "note": "Arrivo con largo margine. Il check-in ufficiale è 30 minuti prima del tour.",
+          "mapsQuery": "Ken's Tours Lower Antelope Canyon",
+          "mapLat": 36.9026,
+          "mapLon": -111.4112,
+          "mapForce": true
+        },
+        {
+          "time": "11:30",
+          "kind": "booked",
+          "icon": "✅",
+          "title": "Check-in Lower Antelope Canyon",
+          "note": "Check-in alle finestre sul lato nord dell'edificio Ken's Tours. Alle 11:50 bisogna essere già pronti per la partenza."
+        },
+        {
+          "time": "12:00–13:00 circa",
+          "kind": "booked",
+          "icon": "✨",
+          "title": "Lower Antelope Canyon",
+          "note": "Tour prenotato. Il General Tour dura normalmente circa 50–60 minuti.",
+          "mapsQuery": "Ken's Tours Lower Antelope Canyon",
+          "mapSkip": true,
+          "detailPlace": "Lower Antelope Canyon"
+        },
+        {
+          "time": "13:15",
+          "kind": "recommended",
+          "icon": "🍗",
+          "title": "BirdHouse",
+          "note": "Pranzo veloce a Page dopo il canyon: fried chicken, informale e con prezzi più contenuti. Non perdiamo troppo tempo prima della lunga tratta per Las Vegas.",
+          "mapsQuery": "BirdHouse 707 N Navajo Dr Page AZ",
+          "mapLat": 36.922,
+          "mapLon": -111.459,
+          "detailRestaurant": "BirdHouse"
+        },
+        {
+          "time": "13:50 circa",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Partenza per Las Vegas",
+          "note": "Page → Las Vegas. Il 29 ottobre Arizona e Nevada hanno lo stesso orario, quindi non ci sono cambi d'ora da calcolare.",
+          "mapsQuery": "Paris Las Vegas",
+          "mapSkip": true
+        },
+        {
+          "time": "18:15–18:30",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Arrivo al Paris Las Vegas",
+          "note": "Arrivo realistico da Page includendo margine sulla strada, parcheggio e check-in. Dopo il lungo road trip lasciate l’auto ferma per tutta la serata.",
+          "mapsQuery": "Paris Las Vegas 3655 Las Vegas Blvd S",
+          "mapLat": 36.1125,
+          "mapLon": -115.1707,
+          "mapForce": true
+        },
+        {
+          "time": "18:55",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Paris → High Roller",
+          "note": "🚶 A piedi consigliato · circa 0,9 km · 11–15 min. Potete passare attraverso Horseshoe/Flamingo e LINQ Promenade senza riprendere l’auto.",
+          "mapsQuery": "High Roller Las Vegas"
+        },
+        {
+          "time": "19:15–20:15 circa",
+          "kind": "recommended",
+          "icon": "🎡",
+          "title": "High Roller",
+          "note": "Il giro dura circa 30 minuti, ma teniamo quasi un’ora complessiva per ingresso, controlli, eventuale coda e imbarco. Se il rientro da Page slitta o siete stanchi, resta la prima cosa da sacrificare.",
+          "mapsQuery": "High Roller Las Vegas",
+          "mapLat": 36.1176,
+          "mapLon": -115.1681,
+          "detailPlace": "High Roller"
+        },
+        {
+          "time": "20:15",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · High Roller → Cosmopolitan",
+          "note": "🚶 A piedi · circa 1,4 km · 17–20 min lungo la Strip. È più semplice che recuperare l’auto per spostarla di un solo miglio.",
+          "mapsQuery": "The Cosmopolitan of Las Vegas 3708 Las Vegas Blvd S"
+        },
+        {
+          "time": "20:40 circa",
+          "kind": "recommended",
+          "icon": "🍕",
+          "title": "Secret Pizza · Cosmopolitan",
+          "note": "Cena volutamente semplice ed economica dopo il road trip. Si trova al terzo piano del Cosmopolitan ed è adatta anche a una cena più tarda del solito.",
+          "mapsQuery": "Secret Pizza Cosmopolitan Las Vegas",
+          "mapLat": 36.1096,
+          "mapLon": -115.174,
+          "detailRestaurant": "Secret Pizza"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Rientro · Cosmopolitan → Paris Las Vegas",
+          "note": "🚶 A piedi · circa 600–800 m · 8–12 min. Se avete ancora energia potete trasformare il rientro in una passeggiata libera sulla Strip.",
+          "mapsQuery": "Paris Las Vegas"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "optional",
+          "icon": "🌙",
+          "title": "Serata libera a Las Vegas",
+          "note": "Casinò, drink oppure rientro in camera. Nessun’altra attrazione obbligatoria: domani volo mattutino per Chicago."
+        }
+      ]
+    }
   ],
-  vegas2: [
-    { date:"2026-10-29", title:"Page → Las Vegas", theme:"Rientro a Las Vegas e serata volutamente leggera", items:[
-      { time:"18:15–18:30", kind:"recommended", icon:"🏨", title:"Arrivo al Paris Las Vegas", note:"Arrivo realistico da Page includendo un minimo di margine sulla strada, parcheggio e check-in.", mapsQuery:"Paris Las Vegas 3655 Las Vegas Blvd S", mapLat:36.1125, mapLon:-115.1707, mapForce:true },
-      { time:"19:30 circa", kind:"recommended", icon:"🎡", title:"High Roller", note:"Una sola attrazione prima di cena: giro panoramico di circa 30 minuti al LINQ con vista a 360° sulla Strip illuminata. Se il rientro da Page slitta o siete stanchi, resta facilmente sacrificabile.", mapsQuery:"High Roller Las Vegas", mapLat:36.1176, mapLon:-115.1681, detailPlace:"High Roller" },
-      { time:"20:30 circa", kind:"recommended", icon:"🍕", title:"Secret Pizza · Cosmopolitan", note:"Cena volutamente semplice ed economica: pizza al taglio al Cosmopolitan, raggiungibile a piedi dal Paris.", mapsQuery:"Secret Pizza Cosmopolitan Las Vegas", mapLat:36.1096, mapLon:-115.1740, detailRestaurant:"Secret Pizza" },
-      { time:"Dopo cena", kind:"optional", icon:"🌙", title:"Serata libera a Las Vegas", note:"Passeggiata sulla Strip, casinò, drink oppure rientro in hotel. Nessun altro programma obbligatorio: il volo per Chicago parte la mattina successiva." },
-      { time:"05:15 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 30 ottobre", note:"Domani volo LAS → ORD alle 09:58. Puntiamo a lasciare il Paris verso le 06:30, riconsegnare il SUV e arrivare in aeroporto con margine. Sveglia alle 05:15; colazione in aeroporto." }
-    ]}
+  "vegas2": [
+    {
+      "date": "2026-10-29",
+      "title": "Page → Las Vegas",
+      "theme": "Rientro a Las Vegas e serata volutamente leggera, tutta a piedi dal Paris.",
+      "items": [
+        {
+          "time": "18:15–18:30",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Arrivo al Paris Las Vegas",
+          "note": "Arrivo realistico da Page includendo margine sulla strada, parcheggio e check-in. Dopo il lungo road trip lasciate l’auto ferma per tutta la serata.",
+          "mapsQuery": "Paris Las Vegas 3655 Las Vegas Blvd S",
+          "mapLat": 36.1125,
+          "mapLon": -115.1707,
+          "mapForce": true
+        },
+        {
+          "time": "18:55",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · Paris → High Roller",
+          "note": "🚶 A piedi consigliato · circa 0,9 km · 11–15 min. Potete passare attraverso Horseshoe/Flamingo e LINQ Promenade senza riprendere l’auto.",
+          "mapsQuery": "High Roller Las Vegas"
+        },
+        {
+          "time": "19:15–20:15 circa",
+          "kind": "recommended",
+          "icon": "🎡",
+          "title": "High Roller",
+          "note": "Il giro dura circa 30 minuti, ma teniamo quasi un’ora complessiva per ingresso, controlli, eventuale coda e imbarco. Se il rientro da Page slitta o siete stanchi, resta la prima cosa da sacrificare.",
+          "mapsQuery": "High Roller Las Vegas",
+          "mapLat": 36.1176,
+          "mapLon": -115.1681,
+          "detailPlace": "High Roller"
+        },
+        {
+          "time": "20:15",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Spostamento · High Roller → Cosmopolitan",
+          "note": "🚶 A piedi · circa 1,4 km · 17–20 min lungo la Strip. È più semplice che recuperare l’auto per spostarla di un solo miglio.",
+          "mapsQuery": "The Cosmopolitan of Las Vegas 3708 Las Vegas Blvd S"
+        },
+        {
+          "time": "20:40 circa",
+          "kind": "recommended",
+          "icon": "🍕",
+          "title": "Secret Pizza · Cosmopolitan",
+          "note": "Cena volutamente semplice ed economica dopo il road trip. Si trova al terzo piano del Cosmopolitan ed è adatta anche a una cena più tarda del solito.",
+          "mapsQuery": "Secret Pizza Cosmopolitan Las Vegas",
+          "mapLat": 36.1096,
+          "mapLon": -115.174,
+          "detailRestaurant": "Secret Pizza"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "transfer",
+          "icon": "🚶",
+          "title": "Rientro · Cosmopolitan → Paris Las Vegas",
+          "note": "🚶 A piedi · circa 600–800 m · 8–12 min. Se avete ancora energia potete trasformare il rientro in una passeggiata libera sulla Strip.",
+          "mapsQuery": "Paris Las Vegas"
+        },
+        {
+          "time": "Dopo cena",
+          "kind": "optional",
+          "icon": "🌙",
+          "title": "Serata libera a Las Vegas",
+          "note": "Casinò, drink oppure rientro in camera. Nessun’altra attrazione obbligatoria: domani volo mattutino per Chicago."
+        },
+        {
+          "time": "05:15 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 30 ottobre",
+          "note": "Domani volo LAS → ORD alle 09:58. Puntiamo a lasciare il Paris verso le 06:30, riconsegnare il SUV e arrivare in aeroporto con margine. Sveglia alle 05:15; colazione in aeroporto."
+        }
+      ]
+    }
   ],
-  chicago: [
-    { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Arrivo a Chicago e prima passeggiata serale senza stress", items:[
-      { time:"05:15", kind:"recommended", icon:"⏰", title:"Sveglia al Paris Las Vegas", note:"Ultime cose e check-out. Colazione direttamente in aeroporto." },
-      { time:"06:30 circa", kind:"recommended", icon:"🚗", title:"Paris → LAS · riconsegna SUV", note:"Partenza con margine per riconsegna dell’auto, navetta verso il terminal, sicurezza e colazione.", mapsQuery:"Harry Reid International Airport car rental return" },
-      { time:"09:58", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Las Vegas → Chicago O’Hare · arrivo previsto alle 15:53 ora locale." },
-      { time:"15:53", kind:"booked", icon:"🛬", title:"Arrivo a Chicago O’Hare", note:"Ritiro bagagli e uscita dall’aeroporto." },
-      { time:"16:30 circa", kind:"recommended", icon:"🚕", title:"ORD → Warwick Allerton", note:"Per il primo arrivo scegliamo Uber/taxi: con valigie e giornata iniziata presto è più comodo della CTA.", transportTip:"🚕 Uber/taxi consigliato · ~35–50 min", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
-      { time:"17:30 circa", kind:"recommended", icon:"🏨", title:"Check-in Warwick Allerton + pausa", note:"Sistemazione in camera e un po’ di riposo prima di uscire." },
-      { time:"18:30", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Prima passeggiata a Chicago direttamente dalla porta dell’hotel, lungo Michigan Avenue.", transportTip:"🚶 A piedi", mapsQuery:"Magnificent Mile Chicago", mapLat:41.8954, mapLon:-87.6243, detailPlace:"Magnificent Mile" },
-      { time:"19:15", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Scendete verso il fiume per il primo impatto con i grattacieli illuminati. Passeggiata libera, senza correre.", transportTip:"🚶 A piedi · ~12–15 min", mapsQuery:"Chicago Riverwalk", mapLat:41.8877, mapLon:-87.6263, detailPlace:"Chicago Riverwalk" },
-      { time:"20:30", kind:"recommended", icon:"🍷", title:"The Purple Pig", note:"Cena già scelta sulla Michigan Avenue: cucina mediterranea e piatti da condividere. Così, dopo viaggio e passeggiata, non dobbiamo metterci a cercare un ristorante.", transportTip:"🚶 A piedi · pochi minuti dal Riverwalk", mapsQuery:"The Purple Pig 444 N Michigan Ave Chicago", mapLat:41.8906, mapLon:-87.6243, detailRestaurant:"The Purple Pig" },
-      { time:"22:00 circa", kind:"recommended", icon:"🏨", title:"Rientro al Warwick", note:"Rientro a piedi e riposo: domani è Halloween." }
-    ]},
-    { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Colazione con calma, River North e Haunted Halsted come evento principale", special:true, items:[
-      { time:"08:20", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Mattinata senza sveglia aggressiva: Wildberry è a pochi minuti dall’hotel.", transportTip:"🚶 A piedi · ~5 min", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago" },
-      { time:"08:30", kind:"recommended", icon:"🥞", title:"Wildberry Pancakes and Cafe", note:"Bella colazione americana con calma: pancakes, French toast, Benedict, omelette e skillet. Sede Water Tower Place, 196 E Pearson St.", transportTip:"🚶 A piedi · ~3 min verso Water Tower", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago", detailRestaurant:"Wildberry Pancakes and Cafe · Water Tower" },
-      { time:"09:50", kind:"recommended", icon:"🏛️", title:"Chicago Water Tower", note:"Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici sopravvissuti al Grande Incendio del 1871.", transportTip:"🚶 A piedi · pochi minuti", mapsQuery:"Chicago Water Tower", detailPlace:"Chicago Water Tower" },
-      { time:"10:15", kind:"recommended", icon:"☕", title:"Starbucks Reserve Roastery", note:"Entriamo per vedere la grande Roastery su più piani di Michigan Avenue. Non è una seconda colazione: bastano 30–45 minuti per curiosare.", transportTip:"🚶 A piedi · ~5 min", mapsQuery:"Starbucks Reserve Roastery Chicago 646 N Michigan Ave", detailPlace:"Starbucks Reserve Roastery" },
-      { time:"11:15–12:45", kind:"optional", icon:"🛍️", title:"Tempo libero · River North / hotel", note:"Niente altra attrazione obbligatoria prima di pranzo: negozi, due passi o rientro al Warwick per riposare e prepararci alla parte Halloween." },
-      { time:"13:30", kind:"recommended", icon:"🌭", title:"Portillo's · River North", note:"Pranzo con calma all’orario giusto per noi: Chicago-style hot dog o Italian beef.", transportTip:"🚶 A piedi dal Warwick/River North", mapsQuery:"Portillo's 100 W Ontario St Chicago", mapLat:41.8930, mapLon:-87.6312, detailRestaurant:"Portillo's · River North" },
-      { time:"14:45", kind:"recommended", icon:"🏨", title:"Rientro al Warwick Allerton", note:"Riposo e cambio prima di Halloween. Evitiamo di attraversare il Loop inutilmente nel pomeriggio del 31." },
-      { time:"16:50", kind:"recommended", icon:"🚇", title:"Partenza per Northalsted", note:"CTA o rideshare verso Halsted & Belmont; meglio arrivare prima che la zona si riempia.", transportTip:"🚇 CTA consigliata · Red Line + breve tratto a piedi · ~25 min", mapsQuery:"Drew's on Halsted Chicago" },
-      { time:"18:30", kind:"booked", icon:"🎃", title:"Haunted Halsted Halloween Parade", note:"Per gli spettatori non serve registrazione né biglietto. Arrivate per l’atmosfera pre-parata; kickoff previsto alle 19:30.", transportTip:"🚶 A piedi · 1–2 min fino a Drew's", mapsQuery:"Halsted St and Belmont Ave Chicago", mapLat:41.9395, mapLon:-87.6491, detailPlace:"Haunted Halsted Halloween Parade" },
-      { time:"20:45 circa", kind:"recommended", icon:"🍔", title:"Drew's on Halsted", note:"Cena dopo la parata, restando direttamente in zona Halsted & Belmont. Sabato il locale chiude alle 22:00, quindi 20:45 lascia un margine comodo.", transportTip:"🚕 Uber consigliato per il rientro · ~15–25 min", mapsQuery:"Drew's on Halsted 3201 N Halsted St Chicago", mapLat:41.9401, mapLon:-87.6492, detailRestaurant:"Drew's on Halsted" }
-    ]},
-    { date:"2026-11-01", title:"Chicago dal fiume e Navy Pier", theme:"Una giornata da vivere con calma tra l'architettura sul Chicago River, la deep-dish e il Lake Michigan, lasciandoci anche il tempo di goderci la città senza correre.", items:[
-      { time:"10:00", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Mattina volutamente tranquilla dopo Halloween. Si scende verso Michigan Avenue e Wacker Drive.", transportTip:"🚶 A piedi · ~15 min", mapsQuery:"Chicago Architecture Center River Cruise" },
-      { time:"10:30", kind:"recommended", icon:"⚓", title:"Arrivo al molo Chicago's First Lady", note:"Punto d'imbarco al 112 E Wacker Dr. Il CAC chiede di arrivare 30 minuti prima. Orario della crociera ancora da prenotare.", mapsQuery:"112 E Wacker Dr Chicago", mapLat:41.8874, mapLon:-87.6246, mapForce:true },
-      { time:"11:00 circa", kind:"recommended", icon:"🚢", title:"Architecture River Cruise", note:"Slot indicativo finché non prenotiamo. La crociera dura 90 minuti.", mapsQuery:"Chicago Architecture Center River Cruise", mapLat:41.8874, mapLon:-87.6246, detailPlace:"Architecture River Cruise" },
-      { time:"12:45", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Dopo lo sbarco restate sul fiume e completate con calma il tratto che vi è piaciuto di più.", transportTip:"🚶 A piedi · ~15 min verso Lou Malnati's", mapsQuery:"Chicago Riverwalk", mapLat:41.8877, mapLon:-87.6263, detailPlace:"Chicago Riverwalk" },
-      { time:"13:30", kind:"recommended", icon:"🍕", title:"Lou Malnati's · River North", note:"Pranzo con deep-dish. Ordinate appena seduti: la cottura richiede più tempo di una pizza normale.", transportTip:"🚕 Uber comodo · ~10–15 min verso Navy Pier", mapsQuery:"Lou Malnati's 439 N Wells St Chicago", mapLat:41.8903, mapLon:-87.6341, detailRestaurant:"Lou Malnati's · River North" },
-      { time:"15:15", kind:"recommended", icon:"🎡", title:"Navy Pier", note:"Pomeriggio sul Lake Michigan, passeggiata sul molo e skyline. Nessuna attrazione a pagamento obbligatoria.", transportTip:"🚇 CTA/bus · ~15–20 min verso Magnificent Mile", mapsQuery:"Navy Pier Chicago", mapLat:41.8917, mapLon:-87.6078, detailPlace:"Navy Pier" },
-      { time:"17:30", kind:"recommended", icon:"🚶", title:"Rientro verso Magnificent Mile", note:"Passeggiata/rientro verso l'hotel; tempo libero per negozi o riposo.", transportTip:"🚶 A piedi · ~8 min dall’hotel a Quartino" },
-      { time:"20:30", kind:"recommended", icon:"🍝", title:"Quartino Ristorante", note:"Cena a River North, abbastanza vicina all'hotel: pasta, pizza e piccoli piatti da condividere.", mapsQuery:"Quartino Ristorante 626 N State St Chicago", mapLat:41.8935, mapLon:-87.6284, detailRestaurant:"Quartino Ristorante" }
-    ]},
-    { date:"2026-11-02", title:"Millennium Park, museo, panorama e deep dish", theme:"Ultima giornata piena, con Millennium Park incastrato naturalmente prima dell'Art Institute", items:[
-      { time:"09:30", kind:"recommended", icon:"🚶", title:"Partenza dal Warwick Allerton", note:"Scendiamo verso il Loop senza fretta: il museo apre alle 11:00, quindi sfruttiamo il tragitto per Millennium Park.", transportTip:"🚇 CTA/bus consigliata · ~15–20 min", mapsQuery:"Millennium Park Chicago" },
-      { time:"10:00", kind:"recommended", icon:"🌳", title:"Millennium Park", note:"Passeggiata compatta nel parco prima del museo: non serve dedicargli mezza giornata.", transportTip:"🚶 A piedi", mapsQuery:"Millennium Park Chicago", mapLat:41.8826, mapLon:-87.6226, detailPlace:"Millennium Park" },
-      { time:"10:20", kind:"recommended", icon:"☁️", title:"Cloud Gate · The Bean", note:"Foto con il simbolo di Chicago senza fare un viaggio apposta: siamo già a pochi minuti dall’Art Institute.", transportTip:"🚶 A piedi · ~8–10 min verso Art Institute", mapsQuery:"Cloud Gate Chicago", mapLat:41.8827, mapLon:-87.6233, detailPlace:"Cloud Gate · The Bean" },
-      { time:"11:00", kind:"recommended", icon:"🎨", title:"Art Institute of Chicago", note:"Ingresso all'apertura pubblica. Dedicate circa 2 ore e mezza alle opere principali senza trasformarlo in una maratona.", transportTip:"🚶 A piedi · ~10–12 min", mapsQuery:"Art Institute of Chicago", mapLat:41.8796, mapLon:-87.6237, detailPlace:"Art Institute of Chicago" },
-      { time:"13:45", kind:"recommended", icon:"🌳", title:"Grant Park & Buckingham Fountain", note:"Usciti dal museo proseguite verso sud nel parco fino alla fontana e al lakefront.", transportTip:"🚶 A piedi · risalendo verso Michigan Ave", mapsQuery:"Buckingham Fountain Chicago", mapLat:41.8758, mapLon:-87.6189, detailPlace:"Grant Park & Buckingham Fountain" },
-      { time:"14:45", kind:"recommended", icon:"🍿", title:"Garrett Popcorn / pausa", note:"Snack leggero mentre tornate verso Michigan Avenue; teniamoci spazio per la deep-dish serale.", transportTip:"🚇 CTA/bus · ~15 min verso 360 Chicago" },
-      { time:"16:00", kind:"recommended", icon:"🔭", title:"360 Chicago", note:"Vista dall'alto al 875 N Michigan. È praticamente accanto al vostro hotel, quindi è la scelta più efficiente rispetto allo Skydeck.", transportTip:"🚶 A piedi · 3–5 min fino all’hotel", mapsQuery:"360 Chicago Observation Deck", mapLat:41.8988, mapLon:-87.6230, detailPlace:"360 Chicago" },
-      { time:"17:30", kind:"recommended", icon:"🏨", title:"Rientro al Warwick Allerton", note:"Ultimo riposo in hotel prima della cena finale a Chicago.", transportTip:"🚇 CTA/bus · ~15–20 min verso Giordano's" },
-      { time:"20:30", kind:"recommended", icon:"🍕", title:"Giordano's · Millennium Park", note:"Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.", transportTip:"🚕 Uber consigliato per il rientro serale · ~10 min", mapsQuery:"Giordano's 130 E Randolph St Chicago", mapLat:41.8845, mapLon:-87.6232, detailRestaurant:"Giordano's · Millennium Park" },
-      { time:"05:15 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 3 novembre", note:"Domani volo ORD → PUJ alle 09:17. Partenza dal Warwick Allerton prevista alle 06:30: sveglia alle 05:15, circa 1h15 per prepararci e fare check-out; colazione in aeroporto." }
-    ]},
-    { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto", items:[
-      { time:"05:15", kind:"recommended", icon:"⏰", title:"Sveglia e ultime cose", note:"Controllo finale della camera e preparazione per il check-out. Colazione direttamente in aeroporto; oggi niente programma turistico." },
-      { time:"06:15", kind:"recommended", icon:"🧳", title:"Check-out Warwick Allerton", note:"Check-out e partenza senza tirare i tempi." },
-      { time:"06:30", kind:"recommended", icon:"🚕", title:"Partenza per Chicago O'Hare", note:"Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.", transportTip:"🚕 Uber/taxi consigliato · ~30–45 min", mapsQuery:"Chicago O'Hare International Airport Terminal 1", mapLat:41.9742, mapLon:-87.9073, mapForce:true },
-      { time:"07:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a ORD · Terminal 1", note:"Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.", mapsQuery:"O'Hare International Airport Terminal 1", mapLat:41.9773, mapLon:-87.9048, mapForce:true },
-      { time:"09:17", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"United UA1862 · orario attualmente pubblicato: arrivo previsto alle 15:57 ora locale." },
-      { time:"15:57", kind:"booked", icon:"🇩🇴", title:"Arrivo a Punta Cana · PUJ", note:"Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso." },
-      { time:"17:10–17:25 circa", kind:"recommended", icon:"🚐", title:"Trasferimento PUJ → Bayahibe", note:"Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto." },
-      { time:"18:10–18:40 circa", kind:"recommended", icon:"🏝️", title:"Arrivo al Viva Dominicus Palace", note:"Check-in, sistemazione e finalmente inizio della parte relax del viaggio." },
-      { time:"20:30", kind:"recommended", icon:"🍽️", title:"Cena al resort", note:"Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago." }
-    ]}
+  "chicago": [
+    {
+      "date": "2026-10-30",
+      "title": "Las Vegas → Chicago",
+      "theme": "Arrivo a Chicago e prima passeggiata serale senza stress",
+      "items": [
+        {
+          "time": "05:15",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia al Paris Las Vegas",
+          "note": "Ultime cose e check-out. Colazione direttamente in aeroporto."
+        },
+        {
+          "time": "06:30 circa",
+          "kind": "recommended",
+          "icon": "🚗",
+          "title": "Paris → LAS · riconsegna SUV",
+          "note": "Partenza con margine per riconsegna dell’auto, navetta verso il terminal, sicurezza e colazione.",
+          "mapsQuery": "Harry Reid International Airport car rental return"
+        },
+        {
+          "time": "09:58",
+          "kind": "booked",
+          "icon": "✈️",
+          "title": "Volo LAS → ORD",
+          "note": "Las Vegas → Chicago O’Hare · arrivo previsto alle 15:53 ora locale."
+        },
+        {
+          "time": "15:53",
+          "kind": "booked",
+          "icon": "🛬",
+          "title": "Arrivo a Chicago O’Hare",
+          "note": "Ritiro bagagli e uscita dall’aeroporto."
+        },
+        {
+          "time": "16:30 circa",
+          "kind": "recommended",
+          "icon": "🚕",
+          "title": "ORD → Warwick Allerton",
+          "note": "Per il primo arrivo scegliamo Uber/taxi: con valigie e giornata iniziata presto è più comodo della CTA.",
+          "transportTip": "🚕 Uber/taxi consigliato · ~35–50 min",
+          "mapsQuery": "Warwick Allerton Chicago 701 N Michigan Ave"
+        },
+        {
+          "time": "17:30 circa",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Check-in Warwick Allerton + pausa",
+          "note": "Sistemazione in camera e un po’ di riposo prima di uscire."
+        },
+        {
+          "time": "18:30",
+          "kind": "recommended",
+          "icon": "🏙️",
+          "title": "Magnificent Mile",
+          "note": "Prima passeggiata a Chicago direttamente dalla porta dell’hotel, lungo Michigan Avenue.",
+          "transportTip": "🚶 A piedi",
+          "mapsQuery": "Magnificent Mile Chicago",
+          "mapLat": 41.8954,
+          "mapLon": -87.6243,
+          "detailPlace": "Magnificent Mile"
+        },
+        {
+          "time": "19:15",
+          "kind": "recommended",
+          "icon": "🌉",
+          "title": "Chicago Riverwalk",
+          "note": "Scendete verso il fiume per il primo impatto con i grattacieli illuminati. Passeggiata libera, senza correre.",
+          "transportTip": "🚶 A piedi · ~12–15 min",
+          "mapsQuery": "Chicago Riverwalk",
+          "mapLat": 41.8877,
+          "mapLon": -87.6263,
+          "detailPlace": "Chicago Riverwalk"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍷",
+          "title": "The Purple Pig",
+          "note": "Cena già scelta sulla Michigan Avenue: cucina mediterranea e piatti da condividere. Così, dopo viaggio e passeggiata, non dobbiamo metterci a cercare un ristorante.",
+          "transportTip": "🚶 A piedi · pochi minuti dal Riverwalk",
+          "mapsQuery": "The Purple Pig 444 N Michigan Ave Chicago",
+          "mapLat": 41.8906,
+          "mapLon": -87.6243,
+          "detailRestaurant": "The Purple Pig"
+        },
+        {
+          "time": "22:00 circa",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Rientro al Warwick",
+          "note": "Rientro a piedi e riposo: domani è Halloween."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-31",
+      "title": "Halloween a Chicago 🎃",
+      "theme": "Colazione con calma, River North e Haunted Halsted come evento principale",
+      "special": true,
+      "items": [
+        {
+          "time": "08:20",
+          "kind": "recommended",
+          "icon": "🚶",
+          "title": "Partenza dal Warwick Allerton",
+          "note": "Mattinata senza sveglia aggressiva: Wildberry è a pochi minuti dall’hotel.",
+          "transportTip": "🚶 A piedi · ~5 min",
+          "mapsQuery": "Wildberry Pancakes and Cafe 196 E Pearson St Chicago"
+        },
+        {
+          "time": "08:30",
+          "kind": "recommended",
+          "icon": "🥞",
+          "title": "Wildberry Pancakes and Cafe",
+          "note": "Bella colazione americana con calma: pancakes, French toast, Benedict, omelette e skillet. Sede Water Tower Place, 196 E Pearson St.",
+          "transportTip": "🚶 A piedi · ~3 min verso Water Tower",
+          "mapsQuery": "Wildberry Pancakes and Cafe 196 E Pearson St Chicago",
+          "detailRestaurant": "Wildberry Pancakes and Cafe · Water Tower"
+        },
+        {
+          "time": "09:50",
+          "kind": "recommended",
+          "icon": "🏛️",
+          "title": "Chicago Water Tower",
+          "note": "Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici sopravvissuti al Grande Incendio del 1871.",
+          "transportTip": "🚶 A piedi · pochi minuti",
+          "mapsQuery": "Chicago Water Tower",
+          "detailPlace": "Chicago Water Tower"
+        },
+        {
+          "time": "10:15",
+          "kind": "recommended",
+          "icon": "☕",
+          "title": "Starbucks Reserve Roastery",
+          "note": "Entriamo per vedere la grande Roastery su più piani di Michigan Avenue. Non è una seconda colazione: bastano 30–45 minuti per curiosare.",
+          "transportTip": "🚶 A piedi · ~5 min",
+          "mapsQuery": "Starbucks Reserve Roastery Chicago 646 N Michigan Ave",
+          "detailPlace": "Starbucks Reserve Roastery"
+        },
+        {
+          "time": "11:15–12:45",
+          "kind": "optional",
+          "icon": "🛍️",
+          "title": "Tempo libero · River North / hotel",
+          "note": "Niente altra attrazione obbligatoria prima di pranzo: negozi, due passi o rientro al Warwick per riposare e prepararci alla parte Halloween."
+        },
+        {
+          "time": "13:30",
+          "kind": "recommended",
+          "icon": "🌭",
+          "title": "Portillo's · River North",
+          "note": "Pranzo con calma all’orario giusto per noi: Chicago-style hot dog o Italian beef.",
+          "transportTip": "🚶 A piedi dal Warwick/River North",
+          "mapsQuery": "Portillo's 100 W Ontario St Chicago",
+          "mapLat": 41.893,
+          "mapLon": -87.6312,
+          "detailRestaurant": "Portillo's · River North"
+        },
+        {
+          "time": "14:45",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Rientro al Warwick Allerton",
+          "note": "Riposo e cambio prima di Halloween. Evitiamo di attraversare il Loop inutilmente nel pomeriggio del 31."
+        },
+        {
+          "time": "16:50",
+          "kind": "recommended",
+          "icon": "🚇",
+          "title": "Partenza per Northalsted",
+          "note": "CTA o rideshare verso Halsted & Belmont; meglio arrivare prima che la zona si riempia.",
+          "transportTip": "🚇 CTA consigliata · Red Line + breve tratto a piedi · ~25 min",
+          "mapsQuery": "Drew's on Halsted Chicago"
+        },
+        {
+          "time": "18:30",
+          "kind": "booked",
+          "icon": "🎃",
+          "title": "Haunted Halsted Halloween Parade",
+          "note": "Per gli spettatori non serve registrazione né biglietto. Arrivate per l’atmosfera pre-parata; kickoff previsto alle 19:30.",
+          "transportTip": "🚶 A piedi · 1–2 min fino a Drew's",
+          "mapsQuery": "Halsted St and Belmont Ave Chicago",
+          "mapLat": 41.9395,
+          "mapLon": -87.6491,
+          "detailPlace": "Haunted Halsted Halloween Parade"
+        },
+        {
+          "time": "20:45 circa",
+          "kind": "recommended",
+          "icon": "🍔",
+          "title": "Drew's on Halsted",
+          "note": "Cena dopo la parata, restando direttamente in zona Halsted & Belmont. Sabato il locale chiude alle 22:00, quindi 20:45 lascia un margine comodo.",
+          "transportTip": "🚕 Uber consigliato per il rientro · ~15–25 min",
+          "mapsQuery": "Drew's on Halsted 3201 N Halsted St Chicago",
+          "mapLat": 41.9401,
+          "mapLon": -87.6492,
+          "detailRestaurant": "Drew's on Halsted"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-01",
+      "title": "Chicago dal fiume e Navy Pier",
+      "theme": "Una giornata da vivere con calma tra l'architettura sul Chicago River, la deep-dish e il Lake Michigan, lasciandoci anche il tempo di goderci la città senza correre.",
+      "items": [
+        {
+          "time": "10:00",
+          "kind": "recommended",
+          "icon": "🚶",
+          "title": "Partenza dal Warwick Allerton",
+          "note": "Mattina volutamente tranquilla dopo Halloween. Si scende verso Michigan Avenue e Wacker Drive.",
+          "transportTip": "🚶 A piedi · ~15 min",
+          "mapsQuery": "Chicago Architecture Center River Cruise"
+        },
+        {
+          "time": "10:30",
+          "kind": "recommended",
+          "icon": "⚓",
+          "title": "Arrivo al molo Chicago's First Lady",
+          "note": "Punto d'imbarco al 112 E Wacker Dr. Il CAC chiede di arrivare 30 minuti prima. Orario della crociera ancora da prenotare.",
+          "mapsQuery": "112 E Wacker Dr Chicago",
+          "mapLat": 41.8874,
+          "mapLon": -87.6246,
+          "mapForce": true
+        },
+        {
+          "time": "11:00 circa",
+          "kind": "recommended",
+          "icon": "🚢",
+          "title": "Architecture River Cruise",
+          "note": "Slot indicativo finché non prenotiamo. La crociera dura 90 minuti.",
+          "mapsQuery": "Chicago Architecture Center River Cruise",
+          "mapLat": 41.8874,
+          "mapLon": -87.6246,
+          "detailPlace": "Architecture River Cruise"
+        },
+        {
+          "time": "12:45",
+          "kind": "recommended",
+          "icon": "🌉",
+          "title": "Chicago Riverwalk",
+          "note": "Dopo lo sbarco restate sul fiume e completate con calma il tratto che vi è piaciuto di più.",
+          "transportTip": "🚶 A piedi · ~15 min verso Lou Malnati's",
+          "mapsQuery": "Chicago Riverwalk",
+          "mapLat": 41.8877,
+          "mapLon": -87.6263,
+          "detailPlace": "Chicago Riverwalk"
+        },
+        {
+          "time": "13:30",
+          "kind": "recommended",
+          "icon": "🍕",
+          "title": "Lou Malnati's · River North",
+          "note": "Pranzo con deep-dish. Ordinate appena seduti: la cottura richiede più tempo di una pizza normale.",
+          "transportTip": "🚕 Uber comodo · ~10–15 min verso Navy Pier",
+          "mapsQuery": "Lou Malnati's 439 N Wells St Chicago",
+          "mapLat": 41.8903,
+          "mapLon": -87.6341,
+          "detailRestaurant": "Lou Malnati's · River North"
+        },
+        {
+          "time": "15:15",
+          "kind": "recommended",
+          "icon": "🎡",
+          "title": "Navy Pier",
+          "note": "Pomeriggio sul Lake Michigan, passeggiata sul molo e skyline. Nessuna attrazione a pagamento obbligatoria.",
+          "transportTip": "🚇 CTA/bus · ~15–20 min verso Magnificent Mile",
+          "mapsQuery": "Navy Pier Chicago",
+          "mapLat": 41.8917,
+          "mapLon": -87.6078,
+          "detailPlace": "Navy Pier"
+        },
+        {
+          "time": "17:30",
+          "kind": "recommended",
+          "icon": "🚶",
+          "title": "Rientro verso Magnificent Mile",
+          "note": "Passeggiata/rientro verso l'hotel; tempo libero per negozi o riposo.",
+          "transportTip": "🚶 A piedi · ~8 min dall’hotel a Quartino"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍝",
+          "title": "Quartino Ristorante",
+          "note": "Cena a River North, abbastanza vicina all'hotel: pasta, pizza e piccoli piatti da condividere.",
+          "mapsQuery": "Quartino Ristorante 626 N State St Chicago",
+          "mapLat": 41.8935,
+          "mapLon": -87.6284,
+          "detailRestaurant": "Quartino Ristorante"
+        }
+      ]
+    },
+    {
+      "date": "2026-11-02",
+      "title": "Millennium Park, museo, panorama e deep dish",
+      "theme": "Ultima giornata piena, con Millennium Park incastrato naturalmente prima dell'Art Institute",
+      "items": [
+        {
+          "time": "09:30",
+          "kind": "recommended",
+          "icon": "🚶",
+          "title": "Partenza dal Warwick Allerton",
+          "note": "Scendiamo verso il Loop senza fretta: il museo apre alle 11:00, quindi sfruttiamo il tragitto per Millennium Park.",
+          "transportTip": "🚇 CTA/bus consigliata · ~15–20 min",
+          "mapsQuery": "Millennium Park Chicago"
+        },
+        {
+          "time": "10:00",
+          "kind": "recommended",
+          "icon": "🌳",
+          "title": "Millennium Park",
+          "note": "Passeggiata compatta nel parco prima del museo: non serve dedicargli mezza giornata.",
+          "transportTip": "🚶 A piedi",
+          "mapsQuery": "Millennium Park Chicago",
+          "mapLat": 41.8826,
+          "mapLon": -87.6226,
+          "detailPlace": "Millennium Park"
+        },
+        {
+          "time": "10:20",
+          "kind": "recommended",
+          "icon": "☁️",
+          "title": "Cloud Gate · The Bean",
+          "note": "Foto con il simbolo di Chicago senza fare un viaggio apposta: siamo già a pochi minuti dall’Art Institute.",
+          "transportTip": "🚶 A piedi · ~8–10 min verso Art Institute",
+          "mapsQuery": "Cloud Gate Chicago",
+          "mapLat": 41.8827,
+          "mapLon": -87.6233,
+          "detailPlace": "Cloud Gate · The Bean"
+        },
+        {
+          "time": "11:00",
+          "kind": "recommended",
+          "icon": "🎨",
+          "title": "Art Institute of Chicago",
+          "note": "Ingresso all'apertura pubblica. Dedicate circa 2 ore e mezza alle opere principali senza trasformarlo in una maratona.",
+          "transportTip": "🚶 A piedi · ~10–12 min",
+          "mapsQuery": "Art Institute of Chicago",
+          "mapLat": 41.8796,
+          "mapLon": -87.6237,
+          "detailPlace": "Art Institute of Chicago"
+        },
+        {
+          "time": "13:45",
+          "kind": "recommended",
+          "icon": "🌳",
+          "title": "Grant Park & Buckingham Fountain",
+          "note": "Usciti dal museo proseguite verso sud nel parco fino alla fontana e al lakefront.",
+          "transportTip": "🚶 A piedi · risalendo verso Michigan Ave",
+          "mapsQuery": "Buckingham Fountain Chicago",
+          "mapLat": 41.8758,
+          "mapLon": -87.6189,
+          "detailPlace": "Grant Park & Buckingham Fountain"
+        },
+        {
+          "time": "14:45",
+          "kind": "recommended",
+          "icon": "🍿",
+          "title": "Garrett Popcorn / pausa",
+          "note": "Snack leggero mentre tornate verso Michigan Avenue; teniamoci spazio per la deep-dish serale.",
+          "transportTip": "🚇 CTA/bus · ~15 min verso 360 Chicago"
+        },
+        {
+          "time": "16:00",
+          "kind": "recommended",
+          "icon": "🔭",
+          "title": "360 Chicago",
+          "note": "Vista dall'alto al 875 N Michigan. È praticamente accanto al vostro hotel, quindi è la scelta più efficiente rispetto allo Skydeck.",
+          "transportTip": "🚶 A piedi · 3–5 min fino all’hotel",
+          "mapsQuery": "360 Chicago Observation Deck",
+          "mapLat": 41.8988,
+          "mapLon": -87.623,
+          "detailPlace": "360 Chicago"
+        },
+        {
+          "time": "17:30",
+          "kind": "recommended",
+          "icon": "🏨",
+          "title": "Rientro al Warwick Allerton",
+          "note": "Ultimo riposo in hotel prima della cena finale a Chicago.",
+          "transportTip": "🚇 CTA/bus · ~15–20 min verso Giordano's"
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍕",
+          "title": "Giordano's · Millennium Park",
+          "note": "Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.",
+          "transportTip": "🚕 Uber consigliato per il rientro serale · ~10 min",
+          "mapsQuery": "Giordano's 130 E Randolph St Chicago",
+          "mapLat": 41.8845,
+          "mapLon": -87.6232,
+          "detailRestaurant": "Giordano's · Millennium Park"
+        },
+        {
+          "time": "05:15 · domani",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia consigliata per il 3 novembre",
+          "note": "Domani volo ORD → PUJ alle 09:17. Partenza dal Warwick Allerton prevista alle 06:30: sveglia alle 05:15, circa 1h15 per prepararci e fare check-out; colazione in aeroporto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-03",
+      "title": "Partenza per Punta Cana",
+      "theme": "Niente visite: aeroporto",
+      "items": [
+        {
+          "time": "05:15",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia e ultime cose",
+          "note": "Controllo finale della camera e preparazione per il check-out. Colazione direttamente in aeroporto; oggi niente programma turistico."
+        },
+        {
+          "time": "06:15",
+          "kind": "recommended",
+          "icon": "🧳",
+          "title": "Check-out Warwick Allerton",
+          "note": "Check-out e partenza senza tirare i tempi."
+        },
+        {
+          "time": "06:30",
+          "kind": "recommended",
+          "icon": "🚕",
+          "title": "Partenza per Chicago O'Hare",
+          "note": "Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.",
+          "transportTip": "🚕 Uber/taxi consigliato · ~30–45 min",
+          "mapsQuery": "Chicago O'Hare International Airport Terminal 1",
+          "mapLat": 41.9742,
+          "mapLon": -87.9073,
+          "mapForce": true
+        },
+        {
+          "time": "07:15 circa",
+          "kind": "recommended",
+          "icon": "🛫",
+          "title": "Arrivo a ORD · Terminal 1",
+          "note": "Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.",
+          "mapsQuery": "O'Hare International Airport Terminal 1",
+          "mapLat": 41.9773,
+          "mapLon": -87.9048,
+          "mapForce": true
+        },
+        {
+          "time": "09:17",
+          "kind": "booked",
+          "icon": "✈️",
+          "title": "Volo ORD → PUJ",
+          "note": "United UA1862 · orario attualmente pubblicato: arrivo previsto alle 15:57 ora locale."
+        },
+        {
+          "time": "15:57",
+          "kind": "booked",
+          "icon": "🇩🇴",
+          "title": "Arrivo a Punta Cana · PUJ",
+          "note": "Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso."
+        },
+        {
+          "time": "17:10–17:25 circa",
+          "kind": "recommended",
+          "icon": "🚐",
+          "title": "Trasferimento PUJ → Bayahibe",
+          "note": "Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto."
+        },
+        {
+          "time": "18:10–18:40 circa",
+          "kind": "recommended",
+          "icon": "🏝️",
+          "title": "Arrivo al Viva Dominicus Palace",
+          "note": "Check-in, sistemazione e finalmente inizio della parte relax del viaggio."
+        },
+        {
+          "time": "20:30",
+          "kind": "recommended",
+          "icon": "🍽️",
+          "title": "Cena al resort",
+          "note": "Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago."
+        }
+      ]
+    }
   ],
-  bayahibe: [
-    
-    { date:"2026-11-04", title:"Caraibi senza orologio", theme:"Da oggi comincia davvero il relax: mare, piscina e resort, con Saona, Catalina, Bayahibe e Cotubanamá sempre disponibili se ci viene voglia di partire all'avventura.", items:[
-      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
-      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
-    ]},
-    { date:"2026-11-05", title:"Mare, relax o escursione", theme:"Nessun programma imposto: scegliamo direttamente dal villaggio tra una giornata di puro relax e una delle escursioni che più ci ispira, anche in base al meteo.", items:[
-      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
-      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
-    ]},
-    { date:"2026-11-06", title:"Il lusso di non avere programmi", theme:"Spiaggia e all inclusive possono bastare, ma se abbiamo voglia di esplorare possiamo scegliere Saona, Catalina, Bayahibe o il parco senza aver fissato nulla in anticipo.", items:[
-      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
-      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
-    ]},
-    { date:"2026-11-07", title:"Caraibi come ci va", theme:"Una giornata completamente nostra: possiamo non muoverci dal resort oppure trasformarla all'ultimo momento in una giornata di mare, snorkeling o scoperta della zona.", items:[
-      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
-      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
-    ]},
-    { date:"2026-11-08", title:"Ultimo giorno pieno ai Caraibi", theme:"Ci godiamo l'ultima giornata completa senza obblighi: relax fino all'ultimo oppure un'escursione scelta sul momento, sapendo che domani si riparte verso casa.", items:[
-      { time:"Quando volete", kind:"optional", icon:"🚤", title:"Isola Saona", note:"La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.", mapsQuery:"Saona Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🤿", title:"Catalina Island · snorkeling", note:"Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.", mapsQuery:"Catalina Island Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"🌿", title:"Parco Cotubanamá", note:"Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.", mapsQuery:"Cotubanama National Park Dominican Republic", mapSkip:true },
-      { time:"Quando volete", kind:"optional", icon:"⛪", title:"Bayahibe village", note:"Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.", mapsQuery:"Bayahibe Dominican Republic", mapSkip:true },
-      { time:"Sempre valida", kind:"recommended", icon:"🏖️", title:"Resort, mare e piscina", note:"Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto." }
-    ]},
-    { date:"2026-11-09", title:"Rientro", theme:"Punta Cana → Washington → Roma", items:[
-      { time:"07:00", kind:"recommended", icon:"⏰", title:"Sveglia e colazione", note:"Ultimo giorno: niente escursioni. Colazione, doccia e controllo bagagli/documenti senza fretta." },
-      { time:"08:00", kind:"recommended", icon:"🧳", title:"Check-out e bagagli pronti", note:"Tenete passaporti, telefoni, power bank e documenti di viaggio nel bagaglio a mano." },
-      { time:"08:15", kind:"recommended", icon:"🚐", title:"Partenza dal Viva Dominicus Palace", note:"Per il volo delle 12:56 da PUJ preferisco un margine largo: Bayahibe → Punta Cana Airport richiede normalmente circa 50–60 minuti." },
-      { time:"09:15 circa", kind:"recommended", icon:"🛫", title:"Arrivo a Punta Cana · PUJ", note:"Circa 3 ore e 40 minuti prima del decollo: check-in, bagagli, controlli di uscita e gate senza rischiare l'intero rientro." },
-      { time:"12:56", kind:"booked", icon:"✈️", title:"Volo PUJ → IAD", note:"United · arrivo previsto a Washington Dulles alle 15:55." },
-      { time:"15:55", kind:"booked", icon:"🇺🇸", title:"Arrivo a Washington Dulles · IAD", note:"Scalo: 2 ore e 05 minuti. Essendo il primo ingresso negli USA, bisogna seguire subito immigrazione/CBP e le indicazioni per la coincidenza. Niente soste inutili." },
-      { time:"18:00", kind:"booked", icon:"✈️", title:"Volo IAD → FCO", note:"Coincidenza per Roma. Arrivo a Fiumicino il 10 novembre alle 08:30." },
-      { time:"08:30 · 10 nov", kind:"booked", icon:"🇮🇹", title:"Arrivo a Roma Fiumicino", note:"Fine del viaggio di nozze ❤️" }
-    ]}
+  "bayahibe": [
+    {
+      "date": "2026-11-04",
+      "title": "Caraibi senza orologio",
+      "theme": "Da oggi comincia davvero il relax: mare, piscina e resort, con Saona, Catalina, Bayahibe e Cotubanamá sempre disponibili se ci viene voglia di partire all'avventura.",
+      "items": [
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🚤",
+          "title": "Isola Saona",
+          "note": "La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.",
+          "mapsQuery": "Saona Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🤿",
+          "title": "Catalina Island · snorkeling",
+          "note": "Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.",
+          "mapsQuery": "Catalina Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🌿",
+          "title": "Parco Cotubanamá",
+          "note": "Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.",
+          "mapsQuery": "Cotubanama National Park Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "⛪",
+          "title": "Bayahibe village",
+          "note": "Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.",
+          "mapsQuery": "Bayahibe Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Sempre valida",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Resort, mare e piscina",
+          "note": "Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-05",
+      "title": "Mare, relax o escursione",
+      "theme": "Nessun programma imposto: scegliamo direttamente dal villaggio tra una giornata di puro relax e una delle escursioni che più ci ispira, anche in base al meteo.",
+      "items": [
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🚤",
+          "title": "Isola Saona",
+          "note": "La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.",
+          "mapsQuery": "Saona Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🤿",
+          "title": "Catalina Island · snorkeling",
+          "note": "Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.",
+          "mapsQuery": "Catalina Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🌿",
+          "title": "Parco Cotubanamá",
+          "note": "Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.",
+          "mapsQuery": "Cotubanama National Park Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "⛪",
+          "title": "Bayahibe village",
+          "note": "Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.",
+          "mapsQuery": "Bayahibe Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Sempre valida",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Resort, mare e piscina",
+          "note": "Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-06",
+      "title": "Il lusso di non avere programmi",
+      "theme": "Spiaggia e all inclusive possono bastare, ma se abbiamo voglia di esplorare possiamo scegliere Saona, Catalina, Bayahibe o il parco senza aver fissato nulla in anticipo.",
+      "items": [
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🚤",
+          "title": "Isola Saona",
+          "note": "La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.",
+          "mapsQuery": "Saona Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🤿",
+          "title": "Catalina Island · snorkeling",
+          "note": "Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.",
+          "mapsQuery": "Catalina Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🌿",
+          "title": "Parco Cotubanamá",
+          "note": "Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.",
+          "mapsQuery": "Cotubanama National Park Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "⛪",
+          "title": "Bayahibe village",
+          "note": "Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.",
+          "mapsQuery": "Bayahibe Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Sempre valida",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Resort, mare e piscina",
+          "note": "Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "title": "Caraibi come ci va",
+      "theme": "Una giornata completamente nostra: possiamo non muoverci dal resort oppure trasformarla all'ultimo momento in una giornata di mare, snorkeling o scoperta della zona.",
+      "items": [
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🚤",
+          "title": "Isola Saona",
+          "note": "La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.",
+          "mapsQuery": "Saona Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🤿",
+          "title": "Catalina Island · snorkeling",
+          "note": "Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.",
+          "mapsQuery": "Catalina Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🌿",
+          "title": "Parco Cotubanamá",
+          "note": "Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.",
+          "mapsQuery": "Cotubanama National Park Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "⛪",
+          "title": "Bayahibe village",
+          "note": "Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.",
+          "mapsQuery": "Bayahibe Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Sempre valida",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Resort, mare e piscina",
+          "note": "Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "title": "Ultimo giorno pieno ai Caraibi",
+      "theme": "Ci godiamo l'ultima giornata completa senza obblighi: relax fino all'ultimo oppure un'escursione scelta sul momento, sapendo che domani si riparte verso casa.",
+      "items": [
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🚤",
+          "title": "Isola Saona",
+          "note": "La nostra escursione principale consigliata: giornata in barca, spiagge e piscine naturali. Da prenotare direttamente in villaggio scegliendo il giorno con meteo migliore.",
+          "mapsQuery": "Saona Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🤿",
+          "title": "Catalina Island · snorkeling",
+          "note": "Alternativa a Saona per una giornata più orientata a mare e snorkeling. Valutatela direttamente al resort.",
+          "mapsQuery": "Catalina Island Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "🌿",
+          "title": "Parco Cotubanamá",
+          "note": "Opzione naturalistica se volete staccare dal resort: grotte, sentieri e natura protetta nell'area di Bayahibe.",
+          "mapsQuery": "Cotubanama National Park Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Quando volete",
+          "kind": "optional",
+          "icon": "⛪",
+          "title": "Bayahibe village",
+          "note": "Passeggiata semplice nel borgo e sul waterfront, senza trasformarla in una giornata organizzata.",
+          "mapsQuery": "Bayahibe Dominican Republic",
+          "mapSkip": true
+        },
+        {
+          "time": "Sempre valida",
+          "kind": "recommended",
+          "icon": "🏖️",
+          "title": "Resort, mare e piscina",
+          "note": "Nessun obbligo di escursione: se quel giorno preferite spiaggia, all inclusive e relax, il programma è già perfetto."
+        }
+      ]
+    },
+    {
+      "date": "2026-11-09",
+      "title": "Rientro",
+      "theme": "Punta Cana → Washington → Roma",
+      "items": [
+        {
+          "time": "07:00",
+          "kind": "recommended",
+          "icon": "⏰",
+          "title": "Sveglia e colazione",
+          "note": "Ultimo giorno: niente escursioni. Colazione, doccia e controllo bagagli/documenti senza fretta."
+        },
+        {
+          "time": "08:00",
+          "kind": "recommended",
+          "icon": "🧳",
+          "title": "Check-out e bagagli pronti",
+          "note": "Tenete passaporti, telefoni, power bank e documenti di viaggio nel bagaglio a mano."
+        },
+        {
+          "time": "08:15",
+          "kind": "recommended",
+          "icon": "🚐",
+          "title": "Partenza dal Viva Dominicus Palace",
+          "note": "Per il volo delle 12:56 da PUJ preferisco un margine largo: Bayahibe → Punta Cana Airport richiede normalmente circa 50–60 minuti."
+        },
+        {
+          "time": "09:15 circa",
+          "kind": "recommended",
+          "icon": "🛫",
+          "title": "Arrivo a Punta Cana · PUJ",
+          "note": "Circa 3 ore e 40 minuti prima del decollo: check-in, bagagli, controlli di uscita e gate senza rischiare l'intero rientro."
+        },
+        {
+          "time": "12:56",
+          "kind": "booked",
+          "icon": "✈️",
+          "title": "Volo PUJ → IAD",
+          "note": "United · arrivo previsto a Washington Dulles alle 15:55."
+        },
+        {
+          "time": "15:55",
+          "kind": "booked",
+          "icon": "🇺🇸",
+          "title": "Arrivo a Washington Dulles · IAD",
+          "note": "Scalo: 2 ore e 05 minuti. Essendo il primo ingresso negli USA, bisogna seguire subito immigrazione/CBP e le indicazioni per la coincidenza. Niente soste inutili."
+        },
+        {
+          "time": "18:00",
+          "kind": "booked",
+          "icon": "✈️",
+          "title": "Volo IAD → FCO",
+          "note": "Coincidenza per Roma. Arrivo a Fiumicino il 10 novembre alle 08:30."
+        },
+        {
+          "time": "08:30 · 10 nov",
+          "kind": "booked",
+          "icon": "🇮🇹",
+          "title": "Arrivo a Roma Fiumicino",
+          "note": "Fine del viaggio di nozze ❤️"
+        }
+      ]
+    }
   ]
 };
 
