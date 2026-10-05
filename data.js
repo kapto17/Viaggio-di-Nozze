@@ -190,10 +190,11 @@ const TRIP = {
         { priority: "must", name: "Architecture River Cruise", note: "Una delle esperienze più caratteristiche per vedere l'architettura di Chicago dal fiume.", mapsQuery: "Chicago Architecture Center River Cruise" },
         { priority: "must", name: "Art Institute of Chicago", note: "Uno dei grandi musei d’arte degli Stati Uniti, direttamente accanto a Millennium Park.", mapsQuery: "Art Institute of Chicago" },
         { priority: "must", name: "Magnificent Mile", note: "Michigan Avenue: siete già praticamente lì con il vostro hotel.", mapsQuery: "Magnificent Mile Chicago" },
+        { priority: "discover", name: "Wrigley Building & Tribune Tower", note: "Due icone architettoniche affacciate su Michigan Avenue e sul Chicago River, perfette da vedere lungo il percorso tra Magnificent Mile e Riverwalk.", mapsQuery: "Wrigley Building Chicago" },
         { priority: "discover", name: "Chicago Water Tower", note: "Storico edificio in pietra calcarea sulla Magnificent Mile, tra i pochi edifici pubblici dell'area sopravvissuti al Grande Incendio del 1871.", mapsQuery: "Chicago Water Tower" },
         { priority: "discover", name: "Starbucks Reserve Roastery", note: "La grande Roastery di Chicago su Michigan Avenue: cinque piani dedicati a caffè, torrefazione, food e cocktail.", mapsQuery: "Starbucks Reserve Roastery Chicago 646 N Michigan Ave" },
         { priority: "discover", name: "Navy Pier", note: "Molo sul lago Michigan, piacevole soprattutto nel pomeriggio e verso il tramonto.", mapsQuery: "Navy Pier Chicago" },
-        { priority: "discover", name: "Grant Park & Buckingham Fountain", note: "Il grande parco sul lago a sud di Millennium Park, con la monumentale Buckingham Fountain.", mapsQuery: "Buckingham Fountain Chicago" },
+        { priority: "discover", name: "Grant Park & Buckingham Fountain", note: "Il grande parco sul lago a sud di Millennium Park. Durante il vostro soggiorno la Buckingham Fountain sarà già fuori stagione dal 1° novembre: resta visibile come monumento, ma senza getti d’acqua.", mapsQuery: "Buckingham Fountain Chicago" },
         { priority: "discover", name: "360 Chicago", note: "Osservatorio al 875 N Michigan: è vicinissimo al Warwick Allerton e quindi comodissimo da inserire.", mapsQuery: "360 Chicago Observation Deck" }
       ],
       foods: [
@@ -202,13 +203,14 @@ const TRIP = {
         { id: "chi-beef", name: "Italian Beef", short: "Panino di manzo affettato sottile con jus e giardiniera.", description: "Panino con manzo cotto e affettato sottilissimo, bagnato nel suo jus e spesso completato con giardiniera piccante o peperoni dolci.", whereToFind: [{ name: "Al's #1 Italian Beef", note: "Tra i nomi storici dell'Italian beef; il marchio fa risalire la ricetta agli anni Trenta.", price: "$", mapsQuery: "Al's #1 Italian Beef 548 N Wells St Chicago" }, { name: "Portillo's · River North", image: "./assets/food/chicago-italian-beef.jpg", note: "Alternativa comodissima per provarlo insieme al Chicago dog.", price: "$", mapsQuery: "Portillo's 100 W Ontario St Chicago" }], image: "./assets/food/chicago-italian-beef.jpg", photoCredit: "Krista / Wikimedia Commons · CC BY 2.0" }
       ],
       activities: [
-        { priority: "must", lf: true, name: "Haunted Halsted Halloween Parade", date: "2026-10-31", time: "18:30–22:00", status: "Confermato 2026", icon: "🎃", note: "Halloween a Chicago: 29ª edizione della parata di Northalsted, gratuita per gli spettatori. Partenza zona Halsted & Aldine.", mapsQuery: "3300 N Halsted St Chicago" }
+        { priority: "must", lf: true, name: "Haunted Halsted Halloween Parade", date: "2026-10-31", time: "19:00–20:00", status: "Confermato 2026", icon: "🎃", note: "Halloween a Chicago: 30ª edizione. Parade 19:00–20:00 da Halsted & Belmont verso Brompton; festa diurna 11:00–18:00 e costume contest/post-party 20:00–22:00. Gratuita per gli spettatori.", mapsQuery: "Halsted St and Belmont Ave Chicago" }
       ], restaurants: [
         { name: "Portillo's · River North", image: "./assets/food/chicago-italian-beef.jpg", meal: "quick", price: "$", type: "Chicago hot dog · Italian beef", typeIcon: "🌭", note: "Comodissimo dal vostro hotel e perfetto per assaggiare due simboli di Chicago senza perdere tempo.", mapsQuery: "Portillo's 100 W Ontario St Chicago" },
         { name: "Al's #1 Italian Beef · Wells St", image: "https://static.wixstatic.com/media/bef3c2_39bd36c463fa4d9c88999910045e9426~mv2.jpeg/v1/fill/w_490%2Ch_368%2Cal_c%2Cq_80%2Cusm_0.66_1.00_0.01%2Cenc_avif%2Cquality_auto/bef3c2_39bd36c463fa4d9c88999910045e9426~mv2.jpeg", meal: "quick", price: "$", type: "Italian beef", typeIcon: "🥪", note: "Versione storica dell'Italian beef: panino bagnato nel jus, con giardiniera se vi piace piccante.", mapsQuery: "Al's #1 Italian Beef 548 N Wells St Chicago" },
         { name: "Lou Malnati's · River North", image: "./assets/restaurants/lou-malnatis.webp", meal: "quick", price: "$$", type: "Deep-dish pizza", typeIcon: "🍕", note: "Una delle scelte classiche per la deep-dish. Considerate i tempi di cottura: non è proprio una pizza 'al volo'.", mapsQuery: "Lou Malnati's 439 N Wells St Chicago" },
         { name: "Giordano's · Millennium Park", image: "./assets/restaurants/giordanos.webp", meal: "quick", price: "$$", type: "Stuffed deep-dish", typeIcon: "🍕", note: "Altra istituzione cittadina, utile se volete confrontare lo stile stuffed con la deep-dish classica.", mapsQuery: "Giordano's 130 E Randolph St Chicago" },
         { name: "The Purple Pig", image: "./assets/restaurants/purple-pig.jpg", meal: "serious", price: "$$$", type: "Mediterraneo · piccoli piatti", typeIcon: "🍷", note: "444 N Michigan Ave, Upper Level. Cucina mediterranea e piatti da condividere; il venerdì è aperto fino alle 22:00. Lo teniamo pronto per la prima cena a Chicago, dopo Riverwalk, senza dover cercare un locale da stanchi.", mapsQuery: "The Purple Pig 444 N Michigan Ave Chicago" },
+        { name: "The Gage", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80", meal: "serious", price: "$$$", type: "Gastropub · americano moderno", typeIcon: "🍽️", note: "24 S Michigan Ave, praticamente di fronte a Millennium Park e a pochi passi dall’Art Institute. Il lunedì la cucina è aperta 11:00–23:00: perfetto per il pranzo del 2 novembre senza deviazioni.", mapsQuery: "The Gage 24 S Michigan Ave Chicago" },
         { name: "Wildberry Pancakes and Cafe · Water Tower", image: "./assets/restaurants/wildberry-water-tower.webp", meal: "quick", price: "$$", type: "Colazione · pancakes · brunch", typeIcon: "🥞", note: "196 E Pearson St, a pochi minuti dal Warwick. Colazione americana con specialty pancakes, French toast, Benedict, omelette e skillet; il sabato apre alle 07:00.", mapsQuery: "Wildberry Pancakes and Cafe 196 E Pearson St Chicago" },
         { name: "Girl & The Goat", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80", meal: "serious", price: "$$$", type: "Americano moderno", typeIcon: "🍽️", note: "Uno dei ristoranti più noti di West Loop: cena da prenotare se volete dedicare una serata al cibo.", mapsQuery: "Girl & The Goat 809 W Randolph St Chicago" },
         { name: "Drew's on Halsted", image: "./assets/restaurants/drews-on-halsted.webp", meal: "serious", price: "$$", type: "Americano · grill", typeIcon: "🍔", note: "Praticamente all'inizio della Haunted Halsted Parade, all'angolo Halsted/Belmont. Perfetto per cenare prima della parata senza altri spostamenti.", mapsQuery: "Drew's on Halsted 3201 N Halsted St Chicago" },
@@ -1583,491 +1585,84 @@ const PROGRAM_GUIDE = {
       ]
     }
   ],
-  "chicago": [
-    {
-      "date": "2026-10-30",
-      "title": "Las Vegas → Chicago",
-      "theme": "Arrivo a Chicago e prima passeggiata serale senza stress",
-      "items": [
-        {
-          "time": "05:15",
-          "kind": "recommended",
-          "icon": "⏰",
-          "title": "Sveglia al Paris Las Vegas",
-          "note": "Ultime cose e check-out. Colazione direttamente in aeroporto."
-        },
-        {
-          "time": "06:30 circa",
-          "kind": "recommended",
-          "icon": "🚗",
-          "title": "Paris → LAS · riconsegna SUV",
-          "note": "Partenza con margine per riconsegna dell’auto, navetta verso il terminal, sicurezza e colazione.",
-          "mapsQuery": "Harry Reid International Airport car rental return"
-        },
-        {
-          "time": "09:58",
-          "kind": "booked",
-          "icon": "✈️",
-          "title": "Volo LAS → ORD",
-          "note": "Las Vegas → Chicago O’Hare · arrivo previsto alle 15:53 ora locale."
-        },
-        {
-          "time": "15:53",
-          "kind": "booked",
-          "icon": "🛬",
-          "title": "Arrivo a Chicago O’Hare",
-          "note": "Ritiro bagagli e uscita dall’aeroporto."
-        },
-        {
-          "time": "16:30 circa",
-          "kind": "recommended",
-          "icon": "🚕",
-          "title": "ORD → Warwick Allerton",
-          "note": "Per il primo arrivo scegliamo Uber/taxi: con valigie e giornata iniziata presto è più comodo della CTA.",
-          "transportTip": "🚕 Uber/taxi consigliato · ~35–50 min",
-          "mapsQuery": "Warwick Allerton Chicago 701 N Michigan Ave"
-        },
-        {
-          "time": "17:30 circa",
-          "kind": "recommended",
-          "icon": "🏨",
-          "title": "Check-in Warwick Allerton + pausa",
-          "note": "Sistemazione in camera e un po’ di riposo prima di uscire."
-        },
-        {
-          "time": "18:30",
-          "kind": "recommended",
-          "icon": "🏙️",
-          "title": "Magnificent Mile",
-          "note": "Prima passeggiata a Chicago direttamente dalla porta dell’hotel, lungo Michigan Avenue.",
-          "transportTip": "🚶 A piedi",
-          "mapsQuery": "Magnificent Mile Chicago",
-          "mapLat": 41.8954,
-          "mapLon": -87.6243,
-          "detailPlace": "Magnificent Mile"
-        },
-        {
-          "time": "19:15",
-          "kind": "recommended",
-          "icon": "🌉",
-          "title": "Chicago Riverwalk",
-          "note": "Scendete verso il fiume per il primo impatto con i grattacieli illuminati. Passeggiata libera, senza correre.",
-          "transportTip": "🚶 A piedi · ~12–15 min",
-          "mapsQuery": "Chicago Riverwalk",
-          "mapLat": 41.8877,
-          "mapLon": -87.6263,
-          "detailPlace": "Chicago Riverwalk"
-        },
-        {
-          "time": "20:30",
-          "kind": "recommended",
-          "icon": "🍷",
-          "title": "The Purple Pig",
-          "note": "Cena già scelta sulla Michigan Avenue: cucina mediterranea e piatti da condividere. Così, dopo viaggio e passeggiata, non dobbiamo metterci a cercare un ristorante.",
-          "transportTip": "🚶 A piedi · pochi minuti dal Riverwalk",
-          "mapsQuery": "The Purple Pig 444 N Michigan Ave Chicago",
-          "mapLat": 41.8906,
-          "mapLon": -87.6243,
-          "detailRestaurant": "The Purple Pig"
-        },
-        {
-          "time": "22:00 circa",
-          "kind": "recommended",
-          "icon": "🏨",
-          "title": "Rientro al Warwick",
-          "note": "Rientro a piedi e riposo: domani è Halloween."
-        }
-      ]
-    },
-    {
-      "date": "2026-10-31",
-      "title": "Halloween a Chicago 🎃",
-      "theme": "Colazione con calma, River North e Haunted Halsted come evento principale",
-      "special": true,
-      "items": [
-        {
-          "time": "08:20",
-          "kind": "recommended",
-          "icon": "🚶",
-          "title": "Partenza dal Warwick Allerton",
-          "note": "Mattinata senza sveglia aggressiva: Wildberry è a pochi minuti dall’hotel.",
-          "transportTip": "🚶 A piedi · ~5 min",
-          "mapsQuery": "Wildberry Pancakes and Cafe 196 E Pearson St Chicago"
-        },
-        {
-          "time": "08:30",
-          "kind": "recommended",
-          "icon": "🥞",
-          "title": "Wildberry Pancakes and Cafe",
-          "note": "Bella colazione americana con calma: pancakes, French toast, Benedict, omelette e skillet. Sede Water Tower Place, 196 E Pearson St.",
-          "transportTip": "🚶 A piedi · ~3 min verso Water Tower",
-          "mapsQuery": "Wildberry Pancakes and Cafe 196 E Pearson St Chicago",
-          "detailRestaurant": "Wildberry Pancakes and Cafe · Water Tower"
-        },
-        {
-          "time": "09:50",
-          "kind": "recommended",
-          "icon": "🏛️",
-          "title": "Chicago Water Tower",
-          "note": "Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici sopravvissuti al Grande Incendio del 1871.",
-          "transportTip": "🚶 A piedi · pochi minuti",
-          "mapsQuery": "Chicago Water Tower",
-          "detailPlace": "Chicago Water Tower"
-        },
-        {
-          "time": "10:15",
-          "kind": "recommended",
-          "icon": "☕",
-          "title": "Starbucks Reserve Roastery",
-          "note": "Entriamo per vedere la grande Roastery su più piani di Michigan Avenue. Non è una seconda colazione: bastano 30–45 minuti per curiosare.",
-          "transportTip": "🚶 A piedi · ~5 min",
-          "mapsQuery": "Starbucks Reserve Roastery Chicago 646 N Michigan Ave",
-          "detailPlace": "Starbucks Reserve Roastery"
-        },
-        {
-          "time": "11:15–12:45",
-          "kind": "optional",
-          "icon": "🛍️",
-          "title": "Tempo libero · River North / hotel",
-          "note": "Niente altra attrazione obbligatoria prima di pranzo: negozi, due passi o rientro al Warwick per riposare e prepararci alla parte Halloween."
-        },
-        {
-          "time": "13:30",
-          "kind": "recommended",
-          "icon": "🌭",
-          "title": "Portillo's · River North",
-          "note": "Pranzo con calma all’orario giusto per noi: Chicago-style hot dog o Italian beef.",
-          "transportTip": "🚶 A piedi dal Warwick/River North",
-          "mapsQuery": "Portillo's 100 W Ontario St Chicago",
-          "mapLat": 41.893,
-          "mapLon": -87.6312,
-          "detailRestaurant": "Portillo's · River North"
-        },
-        {
-          "time": "14:45",
-          "kind": "recommended",
-          "icon": "🏨",
-          "title": "Rientro al Warwick Allerton",
-          "note": "Riposo e cambio prima di Halloween. Evitiamo di attraversare il Loop inutilmente nel pomeriggio del 31."
-        },
-        {
-          "time": "16:50",
-          "kind": "recommended",
-          "icon": "🚇",
-          "title": "Partenza per Northalsted",
-          "note": "CTA o rideshare verso Halsted & Belmont; meglio arrivare prima che la zona si riempia.",
-          "transportTip": "🚇 CTA consigliata · Red Line + breve tratto a piedi · ~25 min",
-          "mapsQuery": "Drew's on Halsted Chicago"
-        },
-        {
-          "time": "18:30",
-          "kind": "booked",
-          "icon": "🎃",
-          "title": "Haunted Halsted Halloween Parade",
-          "note": "Per gli spettatori non serve registrazione né biglietto. Arrivate per l’atmosfera pre-parata; kickoff previsto alle 19:30.",
-          "transportTip": "🚶 A piedi · 1–2 min fino a Drew's",
-          "mapsQuery": "Halsted St and Belmont Ave Chicago",
-          "mapLat": 41.9395,
-          "mapLon": -87.6491,
-          "detailPlace": "Haunted Halsted Halloween Parade"
-        },
-        {
-          "time": "20:45 circa",
-          "kind": "recommended",
-          "icon": "🍔",
-          "title": "Drew's on Halsted",
-          "note": "Cena dopo la parata, restando direttamente in zona Halsted & Belmont. Sabato il locale chiude alle 22:00, quindi 20:45 lascia un margine comodo.",
-          "transportTip": "🚕 Uber consigliato per il rientro · ~15–25 min",
-          "mapsQuery": "Drew's on Halsted 3201 N Halsted St Chicago",
-          "mapLat": 41.9401,
-          "mapLon": -87.6492,
-          "detailRestaurant": "Drew's on Halsted"
-        }
-      ]
-    },
-    {
-      "date": "2026-11-01",
-      "title": "Chicago dal fiume e Navy Pier",
-      "theme": "Una giornata da vivere con calma tra l'architettura sul Chicago River, la deep-dish e il Lake Michigan, lasciandoci anche il tempo di goderci la città senza correre.",
-      "items": [
-        {
-          "time": "10:00",
-          "kind": "recommended",
-          "icon": "🚶",
-          "title": "Partenza dal Warwick Allerton",
-          "note": "Mattina volutamente tranquilla dopo Halloween. Si scende verso Michigan Avenue e Wacker Drive.",
-          "transportTip": "🚶 A piedi · ~15 min",
-          "mapsQuery": "Chicago Architecture Center River Cruise"
-        },
-        {
-          "time": "10:30",
-          "kind": "recommended",
-          "icon": "⚓",
-          "title": "Arrivo al molo Chicago's First Lady",
-          "note": "Punto d'imbarco al 112 E Wacker Dr. Il CAC chiede di arrivare 30 minuti prima. Orario della crociera ancora da prenotare.",
-          "mapsQuery": "112 E Wacker Dr Chicago",
-          "mapLat": 41.8874,
-          "mapLon": -87.6246,
-          "mapForce": true
-        },
-        {
-          "time": "11:00 circa",
-          "kind": "recommended",
-          "icon": "🚢",
-          "title": "Architecture River Cruise",
-          "note": "Slot indicativo finché non prenotiamo. La crociera dura 90 minuti.",
-          "mapsQuery": "Chicago Architecture Center River Cruise",
-          "mapLat": 41.8874,
-          "mapLon": -87.6246,
-          "detailPlace": "Architecture River Cruise"
-        },
-        {
-          "time": "12:45",
-          "kind": "recommended",
-          "icon": "🌉",
-          "title": "Chicago Riverwalk",
-          "note": "Dopo lo sbarco restate sul fiume e completate con calma il tratto che vi è piaciuto di più.",
-          "transportTip": "🚶 A piedi · ~15 min verso Lou Malnati's",
-          "mapsQuery": "Chicago Riverwalk",
-          "mapLat": 41.8877,
-          "mapLon": -87.6263,
-          "detailPlace": "Chicago Riverwalk"
-        },
-        {
-          "time": "13:30",
-          "kind": "recommended",
-          "icon": "🍕",
-          "title": "Lou Malnati's · River North",
-          "note": "Pranzo con deep-dish. Ordinate appena seduti: la cottura richiede più tempo di una pizza normale.",
-          "transportTip": "🚕 Uber comodo · ~10–15 min verso Navy Pier",
-          "mapsQuery": "Lou Malnati's 439 N Wells St Chicago",
-          "mapLat": 41.8903,
-          "mapLon": -87.6341,
-          "detailRestaurant": "Lou Malnati's · River North"
-        },
-        {
-          "time": "15:15",
-          "kind": "recommended",
-          "icon": "🎡",
-          "title": "Navy Pier",
-          "note": "Pomeriggio sul Lake Michigan, passeggiata sul molo e skyline. Nessuna attrazione a pagamento obbligatoria.",
-          "transportTip": "🚇 CTA/bus · ~15–20 min verso Magnificent Mile",
-          "mapsQuery": "Navy Pier Chicago",
-          "mapLat": 41.8917,
-          "mapLon": -87.6078,
-          "detailPlace": "Navy Pier"
-        },
-        {
-          "time": "17:30",
-          "kind": "recommended",
-          "icon": "🚶",
-          "title": "Rientro verso Magnificent Mile",
-          "note": "Passeggiata/rientro verso l'hotel; tempo libero per negozi o riposo.",
-          "transportTip": "🚶 A piedi · ~8 min dall’hotel a Quartino"
-        },
-        {
-          "time": "20:30",
-          "kind": "recommended",
-          "icon": "🍝",
-          "title": "Quartino Ristorante",
-          "note": "Cena a River North, abbastanza vicina all'hotel: pasta, pizza e piccoli piatti da condividere.",
-          "mapsQuery": "Quartino Ristorante 626 N State St Chicago",
-          "mapLat": 41.8935,
-          "mapLon": -87.6284,
-          "detailRestaurant": "Quartino Ristorante"
-        }
-      ]
-    },
-    {
-      "date": "2026-11-02",
-      "title": "Millennium Park, museo, panorama e deep dish",
-      "theme": "Ultima giornata piena, con Millennium Park incastrato naturalmente prima dell'Art Institute",
-      "items": [
-        {
-          "time": "09:30",
-          "kind": "recommended",
-          "icon": "🚶",
-          "title": "Partenza dal Warwick Allerton",
-          "note": "Scendiamo verso il Loop senza fretta: il museo apre alle 11:00, quindi sfruttiamo il tragitto per Millennium Park.",
-          "transportTip": "🚇 CTA/bus consigliata · ~15–20 min",
-          "mapsQuery": "Millennium Park Chicago"
-        },
-        {
-          "time": "10:00",
-          "kind": "recommended",
-          "icon": "🌳",
-          "title": "Millennium Park",
-          "note": "Passeggiata compatta nel parco prima del museo: non serve dedicargli mezza giornata.",
-          "transportTip": "🚶 A piedi",
-          "mapsQuery": "Millennium Park Chicago",
-          "mapLat": 41.8826,
-          "mapLon": -87.6226,
-          "detailPlace": "Millennium Park"
-        },
-        {
-          "time": "10:20",
-          "kind": "recommended",
-          "icon": "☁️",
-          "title": "Cloud Gate · The Bean",
-          "note": "Foto con il simbolo di Chicago senza fare un viaggio apposta: siamo già a pochi minuti dall’Art Institute.",
-          "transportTip": "🚶 A piedi · ~8–10 min verso Art Institute",
-          "mapsQuery": "Cloud Gate Chicago",
-          "mapLat": 41.8827,
-          "mapLon": -87.6233,
-          "detailPlace": "Cloud Gate · The Bean"
-        },
-        {
-          "time": "11:00",
-          "kind": "recommended",
-          "icon": "🎨",
-          "title": "Art Institute of Chicago",
-          "note": "Ingresso all'apertura pubblica. Dedicate circa 2 ore e mezza alle opere principali senza trasformarlo in una maratona.",
-          "transportTip": "🚶 A piedi · ~10–12 min",
-          "mapsQuery": "Art Institute of Chicago",
-          "mapLat": 41.8796,
-          "mapLon": -87.6237,
-          "detailPlace": "Art Institute of Chicago"
-        },
-        {
-          "time": "13:45",
-          "kind": "recommended",
-          "icon": "🌳",
-          "title": "Grant Park & Buckingham Fountain",
-          "note": "Usciti dal museo proseguite verso sud nel parco fino alla fontana e al lakefront.",
-          "transportTip": "🚶 A piedi · risalendo verso Michigan Ave",
-          "mapsQuery": "Buckingham Fountain Chicago",
-          "mapLat": 41.8758,
-          "mapLon": -87.6189,
-          "detailPlace": "Grant Park & Buckingham Fountain"
-        },
-        {
-          "time": "14:45",
-          "kind": "recommended",
-          "icon": "🍿",
-          "title": "Garrett Popcorn / pausa",
-          "note": "Snack leggero mentre tornate verso Michigan Avenue; teniamoci spazio per la deep-dish serale.",
-          "transportTip": "🚇 CTA/bus · ~15 min verso 360 Chicago"
-        },
-        {
-          "time": "16:00",
-          "kind": "recommended",
-          "icon": "🔭",
-          "title": "360 Chicago",
-          "note": "Vista dall'alto al 875 N Michigan. È praticamente accanto al vostro hotel, quindi è la scelta più efficiente rispetto allo Skydeck.",
-          "transportTip": "🚶 A piedi · 3–5 min fino all’hotel",
-          "mapsQuery": "360 Chicago Observation Deck",
-          "mapLat": 41.8988,
-          "mapLon": -87.623,
-          "detailPlace": "360 Chicago"
-        },
-        {
-          "time": "17:30",
-          "kind": "recommended",
-          "icon": "🏨",
-          "title": "Rientro al Warwick Allerton",
-          "note": "Ultimo riposo in hotel prima della cena finale a Chicago.",
-          "transportTip": "🚇 CTA/bus · ~15–20 min verso Giordano's"
-        },
-        {
-          "time": "20:30",
-          "kind": "recommended",
-          "icon": "🍕",
-          "title": "Giordano's · Millennium Park",
-          "note": "Ultima sera: stuffed deep-dish nel locale che avete già nella lista, senza aggiungere un'altra cucina da inseguire.",
-          "transportTip": "🚕 Uber consigliato per il rientro serale · ~10 min",
-          "mapsQuery": "Giordano's 130 E Randolph St Chicago",
-          "mapLat": 41.8845,
-          "mapLon": -87.6232,
-          "detailRestaurant": "Giordano's · Millennium Park"
-        },
-        {
-          "time": "05:15 · domani",
-          "kind": "recommended",
-          "icon": "⏰",
-          "title": "Sveglia consigliata per il 3 novembre",
-          "note": "Domani volo ORD → PUJ alle 09:17. Partenza dal Warwick Allerton prevista alle 06:30: sveglia alle 05:15, circa 1h15 per prepararci e fare check-out; colazione in aeroporto."
-        }
-      ]
-    },
-    {
-      "date": "2026-11-03",
-      "title": "Partenza per Punta Cana",
-      "theme": "Niente visite: aeroporto",
-      "items": [
-        {
-          "time": "05:15",
-          "kind": "recommended",
-          "icon": "⏰",
-          "title": "Sveglia e ultime cose",
-          "note": "Controllo finale della camera e preparazione per il check-out. Colazione direttamente in aeroporto; oggi niente programma turistico."
-        },
-        {
-          "time": "06:15",
-          "kind": "recommended",
-          "icon": "🧳",
-          "title": "Check-out Warwick Allerton",
-          "note": "Check-out e partenza senza tirare i tempi."
-        },
-        {
-          "time": "06:30",
-          "kind": "recommended",
-          "icon": "🚕",
-          "title": "Partenza per Chicago O'Hare",
-          "note": "Taxi/rideshare direttamente dal Warwick Allerton a ORD. Abbiamo margine per traffico mattutino e controlli.",
-          "transportTip": "🚕 Uber/taxi consigliato · ~30–45 min",
-          "mapsQuery": "Chicago O'Hare International Airport Terminal 1",
-          "mapLat": 41.9742,
-          "mapLon": -87.9073,
-          "mapForce": true
-        },
-        {
-          "time": "07:15 circa",
-          "kind": "recommended",
-          "icon": "🛫",
-          "title": "Arrivo a ORD · Terminal 1",
-          "note": "Obiettivo: essere in aeroporto oltre 2 ore prima. Bagagli, sicurezza e gate United con calma.",
-          "mapsQuery": "O'Hare International Airport Terminal 1",
-          "mapLat": 41.9773,
-          "mapLon": -87.9048,
-          "mapForce": true
-        },
-        {
-          "time": "09:17",
-          "kind": "booked",
-          "icon": "✈️",
-          "title": "Volo ORD → PUJ",
-          "note": "United UA1862 · orario attualmente pubblicato: arrivo previsto alle 15:57 ora locale."
-        },
-        {
-          "time": "15:57",
-          "kind": "booked",
-          "icon": "🇩🇴",
-          "title": "Arrivo a Punta Cana · PUJ",
-          "note": "Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso."
-        },
-        {
-          "time": "17:10–17:25 circa",
-          "kind": "recommended",
-          "icon": "🚐",
-          "title": "Trasferimento PUJ → Bayahibe",
-          "note": "Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l'uscita dall'aeroporto."
-        },
-        {
-          "time": "18:10–18:40 circa",
-          "kind": "recommended",
-          "icon": "🏝️",
-          "title": "Arrivo al Viva Dominicus Palace",
-          "note": "Check-in, sistemazione e finalmente inizio della parte relax del viaggio."
-        },
-        {
-          "time": "20:30",
-          "kind": "recommended",
-          "icon": "🍽️",
-          "title": "Cena al resort",
-          "note": "Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago."
-        }
-      ]
-    }
+  chicago: [
+    { date:"2026-10-30", title:"Las Vegas → Chicago", theme:"Arrivo, primo assaggio della Magnificent Mile e architettura sul fiume, senza appesantire la giornata di viaggio.", items:[
+      { time:"05:15", kind:"recommended", icon:"⏰", title:"Sveglia al Paris Las Vegas", note:"Ultime cose e check-out. Colazione direttamente in aeroporto." },
+      { time:"06:30 circa", kind:"transfer", icon:"🚗", title:"Spostamento · Paris → LAS · riconsegna SUV", note:"🚗 In auto fino al Rental Car Center · circa 6 km · 10–15 min, poi riconsegna e navetta verso il terminal. Partiamo con margine per sicurezza e colazione.", mapsQuery:"Harry Reid International Airport car rental return" },
+      { time:"09:58", kind:"booked", icon:"✈️", title:"Volo LAS → ORD", note:"Las Vegas → Chicago O’Hare · arrivo previsto alle 15:53 ora locale." },
+      { time:"15:53", kind:"booked", icon:"🛬", title:"Arrivo a Chicago O’Hare", note:"Ritiro bagagli e uscita dall’aeroporto." },
+      { time:"16:30 circa", kind:"transfer", icon:"🚕", title:"Spostamento · ORD → Warwick Allerton", note:"🚕 Uber/taxi consigliato con le valigie · circa 29 km · normalmente 35–50 min, ma il traffico può allungare il tragitto.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"17:30 circa", kind:"recommended", icon:"🏨", title:"Check-in Warwick Allerton + pausa", note:"Sistemazione in camera e un po’ di riposo prima di uscire." },
+      { time:"18:25", kind:"recommended", icon:"🏙️", title:"Magnificent Mile", note:"Prima passeggiata direttamente da Michigan Avenue: siete già nel cuore della Magnificent Mile appena usciti dall’hotel.", mapsQuery:"Magnificent Mile Chicago", detailPlace:"Magnificent Mile" },
+      { time:"19:00", kind:"transfer", icon:"🚶", title:"Spostamento · Magnificent Mile → Wrigley Building & Tribune Tower", note:"🚶 A piedi lungo Michigan Avenue · circa 900 m · 12–15 min. È già parte della passeggiata, quindi niente mezzi.", mapsQuery:"Wrigley Building Chicago" },
+      { time:"19:15", kind:"recommended", icon:"🏛️", title:"Wrigley Building & Tribune Tower", note:"Due delle architetture più riconoscibili sulla testata del Chicago River. Bastano 20–25 minuti tra foto, facciate e Michigan Avenue Bridge.", mapsQuery:"Wrigley Building Chicago", detailPlace:"Wrigley Building & Tribune Tower" },
+      { time:"19:40", kind:"transfer", icon:"🚶", title:"Spostamento · Wrigley Building → Chicago Riverwalk", note:"🚶 A piedi · circa 250 m · 3–5 min: basta scendere verso il livello del fiume dal ponte di Michigan Avenue.", mapsQuery:"Chicago Riverwalk" },
+      { time:"19:45", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Primo impatto con i grattacieli illuminati lungo il fiume. Passeggiata compatta di circa 30 minuti.", mapsQuery:"Chicago Riverwalk", mapLat:41.8877, mapLon:-87.6263, detailPlace:"Chicago Riverwalk" },
+      { time:"20:15", kind:"transfer", icon:"🚶", title:"Spostamento · Riverwalk → The Purple Pig", note:"🚶 A piedi · circa 450 m · 6–8 min tornando su Michigan Avenue.", mapsQuery:"The Purple Pig 444 N Michigan Ave Chicago" },
+      { time:"20:30", kind:"recommended", icon:"🍷", title:"The Purple Pig", note:"Prima cena a Chicago: cucina mediterranea e piatti da condividere. Il venerdì resta aperto fino alle 22:00, quindi le 20:30 sono compatibili senza anticipare troppo.", mapsQuery:"The Purple Pig 444 N Michigan Ave Chicago", mapLat:41.8906, mapLon:-87.6243, detailRestaurant:"The Purple Pig" },
+      { time:"Dopo cena", kind:"transfer", icon:"🚶", title:"Rientro · The Purple Pig → Warwick Allerton", note:"🚶 A piedi · circa 1 km · 13–15 min lungo Michigan Avenue.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" }
+    ]},
+    { date:"2026-10-31", title:"Halloween a Chicago 🎃", theme:"Mattina sulla Magnificent Mile, pranzo Chicago-style, riposo e poi Haunted Halsted come evento principale della sera.", special:true, items:[
+      { time:"08:20", kind:"transfer", icon:"🚶", title:"Spostamento · Warwick Allerton → Wildberry", note:"🚶 A piedi · circa 450 m · 5–7 min verso Water Tower Place.", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago" },
+      { time:"08:30", kind:"recommended", icon:"🥞", title:"Wildberry Pancakes and Cafe", note:"Colazione americana con calma: pancakes, French toast, Benedict, omelette e skillet.", mapsQuery:"Wildberry Pancakes and Cafe 196 E Pearson St Chicago", detailRestaurant:"Wildberry Pancakes and Cafe · Water Tower" },
+      { time:"09:40", kind:"transfer", icon:"🚶", title:"Spostamento · Wildberry → Chicago Water Tower", note:"🚶 A piedi · circa 250 m · 3–4 min.", mapsQuery:"Chicago Water Tower" },
+      { time:"09:50", kind:"recommended", icon:"🏛️", title:"Chicago Water Tower", note:"Tappa breve all’esterno: uno dei simboli storici di Michigan Avenue e uno dei pochi edifici pubblici dell’area sopravvissuti al Grande Incendio del 1871.", mapsQuery:"Chicago Water Tower", detailPlace:"Chicago Water Tower" },
+      { time:"10:05", kind:"transfer", icon:"🚶", title:"Spostamento · Water Tower → Starbucks Reserve Roastery", note:"🚶 A piedi verso sud su Michigan Avenue · circa 600 m · 8–10 min.", mapsQuery:"Starbucks Reserve Roastery Chicago 646 N Michigan Ave" },
+      { time:"10:15", kind:"recommended", icon:"☕", title:"Starbucks Reserve Roastery", note:"Visita alla grande Roastery su più piani. Non è una seconda colazione: 35–45 minuti sono sufficienti per curiosare.", mapsQuery:"Starbucks Reserve Roastery Chicago 646 N Michigan Ave", detailPlace:"Starbucks Reserve Roastery" },
+      { time:"11:00", kind:"transfer", icon:"🚶", title:"Spostamento · Roastery → Warwick / River North", note:"🚶 Circa 350 m · 5 min fino all’hotel. Da qui tempo libero per negozi, due passi o riposo.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"11:10–13:05", kind:"optional", icon:"🛍️", title:"Tempo libero · River North / hotel", note:"Nessun’altra attrazione obbligatoria prima di pranzo: conserviamo energie per Halloween." },
+      { time:"13:10", kind:"transfer", icon:"🚶", title:"Spostamento · Warwick → Portillo's", note:"🚶 A piedi · circa 1,2 km · 15–18 min. Se fa freddo o piove, Uber/Lyft richiede pochi minuti.", mapsQuery:"Portillo's 100 W Ontario St Chicago" },
+      { time:"13:30", kind:"recommended", icon:"🌭", title:"Portillo's · River North", note:"Pranzo Chicago-style: hot dog oppure Italian beef, senza anticipare troppo l’orario del pranzo.", mapsQuery:"Portillo's 100 W Ontario St Chicago", mapLat:41.8930, mapLon:-87.6312, detailRestaurant:"Portillo's · River North" },
+      { time:"14:30", kind:"transfer", icon:"🚶", title:"Spostamento · Portillo's → Warwick Allerton", note:"🚶 A piedi · circa 1,2 km · 15–18 min. Rientro per riposo e cambio prima della serata.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"16:45", kind:"transfer", icon:"🚇", title:"Spostamento · Warwick → Northalsted / Belmont", note:"🚇 CTA Red Line consigliata: circa 10 min a piedi fino alla stazione Chicago, ~10 min di treno fino a Belmont e 8–10 min a piedi verso Halsted. Totale realistico ~30–35 min. Le strade di Halsted sono chiuse al traffico per l’evento.", mapsQuery:"Halsted St and Belmont Ave Chicago" },
+      { time:"18:20 circa", kind:"recommended", icon:"🎃", title:"Arrivo a Northalsted · posizione per la parata", note:"La strada viene liberata alle 18:00 per preparare la parata. Arrivando con questo margine avete tempo per trovare posto dietro le transenne e vivere l’atmosfera senza correre.", mapsQuery:"Halsted St and Belmont Ave Chicago" },
+      { time:"19:00–20:00", kind:"booked", icon:"🎃", title:"Haunted Halsted Halloween Parade", note:"Parata ufficiale 2026: partenza alle 19:00 da Halsted & Belmont e arrivo verso Brompton alle 20:00. Per gli spettatori è gratuita.", mapsQuery:"Halsted St and Belmont Ave Chicago", mapLat:41.9395, mapLon:-87.6491, detailPlace:"Haunted Halsted Halloween Parade" },
+      { time:"20:05", kind:"transfer", icon:"🚶", title:"Spostamento · fine parata → Drew's on Halsted", note:"🚶 A piedi · pochi minuti: il ristorante è al 3201 N Halsted, praticamente accanto alla zona di partenza/evento.", mapsQuery:"Drew's on Halsted 3201 N Halsted St Chicago" },
+      { time:"20:30", kind:"recommended", icon:"🍔", title:"Drew's on Halsted", note:"Cena direttamente in zona dopo la parata. Il sabato chiude alle 22:00: 20:30 lascia un margine ragionevole senza costringervi a cenare alle 19.", mapsQuery:"Drew's on Halsted 3201 N Halsted St Chicago", mapLat:41.9401, mapLon:-87.6492, detailRestaurant:"Drew's on Halsted" },
+      { time:"Dopo cena", kind:"transfer", icon:"🚕", title:"Rientro · Northalsted → Warwick Allerton", note:"🚕 Uber/Lyft consigliato · circa 6 km · 15–25 min. Più semplice della CTA a fine serata.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" }
+    ]},
+    { date:"2026-11-01", title:"Chicago dal fiume e Navy Pier", theme:"Architecture River Cruise, deep-dish e tramonto sul Lake Michigan; stanotte avete anche recuperato un’ora con il ritorno all’ora solare.", items:[
+      { time:"10:00", kind:"transfer", icon:"🚶", title:"Spostamento · Warwick Allerton → First Lady Dock", note:"🚶 A piedi · circa 1,4 km · 18–20 min lungo Michigan Avenue. Nella notte alle 02:00 l’orologio è tornato alle 01:00: avete guadagnato un’ora di sonno.", mapsQuery:"112 E Wacker Dr Chicago" },
+      { time:"10:30", kind:"recommended", icon:"⚓", title:"Arrivo al molo Chicago's First Lady", note:"112 E Wacker Dr. Il Chicago Architecture Center chiede di arrivare 30 minuti prima. L’orario delle 11:00 resta indicativo finché non acquistate i biglietti.", mapsQuery:"112 E Wacker Dr Chicago", mapLat:41.8874, mapLon:-87.6246, mapForce:true },
+      { time:"11:00 circa", kind:"recommended", icon:"🚢", title:"Architecture River Cruise", note:"Da prenotare. La stagione 2026 arriva fino a novembre e la crociera dura 90 minuti.", mapsQuery:"Chicago Architecture Center River Cruise", mapLat:41.8874, mapLon:-87.6246, detailPlace:"Architecture River Cruise" },
+      { time:"12:35", kind:"recommended", icon:"🌉", title:"Chicago Riverwalk", note:"Dopo lo sbarco restate sul fiume per una passeggiata di circa 30 minuti, senza duplicare troppo la sera dell’arrivo.", mapsQuery:"Chicago Riverwalk", mapLat:41.8877, mapLon:-87.6263, detailPlace:"Chicago Riverwalk" },
+      { time:"13:05", kind:"transfer", icon:"🚶", title:"Spostamento · Riverwalk → Lou Malnati's", note:"🚶 A piedi · circa 1,2 km · 15–18 min verso River North.", mapsQuery:"Lou Malnati's 439 N Wells St Chicago" },
+      { time:"13:30", kind:"recommended", icon:"🍕", title:"Lou Malnati's · River North", note:"Pranzo con deep-dish. Ordinate appena seduti: la cottura richiede più tempo di una pizza normale.", mapsQuery:"Lou Malnati's 439 N Wells St Chicago", mapLat:41.8903, mapLon:-87.6341, detailRestaurant:"Lou Malnati's · River North" },
+      { time:"14:50", kind:"transfer", icon:"🚕", title:"Spostamento · Lou Malnati's → Navy Pier", note:"🚕 Uber/Lyft consigliato · circa 3 km · 10–15 min. È più efficiente del bus per non perdere il pomeriggio sul lago.", mapsQuery:"Navy Pier Chicago" },
+      { time:"15:15", kind:"recommended", icon:"🎡", title:"Navy Pier · fino al tramonto", note:"Passeggiata sul Lake Michigan e skyline. Restate almeno fino al tramonto, previsto intorno alle 16:44, e qualche minuto dopo per le luci della città.", mapsQuery:"Navy Pier Chicago", mapLat:41.8917, mapLon:-87.6078, detailPlace:"Navy Pier" },
+      { time:"17:10", kind:"transfer", icon:"🚌", title:"Spostamento · Navy Pier → Warwick Allerton", note:"🚌 CTA 66 consigliato da Navy Pier verso Chicago Avenue; scendete in zona Chicago & Michigan e completate gli ultimi minuti a piedi. Considerate circa 20–25 min complessivi, attesa inclusa.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"20:15", kind:"transfer", icon:"🚶", title:"Spostamento · Warwick → Quartino", note:"🚶 A piedi · circa 900 m · 12–15 min verso State Street.", mapsQuery:"Quartino Ristorante 626 N State St Chicago" },
+      { time:"20:30", kind:"recommended", icon:"🍝", title:"Quartino Ristorante", note:"Cena a River North con pasta, pizza e piccoli piatti da condividere. La domenica resta aperto fino a tardi, quindi nessuna corsa per una chiusura alle 21.", mapsQuery:"Quartino Ristorante 626 N State St Chicago", mapLat:41.8935, mapLon:-87.6284, detailRestaurant:"Quartino Ristorante" },
+      { time:"Dopo cena", kind:"transfer", icon:"🚶", title:"Rientro · Quartino → Warwick Allerton", note:"🚶 A piedi · circa 900 m · 12–15 min.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" }
+    ]},
+    { date:"2026-11-02", title:"Millennium Park, Art Institute e Chicago al tramonto", theme:"Ultima giornata piena: il Loop al mattino, pranzo vero dopo il museo e 360 Chicago scelto apposta per luce, tramonto e skyline notturno.", items:[
+      { time:"09:30", kind:"transfer", icon:"🚌", title:"Spostamento · Warwick → Millennium Park", note:"🚌 CTA/bus lungo Michigan Avenue consigliato · circa 2 km · 15–20 min complessivi. Alternativa: 25 min a piedi se il meteo è piacevole.", mapsQuery:"Millennium Park Chicago" },
+      { time:"10:00", kind:"recommended", icon:"🌳", title:"Millennium Park", note:"Passeggiata compatta tra il parco, Pritzker Pavilion e gli spazi principali.", mapsQuery:"Millennium Park Chicago", mapLat:41.8826, mapLon:-87.6226, detailPlace:"Millennium Park" },
+      { time:"10:20", kind:"transfer", icon:"🚶", title:"Spostamento · Millennium Park → Cloud Gate", note:"🚶 A piedi · circa 300 m · 4–5 min all’interno del parco.", mapsQuery:"Cloud Gate Chicago" },
+      { time:"10:25", kind:"recommended", icon:"☁️", title:"Cloud Gate · The Bean", note:"Foto con il simbolo di Chicago prima dell’apertura dell’Art Institute.", mapsQuery:"Cloud Gate Chicago", mapLat:41.8827, mapLon:-87.6233, detailPlace:"Cloud Gate · The Bean" },
+      { time:"10:45", kind:"transfer", icon:"🚶", title:"Spostamento · Cloud Gate → Art Institute", note:"🚶 A piedi · circa 600 m · 8–10 min lungo Michigan Avenue.", mapsQuery:"Art Institute of Chicago" },
+      { time:"11:00", kind:"recommended", icon:"🎨", title:"Art Institute of Chicago", note:"Ingresso all’apertura pubblica del lunedì. Dedicate circa 2 ore e mezza alle opere principali senza trasformarlo in una maratona.", mapsQuery:"Art Institute of Chicago", mapLat:41.8796, mapLon:-87.6237, detailPlace:"Art Institute of Chicago" },
+      { time:"13:35", kind:"transfer", icon:"🚶", title:"Spostamento · Art Institute → The Gage", note:"🚶 A piedi · circa 200 m · 2–3 min: è praticamente dall’altra parte di Michigan Avenue.", mapsQuery:"The Gage 24 S Michigan Ave Chicago" },
+      { time:"13:45", kind:"recommended", icon:"🍽️", title:"The Gage", note:"Pranzo vero dopo il museo, senza deviazioni. Il lunedì la cucina è aperta dalle 11 alle 23.", mapsQuery:"The Gage 24 S Michigan Ave Chicago", detailRestaurant:"The Gage" },
+      { time:"15:10", kind:"transfer", icon:"🚌", title:"Spostamento · The Gage → 360 Chicago", note:"🚌 CTA/bus verso nord lungo Michigan Avenue · circa 2,5 km · 15–20 min. Arrivate con ampio margine prima del tramonto.", mapsQuery:"360 Chicago Observation Deck" },
+      { time:"15:40", kind:"recommended", icon:"🔭", title:"360 Chicago · tramonto e skyline", note:"Salite prima del tramonto, previsto intorno alle 16:43. Restate circa 1h15–1h30 per vedere Chicago con luce diurna, tramonto e prime luci della sera. 360 Chicago è aperto fino alle 23.", mapsQuery:"360 Chicago Observation Deck", mapLat:41.8988, mapLon:-87.6230, detailPlace:"360 Chicago" },
+      { time:"17:15", kind:"transfer", icon:"🚶", title:"Spostamento · 360 Chicago → Warwick Allerton", note:"🚶 A piedi · circa 350 m · 4–5 min. Rientro perfetto per una pausa prima della cena finale.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"20:10", kind:"transfer", icon:"🚕", title:"Spostamento · Warwick → Giordano's Millennium Park", note:"🚕 Uber/Lyft consigliato · circa 2 km · 8–12 min. Alternativa CTA/bus su Michigan Avenue: ~15–20 min.", mapsQuery:"Giordano's 130 E Randolph St Chicago" },
+      { time:"20:30", kind:"recommended", icon:"🍕", title:"Giordano's · Millennium Park", note:"Ultima sera: stuffed deep-dish. Il lunedì la sede Millennium Park resta aperta fino alle 23:00, quindi l’orario delle 20:30 è comodo.", mapsQuery:"Giordano's 130 E Randolph St Chicago", mapLat:41.8845, mapLon:-87.6232, detailRestaurant:"Giordano's · Millennium Park" },
+      { time:"Dopo cena", kind:"transfer", icon:"🚕", title:"Rientro · Giordano's → Warwick Allerton", note:"🚕 Uber/Lyft · circa 2 km · 8–12 min. Domani sveglia presto per Punta Cana.", mapsQuery:"Warwick Allerton Chicago 701 N Michigan Ave" },
+      { time:"05:15 · domani", kind:"recommended", icon:"⏰", title:"Sveglia consigliata per il 3 novembre", note:"Domani volo ORD → PUJ alle 09:17. Partenza dall’hotel anticipata alle 06:00 per avere più margine a O’Hare; sveglia alle 05:15 e colazione in aeroporto." }
+    ]},
+    { date:"2026-11-03", title:"Partenza per Punta Cana", theme:"Niente visite: aeroporto, con margine più largo rispetto alla versione precedente.", items:[
+      { time:"05:15", kind:"recommended", icon:"⏰", title:"Sveglia e ultime cose", note:"Controllo finale della camera e preparazione per il check-out. Colazione direttamente in aeroporto." },
+      { time:"05:50", kind:"recommended", icon:"🧳", title:"Check-out Warwick Allerton", note:"Check-out e bagagli pronti senza tirare i tempi." },
+      { time:"06:00", kind:"transfer", icon:"🚕", title:"Spostamento · Warwick Allerton → Chicago O'Hare", note:"🚕 Taxi/rideshare consigliato · circa 29 km · normalmente 35–50 min. L’obiettivo è arrivare verso le 06:45–06:55, oltre 2 ore prima del volo.", mapsQuery:"Chicago O'Hare International Airport Terminal 1", mapLat:41.9742, mapLon:-87.9073, mapForce:true },
+      { time:"06:45–06:55 circa", kind:"recommended", icon:"🛫", title:"Arrivo a ORD · Terminal 1", note:"Bagagli, sicurezza e gate United con circa 2h20 di margine prima del decollo.", mapsQuery:"O'Hare International Airport Terminal 1", mapLat:41.9773, mapLon:-87.9048, mapForce:true },
+      { time:"09:17", kind:"booked", icon:"✈️", title:"Volo ORD → PUJ", note:"United UA1862 · arrivo previsto alle 15:57 ora locale." },
+      { time:"15:57", kind:"booked", icon:"🇩🇴", title:"Arrivo a Punta Cana · PUJ", note:"Immigrazione, ritiro bagagli e incontro con il trasferimento per Bayahibe. Nessun punto sulla mini-mappa per la parte dominicana, come deciso." },
+      { time:"17:10–17:25 circa", kind:"recommended", icon:"🚐", title:"Trasferimento PUJ → Bayahibe", note:"Dal Punta Cana International Airport al Viva Dominicus Palace considerate circa 50–60 minuti di strada, più l’uscita dall’aeroporto." },
+      { time:"18:10–18:40 circa", kind:"recommended", icon:"🏝️", title:"Arrivo al Viva Dominicus Palace", note:"Check-in, sistemazione e finalmente inizio della parte relax del viaggio." },
+      { time:"20:30", kind:"recommended", icon:"🍽️", title:"Cena al resort", note:"Prima sera senza programmi: cena all inclusive e riposo dopo il trasferimento da Chicago." }
+    ]}
   ],
   "bayahibe": [
     {
@@ -2403,6 +1998,9 @@ const PLACE_DETAILS = {
   },
   "Art Institute of Chicago": { image: "./assets/places/art-institute-chicago.webp", text: "Uno dei grandi musei d'arte degli Stati Uniti, sulla Michigan Avenue accanto a Grant Park. Il lunedì l'apertura al pubblico è alle 11:00; nel vostro programma lo trattiamo come visita di circa due ore e mezza, concentrandovi sulle opere e sezioni che vi interessano davvero." },
 
+  "Wrigley Building & Tribune Tower": {
+    text: "Il Wrigley Building e la Tribune Tower si fronteggiano all’imbocco settentrionale del Michigan Avenue Bridge e formano uno degli scorci architettonici più riconoscibili di Chicago. Il Wrigley Building, completato negli anni Venti, è noto per la facciata bianca in terracotta e la torre dell’orologio; la neogotica Tribune Tower fu progettata dopo il celebre concorso internazionale del 1922. Nel vostro itinerario sono una tappa breve e naturale tra Magnificent Mile e Riverwalk."
+  },
   "Chicago Water Tower": {
     image: "./assets/places/chicago-water-tower.jpg",
     text: "La Chicago Water Tower, all'incrocio tra Michigan Avenue e Chicago Avenue, è uno dei simboli storici della città. Costruita in stile neogotico, insieme alla vicina Pumping Station fu tra i pochissimi edifici pubblici dell'area a sopravvivere al Grande Incendio del 1871. Nel vostro itinerario è una tappa breve e perfetta tra Wildberry e la Roastery: basta vederla dall'esterno e fare qualche foto."
