@@ -1,0 +1,27 @@
+name: Expense wizard v2
+on: [push]
+permissions:
+  contents: write
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply patch
+        run: |
+          python scripts/expense_wizard_patch.py
+          node --check app.js
+          node --check expense-wizard.js
+          node --check firebase-budget.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.35' app.js
+          grep -q 'expense-wizard.js?v=1' index.html
+          grep -q 'viaggio-nozze-v130' sw.js
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js firebase-budget.js index.html sw.js
+          git commit -m "Aggiunge wizard rapido e spese personali 2.4.35 [skip ci]"
+          git push
