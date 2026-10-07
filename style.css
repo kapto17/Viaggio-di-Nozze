@@ -3021,3 +3021,70 @@ nav.tabbar button.active{
     filter:none!important;
   }
 }
+
+
+/* ---------- V30: motion polish step 2 ---------- */
+.motion-reveal{
+  opacity:0;
+  transform:translate3d(0,12px,0);
+  transition:
+    opacity 420ms var(--motion-ease) var(--motion-delay,0ms),
+    transform 480ms var(--motion-ease) var(--motion-delay,0ms);
+  will-change:opacity,transform;
+}
+.motion-reveal.motion-visible{
+  opacity:1;
+  transform:translate3d(0,0,0);
+  will-change:auto;
+}
+
+.program-item.motion-reveal,
+.program-transfer-row.motion-reveal{
+  transform:translate3d(0,8px,0);
+}
+.program-item.motion-reveal.motion-visible,
+.program-transfer-row.motion-reveal.motion-visible{
+  transform:translate3d(0,0,0);
+}
+.program-item.motion-reveal:not(:last-child)::after{
+  transform-origin:top center;
+  transform:scaleY(0);
+  transition:transform 520ms var(--motion-ease) calc(var(--motion-delay,0ms) + 90ms);
+}
+.program-item.motion-reveal.motion-visible:not(:last-child)::after{
+  transform:scaleY(1);
+}
+.program-transfer-row.motion-reveal .program-transfer-rail::before{
+  transform-origin:top center;
+  transform:translateX(-50%) scaleY(0);
+  transition:transform 480ms var(--motion-ease) calc(var(--motion-delay,0ms) + 70ms);
+}
+.program-transfer-row.motion-reveal.motion-visible .program-transfer-rail::before{
+  transform:translateX(-50%) scaleY(1);
+}
+
+/* Parallax leggero: si somma al drift fotografico del primo pacchetto. */
+.city-header.photo-city-header{
+  --hero-parallax-y:0px;
+}
+.city-header.photo-city-header::before{
+  animation-name:lf-photo-drift-parallax;
+}
+@keyframes lf-photo-drift-parallax{
+  from{
+    transform:translate3d(-.7%,calc(-.25% + var(--hero-parallax-y,0px)),0) scale(1.035);
+  }
+  to{
+    transform:translate3d(.7%,calc(.35% + var(--hero-parallax-y,0px)),0) scale(1.055);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .motion-reveal,
+  .motion-reveal.motion-visible{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+  .program-item.motion-reveal:not(:last-child)::after{\n    transform:none!important;
+    transition:none!important;\n  }\n  .program-transfer-row.motion-reveal .program-transfer-rail::before{\n    transform:translateX(-50%) important;\n    transition:none!important;\n  }\n  .city-header.photo-city-header{\n    --hero-parallax-y:0px!important;\n  }\n}\n

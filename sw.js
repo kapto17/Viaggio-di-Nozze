@@ -1,10 +1,11 @@
-const CACHE_NAME = "viaggio-nozze-v123";
+const CACHE_NAME = "viaggio-nozze-v124";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
   "./themes.css",
   "./app.js",
+  "./motion.js",
   "./data.js",
   "./firebase-budget.js",
   "./manifest.json",
@@ -94,7 +95,7 @@ self.addEventListener("fetch", (event) => {
   // File applicativi principali: rete prima, cache come fallback.
   // Evita che browser diversi rimangano bloccati su vecchie versioni di CSS/JS.
   const url = new URL(event.request.url);
-  const isCoreAsset = ["/style.css", "/app.js", "/data.js", "/firebase-budget.js", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+  const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
   if (isCoreAsset) {
     event.respondWith(
