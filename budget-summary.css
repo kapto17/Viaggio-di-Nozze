@@ -1,0 +1,48 @@
+/* V37 · riepilogo budget e saldi separati per valuta */
+.summary-currency-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 8px}
+.summary-currency-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px;box-shadow:0 8px 22px rgba(19,42,69,.06)}
+.summary-currency-card small{display:block;font-size:9px;letter-spacing:.12em;font-weight:900;color:var(--muted);margin-bottom:5px}
+.summary-currency-card strong{display:block;font-size:18px;line-height:1.15}
+.summary-currency-card span{display:block;margin-top:5px;font-size:10px;line-height:1.35;color:var(--muted);font-weight:700}
+.summary-currency-card.bayahibe{background:color-mix(in srgb,var(--th-accent,var(--brass)) 5%,#fff)}
+.summary-currency-card button{margin-top:10px;border:0;background:transparent;color:var(--th-accent,var(--brass));padding:0;font-size:10px;font-weight:900}
+.summary-currency-note,.lf-split-currency-note{font-size:10px;line-height:1.4;color:var(--muted);margin:8px 2px 14px}
+.summary-warning{border:1px solid rgba(180,125,30,.25);background:rgba(255,244,210,.65);border-radius:13px;padding:10px 11px;font-size:10px;line-height:1.4;margin:10px 0 14px}
+.summary-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:18px 2px 10px}
+.summary-section-head strong{display:block;font-size:17px}
+.summary-section-head span{display:block;font-size:10px;line-height:1.35;color:var(--muted);margin-top:2px}
+.summary-view-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;background:rgba(20,35,50,.05);padding:4px;border-radius:14px;margin-bottom:11px}
+.summary-view-switch button{border:0;border-radius:11px;background:transparent;color:var(--muted);padding:10px 8px;font-size:12px;font-weight:850}
+.summary-view-switch button.active{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(19,42,69,.08)}
+.summary-view[hidden]{display:none!important}
+.summary-list{display:grid;gap:8px}
+.summary-breakdown-card{border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden}
+.summary-breakdown-card>summary{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto 18px;align-items:center;gap:8px;padding:12px 13px;cursor:pointer}
+.summary-breakdown-card>summary::-webkit-details-marker{display:none}
+.summary-breakdown-main strong{display:block;font-size:13px}
+.summary-breakdown-main small{display:block;color:var(--muted);font-size:9px;line-height:1.35;margin-top:3px;font-weight:700}
+.summary-breakdown-total{font-size:11px;font-weight:900;text-align:right;white-space:nowrap}
+.summary-breakdown-content{border-top:1px solid var(--line);padding:7px 12px 9px}
+.summary-mini-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent);font-size:11px}
+.summary-mini-row:last-child{border-bottom:0}
+.summary-mini-row span{color:var(--muted);font-weight:750}
+.summary-mini-row strong{text-align:right}
+
+.lf-currency-ledger{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+.lf-currency-ledger:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+.lf-currency-ledger-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.lf-currency-ledger-head small{display:block;font-size:8px;letter-spacing:.12em;color:var(--muted);font-weight:900}
+.lf-currency-ledger-head strong{font-size:15px}
+.lf-currency-ledger-head>b{font-size:16px;background:rgba(20,35,50,.06);min-width:38px;height:32px;padding:0 8px;border-radius:11px;display:grid;place-items:center}
+.lf-currency-partial{display:flex;gap:7px;margin-top:9px}
+.lf-currency-partial input{min-width:0;flex:1;border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px 11px;color:var(--ink);font-size:13px}
+.lf-currency-partial button{border:0;border-radius:12px;background:var(--ink);color:#fff;padding:0 14px;font-weight:850}
+
+@media(max-width:390px){
+  .summary-currency-grid{grid-template-columns:1fr}
+  .summary-breakdown-card>summary{grid-template-columns:minmax(0,1fr) auto 16px}
+  .summary-breakdown-total{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  .summary-view-switch button{transition:none!important}
+}
