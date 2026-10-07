@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.34";
+    version.textContent="Versione app 2.4.35";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1478,16 +1478,26 @@ const LF_PEOPLE = ["Lorenzo", "Fortuna"];
 
 function calculateLFSplit(expenses, settlements){
   let paidLorenzo = 0, paidFortuna = 0, sharedTotal = 0, unassigned = 0;
+  let balance = 0; // Positivo: Fortuna deve a Lorenzo. Negativo: Lorenzo deve a Fortuna.
   (expenses || []).forEach(expense => {
     const amount = Number(expense.amount || 0);
     if (!Number.isFinite(amount) || amount <= 0) return;
-    if (expense.paidBy === "Lorenzo") { paidLorenzo += amount; sharedTotal += amount; }
-    else if (expense.paidBy === "Fortuna") { paidFortuna += amount; sharedTotal += amount; }
-    else unassigned += 1;
+    const paidBy = expense.paidBy;
+    const splitType = expense.splitType || "equal";
+    if (!LF_PEOPLE.includes(paidBy)){ unassigned += 1; return; }
+    if (paidBy === "Lorenzo") paidLorenzo += amount;
+    if (paidBy === "Fortuna") paidFortuna += amount;
+
+    if (splitType === "equal"){
+      sharedTotal += amount;
+      balance += paidBy === "Lorenzo" ? amount / 2 : -amount / 2;
+    } else if (splitType === "lorenzo_only"){
+      if (paidBy === "Fortuna") balance -= amount;
+    } else if (splitType === "fortuna_only"){
+      if (paidBy === "Lorenzo") balance += amount;
+    }
   });
 
-  // Positivo: Fortuna deve a Lorenzo. Negativo: Lorenzo deve a Fortuna.
-  let balance = paidLorenzo - (sharedTotal / 2);
   (settlements || []).forEach(settlement => {
     const amount = Number(settlement.amount || 0);
     if (!Number.isFinite(amount) || amount <= 0) return;
@@ -1503,6 +1513,13 @@ function lfDebtDirection(balance){
   return balance > 0
     ? { from:"Fortuna", to:"Lorenzo", debtor:"Fortuna", creditor:"Lorenzo", amount:Math.abs(balance) }
     : { from:"Lorenzo", to:"Fortuna", debtor:"Lorenzo", creditor:"Fortuna", amount:Math.abs(balance) };
+}
+
+function expenseSplitLabel(expense){
+  const type = expense?.splitType || "equal";
+  if (type === "lorenzo_only") return "Solo Lorenzo";
+  if (type === "fortuna_only") return "Solo Fortuna";
+  return "50/50";
 }
 
 function renderBudgetScreen(){
@@ -1647,6 +1664,7 @@ function renderBudgetScreen(){
         <label>Tappa<select id="expense-city">${expenseCityOptions()}</select></label>
         <label>Categoria<select id="expense-category">${categoryOptions("Cibo")}</select></label>
         <label class="expense-payer-field">Pagato da<select id="expense-paid-by" required><option value="" selected disabled>Seleziona Lorenzo o Fortuna</option><option value="Lorenzo">Lorenzo</option><option value="Fortuna">Fortuna</option></select></label>
+        <label class="expense-split-field">Divisione<select id="expense-split-type"><option value="equal">50/50</option><option value="lorenzo_only">Solo Lorenzo</option><option value="fortuna_only">Solo Fortuna</option></select></label>
       </div>
       <label>Descrizione<input id="expense-description" type="text" maxlength="80" placeholder="Es. cena, benzina, parcheggio…"></label>
       <div class="expense-form-actions">
@@ -1661,7 +1679,7 @@ function renderBudgetScreen(){
       ${expenses.length ? expenses.map(e => `
         <div class="expense-item" data-expense-id="${e.id}">
           <div class="expense-icon">${expenseCategoryIcon(e.category)}</div>
-          <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span><em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em></div>
+          <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span><em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em><em class="expense-split-type">${expenseSplitLabel(e)}</em></div>
           <div class="expense-amount">${money(e.amount,currency)}</div>
           <div class="expense-actions"><button data-edit-expense="${e.id}" title="Modifica">✎</button><button data-delete-expense="${e.id}" title="Elimina">×</button></div>
         </div>`).join("") : `<div class="empty-note">Nessuna spesa registrata. Il primo movimento comparirà qui e si sincronizzerà anche sull'altro telefono.</div>`}
@@ -1756,6 +1774,7 @@ function renderBudgetScreen(){
       $("#expense-city").innerHTML = expenseCityOptions(exp.city || "Generale");
       $("#expense-category").innerHTML = categoryOptions(exp.category || "Altro");
       $("#expense-paid-by").value = LF_PEOPLE.includes(exp.paidBy) ? exp.paidBy : "";
+      $("#expense-split-type").value = ["equal","lorenzo_only","fortuna_only"].includes(exp.splitType) ? exp.splitType : "equal";
       $("#expense-description").value = exp.description || "";
     }
     $("#expense-cancel")?.addEventListener("click", () => { editingExpenseId = null; renderBudgetScreen(); });
@@ -1766,7 +1785,9 @@ function renderBudgetScreen(){
     if (!Number.isFinite(amount) || amount <= 0) return;
     const paidBy = $("#expense-paid-by").value;
     if (!LF_PEOPLE.includes(paidBy)) return;
-    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy };
+    const splitType = $("#expense-split-type").value || "equal";
+    if (!["equal","lorenzo_only","fortuna_only"].includes(splitType)) return;
+    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy, splitType };
     const btn = $("#expense-save"), status=$("#expense-status");
     btn.disabled = true; status.textContent = navigator.onLine ? "Salvataggio…" : "Salvataggio offline…";
     try {

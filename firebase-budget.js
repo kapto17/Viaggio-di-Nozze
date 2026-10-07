@@ -153,7 +153,7 @@ async function addExpense(expense){
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
     paidBy: ["Lorenzo","Fortuna"].includes(expense.paidBy) ? expense.paidBy : "",
-    splitType: "equal",
+    splitType: ["equal","lorenzo_only","fortuna_only"].includes(expense.splitType) ? expense.splitType : "equal",
     date: expense.date || new Date().toISOString().slice(0,10),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
@@ -169,7 +169,7 @@ async function editExpense(id, expense){
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
     paidBy: ["Lorenzo","Fortuna"].includes(expense.paidBy) ? expense.paidBy : "",
-    splitType: "equal",
+    splitType: ["equal","lorenzo_only","fortuna_only"].includes(expense.splitType) ? expense.splitType : "equal",
     date: expense.date || new Date().toISOString().slice(0,10),
     updatedAt: serverTimestamp()
   });
