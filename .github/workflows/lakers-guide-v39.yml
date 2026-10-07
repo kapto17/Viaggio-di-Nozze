@@ -1,0 +1,38 @@
+name: Lakers guide v39
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download local arena photo
+        run: |
+          mkdir -p assets
+          curl -L --fail --retry 3 "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Crypto.com_Arena_-_Star_Plaza_entrance.jpg/1280px-Crypto.com_Arena_-_Star_Plaza_entrance.jpg" -o assets/crypto-arena-lakers.jpg
+      - name: Apply patch
+        run: python scripts/lakers_match_guide_v39.py
+      - name: Verify
+        run: |
+          node --check data.js
+          node --check app.js
+          node --check lakers-guide.js
+          node --check sw.js
+          test -s assets/crypto-arena-lakers.jpg
+          grep -q 'JOEY DTLA' lakers-guide.js
+          grep -q 'Kobe Bryant Entrance' lakers-guide.js
+          grep -q 'detailPlace": "Los Angeles Lakers vs LA Clippers"' data.js
+          grep -q 'Versione app 2.4.39' app.js
+          grep -q 'data.js?v=108' index.html
+          grep -q 'lakers-guide.js?v=1' index.html
+          grep -q 'lakers-guide.css?v=1' index.html
+          grep -q 'viaggio-nozze-v136' sw.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.js app.js index.html sw.js PHOTO-CREDITS.md assets/crypto-arena-lakers.jpg
+          git commit -m "Aggiunge guida completa Lakers-Clippers 2.4.39 [skip ci]"
+          git push
