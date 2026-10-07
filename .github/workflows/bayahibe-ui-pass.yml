@@ -1,10 +1,7 @@
 name: Bayahibe UI cleanup
-
 on: [push]
-
 permissions:
   contents: write
-
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -12,68 +9,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Move Bayahibe UI logic into app.js
+      - name: Apply UI patch
         shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path('app.js')
-          text = path.read_text(encoding='utf-8')
-
-          old = '''  const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
-  const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
-  const mustItemsHtml = [
-    ...(leg.activities||[]).map(renderActivityCard),
-    ...mustPlaces.map(renderPlaceCard)
-  ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
-  const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
-'''
-          new = '''  const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
-  const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
-  const isBayahibeRelax = leg.id === "bayahibe";
-  const mustItemsHtml = [
-    ...(leg.activities||[]).map(renderActivityCard),
-    ...mustPlaces.map(renderPlaceCard)
-  ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
-  const discoverIntro = isBayahibeRelax
-    ? `<div class="empty-note bayahibe-relax-note">Nessun itinerario da seguire: queste sono solo idee da scegliere sul momento, oppure potete tranquillamente non fare nulla oltre a mare, piscina e all inclusive.</div>`
-    : "";
-  const discoverCardsHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
-  const discoverHtml = discoverIntro + discoverCardsHtml;
-  const discoverTitle = isBayahibeRelax ? "Idee per il soggiorno" : "Da scoprire";
-  const discoverIcon = isBayahibeRelax
-    ? "🌴"
-    : `<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`;
-'''
-          if old not in text:
-              raise SystemExit('Bayahibe UI data anchor not found')
-          text = text.replace(old, new, 1)
-
-          old = '''    ${accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
-
-    ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
-
-    ${accordion("Da scoprire", discoverHtml, {icon:`<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`, count:discoverPlaces.length, className:"accordion-discover"})}
-'''
-          new = '''    ${isBayahibeRelax ? "" : accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
-
-    ${isBayahibeRelax ? "" : accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
-
-    ${accordion(discoverTitle, discoverHtml, {icon:discoverIcon, count:discoverPlaces.length, className:"accordion-discover", open:isBayahibeRelax})}
-'''
-          if old not in text:
-              raise SystemExit('Bayahibe accordion render anchor not found')
-          text = text.replace(old, new, 1)
-
-          path.write_text(text, encoding='utf-8')
-          PY
-
+          echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCgpwYXRoID0gUGF0aCgiYXBwLmpzIikKdGV4dCA9IHBhdGgucmVhZF90ZXh0KGVuY29kaW5nPSJ1dGYtOCIpCgpvbGQgPSAnJycgIGNvbnN0IG11c3RQbGFjZXMgPSAobGVnLnBsYWNlc3x8W10pLmZpbHRlcihwID0+IHAucHJpb3JpdHkgPT09ICJtdXN0Iik7CiAgY29uc3QgZGlzY292ZXJQbGFjZXMgPSAobGVnLnBsYWNlc3x8W10pLmZpbHRlcihwID0+IHAucHJpb3JpdHkgIT09ICJtdXN0Iik7CiAgY29uc3QgbXVzdEl0ZW1zSHRtbCA9IFsKICAgIC4uLihsZWcuYWN0aXZpdGllc3x8W10pLm1hcChyZW5kZXJBY3Rpdml0eUNhcmQpLAogICAgLi4ubXVzdFBsYWNlcy5tYXAocmVuZGVyUGxhY2VDYXJkKQogIF0uam9pbigiIikgfHwgYDxkaXYgY2xhc3M9ImVtcHR5LW5vdGUiPk5lc3N1bmEgcHJpb3JpdMOgIGluc2VyaXRhIHBlciBxdWVzdGEgdGFwcGEuPC9kaXY+YDsKICBjb25zdCBkaXNjb3Zlckh0bWwgPSBkaXNjb3ZlclBsYWNlcy5tYXAocmVuZGVyUGxhY2VDYXJkKS5qb2luKCIiKSB8fCBgPGRpdiBjbGFzcz0iZW1wdHktbm90ZSI+TmVzc3VuIGx1b2dvIHNlY29uZGFyaW8gaW5zZXJpdG8gcGVyIHF1ZXN0YSB0YXBwYS48L2Rpdj5gOwonJycKbmV3ID0gJycnICBjb25zdCBtdXN0UGxhY2VzID0gKGxlZy5wbGFjZXN8fFtdKS5maWx0ZXIocCA9PiBwLnByaW9yaXR5ID09PSAibXVzdCIpOwogIGNvbnN0IGRpc2NvdmVyUGxhY2VzID0gKGxlZy5wbGFjZXN8fFtdKS5maWx0ZXIocCA9PiBwLnByaW9yaXR5ICE9PSAibXVzdCIpOwogIGNvbnN0IGlzQmF5YWhpYmVSZWxheCA9IGxlZy5pZCA9PT0gImJheWFoaWJlIjsKICBjb25zdCBtdXN0SXRlbXNIdG1sID0gWwogICAgLi4uKGxlZy5hY3Rpdml0aWVzfHxbXSkubWFwKHJlbmRlckFjdGl2aXR5Q2FyZCksCiAgICAuLi5tdXN0UGxhY2VzLm1hcChyZW5kZXJQbGFjZUNhcmQpCiAgXS5qb2luKCIiKSB8fCBgPGRpdiBjbGFzcz0iZW1wdHktbm90ZSI+TmVzc3VuYSBwcmlvcml0w6AgaW5zZXJpdGEgcGVyIHF1ZXN0YSB0YXBwYS48L2Rpdj5gOwogIGNvbnN0IGRpc2NvdmVySW50cm8gPSBpc0JheWFoaWJlUmVsYXgKICAgID8gYDxkaXYgY2xhc3M9ImVtcHR5LW5vdGUgYmF5YWhpYmUtcmVsYXgtbm90ZSI+TmVzc3VuIGl0aW5lcmFyaW8gZGEgc2VndWlyZTogcXVlc3RlIHNvbm8gc29sbyBpZGVlIGRhIHNjZWdsaWVyZSBzdWwgbW9tZW50bywgb3BwdXJlIHBvdGV0ZSB0cmFucXVpbGxhbWVudGUgbm9uIGZhcmUgbnVsbGEgb2x0cmUgYSBtYXJlLCBwaXNjaW5hIGUgYWxsIGluY2x1c2l2ZS48L2Rpdj5gCiAgICA6ICIiOwogIGNvbnN0IGRpc2NvdmVyQ2FyZHNIdG1sID0gZGlzY292ZXJQbGFjZXMubWFwKHJlbmRlclBsYWNlQ2FyZCkuam9pbigiIikgfHwgYDxkaXYgY2xhc3M9ImVtcHR5LW5vdGUiPk5lc3N1biBsdW9nbyBzZWNvbmRhcmlvIGluc2VyaXRvIHBlciBxdWVzdGEgdGFwcGEuPC9kaXY+YDsKICBjb25zdCBkaXNjb3Zlckh0bWwgPSBkaXNjb3ZlckludHJvICsgZGlzY292ZXJDYXJkc0h0bWw7CiAgY29uc3QgZGlzY292ZXJUaXRsZSA9IGlzQmF5YWhpYmVSZWxheCA/ICJJZGVlIHBlciBpbCBzb2dnaW9ybm8iIDogIkRhIHNjb3ByaXJlIjsKICBjb25zdCBkaXNjb3Zlckljb24gPSBpc0JheWFoaWJlUmVsYXgKICAgID8gIvCfjLQiCiAgICA6IGA8c3ZnIGNsYXNzPSJkaXNjb3Zlci1jb21wYXNzIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGFyaWEtaGlkZGVuPSJ0cnVlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4LjUiPjwvY2lyY2xlPjxwYXRoIGQ9Im0xNS40IDguNi0yIDQuOC00LjggMiAyLTQuOCA0LjgtMloiPjwvcGF0aD48L3N2Zz5gOwonJycKaWYgb2xkIG5vdCBpbiB0ZXh0OgogICAgcmFpc2UgU3lzdGVtRXhpdCgiQmF5YWhpYmUgVUkgZGF0YSBhbmNob3Igbm90IGZvdW5kIikKdGV4dCA9IHRleHQucmVwbGFjZShvbGQsIG5ldywgMSkKCm9sZCA9ICcnJyAgICAke2FjY29yZGlvbigiUHJvZ3JhbW1hIGNvbnNpZ2xpYXRvIiwgcHJvZ3JhbUh0bWwsIHtpY29uOiLwn5eT77iPIiwgY291bnQ6cHJvZ3JhbURheXMubGVuZ3RoLCBjbGFzc05hbWU6ImFjY29yZGlvbi1wcm9ncmFtIn0pfQoKICAgICR7YWNjb3JkaW9uKCJEYSBub24gcGVyZGVyZSIsIG11c3RJdGVtc0h0bWwsIHtpY29uOiLimIUiLCBjb3VudDoobGVnLmFjdGl2aXRpZXN8fFtdKS5sZW5ndGggKyBtdXN0UGxhY2VzLmxlbmd0aCwgY2xhc3NOYW1lOiJhY2NvcmRpb24tbXVzdCJ9KX0KCiAgICAke2FjY29yZGlvbigiRGEgc2NvcHJpcmUiLCBkaXNjb3Zlckh0bWwsIHtpY29uOmA8c3ZnIGNsYXNzPSJkaXNjb3Zlci1jb21wYXNzIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGFyaWEtaGlkZGVuPSJ0cnVlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI4LjUiPjwvY2lyY2xlPjxwYXRoIGQ9Im0xNS40IDguNi0yIDQuOC00LjggMiAyLTQuOCA0LjgtMloiPjwvcGF0aD48L3N2Zz5gLCBjb3VudDpkaXNjb3ZlclBsYWNlcy5sZW5ndGgsIGNsYXNzTmFtZToiYWNjb3JkaW9uLWRpc2NvdmVyIn0pfQonJycKbmV3ID0gJycnICAgICR7aXNCYXlhaGliZVJlbGF4ID8gIiIgOiBhY2NvcmRpb24oIlByb2dyYW1tYSBjb25zaWdsaWF0byIsIHByb2dyYW1IdG1sLCB7aWNvbjoi8J+Xk++4jyIsIGNvdW50OnByb2dyYW1EYXlzLmxlbmd0aCwgY2xhc3NOYW1lOiJhY2NvcmRpb24tcHJvZ3JhbSJ9KX0KCiAgICAke2lzQmF5YWhpYmVSZWxheCA/ICIiIDogYWNjb3JkaW9uKCJEYSBub24gcGVyZGVyZSIsIG11c3RJdGVtc0h0bWwsIHtpY29uOiLimIUiLCBjb3VudDoobGVnLmFjdGl2aXRpZXN8fFtdKS5sZW5ndGggKyBtdXN0UGxhY2VzLmxlbmd0aCwgY2xhc3NOYW1lOiJhY2NvcmRpb24tbXVzdCJ9KX0KCiAgICAke2FjY29yZGlvbihkaXNjb3ZlclRpdGxlLCBkaXNjb3Zlckh0bWwsIHtpY29uOmRpc2NvdmVySWNvbiwgY291bnQ6ZGlzY292ZXJQbGFjZXMubGVuZ3RoLCBjbGFzc05hbWU6ImFjY29yZGlvbi1kaXNjb3ZlciIsIG9wZW46aXNCYXlhaGliZVJlbGF4fSl9CicnJwppZiBvbGQgbm90IGluIHRleHQ6CiAgICByYWlzZSBTeXN0ZW1FeGl0KCJCYXlhaGliZSBhY2NvcmRpb24gcmVuZGVyIGFuY2hvciBub3QgZm91bmQiKQp0ZXh0ID0gdGV4dC5yZXBsYWNlKG9sZCwgbmV3LCAxKQoKcGF0aC53cml0ZV90ZXh0KHRleHQsIGVuY29kaW5nPSJ1dGYtOCIpCg==' | base64 -d > /tmp/bayahibe_ui.py
+          python3 /tmp/bayahibe_ui.py
           node --check app.js
           git diff --check
-          git diff -- app.js
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm .github/workflows/bayahibe-ui-pass.yml
