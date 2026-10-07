@@ -121,3 +121,75 @@
     requestParallax();
   }
 })();
+
+/* V31 · shared city transition + bottom-nav polish */
+(() => {
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let sharedBusy = false;
+
+  function syncTabPill(){
+    const nav = document.querySelector("nav.tabbar");
+    if(!nav) return;
+    nav.classList.add("motion-nav");
+    const active = Array.from(nav.querySelectorAll("button.active"))
+      .find(btn => !btn.hidden && btn.getClientRects().length);
+    if(!active) return;
+    const navRect = nav.getBoundingClientRect();
+    const btnRect = active.getBoundingClientRect();
+    nav.style.setProperty("--motion-pill-left", `${(btnRect.left-navRect.left).toFixed(1)}px`);
+    nav.style.setProperty("--motion-pill-width", `${btnRect.width.toFixed(1)}px`);
+    nav.classList.add("motion-nav-ready");
+  }
+
+  function initTabPill(){
+    const nav = document.querySelector("nav.tabbar");
+    if(!nav) return;
+    syncTabPill();
+    const observer = new MutationObserver(() => requestAnimationFrame(syncTabPill));
+    observer.observe(nav,{subtree:true,attributes:true,attributeFilter:["class","hidden"]});
+    nav.addEventListener("click",() => requestAnimationFrame(syncTabPill),{passive:true});
+    window.addEventListener("resize",syncTabPill,{passive:true});
+  }
+
+  document.addEventListener("click", (event) => {
+    const card = event.target.closest?.(".city-card.photo-city-card");
+    if(!card || !card.dataset.leg) return;
+    if(event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if(reduced.matches || typeof document.startViewTransition !== "function" || typeof window.openCity !== "function") return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(sharedBusy) return;
+    sharedBusy = true;
+
+    let hero = null;
+    const cleanup = () => {
+      card.style.removeProperty("view-transition-name");
+      hero?.style.removeProperty("view-transition-name");
+      document.documentElement.classList.remove("city-shared-transition");
+      sharedBusy = false;
+      requestAnimationFrame(syncTabPill);
+    };
+
+    card.style.viewTransitionName = "city-card-shared";
+    document.documentElement.classList.add("city-shared-transition");
+
+    try{
+      const transition = document.startViewTransition(() => {
+        window.openCity(card.dataset.leg);
+        hero = document.querySelector("#screen-city-detail.active .city-header.photo-city-header");
+        if(hero) hero.style.viewTransitionName = "city-card-shared";
+      });
+      transition.finished.catch(() => {}).finally(cleanup);
+    }catch(_){
+      cleanup();
+      window.openCity(card.dataset.leg);
+    }
+  }, true);
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded",initTabPill,{once:true});
+  }else{
+    initTabPill();
+  }
+})();

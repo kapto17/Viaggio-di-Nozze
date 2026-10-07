@@ -1,9 +1,10 @@
-const CACHE_NAME = "viaggio-nozze-v124";
+const CACHE_NAME = "viaggio-nozze-v125";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
   "./themes.css",
+  "./motion-v3.css",
   "./app.js",
   "./motion.js",
   "./data.js",
