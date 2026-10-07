@@ -1169,11 +1169,20 @@ function openCity(legId, pushHistory=true, restoreState=null){
 
   const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
   const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
+  const isBayahibeRelax = leg.id === "bayahibe";
   const mustItemsHtml = [
     ...(leg.activities||[]).map(renderActivityCard),
     ...mustPlaces.map(renderPlaceCard)
   ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
-  const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
+  const discoverIntro = isBayahibeRelax
+    ? `<div class="empty-note bayahibe-relax-note">Nessun itinerario da seguire: queste sono solo idee da scegliere sul momento, oppure potete tranquillamente non fare nulla oltre a mare, piscina e all inclusive.</div>`
+    : "";
+  const discoverCardsHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
+  const discoverHtml = discoverIntro + discoverCardsHtml;
+  const discoverTitle = isBayahibeRelax ? "Idee per il soggiorno" : "Da scoprire";
+  const discoverIcon = isBayahibeRelax
+    ? "🌴"
+    : `<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`;
   const renderRestaurantCard = (r) => `
     <div class="ticket lf-ticket restaurant-ticket" data-restaurant-name="${r.name.replace(/&/g, "&amp;").replace(/\"/g, "&quot;")}" tabindex="0" role="button" aria-label="Apri il dettaglio di ${r.name}">
       <div class="stub-top"><div><div class="restaurant-title-line"><div class="stitle">${r.name}</div>${r.price ? `<span class="price-band" title="Fascia di prezzo indicativa">${r.price}</span>` : ""}</div>${r.type ? `<div class="restaurant-type"><span class="restaurant-type-icon">${r.typeIcon || "🍽️"}</span><span>${r.type}</span></div>` : ""}<div class="ssub">${r.note||""}</div></div>${r.lf ? `<span class="lf-badge" title="Scelto da L&F">L&amp;F</span>` : ""}</div>
@@ -1234,11 +1243,11 @@ function openCity(legId, pushHistory=true, restoreState=null){
 
     ${accordion("Trasporti", transportHtml || `<div class="empty-note">Nessun trasporto registrato per questa tappa.</div>`, {icon:"✈️", count:(leg.transport||[]).length})}
 
-    ${accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
+    ${isBayahibeRelax ? "" : accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
 
-    ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
+    ${isBayahibeRelax ? "" : accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
 
-    ${accordion("Da scoprire", discoverHtml, {icon:`<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`, count:discoverPlaces.length, className:"accordion-discover"})}
+    ${accordion(discoverTitle, discoverHtml, {icon:discoverIcon, count:discoverPlaces.length, className:"accordion-discover", open:isBayahibeRelax})}
 
     ${(() => {
       const c = (typeof CLOTHING_GUIDE !== "undefined" && CLOTHING_GUIDE[leg.accent]) || null;
