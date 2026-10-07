@@ -55,6 +55,7 @@ const TRIP = {
         { date: "2026-10-23", time: "", type: "car", title: "Ritiro SUV a noleggio", subtitle: "Ritiro a LAX · noleggio dal 23/10 al 30/10 · riconsegna a LAS", mapsQuery: "Los Angeles International Airport car rental" }
       ],
       activities: [
+        { priority: "must", lf: true, name: "Los Angeles Lakers vs LA Clippers", date: "2026-10-23", time: "19:00", status: "Prenotato", icon: "🏀", note: "Partita NBA alla Crypto.com Arena · biglietti acquistati", mapsQuery: "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015" },
         { priority: "must", lf: true, name: "Universal Studios Hollywood", date: "2026-10-26", time: "Giornata", status: "Prenotato", icon: "🎬", note: "Giornata agli Universal Studios Hollywood · biglietti già prenotati", mapsQuery: "Universal Studios Hollywood, Universal City, CA" }
       ],
       places: [
@@ -85,7 +86,9 @@ const TRIP = {
         { name: "Musso & Frank Grill", image: "./assets/restaurants/musso-frank.webp", meal: "serious", price: "$$$$", type: "Old Hollywood · steakhouse", typeIcon: "🥩", note: "Istituzione di Hollywood dal fascino storico: da scegliere se volete una vera cena Old Hollywood.", mapsQuery: "Musso & Frank Grill 6667 Hollywood Blvd Los Angeles" },
         { name: "République", image: "https://i.pinimg.com/736x/e7/e6/8d/e7e68d15d9d6cf32b82a108800b18e7c.jpg", meal: "serious", price: "$$", lf: true, type: "Francese · bakery · brunch", typeIcon: "🥐", note: "Segnato da Fortuna · storico edificio su La Brea, molto apprezzato per bakery, brunch e cucina francese contemporanea.", mapsQuery: "Republique 624 S La Brea Ave Los Angeles CA 90036" },
         { name: "Du-par's Restaurant & Bakery", image: "https://dupars.net/Store/wp-content/uploads/2015/11/DU-PARS.jpg", meal: "quick", price: "$", lf: true, type: "Diner · colazione · pancake", typeIcon: "🥞", note: "Segnato da Fortuna · storico diner dell'Original Farmers Market, famoso per i suoi buttermilk hot cakes. Da provare per i pancake.", description: "Du-par's è un classico di Los Angeles aperto all'Original Farmers Market dal 1938. Il locale è celebre soprattutto per i buttermilk hot cakes, serviti in short stack o full stack con burro fuso e sciroppo d'acero o boysenberry. Una tappa perfetta se volete fare una vera colazione americana o una pausa dolce durante la giornata.", mapsQuery: "Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036" }
-      ], days: [], tickets: []
+      ], days: [], tickets: [
+        { name: "Lakers vs LA Clippers", note: "23 ottobre 2026 · 19:00 · Crypto.com Arena · biglietti acquistati. Documento/QR da aggiungere quando disponibile.", status: "Prenotato" }
+      ]
     },
 
     {
@@ -567,8 +570,8 @@ const PROGRAM_GUIDE = {
   "la": [
     {
       "date": "2026-10-23",
-      "title": "Arrivo e Downtown LA",
-      "theme": "Auto a noleggio, check-in e un piccolo circuito a piedi tra i classici di Downtown prima di cena.",
+      "title": "Arrivo a Los Angeles e Lakers–Clippers",
+      "theme": "Arrivo da San Francisco, ritiro auto e check-in senza corse; poi prima grande serata a Los Angeles con la partita NBA alla Crypto.com Arena.",
       "items": [
         {
           "time": "08:00",
@@ -620,7 +623,7 @@ const PROGRAM_GUIDE = {
           "kind": "transfer",
           "icon": "🚗",
           "title": "Spostamento · LAX Rental Car Center → The Commerce Hotel",
-          "note": "🚗 In auto · circa 30 km · 35–60 min a seconda del traffico. Non programmate nulla di rigido prima del check-in.",
+          "note": "🚗 In auto · circa 30 km · 35–60 min a seconda del traffico. Nessun appuntamento rigido prima del check-in.",
           "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
         },
         {
@@ -628,98 +631,49 @@ const PROGRAM_GUIDE = {
           "kind": "recommended",
           "icon": "🏨",
           "title": "Check-in al The Commerce",
-          "note": "Lasciate i bagagli e ripartite solo se i tempi di aeroporto e noleggio sono andati bene.",
+          "note": "Lasciate i bagagli, rinfrescatevi e tenete questa pausa: la sera sarà lunga e non vale la pena comprimere qui il vecchio giro Downtown.",
           "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040",
           "mapLat": 33.998348,
           "mapLon": -118.145255
         },
         {
-          "time": "16:10",
+          "time": "16:20",
           "kind": "transfer",
           "icon": "🚗",
-          "title": "Spostamento · The Commerce → Downtown LA",
-          "note": "🚗 In auto · circa 16 km · 20–35 min. Parcheggiate nell'area Grand Central Market / Broadway e poi lasciate l'auto ferma per il piccolo circuito a piedi.",
-          "mapsQuery": "Grand Central Market Parking 308 S Hill St Los Angeles CA 90013"
+          "title": "Spostamento · The Commerce → Crypto.com Arena",
+          "note": "🚗 Circa 17 km · considerate 30–45 min nel traffico del venerdì. Puntate al parcheggio evento di L.A. LIVE / Crypto.com Arena e lasciate l'auto lì fino a dopo cena.",
+          "mapsQuery": "Crypto.com Arena West Garage Los Angeles CA"
         },
         {
-          "time": "16:45",
+          "time": "17:10 circa",
           "kind": "recommended",
-          "icon": "🏛️",
-          "title": "Bradbury Building",
-          "note": "È praticamente di fronte al Grand Central Market. Il venerdì le visite terminano alle 17:00: se arrivate in tempo entrate per vedere l'atrio; se il volo vi ha rallentato, limitatevi all'esterno.",
-          "mapsQuery": "Bradbury Building 304 S Broadway Los Angeles CA 90013"
+          "icon": "🏀",
+          "title": "L.A. LIVE e atmosfera pre-partita",
+          "note": "Arrivate con calma, foto fuori dall'arena e giro nell'area L.A. LIVE. Obiettivo: essere davanti agli ingressi verso le 17:30; ricontrollate l'orario porte specifico della partita il giorno prima.",
+          "mapsQuery": "L.A. LIVE 800 W Olympic Blvd Los Angeles CA 90015"
         },
         {
-          "time": "17:05",
-          "kind": "transfer",
-          "icon": "🚶",
-          "title": "Spostamento · Bradbury Building → Grand Central Market",
-          "note": "🚶 A piedi · circa 100 m · 2 min: basta attraversare Broadway.",
-          "mapsQuery": "Grand Central Market 317 S Broadway Los Angeles CA 90013"
+          "time": "19:00",
+          "kind": "booked",
+          "icon": "🎟️",
+          "title": "Los Angeles Lakers vs LA Clippers",
+          "note": "Partita NBA alla Crypto.com Arena · biglietti acquistati. È la seconda gara di regular season dei Lakers 2026–27. Evitate borse: l'arena ammette solo piccoli portafogli/clutch entro i limiti previsti.",
+          "mapsQuery": "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015"
         },
         {
-          "time": "17:10",
+          "time": "21:45–22:15 circa",
           "kind": "recommended",
-          "icon": "🌮",
-          "title": "Grand Central Market",
-          "note": "Giro nel mercato storico aperto dal 1917. Tenete 30–35 minuti: il mercato resta aperto fino alle 21:00.",
-          "mapsQuery": "Grand Central Market 317 S Broadway Los Angeles CA 90013"
-        },
-        {
-          "time": "17:45",
-          "kind": "transfer",
-          "icon": "🚶",
-          "title": "Spostamento · Grand Central Market → Angels Flight",
-          "note": "🚶 A piedi · circa 150 m · 2–3 min verso l'ingresso inferiore di Angels Flight su Hill Street.",
-          "mapsQuery": "Angels Flight Railway 351 S Hill St Los Angeles CA 90013"
-        },
-        {
-          "time": "17:50",
-          "kind": "recommended",
-          "icon": "🚋",
-          "title": "Angels Flight",
-          "note": "Salite con la storica funicolare. Il tragitto è brevissimo, ma è uno dei simboli di Downtown e funziona bene come collegamento verso Bunker Hill.",
-          "mapsQuery": "Angels Flight Railway Los Angeles"
-        },
-        {
-          "time": "18:10",
-          "kind": "transfer",
-          "icon": "🚶",
-          "title": "Spostamento · Angels Flight → Walt Disney Concert Hall",
-          "note": "🚶 A piedi · circa 750 m · 10 min da California Plaza verso Grand Avenue.",
-          "mapsQuery": "Walt Disney Concert Hall 111 S Grand Ave Los Angeles CA 90012"
-        },
-        {
-          "time": "18:20",
-          "kind": "recommended",
-          "icon": "🎼",
-          "title": "Walt Disney Concert Hall & Grand Park",
-          "note": "Esterni del Walt Disney Concert Hall e breve passeggiata nell'area di Grand Avenue / Grand Park. Circa 45–50 minuti.",
-          "mapsQuery": "Walt Disney Concert Hall Los Angeles"
-        },
-        {
-          "time": "19:15",
-          "kind": "transfer",
-          "icon": "🚗",
-          "title": "Spostamento · recupero auto → Water Grill",
-          "note": "🚶 Tornate verso il parcheggio di Grand Central Market, poi 🚗 circa 1,5 km / 5–10 min fino al Water Grill. Il ristorante offre valet.",
-          "mapsQuery": "Water Grill 544 S Grand Ave Los Angeles CA 90071"
-        },
-        {
-          "time": "20:30",
-          "kind": "recommended",
-          "icon": "🐟",
-          "title": "Water Grill · Downtown",
-          "note": "Cena di pesce in Downtown. Il venerdì chiude alle 23:00, quindi l'orario delle 20:30 è comodo.",
-          "mapsQuery": "Water Grill 544 S Grand Ave Los Angeles CA 90071",
-          "detailRestaurant": "Water Grill · Downtown"
+          "icon": "🍔",
+          "title": "Cena post-partita · Yard House L.A. LIVE",
+          "note": "Cena senza riprendere l'auto: Yard House è a L.A. LIVE e il venerdì la cucina resta aperta fino all'1:00, quindi non dovete guardare l'orologio se la partita finisce tardi o va all'overtime.",
+          "mapsQuery": "Yard House 800 W Olympic Blvd Los Angeles CA 90015"
         },
         {
           "time": "Dopo cena",
           "kind": "transfer",
           "icon": "🚗",
-          "title": "Rientro · Water Grill → The Commerce Hotel",
-          "note": "🚗 In auto · circa 16 km · 20–30 min in condizioni normali serali.",
+          "title": "Rientro · L.A. LIVE → The Commerce Hotel",
+          "note": "🚗 Circa 17 km · 20–30 min in tarda serata. Recuperate l'auto dal parcheggio evento e rientrate direttamente in hotel.",
           "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
         }
       ]
