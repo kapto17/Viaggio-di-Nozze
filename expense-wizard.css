@@ -1,4 +1,4 @@
-/* V36 · wizard spese compatto e keyboard-friendly */
+/* V37 · wizard spese compatto con USD / DOP */
 .expense-form-source{display:none!important;}
 .budget-add-expense-btn{
   width:100%;margin:18px 0 16px;border:0;border-radius:20px;padding:15px 16px;
@@ -37,8 +37,13 @@ body.expense-wizard-open{overflow:hidden}
 .expense-wizard-step.active{display:block;animation:lf-budget-panel-in 170ms ease both}
 .expense-wizard-question{font-size:16px;font-weight:900;margin:2px 0 9px}
 .expense-wizard-question.small{font-size:13px;margin-top:14px;margin-bottom:7px}
+.expense-wizard-question-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+.expense-wizard-question-row .expense-wizard-question{margin:0}
+.expense-currency-toggle{display:flex;gap:3px;background:rgba(20,35,50,.06);padding:3px;border-radius:11px;flex:0 0 auto}
+.expense-currency-toggle button{border:0;border-radius:8px;background:transparent;color:var(--muted);padding:6px 7px;font-size:9px;font-weight:900;white-space:nowrap}
+.expense-currency-toggle button.active{background:#fff;color:var(--ink);box-shadow:0 2px 7px rgba(19,42,69,.10)}
 .expense-wizard-amount{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:5px 13px;box-shadow:0 6px 18px rgba(19,42,69,.05)}
-.expense-wizard-amount span{font-size:23px;font-weight:900}
+.expense-wizard-amount span{font-size:21px;font-weight:900;white-space:nowrap}
 .expense-wizard-amount input{min-width:0;width:100%;border:0!important;background:transparent!important;font-size:30px!important;font-weight:900!important;padding:5px 0!important;outline:none;box-shadow:none!important;color:var(--ink)}
 .expense-wizard-quick-hint{font-size:10px;line-height:1.3;color:var(--muted);margin:6px 2px 0}
 .expense-choice-grid{display:grid;gap:8px}
@@ -65,7 +70,6 @@ body.expense-wizard-open{overflow:hidden}
 .expense-wizard-actions .primary-action{flex:1;min-height:42px}
 .expense-wizard-actions .secondary-action{min-width:82px;min-height:42px}
 
-/* Nel primo step il CTA e' solo un fallback: il flusso normale passa avanti toccando il pagante. */
 .expense-wizard[data-current-step="1"] .expense-wizard-actions{margin-top:10px}
 .expense-wizard[data-current-step="1"] #wiz-next{font-size:12px}
 
@@ -77,6 +81,7 @@ body.expense-wizard-open{overflow:hidden}
   .expense-wizard-amount input{font-size:27px!important}
 }
 @media(max-width:360px){
+  .expense-wizard-question-row{align-items:flex-start;flex-direction:column;gap:5px}
   .expense-choice-grid.three{grid-template-columns:1fr}
   .expense-choice-grid.three button{min-height:52px;flex-direction:row;justify-content:flex-start;padding:7px 11px}
   .expense-choice-grid.three button small{margin-left:auto}
