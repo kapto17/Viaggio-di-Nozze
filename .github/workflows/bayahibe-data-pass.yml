@@ -51,21 +51,19 @@ jobs:
                           return i
               raise RuntimeError(f'Unmatched {opener}{closer}')
 
-          # 1) Catalogo Bayahibe: tutte idee facoltative, nello stesso ordine mostrato oggi dall'app.
           leg = text.index('id: "bayahibe"')
           places_key = text.index('places: [', leg)
           places_start = text.index('[', places_key)
           places_end = matching(text, places_start, '[', ']')
           new_places = '''[
-        { priority: "discover", name: "Playa Dominicus", note: "La scelta base del soggiorno: spiaggia, mare, piscina e resort. Nessun programma necessario: è perfetta anche per giornate interamente dedicate al relax.", mapsQuery: "Playa Dominicus Bayahibe" },
-        { priority: "discover", name: "Isola Saona", note: "L'escursione più iconica della zona, ma totalmente facoltativa. Se decidete di farla, scegliete sul posto il giorno con il meteo migliore.", mapsQuery: "Saona Island Dominican Republic" },
-        { priority: "discover", name: "Catalina Island · snorkeling", note: "Alternativa a Saona se avete voglia soprattutto di mare e snorkeling. Da valutare direttamente al resort in base a meteo e disponibilità.", mapsQuery: "Catalina Island Dominican Republic" },
-        { priority: "discover", name: "Bayahibe village", note: "Passeggiata semplice nel borgo di pescatori e sul waterfront, da fare quando vi va senza dedicarle una giornata intera.", mapsQuery: "Bayahibe Dominican Republic" },
-        { priority: "discover", name: "Parque Nacional Cotubanamá", note: "Opzione naturalistica tra grotte, sentieri e costa protetta, solo se avete voglia di staccare dal resort per qualche ora o per un'escursione.", mapsQuery: "Cotubanama National Park Dominican Republic" }
-      ]'''
+                  { priority: "discover", name: "Playa Dominicus", note: "La scelta base del soggiorno: spiaggia, mare, piscina e resort. Nessun programma necessario: è perfetta anche per giornate interamente dedicate al relax.", mapsQuery: "Playa Dominicus Bayahibe" },
+                  { priority: "discover", name: "Isola Saona", note: "L'escursione più iconica della zona, ma totalmente facoltativa. Se decidete di farla, scegliete sul posto il giorno con il meteo migliore.", mapsQuery: "Saona Island Dominican Republic" },
+                  { priority: "discover", name: "Catalina Island · snorkeling", note: "Alternativa a Saona se avete voglia soprattutto di mare e snorkeling. Da valutare direttamente al resort in base a meteo e disponibilità.", mapsQuery: "Catalina Island Dominican Republic" },
+                  { priority: "discover", name: "Bayahibe village", note: "Passeggiata semplice nel borgo di pescatori e sul waterfront, da fare quando vi va senza dedicarle una giornata intera.", mapsQuery: "Bayahibe Dominican Republic" },
+                  { priority: "discover", name: "Parque Nacional Cotubanamá", note: "Opzione naturalistica tra grotte, sentieri e costa protetta, solo se avete voglia di staccare dal resort per qualche ora o per un'escursione.", mapsQuery: "Cotubanama National Park Dominican Republic" }
+                ]'''
           text = text[:places_start] + new_places + text[places_end + 1:]
 
-          # 2) PROGRAM_GUIDE Bayahibe: cinque giorni realmente liberi; preserva integralmente il giorno di rientro del 09/11.
           pg = text.index('const PROGRAM_GUIDE')
           bay_key = text.index('"bayahibe": [', pg)
           bay_start = text.index('[', bay_key)
@@ -81,30 +79,29 @@ jobs:
           days = []
           for date in ('2026-11-04','2026-11-05','2026-11-06','2026-11-07','2026-11-08'):
               days.append(f'''    {{
-      "date": "{date}",
-      "title": "Giornata libera a Bayahibe",
-      "theme": "Nessun itinerario: mare, piscina, all inclusive e libertà totale. Se vi va di fare qualcosa, le idee sono raccolte nella scheda Bayahibe.",
-      "items": [{{
-        "time": "Tutto il giorno",
-        "kind": "recommended",
-        "icon": "🏖️",
-        "title": "Relax senza programma",
-        "note": "Mare, piscina e resort. Se sul momento vi va un'escursione o una passeggiata, scegliete una delle idee nella scheda Bayahibe in base a meteo, voglia e disponibilità."
-      }}]
-    }}''')
+                "date": "{date}",
+                "title": "Giornata libera a Bayahibe",
+                "theme": "Nessun itinerario: mare, piscina, all inclusive e libertà totale. Se vi va di fare qualcosa, le idee sono raccolte nella scheda Bayahibe.",
+                "items": [{{
+                  "time": "Tutto il giorno",
+                  "kind": "recommended",
+                  "icon": "🏖️",
+                  "title": "Relax senza programma",
+                  "note": "Mare, piscina e resort. Se sul momento vi va un'escursione o una passeggiata, scegliete una delle idee nella scheda Bayahibe in base a meteo, voglia e disponibilità."
+                }}]
+              }}''')
           normalized_return = '\n'.join('    ' + line for line in return_day.splitlines())
           new_bay = '[\n' + ',\n'.join(days) + ',\n' + normalized_return + '\n  ]'
           text = text[:bay_start] + new_bay + text[bay_end + 1:]
 
-          # 3) Dettaglio Catalina diventa dato reale e non più creato dall'override di index.html.
           if '"Catalina Island · snorkeling": {' not in text:
               marker = '  "Isola Saona": {'
               if marker not in text:
                   raise RuntimeError('Anchor PLACE_DETAILS Isola Saona non trovato')
               catalina = '''  "Catalina Island · snorkeling": {
-    text: "Isola Catalina è una piccola isola al largo della costa sud-orientale della Repubblica Dominicana, nota soprattutto per snorkeling e immersioni. Da Bayahibe è una possibile alternativa a Saona se volete dedicare una giornata soprattutto al mare e ai fondali."
-  },
-'''
+                text: "Isola Catalina è una piccola isola al largo della costa sud-orientale della Repubblica Dominicana, nota soprattutto per snorkeling e immersioni. Da Bayahibe è una possibile alternativa a Saona se volete dedicare una giornata soprattutto al mare e ai fondali."
+              },
+          '''
               text = text.replace(marker, catalina + marker, 1)
 
           path.write_text(text, encoding='utf-8')
