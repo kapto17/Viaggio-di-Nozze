@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.32";
+    version.textContent="Versione app 2.4.33";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1453,8 +1453,10 @@ function money(value, currency="USD"){
 
 function currentBudgetData(){
   const settings = budgetState.settings || (window.LFBudget && window.LFBudget.defaults) || (typeof BUDGET_DEFAULTS !== "undefined" ? BUDGET_DEFAULTS : { totalBudget:2500, currency:"USD", cityBudgets:{} });
-  const expenses = Array.isArray(budgetState.expenses) ? budgetState.expenses : [];
-  return { settings, expenses };
+  const entries = Array.isArray(budgetState.expenses) ? budgetState.expenses : [];
+  const expenses = entries.filter(entry => entry.entryType !== "settlement");
+  const settlements = entries.filter(entry => entry.entryType === "settlement");
+  return { settings, expenses, settlements };
 }
 
 function expenseCityOptions(selected=""){
@@ -1472,14 +1474,47 @@ function budgetCityLabel(key){
   return d ? d.label : key;
 }
 
+const LF_PEOPLE = ["Lorenzo", "Fortuna"];
+
+function calculateLFSplit(expenses, settlements){
+  let paidLorenzo = 0, paidFortuna = 0, sharedTotal = 0, unassigned = 0;
+  (expenses || []).forEach(expense => {
+    const amount = Number(expense.amount || 0);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    if (expense.paidBy === "Lorenzo") { paidLorenzo += amount; sharedTotal += amount; }
+    else if (expense.paidBy === "Fortuna") { paidFortuna += amount; sharedTotal += amount; }
+    else unassigned += 1;
+  });
+
+  // Positivo: Fortuna deve a Lorenzo. Negativo: Lorenzo deve a Fortuna.
+  let balance = paidLorenzo - (sharedTotal / 2);
+  (settlements || []).forEach(settlement => {
+    const amount = Number(settlement.amount || 0);
+    if (!Number.isFinite(amount) || amount <= 0) return;
+    if (settlement.from === "Fortuna" && settlement.to === "Lorenzo") balance -= amount;
+    if (settlement.from === "Lorenzo" && settlement.to === "Fortuna") balance += amount;
+  });
+  if (Math.abs(balance) < 0.005) balance = 0;
+  return { paidLorenzo, paidFortuna, sharedTotal, shareEach:sharedTotal / 2, balance, unassigned };
+}
+
+function lfDebtDirection(balance){
+  if (Math.abs(Number(balance || 0)) < 0.005) return null;
+  return balance > 0
+    ? { from:"Fortuna", to:"Lorenzo", debtor:"Fortuna", creditor:"Lorenzo", amount:Math.abs(balance) }
+    : { from:"Lorenzo", to:"Fortuna", debtor:"Lorenzo", creditor:"Fortuna", amount:Math.abs(balance) };
+}
+
 function renderBudgetScreen(){
   const el = $("#screen-budget");
   if (!privateAuthState.authenticated){
     openPrivateAccess(false);
     return;
   }
-  const { settings, expenses } = currentBudgetData();
+  const { settings, expenses, settlements } = currentBudgetData();
   const currency = settings.currency || "USD";
+  const ledger = calculateLFSplit(expenses, settlements);
+  const debt = lfDebtDirection(ledger.balance);
   const total = Number(settings.totalBudget || 0);
   const spent = expenses.reduce((sum,e) => sum + Number(e.amount || 0), 0);
   const remaining = total - spent;
@@ -1501,6 +1536,38 @@ function renderBudgetScreen(){
     </div>
     <div class="budget-progress"><span style="width:${pct}%"></span></div>
     <button class="budget-edit-total" id="budget-edit-total">✎ Modifica budget iniziale</button>
+
+    <section class="lf-split-card" aria-label="Conti tra Lorenzo e Fortuna">
+      <div class="lf-split-head">
+        <div><small>CONTI L&amp;F</small><strong>Chi ha anticipato cosa</strong></div>
+        <span class="lf-split-icon" aria-hidden="true">⇄</span>
+      </div>
+      <div class="lf-split-paid-grid">
+        <div><span>Lorenzo ha pagato</span><strong>${money(ledger.paidLorenzo,currency)}</strong></div>
+        <div><span>Fortuna ha pagato</span><strong>${money(ledger.paidFortuna,currency)}</strong></div>
+      </div>
+      <div class="lf-split-share">Spese condivise conteggiate: <strong>${money(ledger.sharedTotal,currency)}</strong> · quota a testa <strong>${money(ledger.shareEach,currency)}</strong></div>
+      <div class="lf-split-balance ${debt ? "debt" : "settled"}">
+        <small>Saldo attuale</small>
+        <strong>${debt ? `${debt.debtor} deve a ${debt.creditor} ${money(debt.amount,currency)}` : "Siete in pari ✓"}</strong>
+        <span>${debt ? "Il saldo compensa automaticamente tutte le spese 50/50 e i pareggi già registrati." : "Non ci sono conti in sospeso tra voi."}</span>
+      </div>
+      ${ledger.unassigned ? `<div class="lf-split-warning">⚠️ ${ledger.unassigned} ${ledger.unassigned===1?"spesa precedente non ha":"spese precedenti non hanno"} ancora un pagante. Restano nel budget, ma non entrano nel saldo L&amp;F finché non ${ledger.unassigned===1?"la modifichi":"le modifichi"}.</div>` : ""}
+      <div class="lf-split-actions">
+        ${debt ? `<button type="button" class="primary-action" id="lf-settle-full">✓ Pareggia tutto</button><button type="button" class="secondary-action" id="lf-settle-manual">Pareggio parziale</button>` : ""}
+      </div>
+      ${debt ? `<div class="lf-settle-panel" id="lf-settle-panel" hidden>
+        <label>Importo da considerare pareggiato<input id="lf-settle-amount" type="number" min="0.01" max="${debt.amount.toFixed(2)}" step="0.01" inputmode="decimal" placeholder="0,00"></label>
+        <div><button type="button" class="primary-action" id="lf-settle-save">Registra pareggio</button><button type="button" class="secondary-action" id="lf-settle-cancel">Annulla</button></div>
+        <small>Il pareggio chiude tutto o parte del debito, ma non cambia il budget speso.</small>
+      </div>` : ""}
+      <details class="lf-settlement-history">
+        <summary>Storico pareggi <span>${settlements.length}</span></summary>
+        <div class="lf-settlement-list">
+          ${settlements.length ? settlements.map(s => `<div class="lf-settlement-row"><div><strong>${s.from || "—"} → ${s.to || "—"}</strong><span>${formatExpenseDate(s.date)} · ${s.note || "Pareggio manuale"}</span></div><b>${money(s.amount,currency)}</b><button type="button" data-delete-settlement="${s.id}" aria-label="Annulla questo pareggio">×</button></div>`).join("") : `<div class="empty-note">Nessun pareggio registrato.</div>`}
+        </div>
+      </details>
+    </section>
 
     <div class="currency-converter" id="currency-converter">
       <div class="currency-converter-head"><div><small>Strumento rapido</small><strong>Convertitore valuta</strong></div><span>€ ⇄ $</span></div>
@@ -1579,6 +1646,7 @@ function renderBudgetScreen(){
         <label>Data<input id="expense-date" type="date" required value="${todayISO()}"></label>
         <label>Tappa<select id="expense-city">${expenseCityOptions()}</select></label>
         <label>Categoria<select id="expense-category">${categoryOptions("Cibo")}</select></label>
+        <label class="expense-payer-field">Pagato da<select id="expense-paid-by" required><option value="" selected disabled>Seleziona Lorenzo o Fortuna</option><option value="Lorenzo">Lorenzo</option><option value="Fortuna">Fortuna</option></select></label>
       </div>
       <label>Descrizione<input id="expense-description" type="text" maxlength="80" placeholder="Es. cena, benzina, parcheggio…"></label>
       <div class="expense-form-actions">
@@ -1593,7 +1661,7 @@ function renderBudgetScreen(){
       ${expenses.length ? expenses.map(e => `
         <div class="expense-item" data-expense-id="${e.id}">
           <div class="expense-icon">${expenseCategoryIcon(e.category)}</div>
-          <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span></div>
+          <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span><em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em></div>
           <div class="expense-amount">${money(e.amount,currency)}</div>
           <div class="expense-actions"><button data-edit-expense="${e.id}" title="Modifica">✎</button><button data-delete-expense="${e.id}" title="Elimina">×</button></div>
         </div>`).join("") : `<div class="empty-note">Nessuna spesa registrata. Il primo movimento comparirà qui e si sincronizzerà anche sull'altro telefono.</div>`}
@@ -1645,6 +1713,40 @@ function renderBudgetScreen(){
     await window.LFBudget.saveSettings({ totalBudget:n });
   });
 
+  async function registerLFSettlement(amount, note){
+    const currentDebt = lfDebtDirection(ledger.balance);
+    const value = Number(amount);
+    if (!currentDebt || !Number.isFinite(value) || value <= 0) return;
+    if (value > currentDebt.amount + 0.005){ alert("L'importo supera il debito attuale."); return; }
+    await window.LFBudget.addSettlement({ amount:value, from:currentDebt.from, to:currentDebt.to, note:note || "Pareggio manuale", date:todayISO() });
+  }
+
+  $("#lf-settle-full")?.addEventListener("click", async () => {
+    if (!debt) return;
+    if (!confirm(`Considerare pareggiati tutti i ${money(debt.amount,currency)} che ${debt.debtor} deve a ${debt.creditor}?`)) return;
+    try { await registerLFSettlement(debt.amount, "Pareggio completo"); }
+    catch(err){ console.error(err); alert("Non sono riuscito a registrare il pareggio."); }
+  });
+  $("#lf-settle-manual")?.addEventListener("click", () => {
+    const panel = $("#lf-settle-panel");
+    if (!panel) return;
+    panel.hidden = false;
+    $("#lf-settle-amount")?.focus();
+  });
+  $("#lf-settle-cancel")?.addEventListener("click", () => { const panel=$("#lf-settle-panel"); if(panel) panel.hidden=true; });
+  $("#lf-settle-save")?.addEventListener("click", async () => {
+    const input = $("#lf-settle-amount");
+    const value = Number(input?.value);
+    if (!Number.isFinite(value) || value <= 0){ alert("Inserisci un importo valido."); return; }
+    try { await registerLFSettlement(value, value >= (debt?.amount || 0) - 0.005 ? "Pareggio completo" : "Pareggio parziale"); }
+    catch(err){ console.error(err); alert("Non sono riuscito a registrare il pareggio."); }
+  });
+  $$('[data-delete-settlement]', el).forEach(btn => btn.addEventListener("click", async () => {
+    if (!confirm("Annullare questo pareggio? Il saldo tra Lorenzo e Fortuna verrà ricalcolato.")) return;
+    try { await window.LFBudget.removeSettlement(btn.dataset.deleteSettlement); }
+    catch(err){ console.error(err); alert("Non sono riuscito ad annullare il pareggio."); }
+  }));
+
   const form = $("#expense-form");
   if (editingExpenseId){
     const exp = expenses.find(e => e.id === editingExpenseId);
@@ -1653,6 +1755,7 @@ function renderBudgetScreen(){
       $("#expense-date").value = exp.date || todayISO();
       $("#expense-city").innerHTML = expenseCityOptions(exp.city || "Generale");
       $("#expense-category").innerHTML = categoryOptions(exp.category || "Altro");
+      $("#expense-paid-by").value = LF_PEOPLE.includes(exp.paidBy) ? exp.paidBy : "";
       $("#expense-description").value = exp.description || "";
     }
     $("#expense-cancel")?.addEventListener("click", () => { editingExpenseId = null; renderBudgetScreen(); });
@@ -1661,7 +1764,9 @@ function renderBudgetScreen(){
     event.preventDefault();
     const amount = Number($("#expense-amount").value);
     if (!Number.isFinite(amount) || amount <= 0) return;
-    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value };
+    const paidBy = $("#expense-paid-by").value;
+    if (!LF_PEOPLE.includes(paidBy)) return;
+    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy };
     const btn = $("#expense-save"), status=$("#expense-status");
     btn.disabled = true; status.textContent = navigator.onLine ? "Salvataggio…" : "Salvataggio offline…";
     try {

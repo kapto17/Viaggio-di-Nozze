@@ -147,10 +147,13 @@ async function saveSettings(next){
 async function addExpense(expense){
   if (!currentUser) throw new Error("Area L&F non sbloccata");
   await addDoc(expensesRef, {
+    entryType: "expense",
     amount: Number(expense.amount),
     city: expense.city || "Generale",
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
+    paidBy: ["Lorenzo","Fortuna"].includes(expense.paidBy) ? expense.paidBy : "",
+    splitType: "equal",
     date: expense.date || new Date().toISOString().slice(0,10),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
@@ -160,13 +163,39 @@ async function addExpense(expense){
 async function editExpense(id, expense){
   if (!currentUser) throw new Error("Area L&F non sbloccata");
   await updateDoc(doc(db, "budget", "main", "expenses", id), {
+    entryType: "expense",
     amount: Number(expense.amount),
     city: expense.city || "Generale",
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
+    paidBy: ["Lorenzo","Fortuna"].includes(expense.paidBy) ? expense.paidBy : "",
+    splitType: "equal",
     date: expense.date || new Date().toISOString().slice(0,10),
     updatedAt: serverTimestamp()
   });
+}
+
+async function addSettlement(settlement){
+  if (!currentUser) throw new Error("Area L&F non sbloccata");
+  const amount = Number(settlement.amount);
+  const from = ["Lorenzo","Fortuna"].includes(settlement.from) ? settlement.from : "";
+  const to = ["Lorenzo","Fortuna"].includes(settlement.to) ? settlement.to : "";
+  if (!Number.isFinite(amount) || amount <= 0 || !from || !to || from === to) throw new Error("Pareggio non valido");
+  await addDoc(expensesRef, {
+    entryType: "settlement",
+    amount,
+    from,
+    to,
+    note: String(settlement.note || "Pareggio manuale").trim(),
+    date: settlement.date || new Date().toISOString().slice(0,10),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+}
+
+async function removeSettlement(id){
+  if (!currentUser) throw new Error("Area L&F non sbloccata");
+  await deleteDoc(doc(db, "budget", "main", "expenses", id));
 }
 
 async function removeExpense(id){
@@ -180,6 +209,8 @@ window.LFBudget = {
   saveSettings,
   addExpense,
   editExpense,
+  addSettlement,
+  removeSettlement,
   removeExpense,
   isAuthenticated: () => !!currentUser,
   getUser: () => currentUser ? { uid: currentUser.uid, email: currentUser.email } : null,
