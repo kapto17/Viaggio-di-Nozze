@@ -1,0 +1,39 @@
+name: Wizard compact publish
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update cache versions and verify
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          t=p.read_text(encoding='utf-8')
+          if 'expense-wizard.css?v=1' not in t: raise SystemExit('css marker missing')
+          if 'expense-wizard.js?v=1' not in t: raise SystemExit('js marker missing')
+          t=t.replace('expense-wizard.css?v=1','expense-wizard.css?v=2',1)
+          t=t.replace('expense-wizard.js?v=1','expense-wizard.js?v=2',1)
+          p.write_text(t,encoding='utf-8')
+
+          p=Path('sw.js')
+          t=p.read_text(encoding='utf-8')
+          if 'viaggio-nozze-v131' not in t: raise SystemExit('cache marker missing')
+          p.write_text(t.replace('viaggio-nozze-v131','viaggio-nozze-v132',1),encoding='utf-8')
+          PY
+          node --check expense-wizard.js
+          node --check app.js
+          node --check sw.js
+          grep -q 'expense-wizard.css?v=2' index.html
+          grep -q 'expense-wizard.js?v=2' index.html
+          grep -q 'viaggio-nozze-v132' sw.js
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html sw.js
+          git commit -m "Pubblica wizard spese compatto [skip ci]"
+          git push
