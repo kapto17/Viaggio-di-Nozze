@@ -1,0 +1,82 @@
+name: Bayahibe UI cleanup
+
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Move Bayahibe UI logic into app.js
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('app.js')
+          text = path.read_text(encoding='utf-8')
+
+          old = '''  const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
+  const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
+  const mustItemsHtml = [
+    ...(leg.activities||[]).map(renderActivityCard),
+    ...mustPlaces.map(renderPlaceCard)
+  ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
+  const discoverHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
+'''
+          new = '''  const mustPlaces = (leg.places||[]).filter(p => p.priority === "must");
+  const discoverPlaces = (leg.places||[]).filter(p => p.priority !== "must");
+  const isBayahibeRelax = leg.id === "bayahibe";
+  const mustItemsHtml = [
+    ...(leg.activities||[]).map(renderActivityCard),
+    ...mustPlaces.map(renderPlaceCard)
+  ].join("") || `<div class="empty-note">Nessuna priorità inserita per questa tappa.</div>`;
+  const discoverIntro = isBayahibeRelax
+    ? `<div class="empty-note bayahibe-relax-note">Nessun itinerario da seguire: queste sono solo idee da scegliere sul momento, oppure potete tranquillamente non fare nulla oltre a mare, piscina e all inclusive.</div>`
+    : "";
+  const discoverCardsHtml = discoverPlaces.map(renderPlaceCard).join("") || `<div class="empty-note">Nessun luogo secondario inserito per questa tappa.</div>`;
+  const discoverHtml = discoverIntro + discoverCardsHtml;
+  const discoverTitle = isBayahibeRelax ? "Idee per il soggiorno" : "Da scoprire";
+  const discoverIcon = isBayahibeRelax
+    ? "🌴"
+    : `<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`;
+'''
+          if old not in text:
+              raise SystemExit('Bayahibe UI data anchor not found')
+          text = text.replace(old, new, 1)
+
+          old = '''    ${accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
+
+    ${accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
+
+    ${accordion("Da scoprire", discoverHtml, {icon:`<svg class="discover-compass" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.4 8.6-2 4.8-4.8 2 2-4.8 4.8-2Z"></path></svg>`, count:discoverPlaces.length, className:"accordion-discover"})}
+'''
+          new = '''    ${isBayahibeRelax ? "" : accordion("Programma consigliato", programHtml, {icon:"🗓️", count:programDays.length, className:"accordion-program"})}
+
+    ${isBayahibeRelax ? "" : accordion("Da non perdere", mustItemsHtml, {icon:"★", count:(leg.activities||[]).length + mustPlaces.length, className:"accordion-must"})}
+
+    ${accordion(discoverTitle, discoverHtml, {icon:discoverIcon, count:discoverPlaces.length, className:"accordion-discover", open:isBayahibeRelax})}
+'''
+          if old not in text:
+              raise SystemExit('Bayahibe accordion render anchor not found')
+          text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+          node --check app.js
+          git diff --check
+          git diff -- app.js
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/bayahibe-ui-pass.yml
+          git add app.js
+          git commit -m "Integra UI Bayahibe in app.js [skip ci]"
+          git push
