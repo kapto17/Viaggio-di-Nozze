@@ -1,0 +1,46 @@
+name: Budget rerender fix
+on: [push]
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Keep hub after Firebase refresh
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          js=Path('budget-layout.js')
+          text=js.read_text(encoding='utf-8')
+          old='''  renderBudgetScreen=function(){\n    originalRenderBudgetScreen();\n    enhanceBudgetLayout();\n  };'''
+          new='''  renderBudgetScreen=function(){\n    const root=document.querySelector("#screen-budget");\n    if(root) delete root.dataset.budgetHubReady;\n    originalRenderBudgetScreen();\n    enhanceBudgetLayout();\n  };'''
+          if old not in text: raise SystemExit('render wrapper marker missing')
+          js.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          index=Path('index.html')
+          text=index.read_text(encoding='utf-8')
+          if 'budget-layout.js?v=1' not in text: raise SystemExit('budget layout v1 marker missing')
+          index.write_text(text.replace('budget-layout.js?v=1','budget-layout.js?v=2',1),encoding='utf-8')
+
+          sw=Path('sw.js')
+          text=sw.read_text(encoding='utf-8')
+          if 'viaggio-nozze-v128' not in text: raise SystemExit('cache v128 marker missing')
+          sw.write_text(text.replace('viaggio-nozze-v128','viaggio-nozze-v129',1),encoding='utf-8')
+          PY
+
+          node --check budget-layout.js
+          node --check app.js
+          node --check sw.js
+          grep -q 'budget-layout.js?v=2' index.html
+          grep -q 'viaggio-nozze-v129' sw.js
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add budget-layout.js index.html sw.js
+          git commit -m "Mantiene nuovo Budget dopo sincronizzazione Firebase [skip ci]"
+          git push
