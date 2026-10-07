@@ -1,0 +1,74 @@
+/* V34 · Budget hub: tre aree distinte senza cambiare la logica contabile */
+.budget-hub-nav{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin:14px 0 18px;
+}
+.budget-hub-tab{
+  appearance:none;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#fff;
+  color:var(--ink);
+  min-height:82px;
+  padding:10px 7px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  box-shadow:0 7px 20px rgba(19,42,69,.07);
+  transition:transform 160ms ease,border-color 180ms ease,background-color 180ms ease,box-shadow 180ms ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.budget-hub-tab:active{transform:scale(.975);}
+.budget-hub-tab.active{
+  border-color:color-mix(in srgb,var(--th-accent,var(--brass)) 42%,var(--line));
+  background:color-mix(in srgb,var(--th-accent,var(--brass)) 8%,#fff);
+  box-shadow:0 9px 24px rgba(19,42,69,.11);
+}
+.budget-hub-tab-icon{font-size:24px;line-height:1;}
+.budget-hub-tab strong{font-size:13px;line-height:1.15;}
+.budget-hub-tab small{font-size:10px;line-height:1.15;color:var(--muted);font-weight:700;text-align:center;}
+
+.budget-panel[hidden]{display:none!important;}
+.budget-panel{animation:lf-budget-panel-in 210ms ease both;}
+@keyframes lf-budget-panel-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.budget-panel-intro{margin:0 0 12px;padding:0 2px;}
+.budget-panel-intro strong{display:block;font-size:18px;line-height:1.2;margin-bottom:3px;}
+.budget-panel-intro span{display:block;font-size:12px;line-height:1.4;color:var(--muted);}
+
+.budget-panel[data-budget-panel="budget"] .budget-summary-grid{margin-top:0;}
+.budget-panel[data-budget-panel="budget"] .expense-form{
+  margin-top:8px;
+  border:1px solid color-mix(in srgb,var(--th-accent,var(--brass)) 18%,var(--line));
+  box-shadow:0 9px 25px rgba(19,42,69,.08);
+}
+.budget-quick-add-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:18px 0 8px;
+  font-size:17px;
+  font-weight:850;
+}
+.budget-quick-add-title span{font-size:11px;color:var(--muted);font-weight:700;}
+.budget-forecast-title{margin-top:22px!important;}
+.budget-panel .budget-offline-note{margin-top:16px;}
+
+.budget-panel[data-budget-panel="split"] .lf-split-card{margin-top:0;}
+.budget-panel[data-budget-panel="tools"] .currency-converter{margin-top:0;}
+.budget-panel[data-budget-panel="tools"] .tip-calculator{margin-top:14px;}
+
+@media(max-width:390px){
+  .budget-hub-tab{min-height:74px;padding:9px 5px;}
+  .budget-hub-tab-icon{font-size:21px;}
+  .budget-hub-tab strong{font-size:12px;}
+  .budget-hub-tab small{display:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  .budget-panel{animation:none!important;}
+  .budget-hub-tab{transition:none!important;}
+}
