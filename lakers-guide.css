@@ -1,0 +1,178 @@
+/* V39 · Guida pratica Lakers–Clippers */
+.lakers-photo-credit{
+  margin:-8px 4px 14px;
+  font-size:9.5px;
+  line-height:1.35;
+  color:var(--ink-soft);
+  opacity:.72;
+  text-align:right;
+}
+.lakers-event-guide{
+  margin-top:20px;
+  display:grid;
+  gap:12px;
+}
+.lakers-guide-hero{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  padding:17px 16px;
+  border-radius:18px;
+  color:#fff;
+  background:linear-gradient(135deg,#3b1d68 0%,#552583 58%,#7a5315 135%);
+  box-shadow:0 12px 28px -20px rgba(40,20,70,.9);
+}
+.lakers-guide-hero small{
+  font-size:9.5px;
+  font-weight:900;
+  letter-spacing:.15em;
+  color:#fdb927;
+}
+.lakers-guide-hero strong{font-size:17px;line-height:1.25;}
+.lakers-guide-hero span{font-size:12.5px;line-height:1.48;color:rgba(255,255,255,.86);}
+.lakers-guide-card{
+  background:#fff;
+  border:1px solid rgba(85,37,131,.13);
+  border-radius:17px;
+  padding:15px;
+  box-shadow:0 8px 24px -20px rgba(22,35,63,.5);
+}
+.lakers-guide-card.compact{padding-bottom:13px;}
+.lakers-guide-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.lakers-guide-title>span{
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:#f4ecfb;
+  font-size:19px;
+}
+.lakers-guide-title>div{min-width:0;display:flex;flex-direction:column;gap:2px;}
+.lakers-guide-title strong{font-size:14px;line-height:1.25;color:var(--ink);}
+.lakers-guide-title small{font-size:10.5px;line-height:1.3;color:var(--ink-soft);}
+.lakers-guide-card p{
+  margin:0;
+  font-size:12.5px;
+  line-height:1.55;
+  color:var(--ink-soft);
+}
+.lakers-guide-card p+p{margin-top:9px;}
+.lakers-guide-timeline{display:grid;gap:8px;}
+.lakers-guide-timeline>div{
+  display:grid;
+  grid-template-columns:88px 1fr;
+  gap:10px;
+  align-items:start;
+  padding:8px 9px;
+  border-radius:11px;
+  background:var(--paper-alt);
+}
+.lakers-guide-timeline b{font-size:11.5px;color:#552583;white-space:nowrap;}
+.lakers-guide-timeline span{font-size:11.5px;line-height:1.4;color:var(--ink-soft);}
+.lakers-guide-timeline .booked{background:#f7edd0;border:1px solid rgba(253,185,39,.35);}
+.lakers-guide-timeline .booked b{color:#6b4700;}
+.lakers-guide-tip{
+  margin-top:11px!important;
+  padding:10px 11px;
+  border-radius:11px;
+  background:#f7f2e7;
+  border:1px solid rgba(185,139,46,.16);
+  font-size:11.5px!important;
+}
+.lakers-entry-list{display:grid;gap:7px;}
+.lakers-entry-list>div{
+  padding:9px 10px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:#fbfaf7;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.lakers-entry-list b{font-size:11.5px;color:var(--ink);}
+.lakers-entry-list span{font-size:10.5px;line-height:1.35;color:var(--ink-soft);}
+.lakers-check-list{
+  margin:0;
+  padding-left:19px;
+  display:grid;
+  gap:8px;
+  color:var(--ink-soft);
+  font-size:11.8px;
+  line-height:1.45;
+}
+.lakers-check-list strong{color:var(--ink);}
+.lakers-guide-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.lakers-guide-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:36px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(85,37,131,.22);
+  background:#f4ecfb;
+  color:#48216f;
+  text-decoration:none;
+  font-size:11.5px;
+  font-weight:800;
+}
+.lakers-guide-link:active{transform:scale(.98);}
+.lakers-guide-card.restaurant-main{
+  border-color:rgba(253,185,39,.4);
+  background:linear-gradient(180deg,#fffdf8,#fffaf0);
+}
+.lakers-alt-list{display:grid;gap:9px;}
+.lakers-alt-list>div{
+  display:grid;
+  grid-template-columns:1fr auto;
+  column-gap:9px;
+  row-gap:3px;
+  align-items:center;
+  padding:10px;
+  border-radius:12px;
+  background:var(--paper-alt);
+}
+.lakers-alt-list strong{font-size:12px;color:var(--ink);}
+.lakers-alt-list span{grid-column:1/2;font-size:10.8px;line-height:1.4;color:var(--ink-soft);}
+.lakers-alt-list .lakers-guide-link{grid-column:2;grid-row:1/3;min-height:32px;padding:6px 10px;}
+.lakers-app-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin-top:12px;
+}
+.lakers-app-grid .lakers-guide-link{width:100%;}
+.lakers-guide-card.return-card{background:#f8f6fb;}
+.lakers-mini-checks{display:flex;flex-wrap:wrap;gap:7px;}
+.lakers-mini-checks span{
+  padding:6px 9px;
+  border-radius:999px;
+  background:#edf3e8;
+  border:1px solid rgba(47,93,58,.16);
+  color:#34533b;
+  font-size:10.5px;
+  font-weight:750;
+}
+html[data-theme="green"] .lakers-guide-card,
+html[data-theme="blue"] .lakers-guide-card{background:var(--paper);}
+html[data-theme="green"] .lakers-guide-hero,
+html[data-theme="blue"] .lakers-guide-hero{background:linear-gradient(135deg,#3b1d68,#552583 62%,#8f6510);}
+@media(max-width:370px){
+  .lakers-guide-timeline>div{grid-template-columns:78px 1fr;gap:7px;}
+  .lakers-guide-card{padding:13px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .lakers-guide-link:active{transform:none;}
+}
