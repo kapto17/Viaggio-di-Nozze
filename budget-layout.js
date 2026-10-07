@@ -71,7 +71,7 @@
     const movementsTitle=list?.previousElementSibling?.classList.contains("section-title") ? list.previousElementSibling : null;
     appendIf(budget,movementsTitle);
     appendIf(budget,list);
-    appendIf(budget,root.querySelector(".budget-offline-note"));
+    root.querySelector(".budget-offline-note")?.remove();
 
     const summary=document.createElement("section");
     summary.className="budget-panel";
