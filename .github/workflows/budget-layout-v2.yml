@@ -1,0 +1,253 @@
+name: Budget layout v2
+on: [push]
+permissions:
+  contents: write
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reorganize budget UI
+        shell: bash
+        run: |
+          cat > budget-layout.css <<'EOF'
+          /* V34 · Budget hub: tre aree distinte senza cambiare la logica contabile */
+          .budget-hub-nav{
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:8px;
+            margin:14px 0 18px;
+          }
+          .budget-hub-tab{
+            appearance:none;
+            border:1px solid var(--line);
+            border-radius:17px;
+            background:#fff;
+            color:var(--ink);
+            min-height:82px;
+            padding:10px 7px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:4px;
+            box-shadow:0 7px 20px rgba(19,42,69,.07);
+            transition:transform 160ms ease,border-color 180ms ease,background-color 180ms ease,box-shadow 180ms ease;
+            -webkit-tap-highlight-color:transparent;
+          }
+          .budget-hub-tab:active{transform:scale(.975);}
+          .budget-hub-tab.active{
+            border-color:color-mix(in srgb,var(--th-accent,var(--brass)) 42%,var(--line));
+            background:color-mix(in srgb,var(--th-accent,var(--brass)) 8%,#fff);
+            box-shadow:0 9px 24px rgba(19,42,69,.11);
+          }
+          .budget-hub-tab-icon{font-size:24px;line-height:1;}
+          .budget-hub-tab strong{font-size:13px;line-height:1.15;}
+          .budget-hub-tab small{font-size:10px;line-height:1.15;color:var(--muted);font-weight:700;text-align:center;}
+
+          .budget-panel[hidden]{display:none!important;}
+          .budget-panel{animation:lf-budget-panel-in 210ms ease both;}
+          @keyframes lf-budget-panel-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+          .budget-panel-intro{margin:0 0 12px;padding:0 2px;}
+          .budget-panel-intro strong{display:block;font-size:18px;line-height:1.2;margin-bottom:3px;}
+          .budget-panel-intro span{display:block;font-size:12px;line-height:1.4;color:var(--muted);}
+
+          .budget-panel[data-budget-panel="budget"] .budget-summary-grid{margin-top:0;}
+          .budget-panel[data-budget-panel="budget"] .expense-form{
+            margin-top:8px;
+            border:1px solid color-mix(in srgb,var(--th-accent,var(--brass)) 18%,var(--line));
+            box-shadow:0 9px 25px rgba(19,42,69,.08);
+          }
+          .budget-quick-add-title{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            margin:18px 0 8px;
+            font-size:17px;
+            font-weight:850;
+          }
+          .budget-quick-add-title span{font-size:11px;color:var(--muted);font-weight:700;}
+          .budget-forecast-title{margin-top:22px!important;}
+          .budget-panel .budget-offline-note{margin-top:16px;}
+
+          .budget-panel[data-budget-panel="split"] .lf-split-card{margin-top:0;}
+          .budget-panel[data-budget-panel="tools"] .currency-converter{margin-top:0;}
+          .budget-panel[data-budget-panel="tools"] .tip-calculator{margin-top:14px;}
+
+          @media(max-width:390px){
+            .budget-hub-tab{min-height:74px;padding:9px 5px;}
+            .budget-hub-tab-icon{font-size:21px;}
+            .budget-hub-tab strong{font-size:12px;}
+            .budget-hub-tab small{display:none;}
+          }
+          @media(prefers-reduced-motion:reduce){
+            .budget-panel{animation:none!important;}
+            .budget-hub-tab{transition:none!important;}
+          }
+          EOF
+
+          cat > budget-layout.js <<'EOF'
+          /* V34 · separazione Budget / Conti L&F / Strumenti */
+          (() => {
+            let activeBudgetPanel = "budget";
+            const originalRenderBudgetScreen = renderBudgetScreen;
+
+            function makeIntro(title, text){
+              const intro=document.createElement("div");
+              intro.className="budget-panel-intro";
+              intro.innerHTML=`<strong>${title}</strong><span>${text}</span>`;
+              return intro;
+            }
+
+            function appendIf(panel,node){ if(node) panel.appendChild(node); }
+
+            function setPanel(root,name,focus=false){
+              activeBudgetPanel=name;
+              root.querySelectorAll("[data-budget-panel]").forEach(panel=>{
+                panel.hidden=panel.dataset.budgetPanel!==name;
+              });
+              root.querySelectorAll("[data-budget-hub]").forEach(btn=>{
+                const selected=btn.dataset.budgetHub===name;
+                btn.classList.toggle("active",selected);
+                btn.setAttribute("aria-selected",selected?"true":"false");
+              });
+              if(focus){
+                const panel=root.querySelector(`[data-budget-panel="${name}"]`);
+                panel?.scrollIntoView({behavior:"smooth",block:"start"});
+              }
+            }
+
+            function enhanceBudgetLayout(){
+              const root=document.querySelector("#screen-budget");
+              if(!root || !root.querySelector(".budget-hero") || root.dataset.budgetHubReady==="1") return;
+              root.dataset.budgetHubReady="1";
+
+              const hero=root.querySelector(".budget-hero");
+              const back=root.querySelector("#back-budget");
+
+              const nav=document.createElement("div");
+              nav.className="budget-hub-nav";
+              nav.setAttribute("role","tablist");
+              nav.innerHTML=`
+                <button type="button" class="budget-hub-tab" data-budget-hub="budget" role="tab"><span class="budget-hub-tab-icon">💰</span><strong>Budget</strong><small>Spese e previsioni</small></button>
+                <button type="button" class="budget-hub-tab" data-budget-hub="split" role="tab"><span class="budget-hub-tab-icon">⇄</span><strong>Conti L&amp;F</strong><small>Chi deve quanto</small></button>
+                <button type="button" class="budget-hub-tab" data-budget-hub="tools" role="tab"><span class="budget-hub-tab-icon">€$</span><strong>Strumenti</strong><small>Cambio e mancia</small></button>`;
+              hero.insertAdjacentElement("afterend",nav);
+
+              const budget=document.createElement("section");
+              budget.className="budget-panel";
+              budget.dataset.budgetPanel="budget";
+              budget.appendChild(makeIntro("Budget del viaggio","Riepilogo generale, nuova spesa e costi previsti in un'unica area."));
+
+              const summary=root.querySelector(".budget-summary-grid");
+              const progress=root.querySelector(".budget-progress");
+              const editTotal=root.querySelector("#budget-edit-total");
+              appendIf(budget,summary);
+              appendIf(budget,progress);
+              appendIf(budget,editTotal);
+
+              const expenseForm=root.querySelector("#expense-form");
+              const expenseTitle=expenseForm?.previousElementSibling?.classList.contains("section-title") ? expenseForm.previousElementSibling : null;
+              const quickTitle=document.createElement("div");
+              quickTitle.className="budget-quick-add-title";
+              quickTitle.innerHTML=`<strong>${editingExpenseId ? "Modifica spesa" : "+ Aggiungi spesa"}</strong><span>Registrala appena paghi</span>`;
+              budget.appendChild(quickTitle);
+              if(expenseTitle) expenseTitle.remove();
+              appendIf(budget,expenseForm);
+
+              const list=root.querySelector(".expense-list");
+              const movementsTitle=list?.previousElementSibling?.classList.contains("section-title") ? list.previousElementSibling : null;
+              appendIf(budget,movementsTitle);
+              appendIf(budget,list);
+
+              const forecastTitle=document.createElement("div");
+              forecastTitle.className="section-title budget-forecast-title";
+              forecastTitle.textContent="Costi previsti e ripartizione";
+              budget.appendChild(forecastTitle);
+              root.querySelectorAll("details.budget-city-accordion").forEach(details=>budget.appendChild(details));
+              appendIf(budget,root.querySelector(".budget-offline-note"));
+
+              const split=document.createElement("section");
+              split.className="budget-panel";
+              split.dataset.budgetPanel="split";
+              split.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Saldo 50/50, pareggi manuali e storico: qui non viene modificato il budget speso."));
+              appendIf(split,root.querySelector(".lf-split-card"));
+
+              const tools=document.createElement("section");
+              tools.className="budget-panel";
+              tools.dataset.budgetPanel="tools";
+              tools.appendChild(makeIntro("Strumenti rapidi","Convertitore valuta e calcolo della mancia, separati dalla contabilità del viaggio."));
+              appendIf(tools,root.querySelector(".currency-converter"));
+              appendIf(tools,root.querySelector(".tip-calculator"));
+
+              root.appendChild(budget);
+              root.appendChild(split);
+              root.appendChild(tools);
+              if(back) root.insertBefore(back,root.firstChild);
+
+              nav.querySelectorAll("[data-budget-hub]").forEach(btn=>btn.addEventListener("click",()=>setPanel(root,btn.dataset.budgetHub,true)));
+              setPanel(root,activeBudgetPanel,false);
+            }
+
+            renderBudgetScreen=function(){
+              originalRenderBudgetScreen();
+              enhanceBudgetLayout();
+            };
+
+            const refreshIfOpen=()=>{
+              if(document.querySelector("#screen-budget.active")) renderBudgetScreen();
+            };
+            if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(refreshIfOpen),{once:true});
+            else requestAnimationFrame(refreshIfOpen);
+          })();
+          EOF
+
+          python - <<'PY'
+          from pathlib import Path
+
+          index=Path('index.html')
+          text=index.read_text(encoding='utf-8')
+          marker='<link rel="stylesheet" href="motion-v3.css?v=2">'
+          if 'budget-layout.css?v=1' not in text:
+              if marker not in text: raise SystemExit('motion css marker missing')
+              text=text.replace(marker, marker+'\n<link rel="stylesheet" href="budget-layout.css?v=1">',1)
+          marker_js='<script src="motion.js?v=3"></script>'
+          if 'budget-layout.js?v=1' not in text:
+              if marker_js not in text: raise SystemExit('motion js marker missing')
+              text=text.replace(marker_js, marker_js+'\n<script src="budget-layout.js?v=1"></script>',1)
+          index.write_text(text,encoding='utf-8')
+
+          app=Path('app.js')
+          text=app.read_text(encoding='utf-8')
+          if 'Versione app 2.4.33' not in text: raise SystemExit('version 2.4.33 missing')
+          app.write_text(text.replace('Versione app 2.4.33','Versione app 2.4.34',1),encoding='utf-8')
+
+          sw=Path('sw.js')
+          text=sw.read_text(encoding='utf-8')
+          if 'viaggio-nozze-v127' not in text: raise SystemExit('cache v127 missing')
+          text=text.replace('viaggio-nozze-v127','viaggio-nozze-v128',1)
+          if '"./budget-layout.css"' not in text:
+              text=text.replace('  "./motion-v3.css",','  "./motion-v3.css",\n  "./budget-layout.css",',1)
+          if '"./budget-layout.js"' not in text:
+              text=text.replace('  "./motion.js",','  "./motion.js",\n  "./budget-layout.js",',1)
+          sw.write_text(text,encoding='utf-8')
+          PY
+
+          node --check app.js
+          node --check budget-layout.js
+          node --check firebase-budget.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.34' app.js
+          grep -q 'budget-layout.css?v=1' index.html
+          grep -q 'budget-layout.js?v=1' index.html
+          grep -q 'viaggio-nozze-v128' sw.js
+          git diff --check
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html sw.js budget-layout.css budget-layout.js
+          git commit -m "Riorganizza Budget in tre sezioni 2.4.34 [skip ci]"
+          git push
