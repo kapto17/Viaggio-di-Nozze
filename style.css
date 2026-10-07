@@ -2903,3 +2903,121 @@ nav.tabbar{
 .menu-checklist-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:rgba(214,181,106,.16);}
 .menu-checklist-arrow{font-size:23px;font-weight:500;opacity:.55;}
 .checklist-archive-note{margin-bottom:12px!important;}
+
+/* ---------- V29: motion polish premium ---------- */
+:root{
+  --motion-fast:160ms;
+  --motion-base:280ms;
+  --motion-ease:cubic-bezier(.22,.78,.24,1);
+}
+.screen.active{
+  animation:lf-screen-in var(--motion-base) var(--motion-ease) both;
+  transform-origin:50% 18%;
+}
+@keyframes lf-screen-in{
+  from{opacity:.01;transform:translate3d(0,8px,0) scale(.995);}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1);}
+}
+button,
+a.mapbtn,
+.city-card,
+.food-card,
+.food-section-link,
+.place-ticket,
+.restaurant-ticket,
+.private-area-entry{
+  -webkit-tap-highlight-color:transparent;
+  transition:
+    transform var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    filter var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+button:not(:disabled):active,
+a.mapbtn:active,
+.city-card:active,
+.food-card:active,
+.food-section-link:active,
+.place-ticket:active,
+.restaurant-ticket:active,
+.private-area-entry:active{
+  transform:scale(.982);
+  filter:brightness(.985);
+}
+.city-accordion summary{
+  transition:
+    transform var(--motion-fast) ease,
+    filter var(--motion-fast) ease,
+    background-color var(--motion-fast) ease;
+}
+.city-accordion summary:active{transform:scale(.994);}
+.city-accordion .accordion-icon{
+  transition:transform 220ms var(--motion-ease), box-shadow 220ms ease;
+}
+.city-accordion[open] .accordion-icon{
+  transform:scale(1.06);
+  box-shadow:0 6px 16px -12px rgba(21,34,56,.55);
+}
+.city-accordion[open] .accordion-content{
+  animation:lf-accordion-reveal 260ms var(--motion-ease) both;
+  transform-origin:top center;
+}
+@keyframes lf-accordion-reveal{
+  from{opacity:0;transform:translate3d(0,-5px,0);clip-path:inset(0 0 12% 0);}
+  to{opacity:1;transform:translate3d(0,0,0);clip-path:inset(0 0 0 0);}
+}
+.city-card.photo-city-card::before,
+.city-header.photo-city-header::before{
+  content:"";
+  position:absolute;
+  inset:-4%;
+  z-index:0;
+  pointer-events:none;
+  background:inherit;
+  background-size:cover;
+  background-position:center;
+  transform:translate3d(-.7%,-.25%,0) scale(1.035);
+  animation:lf-photo-drift 16s ease-in-out infinite alternate;
+  will-change:transform;
+}
+.city-header.photo-city-header::after{z-index:2;}
+@keyframes lf-photo-drift{
+  from{transform:translate3d(-.7%,-.25%,0) scale(1.035);}
+  to{transform:translate3d(.7%,.35%,0) scale(1.055);}
+}
+nav.tabbar button.active{
+  transition:background-color 220ms ease,color 220ms ease,transform var(--motion-fast) ease;
+}
+@media (prefers-reduced-motion:reduce){
+  .screen.active,
+  .city-accordion[open] .accordion-content,
+  .city-card.photo-city-card::before,
+  .city-header.photo-city-header::before{
+    animation:none!important;
+  }
+  button,
+  a.mapbtn,
+  .city-card,
+  .food-card,
+  .food-section-link,
+  .place-ticket,
+  .restaurant-ticket,
+  .private-area-entry,
+  .city-accordion summary,
+  .city-accordion .accordion-icon,
+  nav.tabbar button.active{
+    transition:none!important;
+  }
+  button:not(:disabled):active,
+  a.mapbtn:active,
+  .city-card:active,
+  .food-card:active,
+  .food-section-link:active,
+  .place-ticket:active,
+  .restaurant-ticket:active,
+  .private-area-entry:active{
+    transform:none!important;
+    filter:none!important;
+  }
+}
