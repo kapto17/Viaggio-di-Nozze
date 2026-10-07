@@ -81,7 +81,7 @@
     const split=document.createElement("section");
     split.className="budget-panel";
     split.dataset.budgetPanel="split";
-    split.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Saldo 50/50, pareggi manuali e storico: qui non viene modificato il budget speso."));
+    split.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Spese condivise, personali e pareggi: qui vedi solo ciò che resta da compensare tra voi."));
     appendIf(split,root.querySelector(".lf-split-card"));
 
     const tools=document.createElement("section");

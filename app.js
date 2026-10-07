@@ -1567,7 +1567,7 @@ function renderBudgetScreen(){
       <div class="lf-split-balance ${debt ? "debt" : "settled"}">
         <small>Saldo attuale</small>
         <strong>${debt ? `${debt.debtor} deve a ${debt.creditor} ${money(debt.amount,currency)}` : "Siete in pari ✓"}</strong>
-        <span>${debt ? "Il saldo compensa automaticamente tutte le spese 50/50 e i pareggi già registrati." : "Non ci sono conti in sospeso tra voi."}</span>
+        <span>${debt ? "Il saldo compensa automaticamente spese condivise, spese personali anticipate e pareggi già registrati." : "Non ci sono conti in sospeso tra voi."}</span>
       </div>
       ${ledger.unassigned ? `<div class="lf-split-warning">⚠️ ${ledger.unassigned} ${ledger.unassigned===1?"spesa precedente non ha":"spese precedenti non hanno"} ancora un pagante. Restano nel budget, ma non entrano nel saldo L&amp;F finché non ${ledger.unassigned===1?"la modifichi":"le modifichi"}.</div>` : ""}
       <div class="lf-split-actions">
