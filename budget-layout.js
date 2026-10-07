@@ -1,4 +1,4 @@
-/* V34 · separazione Budget / Conti L&F / Strumenti */
+/* V37 · Budget / Riepilogo / Conti L&F / Strumenti */
 (() => {
   let activeBudgetPanel = "budget";
   const originalRenderBudgetScreen = renderBudgetScreen;
@@ -40,20 +40,21 @@
     nav.className="budget-hub-nav";
     nav.setAttribute("role","tablist");
     nav.innerHTML=`
-      <button type="button" class="budget-hub-tab" data-budget-hub="budget" role="tab"><span class="budget-hub-tab-icon">💰</span><strong>Budget</strong><small>Spese e previsioni</small></button>
+      <button type="button" class="budget-hub-tab" data-budget-hub="budget" role="tab"><span class="budget-hub-tab-icon">💰</span><strong>Budget</strong><small>Spese correnti</small></button>
+      <button type="button" class="budget-hub-tab" data-budget-hub="summary" role="tab"><span class="budget-hub-tab-icon">▦</span><strong>Riepilogo</strong><small>Tappe e categorie</small></button>
       <button type="button" class="budget-hub-tab" data-budget-hub="split" role="tab"><span class="budget-hub-tab-icon">⇄</span><strong>Conti L&amp;F</strong><small>Chi deve quanto</small></button>
-      <button type="button" class="budget-hub-tab" data-budget-hub="tools" role="tab"><span class="budget-hub-tab-icon">€$</span><strong>Strumenti</strong><small>Cambio e mancia</small></button>`;
+      <button type="button" class="budget-hub-tab" data-budget-hub="tools" role="tab"><span class="budget-hub-tab-icon">$</span><strong>Strumenti</strong><small>Cambio e mancia</small></button>`;
     hero.insertAdjacentElement("afterend",nav);
 
     const budget=document.createElement("section");
     budget.className="budget-panel";
     budget.dataset.budgetPanel="budget";
-    budget.appendChild(makeIntro("Budget del viaggio","Riepilogo generale, nuova spesa e costi previsti in un'unica area."));
+    budget.appendChild(makeIntro("Budget del viaggio","Quanto avete speso, quanto resta e registrazione rapida dei movimenti."));
 
-    const summary=root.querySelector(".budget-summary-grid");
+    const summaryGrid=root.querySelector(".budget-summary-grid");
     const progress=root.querySelector(".budget-progress");
     const editTotal=root.querySelector("#budget-edit-total");
-    appendIf(budget,summary);
+    appendIf(budget,summaryGrid);
     appendIf(budget,progress);
     appendIf(budget,editTotal);
 
@@ -70,18 +71,30 @@
     const movementsTitle=list?.previousElementSibling?.classList.contains("section-title") ? list.previousElementSibling : null;
     appendIf(budget,movementsTitle);
     appendIf(budget,list);
+    appendIf(budget,root.querySelector(".budget-offline-note"));
+
+    const summary=document.createElement("section");
+    summary.className="budget-panel";
+    summary.dataset.budgetPanel="summary";
+    summary.appendChild(makeIntro("Riepilogo spese","Confronta budget previsto e spesa reale per tappa o per categoria, senza mischiare USD e DOP."));
+    const analytics=document.createElement("div");
+    analytics.id="budget-summary-analytics";
+    summary.appendChild(analytics);
 
     const forecastTitle=document.createElement("div");
     forecastTitle.className="section-title budget-forecast-title";
-    forecastTitle.textContent="Costi previsti e ripartizione";
-    budget.appendChild(forecastTitle);
-    root.querySelectorAll("details.budget-city-accordion").forEach(details=>budget.appendChild(details));
-    appendIf(budget,root.querySelector(".budget-offline-note"));
+    forecastTitle.textContent="Costi previsti";
+    summary.appendChild(forecastTitle);
+
+    const genericBudgetAccordion=root.querySelector('details.budget-city-accordion:not(.hotel-fees-accordion):not(.parking-fees-accordion)');
+    genericBudgetAccordion?.remove();
+    appendIf(summary,root.querySelector(".hotel-fees-accordion"));
+    appendIf(summary,root.querySelector(".parking-fees-accordion"));
 
     const split=document.createElement("section");
     split.className="budget-panel";
     split.dataset.budgetPanel="split";
-    split.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Spese condivise, personali e pareggi: qui vedi solo ciò che resta da compensare tra voi."));
+    split.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Spese condivise, personali e pareggi, con saldi separati per valuta."));
     appendIf(split,root.querySelector(".lf-split-card"));
 
     const tools=document.createElement("section");
@@ -92,6 +105,7 @@
     appendIf(tools,root.querySelector(".tip-calculator"));
 
     root.appendChild(budget);
+    root.appendChild(summary);
     root.appendChild(split);
     root.appendChild(tools);
     if(back) root.insertBefore(back,root.firstChild);
