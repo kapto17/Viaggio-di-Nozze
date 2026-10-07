@@ -1,18 +1,18 @@
-/* V34 · Budget hub: tre aree distinte senza cambiare la logica contabile */
+/* V37 · Budget hub: quattro aree distinte */
 .budget-hub-nav{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
   margin:14px 0 18px;
 }
 .budget-hub-tab{
   appearance:none;
   border:1px solid var(--line);
-  border-radius:17px;
+  border-radius:16px;
   background:#fff;
   color:var(--ink);
-  min-height:82px;
-  padding:10px 7px;
+  min-height:78px;
+  padding:9px 5px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -28,9 +28,9 @@
   background:color-mix(in srgb,var(--th-accent,var(--brass)) 8%,#fff);
   box-shadow:0 9px 24px rgba(19,42,69,.11);
 }
-.budget-hub-tab-icon{font-size:24px;line-height:1;}
-.budget-hub-tab strong{font-size:13px;line-height:1.15;}
-.budget-hub-tab small{font-size:10px;line-height:1.15;color:var(--muted);font-weight:700;text-align:center;}
+.budget-hub-tab-icon{font-size:21px;line-height:1;}
+.budget-hub-tab strong{font-size:11.5px;line-height:1.15;text-align:center;}
+.budget-hub-tab small{font-size:9px;line-height:1.15;color:var(--muted);font-weight:700;text-align:center;}
 
 .budget-panel[hidden]{display:none!important;}
 .budget-panel{animation:lf-budget-panel-in 210ms ease both;}
@@ -58,15 +58,20 @@
 .budget-forecast-title{margin-top:22px!important;}
 .budget-panel .budget-offline-note{margin-top:16px;}
 
+.budget-panel[data-budget-panel="summary"] .budget-forecast-title{margin-top:24px!important;}
 .budget-panel[data-budget-panel="split"] .lf-split-card{margin-top:0;}
 .budget-panel[data-budget-panel="tools"] .currency-converter{margin-top:0;}
 .budget-panel[data-budget-panel="tools"] .tip-calculator{margin-top:14px;}
 
-@media(max-width:390px){
-  .budget-hub-tab{min-height:74px;padding:9px 5px;}
-  .budget-hub-tab-icon{font-size:21px;}
-  .budget-hub-tab strong{font-size:12px;}
+@media(max-width:430px){
+  .budget-hub-tab{min-height:68px;padding:8px 3px;}
+  .budget-hub-tab-icon{font-size:19px;}
+  .budget-hub-tab strong{font-size:10.5px;}
   .budget-hub-tab small{display:none;}
+}
+@media(max-width:350px){
+  .budget-hub-nav{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .budget-hub-tab strong{font-size:12px;}
 }
 @media(prefers-reduced-motion:reduce){
   .budget-panel{animation:none!important;}
