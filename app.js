@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.35";
+    version.textContent="Versione app 2.4.37";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1533,11 +1533,11 @@ function renderBudgetScreen(){
   const ledger = calculateLFSplit(expenses, settlements);
   const debt = lfDebtDirection(ledger.balance);
   const total = Number(settings.totalBudget || 0);
-  const spent = expenses.reduce((sum,e) => sum + Number(e.amount || 0), 0);
+  const spent = expenses.filter(e => (e.currency || "USD") === "USD").reduce((sum,e) => sum + Number(e.amount || 0), 0);
   const remaining = total - spent;
   const pct = total > 0 ? Math.min(100, Math.max(0, spent / total * 100)) : 0;
   const cityBudgets = settings.cityBudgets || {};
-  const citySpent = expenses.reduce((acc,e) => { acc[e.city] = (acc[e.city] || 0) + Number(e.amount || 0); return acc; }, {});
+  const citySpent = expenses.filter(e => (e.currency || "USD") === "USD").reduce((acc,e) => { acc[e.city] = (acc[e.city] || 0) + Number(e.amount || 0); return acc; }, {});
 
   el.innerHTML = `
     <button class="back-btn" id="back-budget">‹ Home</button>
@@ -1663,6 +1663,7 @@ function renderBudgetScreen(){
         <label>Data<input id="expense-date" type="date" required value="${todayISO()}"></label>
         <label>Tappa<select id="expense-city">${expenseCityOptions()}</select></label>
         <label>Categoria<select id="expense-category">${categoryOptions("Cibo")}</select></label>
+        <input id="expense-currency" type="hidden" value="USD">
         <label class="expense-payer-field">Pagato da<select id="expense-paid-by" required><option value="" selected disabled>Seleziona Lorenzo o Fortuna</option><option value="Lorenzo">Lorenzo</option><option value="Fortuna">Fortuna</option></select></label>
         <label class="expense-split-field">Divisione<select id="expense-split-type"><option value="equal">50/50</option><option value="lorenzo_only">Solo Lorenzo</option><option value="fortuna_only">Solo Fortuna</option></select></label>
       </div>
@@ -1680,7 +1681,7 @@ function renderBudgetScreen(){
         <div class="expense-item" data-expense-id="${e.id}">
           <div class="expense-icon">${expenseCategoryIcon(e.category)}</div>
           <div class="expense-copy"><strong>${e.description || e.category || "Spesa"}</strong><span>${formatExpenseDate(e.date)} · ${budgetCityLabel(e.city || "Generale")} · ${e.category || "Altro"}</span><em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em><em class="expense-split-type">${expenseSplitLabel(e)}</em></div>
-          <div class="expense-amount">${money(e.amount,currency)}</div>
+          <div class="expense-amount">${money(e.amount,e.currency === "DOP" ? "DOP" : "USD")}</div>
           <div class="expense-actions"><button data-edit-expense="${e.id}" title="Modifica">✎</button><button data-delete-expense="${e.id}" title="Elimina">×</button></div>
         </div>`).join("") : `<div class="empty-note">Nessuna spesa registrata. Il primo movimento comparirà qui e si sincronizzerà anche sull'altro telefono.</div>`}
     </div>
@@ -1773,6 +1774,7 @@ function renderBudgetScreen(){
       $("#expense-date").value = exp.date || todayISO();
       $("#expense-city").innerHTML = expenseCityOptions(exp.city || "Generale");
       $("#expense-category").innerHTML = categoryOptions(exp.category || "Altro");
+      $("#expense-currency").value = exp.currency === "DOP" ? "DOP" : "USD";
       $("#expense-paid-by").value = LF_PEOPLE.includes(exp.paidBy) ? exp.paidBy : "";
       $("#expense-split-type").value = ["equal","lorenzo_only","fortuna_only"].includes(exp.splitType) ? exp.splitType : "equal";
       $("#expense-description").value = exp.description || "";
@@ -1787,7 +1789,8 @@ function renderBudgetScreen(){
     if (!LF_PEOPLE.includes(paidBy)) return;
     const splitType = $("#expense-split-type").value || "equal";
     if (!["equal","lorenzo_only","fortuna_only"].includes(splitType)) return;
-    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy, splitType };
+    const expenseCurrency = $("#expense-currency")?.value === "DOP" ? "DOP" : "USD";
+    const payload = { amount, currency:expenseCurrency, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy, splitType };
     const btn = $("#expense-save"), status=$("#expense-status");
     btn.disabled = true; status.textContent = navigator.onLine ? "Salvataggio…" : "Salvataggio offline…";
     try {

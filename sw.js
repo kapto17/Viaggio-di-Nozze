@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v132";
+const CACHE_NAME = "viaggio-nozze-v133";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,10 +7,12 @@ const ASSETS = [
   "./motion-v3.css",
   "./budget-layout.css",
   "./expense-wizard.css",
+  "./budget-summary.css",
   "./app.js",
   "./motion.js",
   "./budget-layout.js",
   "./expense-wizard.js",
+  "./budget-summary.js",
   "./data.js",
   "./firebase-budget.js",
   "./manifest.json",
