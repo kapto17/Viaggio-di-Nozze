@@ -1,4 +1,4 @@
-/* V36 · wizard rapido compatto e keyboard-friendly */
+/* V37 · wizard rapido compatto con USD / DOP */
 (() => {
   const previousRenderBudgetScreen = renderBudgetScreen;
   const SPLITS = [
@@ -35,9 +35,15 @@
         <div class="expense-wizard-progress"><span></span><span></span><span></span></div>
 
         <div class="expense-wizard-step" data-step="1">
-          <div class="expense-wizard-question">Quanto avete speso?</div>
-          <div class="expense-wizard-amount"><span>$</span><input id="wiz-amount" type="number" min="0.01" step="0.01" inputmode="decimal" enterkeyhint="done" placeholder="0.00"></div>
-          <div class="expense-wizard-quick-hint">Inserisci l'importo, poi tocca chi ha pagato: la tastiera si chiude e vai avanti automaticamente.</div>
+          <div class="expense-wizard-question-row">
+            <div class="expense-wizard-question">Quanto avete speso?</div>
+            <div class="expense-currency-toggle" aria-label="Valuta della spesa">
+              <button type="button" data-wiz-currency="USD">$ USD</button>
+              <button type="button" data-wiz-currency="DOP">RD$ DOP</button>
+            </div>
+          </div>
+          <div class="expense-wizard-amount"><span id="wiz-currency-symbol">$</span><input id="wiz-amount" type="number" min="0.01" step="0.01" inputmode="decimal" enterkeyhint="done" placeholder="0.00"></div>
+          <div class="expense-wizard-quick-hint">USD è la valuta predefinita. Usa DOP per le spese in pesos a Bayahibe.</div>
           <div class="expense-wizard-question small">Chi ha pagato?</div>
           <div class="expense-choice-grid two">
             <button type="button" data-wiz-payer="Lorenzo"><span>L</span><strong>Lorenzo</strong></button>
@@ -79,10 +85,12 @@
     document.body.classList.add("expense-wizard-open");
 
     const amount=wrap.querySelector("#wiz-amount");
+    const symbol=wrap.querySelector("#wiz-currency-symbol");
     const description=wrap.querySelector("#wiz-description");
     const city=wrap.querySelector("#wiz-city");
     const date=wrap.querySelector("#wiz-date");
     const srcAmount=form.querySelector("#expense-amount");
+    const srcCurrency=form.querySelector("#expense-currency");
     const srcPayer=form.querySelector("#expense-paid-by");
     const srcSplit=form.querySelector("#expense-split-type");
     const srcCategory=form.querySelector("#expense-category");
@@ -104,6 +112,7 @@
     let payer=srcPayer?.value || "";
     let split=srcSplit?.value || "equal";
     let category=srcCategory?.value || "Cibo";
+    let currency=srcCurrency?.value === "DOP" ? "DOP" : "USD";
 
     function close(cancelEdit=false){
       wrap.remove();
@@ -114,6 +123,8 @@
       wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.classList.toggle("active",b.dataset.wizPayer===payer));
       wrap.querySelectorAll("[data-wiz-split]").forEach(b=>b.classList.toggle("active",b.dataset.wizSplit===split));
       wrap.querySelectorAll("[data-wiz-category]").forEach(b=>b.classList.toggle("active",b.dataset.wizCategory===category));
+      wrap.querySelectorAll("[data-wiz-currency]").forEach(b=>b.classList.toggle("active",b.dataset.wizCurrency===currency));
+      symbol.textContent=currency === "DOP" ? "RD$" : "$";
     }
     function show(next){
       step=next;
@@ -124,7 +135,7 @@
       wrap.querySelector("#wiz-next").textContent=step===3 ? (editingExpenseId?"Salva modifica":"Salva spesa") : "Continua";
       if(step===3){
         const splitLabel=split==="lorenzo_only"?"Solo Lorenzo":split==="fortuna_only"?"Solo Fortuna":"50/50";
-        wrap.querySelector("#wiz-summary").innerHTML=`<span>${expenseCategoryIcon(category)} ${escapeHtml(category)}</span><strong>${money(Number(amount.value||0),"USD")}</strong><small>Pagato da ${escapeHtml(payer)} · ${splitLabel}</small>`;
+        wrap.querySelector("#wiz-summary").innerHTML=`<span>${expenseCategoryIcon(category)} ${escapeHtml(category)}</span><strong>${money(Number(amount.value||0),currency)}</strong><small>Pagato da ${escapeHtml(payer)} · ${splitLabel} · ${currency}</small>`;
       }
     }
     function hasValidAmount(){
@@ -145,6 +156,7 @@
     }
 
     wrap.querySelectorAll("[data-wizard-close]").forEach(el=>el.addEventListener("click",()=>close(true)));
+    wrap.querySelectorAll("[data-wiz-currency]").forEach(b=>b.addEventListener("click",()=>{currency=b.dataset.wizCurrency;paint();}));
     wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.addEventListener("click",()=>{
       payer=b.dataset.wizPayer;
       paint();
@@ -157,6 +169,7 @@
       if(!stepValid()) return;
       if(step<3){ amount.blur(); show(step+1); return; }
       srcAmount.value=amount.value;
+      if(srcCurrency) srcCurrency.value=currency;
       srcPayer.value=payer;
       srcSplit.value=split;
       srcCategory.value=category;
