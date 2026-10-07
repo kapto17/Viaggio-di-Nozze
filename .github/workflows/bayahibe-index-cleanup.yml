@@ -1,0 +1,41 @@
+name: Bayahibe index cleanup
+on: [push]
+permissions:
+  contents: write
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove obsolete Bayahibe override
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+          marker = '<script>\n/* v2.4.27 — Bayahibe: relax senza itinerario giornaliero */'
+          start = text.find(marker)
+          if start < 0:
+              raise SystemExit('Override Bayahibe non trovato')
+          end = text.find('</script>', start)
+          if end < 0:
+              raise SystemExit('Chiusura script override non trovata')
+          end += len('</script>')
+          text = text[:start] + text[end:]
+          p.write_text(text, encoding='utf-8')
+          PY
+          if grep -q 'v2.4.27 — Bayahibe: relax senza itinerario giornaliero' index.html; then
+            echo 'Override ancora presente' >&2
+            exit 1
+          fi
+          git diff --check
+          git diff -- index.html
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/bayahibe-index-cleanup.yml
+          git add index.html
+          git commit -m "Rimuove override Bayahibe da index [skip ci]"
+          git push
