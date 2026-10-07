@@ -1,4 +1,4 @@
-/* V35 · wizard rapido per aggiunta/modifica spese */
+/* V36 · wizard rapido compatto e keyboard-friendly */
 (() => {
   const previousRenderBudgetScreen = renderBudgetScreen;
   const SPLITS = [
@@ -36,7 +36,8 @@
 
         <div class="expense-wizard-step" data-step="1">
           <div class="expense-wizard-question">Quanto avete speso?</div>
-          <div class="expense-wizard-amount"><span>$</span><input id="wiz-amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+          <div class="expense-wizard-amount"><span>$</span><input id="wiz-amount" type="number" min="0.01" step="0.01" inputmode="decimal" enterkeyhint="done" placeholder="0.00"></div>
+          <div class="expense-wizard-quick-hint">Inserisci l'importo, poi tocca chi ha pagato: la tastiera si chiude e vai avanti automaticamente.</div>
           <div class="expense-wizard-question small">Chi ha pagato?</div>
           <div class="expense-choice-grid two">
             <button type="button" data-wiz-payer="Lorenzo"><span>L</span><strong>Lorenzo</strong></button>
@@ -54,7 +55,7 @@
 
         <div class="expense-wizard-step" data-step="3">
           <div class="expense-wizard-question">Ultimi dettagli</div>
-          <label class="wizard-field">Descrizione <small>facoltativa</small><input id="wiz-description" type="text" maxlength="80" placeholder="Es. cena, souvenir, parcheggio…"></label>
+          <label class="wizard-field">Descrizione <small>facoltativa</small><input id="wiz-description" type="text" maxlength="80" enterkeyhint="done" placeholder="Es. cena, souvenir, parcheggio…"></label>
           <div class="wizard-field-row">
             <label class="wizard-field">Tappa<select id="wiz-city"></select></label>
             <label class="wizard-field">Data<input id="wiz-date" type="date"></label>
@@ -116,6 +117,7 @@
     }
     function show(next){
       step=next;
+      wrap.dataset.currentStep=String(step);
       wrap.querySelectorAll(".expense-wizard-step").forEach(s=>s.classList.toggle("active",Number(s.dataset.step)===step));
       wrap.querySelectorAll(".expense-wizard-progress span").forEach((s,i)=>s.classList.toggle("active",i<step));
       wrap.querySelector("#wiz-back").hidden=step===1;
@@ -125,22 +127,35 @@
         wrap.querySelector("#wiz-summary").innerHTML=`<span>${expenseCategoryIcon(category)} ${escapeHtml(category)}</span><strong>${money(Number(amount.value||0),"USD")}</strong><small>Pagato da ${escapeHtml(payer)} · ${splitLabel}</small>`;
       }
     }
+    function hasValidAmount(){
+      const value=Number(amount.value);
+      return Number.isFinite(value) && value>0;
+    }
     function stepValid(){
       if(step!==1) return true;
-      const value=Number(amount.value);
-      if(!Number.isFinite(value)||value<=0){ amount.focus(); return false; }
+      if(!hasValidAmount()){ amount.focus(); return false; }
       if(!LF_PEOPLE.includes(payer)){ alert("Scegli chi ha pagato."); return false; }
+      return true;
+    }
+    function advanceFirstStepIfReady(){
+      if(step!==1 || !hasValidAmount() || !LF_PEOPLE.includes(payer)) return false;
+      amount.blur();
+      setTimeout(()=>show(2),70);
       return true;
     }
 
     wrap.querySelectorAll("[data-wizard-close]").forEach(el=>el.addEventListener("click",()=>close(true)));
-    wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.addEventListener("click",()=>{payer=b.dataset.wizPayer;paint();}));
+    wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.addEventListener("click",()=>{
+      payer=b.dataset.wizPayer;
+      paint();
+      advanceFirstStepIfReady();
+    }));
     wrap.querySelectorAll("[data-wiz-split]").forEach(b=>b.addEventListener("click",()=>{split=b.dataset.wizSplit;paint();}));
     wrap.querySelectorAll("[data-wiz-category]").forEach(b=>b.addEventListener("click",()=>{category=b.dataset.wizCategory;paint();}));
     wrap.querySelector("#wiz-back").addEventListener("click",()=>show(Math.max(1,step-1)));
     wrap.querySelector("#wiz-next").addEventListener("click",()=>{
       if(!stepValid()) return;
-      if(step<3){ show(step+1); return; }
+      if(step<3){ amount.blur(); show(step+1); return; }
       srcAmount.value=amount.value;
       srcPayer.value=payer;
       srcSplit.value=split;
@@ -150,6 +165,18 @@
       srcDate.value=date.value || todayISO();
       form.querySelector("#expense-save")?.click();
       close(false);
+    });
+    amount.addEventListener("keydown",event=>{
+      if(event.key!=="Enter") return;
+      event.preventDefault();
+      if(!hasValidAmount()) return;
+      amount.blur();
+      if(LF_PEOPLE.includes(payer)) setTimeout(()=>show(2),60);
+    });
+    description.addEventListener("keydown",event=>{
+      if(event.key!=="Enter") return;
+      event.preventDefault();
+      description.blur();
     });
     date.addEventListener("change",()=>{
       if(editingExpenseId) return;
