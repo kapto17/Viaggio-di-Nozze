@@ -101,6 +101,8 @@
   }
 
   renderBudgetScreen=function(){
+    const root=document.querySelector("#screen-budget");
+    if(root) delete root.dataset.budgetHubReady;
     originalRenderBudgetScreen();
     enhanceBudgetLayout();
   };
