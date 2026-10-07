@@ -1,0 +1,232 @@
+name: UI motion step 3
+on: [push]
+permissions:
+  contents: write
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply motion step 3
+        shell: bash
+        run: |
+          cat > motion-v3.css <<'EOF'
+          /* V31 · third motion polish · rollback baseline ad1484ba */
+
+          /* Shared card -> city hero transition (native View Transitions, where supported). */
+          .city-shared-transition #screen-city-detail.screen.active{
+            animation:none!important;
+          }
+          @supports (view-transition-name: city-card-shared){
+            ::view-transition-group(city-card-shared){
+              animation-duration:520ms;
+              animation-timing-function:cubic-bezier(.22,.78,.24,1);
+              z-index:1000;
+            }
+            ::view-transition-old(city-card-shared),
+            ::view-transition-new(city-card-shared){
+              border-radius:24px;
+              overflow:hidden;
+            }
+            ::view-transition-old(city-card-shared){
+              animation:lf-city-vt-old 360ms ease-out both;
+            }
+            ::view-transition-new(city-card-shared){
+              animation:lf-city-vt-new 520ms cubic-bezier(.22,.78,.24,1) both;
+            }
+          }
+          @keyframes lf-city-vt-old{
+            from{opacity:1;filter:brightness(1);}
+            to{opacity:.18;filter:brightness(.96);}
+          }
+          @keyframes lf-city-vt-new{
+            from{opacity:.22;filter:brightness(1.035);}
+            to{opacity:1;filter:brightness(1);}
+          }
+
+          /* Internal photo zoom on press: the card stays put, only the image breathes. */
+          .city-card.photo-city-card::before{
+            transition:inset 190ms ease,filter 190ms ease;
+          }
+          .city-card.photo-city-card:active::before{
+            inset:-6.5%;
+            filter:brightness(1.035) saturate(1.025);
+          }
+          .city-card.photo-city-card .city-card-arrow{
+            transition:transform 190ms ease,background-color 190ms ease;
+          }
+          .city-card.photo-city-card:active .city-card-arrow{
+            transform:translateX(2px) scale(1.045);
+            background:rgba(255,255,255,.22);
+          }
+
+          /* Sliding active pill for bottom navigation. */
+          nav.tabbar.motion-nav{
+            position:sticky;
+            isolation:isolate;
+          }
+          nav.tabbar.motion-nav::before{
+            content:"";
+            position:absolute;
+            z-index:0;
+            top:6px;
+            bottom:calc(6px + env(safe-area-inset-bottom));
+            left:var(--motion-pill-left,4px);
+            width:var(--motion-pill-width,0px);
+            border-radius:14px;
+            background:color-mix(in srgb,var(--th-accent, var(--brass)) 9%,transparent);
+            border:1px solid color-mix(in srgb,var(--th-accent, var(--brass)) 10%,transparent);
+            opacity:0;
+            pointer-events:none;
+            transition:left 300ms cubic-bezier(.22,.78,.24,1),width 300ms cubic-bezier(.22,.78,.24,1),opacity 160ms ease;
+          }
+          nav.tabbar.motion-nav.motion-nav-ready::before{opacity:1;}
+          nav.tabbar.motion-nav button{
+            position:relative;
+            z-index:1;
+          }
+          nav.tabbar.motion-nav button.active{
+            background:transparent!important;
+          }
+          nav.tabbar.motion-nav button svg,
+          nav.tabbar.motion-nav button .tab-dollar{
+            transition:transform 220ms cubic-bezier(.22,.78,.24,1);
+          }
+          nav.tabbar.motion-nav button.active svg,
+          nav.tabbar.motion-nav button.active .tab-dollar{
+            transform:translateY(-1px) scale(1.06);
+          }
+
+          @media (prefers-reduced-motion:reduce){
+            ::view-transition-group(city-card-shared),
+            ::view-transition-old(city-card-shared),
+            ::view-transition-new(city-card-shared){animation:none!important;}
+            .city-card.photo-city-card::before,
+            .city-card.photo-city-card .city-card-arrow,
+            nav.tabbar.motion-nav::before,
+            nav.tabbar.motion-nav button svg,
+            nav.tabbar.motion-nav button .tab-dollar{
+              transition:none!important;
+            }
+            .city-card.photo-city-card:active::before{inset:-4%;filter:none;}
+          }
+          EOF
+
+          cat >> motion.js <<'EOF'
+
+          /* V31 · shared city transition + bottom-nav polish */
+          (() => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+            let sharedBusy = false;
+
+            function syncTabPill(){
+              const nav = document.querySelector("nav.tabbar");
+              if(!nav) return;
+              nav.classList.add("motion-nav");
+              const active = Array.from(nav.querySelectorAll("button.active"))
+                .find(btn => !btn.hidden && btn.getClientRects().length);
+              if(!active) return;
+              const navRect = nav.getBoundingClientRect();
+              const btnRect = active.getBoundingClientRect();
+              nav.style.setProperty("--motion-pill-left", `${(btnRect.left-navRect.left).toFixed(1)}px`);
+              nav.style.setProperty("--motion-pill-width", `${btnRect.width.toFixed(1)}px`);
+              nav.classList.add("motion-nav-ready");
+            }
+
+            function initTabPill(){
+              const nav = document.querySelector("nav.tabbar");
+              if(!nav) return;
+              syncTabPill();
+              const observer = new MutationObserver(() => requestAnimationFrame(syncTabPill));
+              observer.observe(nav,{subtree:true,attributes:true,attributeFilter:["class","hidden"]});
+              nav.addEventListener("click",() => requestAnimationFrame(syncTabPill),{passive:true});
+              window.addEventListener("resize",syncTabPill,{passive:true});
+            }
+
+            document.addEventListener("click", (event) => {
+              const card = event.target.closest?.(".city-card.photo-city-card");
+              if(!card || !card.dataset.leg) return;
+              if(event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              if(reduced.matches || typeof document.startViewTransition !== "function" || typeof window.openCity !== "function") return;
+
+              event.preventDefault();
+              event.stopImmediatePropagation();
+              if(sharedBusy) return;
+              sharedBusy = true;
+
+              let hero = null;
+              const cleanup = () => {
+                card.style.removeProperty("view-transition-name");
+                hero?.style.removeProperty("view-transition-name");
+                document.documentElement.classList.remove("city-shared-transition");
+                sharedBusy = false;
+                requestAnimationFrame(syncTabPill);
+              };
+
+              card.style.viewTransitionName = "city-card-shared";
+              document.documentElement.classList.add("city-shared-transition");
+
+              try{
+                const transition = document.startViewTransition(() => {
+                  window.openCity(card.dataset.leg);
+                  hero = document.querySelector("#screen-city-detail.active .city-header.photo-city-header");
+                  if(hero) hero.style.viewTransitionName = "city-card-shared";
+                });
+                transition.finished.catch(() => {}).finally(cleanup);
+              }catch(_){
+                cleanup();
+                window.openCity(card.dataset.leg);
+              }
+            }, true);
+
+            if(document.readyState === "loading"){
+              document.addEventListener("DOMContentLoaded",initTabPill,{once:true});
+            }else{
+              initTabPill();
+            }
+          })();
+          EOF
+
+          python - <<'PY'
+          from pathlib import Path
+
+          index=Path('index.html')
+          text=index.read_text(encoding='utf-8')
+          text=text.replace('<link rel="stylesheet" href="themes.css?v=53">','<link rel="stylesheet" href="themes.css?v=53">\n<link rel="stylesheet" href="motion-v3.css?v=1">',1)
+          text=text.replace('app.js?v=107','app.js?v=108',1)
+          text=text.replace('motion.js?v=1','motion.js?v=2',1)
+          index.write_text(text,encoding='utf-8')
+
+          app=Path('app.js')
+          text=app.read_text(encoding='utf-8')
+          if 'Versione app 2.4.30' not in text:
+              raise SystemExit('Versione 2.4.30 non trovata')
+          app.write_text(text.replace('Versione app 2.4.30','Versione app 2.4.31',1),encoding='utf-8')
+
+          sw=Path('sw.js')
+          text=sw.read_text(encoding='utf-8')
+          if 'viaggio-nozze-v124' not in text:
+              raise SystemExit('Cache v124 non trovata')
+          text=text.replace('viaggio-nozze-v124','viaggio-nozze-v125',1)
+          if '"./motion-v3.css"' not in text:
+              text=text.replace('  "./themes.css",','  "./themes.css",\n  "./motion-v3.css",',1)
+          sw.write_text(text,encoding='utf-8')
+          PY
+
+          node --check app.js
+          node --check motion.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.31' app.js
+          grep -q 'motion-v3.css?v=1' index.html
+          grep -q 'motion.js?v=2' index.html
+          grep -q 'viaggio-nozze-v125' sw.js
+          git diff --check
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html motion.js motion-v3.css sw.js
+          git rm .github/workflows/ui-motion-step3.yml
+          git commit -m "Aggiunge transizione città e nav polish 2.4.31 [skip ci]"
+          git push
