@@ -59,3 +59,9 @@ Le immagini sono state ridimensionate/comprese per l'uso mobile; non è stato al
 - Foto: Another Believer / Wikimedia Commons
 - Licenza: CC BY-SA 4.0
 - Fonte: https://commons.wikimedia.org/wiki/File:Chicago,_Illinois,_U.S._(2023)_-_033.jpg
+
+## Crypto.com Arena · Lakers–Clippers
+- File: `assets/crypto-arena-lakers.jpg`
+- Foto: Troutfarm27 / Wikimedia Commons
+- Licenza: CC BY-SA 4.0
+- Fonte: https://commons.wikimedia.org/wiki/File:Crypto.com_Arena_-_Star_Plaza_entrance.jpg

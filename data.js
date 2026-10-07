@@ -571,7 +571,7 @@ const PROGRAM_GUIDE = {
     {
       "date": "2026-10-23",
       "title": "Arrivo a Los Angeles e Lakers–Clippers",
-      "theme": "Arrivo da San Francisco, ritiro auto e check-in senza corse; poi prima grande serata a Los Angeles con la partita NBA alla Crypto.com Arena.",
+      "theme": "Arrivo da San Francisco, ritiro auto e check-in con pausa; poi Uber/Lyft diretto alla Crypto.com Arena, partita e cena a piedi in Downtown prima del rientro.",
       "items": [
         {
           "time": "08:00",
@@ -615,7 +615,7 @@ const PROGRAM_GUIDE = {
           "kind": "recommended",
           "icon": "🚗",
           "title": "Ritiro auto · Alamo",
-          "note": "Orario realistico dopo bagagli, shuttle e pratica di noleggio. Da qui avete l'auto fino alla riconsegna a Las Vegas.",
+          "note": "Orario realistico dopo bagagli, shuttle e pratica di noleggio. Da qui avete il SUV fino alla riconsegna a Las Vegas.",
           "mapsQuery": "Alamo Rent A Car LAX Rental Car Center 5251 West 98th Street Los Angeles"
         },
         {
@@ -631,49 +631,65 @@ const PROGRAM_GUIDE = {
           "kind": "recommended",
           "icon": "🏨",
           "title": "Check-in al The Commerce",
-          "note": "Lasciate i bagagli, rinfrescatevi e tenete questa pausa: la sera sarà lunga e non vale la pena comprimere qui il vecchio giro Downtown.",
+          "note": "Lasciate i bagagli, rinfrescatevi e riposate un po'. Il SUV resta parcheggiato in hotel per tutta la serata.",
           "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040",
           "mapLat": 33.998348,
           "mapLon": -118.145255
         },
         {
-          "time": "16:20",
+          "time": "16:50–17:00",
           "kind": "transfer",
-          "icon": "🚗",
-          "title": "Spostamento · The Commerce → Crypto.com Arena",
-          "note": "🚗 Circa 17 km · considerate 30–45 min nel traffico del venerdì. Puntate al parcheggio evento di L.A. LIVE / Crypto.com Arena e lasciate l'auto lì fino a dopo cena.",
-          "mapsQuery": "Crypto.com Arena West Garage Los Angeles CA"
+          "icon": "🚕",
+          "title": "Uber/Lyft · The Commerce → Crypto.com Arena",
+          "note": "🚕 Corsa diretta · circa 17 km. Nel traffico del venerdì tenete un margine largo: obiettivo arrivo tra 17:35 e 17:50. Lasciamo l'auto a noleggio in hotel ed evitiamo parcheggio e uscita post-partita.",
+          "mapsQuery": "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015"
         },
         {
-          "time": "17:10 circa",
+          "time": "17:35–17:50 circa",
           "kind": "recommended",
           "icon": "🏀",
-          "title": "L.A. LIVE e atmosfera pre-partita",
-          "note": "Arrivate con calma, foto fuori dall'arena e giro nell'area L.A. LIVE. Obiettivo: essere davanti agli ingressi verso le 17:30; ricontrollate l'orario porte specifico della partita il giorno prima.",
-          "mapsQuery": "L.A. LIVE 800 W Olympic Blvd Los Angeles CA 90015"
+          "title": "Arrivo · Crypto.com Arena / Star Plaza",
+          "note": "Foto all'esterno e atmosfera pre-partita. Non serve fissare un ingresso ora: Kobe Bryant Entrance, Star Plaza Entrance e Figueroa Entrance sono i tre accessi principali per i normali biglietti; scegliete quello con meno coda.",
+          "mapsQuery": "Crypto.com Arena Star Plaza Los Angeles CA"
+        },
+        {
+          "time": "18:00 circa",
+          "kind": "recommended",
+          "icon": "🎟️",
+          "title": "Ingresso e controlli",
+          "note": "Biglietto mobile già aperto nell'app autorizzata: screenshot/QR stampati non sono accettati. Evitate borse; è ammesso solo un piccolo wallet/clutch entro i limiti dell'arena. Dentro l'arena i pagamenti sono cashless."
         },
         {
           "time": "19:00",
           "kind": "booked",
           "icon": "🎟️",
           "title": "Los Angeles Lakers vs LA Clippers",
-          "note": "Partita NBA alla Crypto.com Arena · biglietti acquistati. È la seconda gara di regular season dei Lakers 2026–27. Evitate borse: l'arena ammette solo piccoli portafogli/clutch entro i limiti previsti.",
-          "mapsQuery": "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015"
+          "note": "Partita NBA alla Crypto.com Arena · biglietti acquistati. Tutti i consigli pratici della serata sono nella scheda dedicata: tocca questa voce.",
+          "mapsQuery": "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015",
+          "detailPlace": "Los Angeles Lakers vs LA Clippers"
         },
         {
-          "time": "21:45–22:15 circa",
-          "kind": "recommended",
-          "icon": "🍔",
-          "title": "Cena post-partita · Yard House L.A. LIVE",
-          "note": "Cena senza riprendere l'auto: Yard House è a L.A. LIVE e il venerdì la cucina resta aperta fino all'1:00, quindi non dovete guardare l'orologio se la partita finisce tardi o va all'overtime.",
-          "mapsQuery": "Yard House 800 W Olympic Blvd Los Angeles CA 90015"
-        },
-        {
-          "time": "Dopo cena",
+          "time": "21:30–22:00 circa",
           "kind": "transfer",
-          "icon": "🚗",
-          "title": "Rientro · L.A. LIVE → The Commerce Hotel",
-          "note": "🚗 Circa 17 km · 20–30 min in tarda serata. Recuperate l'auto dal parcheggio evento e rientrate direttamente in hotel.",
+          "icon": "🚶",
+          "title": "A piedi · Crypto.com Arena → JOEY DTLA",
+          "note": "🚶 Circa 1,1 km · 16 min. Ci allontaniamo dalla folla dello stadio invece di chiamare subito Uber nel picco di domanda. Se siete stanchi o non vi convince la passeggiata quella sera, nella scheda partita trovate alternative più vicine.",
+          "mapsQuery": "JOEY DTLA 700 W 7th St Los Angeles CA 90017"
+        },
+        {
+          "time": "22:00 circa",
+          "kind": "recommended",
+          "icon": "🍽️",
+          "title": "Cena post-partita · JOEY DTLA",
+          "note": "Cena vera fuori dalla zona immediata dell'arena. Il venerdì resta aperto fino all'1:00: nessuna fretta se la partita finisce tardi o va all'overtime.",
+          "mapsQuery": "JOEY DTLA 700 W 7th St Los Angeles CA 90017"
+        },
+        {
+          "time": "23:15–00:00 circa",
+          "kind": "transfer",
+          "icon": "🚕",
+          "title": "Rientro · JOEY DTLA → The Commerce Hotel",
+          "note": "🚕 Dopo cena confrontate Uber, Lyft e Curb e scegliete il prezzo migliore. Curb usa taxi regolari con tariffa anticipata; dopo aver lasciato passare il picco post-partita il rideshare dovrebbe essere più gestibile.",
           "mapsQuery": "The Commerce Casino & Hotel 6121 E Telegraph Rd Commerce CA 90040"
         }
       ]
@@ -1750,6 +1766,13 @@ const PROGRAM_GUIDE = {
 // Le immagini vengono recuperate da Wikipedia/Wikimedia quando c'è connessione;
 // l'immagine della città resta come fallback e la risposta viene poi conservata dalla cache della PWA.
 const PLACE_DETAILS = {
+  "Los Angeles Lakers vs LA Clippers": {
+    image: "./assets/crypto-arena-lakers.jpg",
+    text: "Venerdì 23 ottobre alle 19:00: Lakers–Clippers alla Crypto.com Arena. Biglietti già acquistati; questa scheda raccoglie il piano pratico per arrivare, entrare, cenare dopo la partita e rientrare senza usare l'auto a noleggio.",
+    officialUrl: "https://www.nba.com/lakers/game/0022600102-clippers-vs-lakers-los-angeles-ca-10-23-2026",
+    officialLabel: "🏀 Dettagli partita Lakers",
+    photoCredit: "Troutfarm27 / Wikimedia Commons · CC BY-SA 4.0"
+  },
   "Caesars Palace & Forum Shops": {
     image: "./assets/caesars-palace-las-vegas.jpg",
     text: "Aperto nel 1966, Caesars Palace è uno dei resort più iconici della Las Vegas Strip. Il complesso richiama l’antica Roma con colonne, statue, fontane e grandi spazi scenografici. Durante la tappa del 27 ottobre faremo una passeggiata negli interni e nei Forum Shops, il centro commerciale collegato al resort con oltre 160 negozi e ristoranti, senza trasformare la visita in una lunga sessione di shopping."
