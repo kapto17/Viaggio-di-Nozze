@@ -1,0 +1,459 @@
+name: Expense wizard
+on: [push]
+permissions:
+  contents: write
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add fast expense wizard
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # Firebase: persist the split choice.
+          p=Path('firebase-budget.js')
+          text=p.read_text(encoding='utf-8')
+          old='    splitType: "equal",'
+          new='    splitType: ["equal","lorenzo_only","fortuna_only"].includes(expense.splitType) ? expense.splitType : "equal",'
+          if text.count(old)!=2:
+              raise SystemExit(f'firebase split markers: {text.count(old)}')
+          text=text.replace(old,new)
+          p.write_text(text,encoding='utf-8')
+
+          # App: proper Splitwise-like accounting, including personal expenses.
+          p=Path('app.js')
+          text=p.read_text(encoding='utf-8')
+          pattern=r'function calculateLFSplit\(expenses, settlements\)\{.*?\n\}\n\nfunction lfDebtDirection'
+          replacement='''function calculateLFSplit(expenses, settlements){
+            let paidLorenzo = 0, paidFortuna = 0, sharedTotal = 0, unassigned = 0;
+            let balance = 0; // Positivo: Fortuna deve a Lorenzo. Negativo: Lorenzo deve a Fortuna.
+            (expenses || []).forEach(expense => {
+              const amount = Number(expense.amount || 0);
+              if (!Number.isFinite(amount) || amount <= 0) return;
+              const paidBy = expense.paidBy;
+              const splitType = expense.splitType || "equal";
+              if (!LF_PEOPLE.includes(paidBy)){ unassigned += 1; return; }
+              if (paidBy === "Lorenzo") paidLorenzo += amount;
+              if (paidBy === "Fortuna") paidFortuna += amount;
+
+              if (splitType === "equal"){
+                sharedTotal += amount;
+                balance += paidBy === "Lorenzo" ? amount / 2 : -amount / 2;
+              } else if (splitType === "lorenzo_only"){
+                if (paidBy === "Fortuna") balance -= amount;
+              } else if (splitType === "fortuna_only"){
+                if (paidBy === "Lorenzo") balance += amount;
+              }
+            });
+
+            (settlements || []).forEach(settlement => {
+              const amount = Number(settlement.amount || 0);
+              if (!Number.isFinite(amount) || amount <= 0) return;
+              if (settlement.from === "Fortuna" && settlement.to === "Lorenzo") balance -= amount;
+              if (settlement.from === "Lorenzo" && settlement.to === "Fortuna") balance += amount;
+            });
+            if (Math.abs(balance) < 0.005) balance = 0;
+            return { paidLorenzo, paidFortuna, sharedTotal, shareEach:sharedTotal / 2, balance, unassigned };
+          }
+
+          function lfDebtDirection'''
+          text,n=re.subn(pattern,replacement,text,count=1,flags=re.S)
+          if n!=1: raise SystemExit('calculateLFSplit marker missing')
+
+          helper='''function expenseSplitLabel(expense){
+            const type = expense?.splitType || "equal";
+            if (type === "lorenzo_only") return "Solo Lorenzo";
+            if (type === "fortuna_only") return "Solo Fortuna";
+            return "50/50";
+          }
+
+          '''
+          if 'function expenseSplitLabel' not in text:
+              marker='function renderBudgetScreen(){'
+              if marker not in text: raise SystemExit('renderBudgetScreen marker missing')
+              text=text.replace(marker,helper+marker,1)
+
+          payer='''        <label class="expense-payer-field">Pagato da<select id="expense-paid-by" required><option value="" selected disabled>Seleziona Lorenzo o Fortuna</option><option value="Lorenzo">Lorenzo</option><option value="Fortuna">Fortuna</option></select></label>'''
+          split='''        <label class="expense-payer-field">Pagato da<select id="expense-paid-by" required><option value="" selected disabled>Seleziona Lorenzo o Fortuna</option><option value="Lorenzo">Lorenzo</option><option value="Fortuna">Fortuna</option></select></label>
+        <label class="expense-split-field">Divisione<select id="expense-split-type"><option value="equal">50/50</option><option value="lorenzo_only">Solo Lorenzo</option><option value="fortuna_only">Solo Fortuna</option></select></label>'''
+          if payer not in text: raise SystemExit('payer form marker missing')
+          text=text.replace(payer,split,1)
+
+          edit='''      $("#expense-paid-by").value = LF_PEOPLE.includes(exp.paidBy) ? exp.paidBy : "";
+      $("#expense-description").value = exp.description || "";'''
+          edit_new='''      $("#expense-paid-by").value = LF_PEOPLE.includes(exp.paidBy) ? exp.paidBy : "";
+      $("#expense-split-type").value = ["equal","lorenzo_only","fortuna_only"].includes(exp.splitType) ? exp.splitType : "equal";
+      $("#expense-description").value = exp.description || "";'''
+          if edit not in text: raise SystemExit('edit form marker missing')
+          text=text.replace(edit,edit_new,1)
+
+          submit='''    const paidBy = $("#expense-paid-by").value;
+    if (!LF_PEOPLE.includes(paidBy)) return;
+    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy };'''
+          submit_new='''    const paidBy = $("#expense-paid-by").value;
+    if (!LF_PEOPLE.includes(paidBy)) return;
+    const splitType = $("#expense-split-type").value || "equal";
+    if (!["equal","lorenzo_only","fortuna_only"].includes(splitType)) return;
+    const payload = { amount, date:$("#expense-date").value, city:$("#expense-city").value, category:$("#expense-category").value, description:$("#expense-description").value, paidBy, splitType };'''
+          if submit not in text: raise SystemExit('submit marker missing')
+          text=text.replace(submit,submit_new,1)
+
+          movement='''<em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em></div>'''
+          movement_new='''<em class="expense-paid-by ${e.paidBy?"":"missing"}">${e.paidBy ? `Pagato da ${e.paidBy}` : "⚠ Pagante da indicare"}</em><em class="expense-split-type">${expenseSplitLabel(e)}</em></div>'''
+          if movement not in text: raise SystemExit('movement marker missing')
+          text=text.replace(movement,movement_new,1)
+
+          if 'Versione app 2.4.34' not in text: raise SystemExit('version marker missing')
+          text=text.replace('Versione app 2.4.34','Versione app 2.4.35',1)
+          p.write_text(text,encoding='utf-8')
+
+          # Replace the layout helper with the guided wizard version.
+          Path('budget-layout.js').write_text(r'''/* V35 · Budget hub + wizard rapido spese */
+          (() => {
+            let activeBudgetPanel = "budget";
+            let wizardOpenAfterRender = false;
+            const originalRenderBudgetScreen = renderBudgetScreen;
+
+            const splitChoices = [
+              {value:"equal", icon:"↔", title:"50/50", note:"Metà a testa"},
+              {value:"lorenzo_only", icon:"L", title:"Solo Lorenzo", note:"Spesa personale"},
+              {value:"fortuna_only", icon:"F", title:"Solo Fortuna", note:"Spesa personale"}
+            ];
+
+            function makeIntro(title,text){
+              const intro=document.createElement("div");
+              intro.className="budget-panel-intro";
+              intro.innerHTML=`<strong>${title}</strong><span>${text}</span>`;
+              return intro;
+            }
+            function appendIf(panel,node){ if(node) panel.appendChild(node); }
+
+            function setPanel(root,name,focus=false){
+              activeBudgetPanel=name;
+              root.querySelectorAll("[data-budget-panel]").forEach(panel=>panel.hidden=panel.dataset.budgetPanel!==name);
+              root.querySelectorAll("[data-budget-hub]").forEach(btn=>{
+                const selected=btn.dataset.budgetHub===name;
+                btn.classList.toggle("active",selected);
+                btn.setAttribute("aria-selected",selected?"true":"false");
+              });
+              if(focus) root.querySelector(`[data-budget-panel="${name}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});
+            }
+
+            function autoCityForDate(date){
+              const ranges=[
+                ["2026-10-20","2026-10-22","San Francisco"],
+                ["2026-10-23","2026-10-26","Los Angeles"],
+                ["2026-10-27","2026-10-27","Las Vegas 27-28"],
+                ["2026-10-28","2026-10-28","Page / Grand Canyon"],
+                ["2026-10-29","2026-10-29","Las Vegas 29-30"],
+                ["2026-10-30","2026-11-02","Chicago"],
+                ["2026-11-03","2026-11-09","Bayahibe"]
+              ];
+              return ranges.find(([a,b])=>date>=a&&date<=b)?.[2] || "Generale";
+            }
+
+            function wizardTemplate(form){
+              const selectedCategory=form.querySelector("#expense-category")?.value || "Cibo";
+              const categories=Array.from(form.querySelectorAll("#expense-category option")).map(o=>o.value);
+              return `
+                <div class="expense-wizard-backdrop" data-wizard-close></div>
+                <section class="expense-wizard-sheet" role="dialog" aria-modal="true" aria-label="${editingExpenseId?"Modifica spesa":"Aggiungi spesa"}">
+                  <div class="expense-wizard-grab"></div>
+                  <div class="expense-wizard-head"><div><small>SPESA RAPIDA</small><strong>${editingExpenseId?"Modifica spesa":"Aggiungi spesa"}</strong></div><button type="button" data-wizard-close aria-label="Chiudi">×</button></div>
+                  <div class="expense-wizard-progress"><span class="active"></span><span></span><span></span></div>
+
+                  <div class="expense-wizard-step active" data-step="1">
+                    <div class="expense-wizard-question">Quanto avete speso?</div>
+                    <div class="expense-wizard-amount"><span>$</span><input id="wiz-amount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00"></div>
+                    <div class="expense-wizard-question small">Chi ha pagato?</div>
+                    <div class="expense-choice-grid two">
+                      <button type="button" data-wiz-payer="Lorenzo"><span>L</span><strong>Lorenzo</strong></button>
+                      <button type="button" data-wiz-payer="Fortuna"><span>F</span><strong>Fortuna</strong></button>
+                    </div>
+                  </div>
+
+                  <div class="expense-wizard-step" data-step="2">
+                    <div class="expense-wizard-question">Che tipo di spesa è?</div>
+                    <div class="expense-category-chips">${categories.map(cat=>`<button type="button" data-wiz-category="${escapeHtml(cat)}" class="${cat===selectedCategory?"active":""}">${expenseCategoryIcon(cat)} ${escapeHtml(cat)}</button>`).join("")}</div>
+                    <div class="expense-wizard-question small">Come va divisa?</div>
+                    <div class="expense-choice-grid three">${splitChoices.map(x=>`<button type="button" data-wiz-split="${x.value}"><span>${x.icon}</span><strong>${x.title}</strong><small>${x.note}</small></button>`).join("")}</div>
+                    <p class="expense-wizard-hint">Le spese personali restano nel budget del viaggio, ma non creano un debito se le paga la stessa persona a cui appartengono.</p>
+                  </div>
+
+                  <div class="expense-wizard-step" data-step="3">
+                    <div class="expense-wizard-question">Ultimi dettagli</div>
+                    <label class="wizard-field">Descrizione <small>facoltativa</small><input id="wiz-description" type="text" maxlength="80" placeholder="Es. cena, souvenir, parcheggio…"></label>
+                    <div class="wizard-field-row">
+                      <label class="wizard-field">Tappa<select id="wiz-city"></select></label>
+                      <label class="wizard-field">Data<input id="wiz-date" type="date"></label>
+                    </div>
+                    <div class="expense-wizard-summary" id="wiz-summary"></div>
+                  </div>
+
+                  <div class="expense-wizard-actions">
+                    <button type="button" class="secondary-action" id="wiz-back" hidden>Indietro</button>
+                    <button type="button" class="primary-action" id="wiz-next">Continua</button>
+                  </div>
+                </section>`;
+            }
+
+            function openExpenseWizard(root,form){
+              if(root.querySelector(".expense-wizard")) return;
+              const wrap=document.createElement("div");
+              wrap.className="expense-wizard";
+              wrap.innerHTML=wizardTemplate(form);
+              document.body.appendChild(wrap);
+              document.body.classList.add("expense-wizard-open");
+
+              const amount=wrap.querySelector("#wiz-amount");
+              const desc=wrap.querySelector("#wiz-description");
+              const city=wrap.querySelector("#wiz-city");
+              const date=wrap.querySelector("#wiz-date");
+              const sourceCity=form.querySelector("#expense-city");
+              city.innerHTML=sourceCity?.innerHTML || '<option value="Generale">Generale</option>';
+
+              const sourceAmount=form.querySelector("#expense-amount");
+              const sourcePayer=form.querySelector("#expense-paid-by");
+              const sourceSplit=form.querySelector("#expense-split-type");
+              const sourceCategory=form.querySelector("#expense-category");
+              const sourceDesc=form.querySelector("#expense-description");
+              const sourceDate=form.querySelector("#expense-date");
+
+              const initialDate=sourceDate?.value || todayISO();
+              amount.value=sourceAmount?.value || "";
+              desc.value=sourceDesc?.value || "";
+              date.value=initialDate;
+              city.value=sourceCity?.value || autoCityForDate(initialDate);
+              if(!editingExpenseId && city.value==="Generale"){
+                const guessed=autoCityForDate(initialDate);
+                if(Array.from(city.options).some(o=>o.value===guessed)) city.value=guessed;
+              }
+
+              let step=1;
+              let payer=sourcePayer?.value || "";
+              let split=sourceSplit?.value || "equal";
+              let category=sourceCategory?.value || "Cibo";
+
+              function paintChoices(){
+                wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.classList.toggle("active",b.dataset.wizPayer===payer));
+                wrap.querySelectorAll("[data-wiz-split]").forEach(b=>b.classList.toggle("active",b.dataset.wizSplit===split));
+                wrap.querySelectorAll("[data-wiz-category]").forEach(b=>b.classList.toggle("active",b.dataset.wizCategory===category));
+              }
+              function close(){ wrap.remove(); document.body.classList.remove("expense-wizard-open"); }
+              function showStep(next){
+                step=next;
+                wrap.querySelectorAll(".expense-wizard-step").forEach(s=>s.classList.toggle("active",Number(s.dataset.step)===step));
+                wrap.querySelectorAll(".expense-wizard-progress span").forEach((s,i)=>s.classList.toggle("active",i<step));
+                wrap.querySelector("#wiz-back").hidden=step===1;
+                wrap.querySelector("#wiz-next").textContent=step===3 ? (editingExpenseId?"Salva modifica":"Salva spesa") : "Continua";
+                if(step===3){
+                  const owner=split==="lorenzo_only"?"Solo Lorenzo":split==="fortuna_only"?"Solo Fortuna":"50/50";
+                  wrap.querySelector("#wiz-summary").innerHTML=`<span>${expenseCategoryIcon(category)} ${escapeHtml(category)}</span><strong>${money(Number(amount.value||0),"USD")}</strong><small>Pagato da ${escapeHtml(payer)} · ${owner}</small>`;
+                }
+              }
+              function validStep(){
+                if(step===1){
+                  const value=Number(amount.value);
+                  if(!Number.isFinite(value)||value<=0){ amount.focus(); return false; }
+                  if(!LF_PEOPLE.includes(payer)){ alert("Scegli chi ha pagato."); return false; }
+                }
+                return true;
+              }
+
+              wrap.querySelectorAll("[data-wizard-close]").forEach(b=>b.addEventListener("click",()=>{
+                if(editingExpenseId){ editingExpenseId=null; renderBudgetScreen(); }
+                close();
+              }));
+              wrap.querySelectorAll("[data-wiz-payer]").forEach(b=>b.addEventListener("click",()=>{ payer=b.dataset.wizPayer; paintChoices(); }));
+              wrap.querySelectorAll("[data-wiz-split]").forEach(b=>b.addEventListener("click",()=>{ split=b.dataset.wizSplit; paintChoices(); }));
+              wrap.querySelectorAll("[data-wiz-category]").forEach(b=>b.addEventListener("click",()=>{ category=b.dataset.wizCategory; paintChoices(); }));
+              wrap.querySelector("#wiz-back").addEventListener("click",()=>showStep(Math.max(1,step-1)));
+              wrap.querySelector("#wiz-next").addEventListener("click",()=>{
+                if(!validStep()) return;
+                if(step<3){ showStep(step+1); return; }
+
+                sourceAmount.value=amount.value;
+                sourcePayer.value=payer;
+                sourceSplit.value=split;
+                sourceCategory.value=category;
+                sourceDesc.value=desc.value;
+                sourceCity.value=city.value;
+                sourceDate.value=date.value || todayISO();
+                const submit=form.querySelector("#expense-save");
+                submit?.click();
+                close();
+              });
+              date.addEventListener("change",()=>{
+                if(!editingExpenseId){
+                  const guessed=autoCityForDate(date.value);
+                  if(Array.from(city.options).some(o=>o.value===guessed)) city.value=guessed;
+                }
+              });
+
+              paintChoices();
+              showStep(1);
+              requestAnimationFrame(()=>amount.focus());
+            }
+
+            function enhanceBudgetLayout(){
+              const root=document.querySelector("#screen-budget");
+              if(!root || !root.querySelector(".budget-hero") || root.dataset.budgetHubReady==="1") return;
+              root.dataset.budgetHubReady="1";
+              const hero=root.querySelector(".budget-hero");
+              const back=root.querySelector("#back-budget");
+
+              const nav=document.createElement("div");
+              nav.className="budget-hub-nav";
+              nav.setAttribute("role","tablist");
+              nav.innerHTML=`<button type="button" class="budget-hub-tab" data-budget-hub="budget" role="tab"><span class="budget-hub-tab-icon">💰</span><strong>Budget</strong><small>Spese e previsioni</small></button><button type="button" class="budget-hub-tab" data-budget-hub="split" role="tab"><span class="budget-hub-tab-icon">⇄</span><strong>Conti L&amp;F</strong><small>Chi deve quanto</small></button><button type="button" class="budget-hub-tab" data-budget-hub="tools" role="tab"><span class="budget-hub-tab-icon">€$</span><strong>Strumenti</strong><small>Cambio e mancia</small></button>`;
+              hero.insertAdjacentElement("afterend",nav);
+
+              const budget=document.createElement("section");
+              budget.className="budget-panel";
+              budget.dataset.budgetPanel="budget";
+              budget.appendChild(makeIntro("Budget del viaggio","Riepilogo generale, spese registrate e costi previsti."));
+              appendIf(budget,root.querySelector(".budget-summary-grid"));
+              appendIf(budget,root.querySelector(".budget-progress"));
+              appendIf(budget,root.querySelector("#budget-edit-total"));
+
+              const form=root.querySelector("#expense-form");
+              const oldTitle=form?.previousElementSibling?.classList.contains("section-title") ? form.previousElementSibling : null;
+              oldTitle?.remove();
+              if(form){ form.classList.add("expense-form-source"); budget.appendChild(form); }
+
+              const quick=document.createElement("button");
+              quick.type="button";
+              quick.className="budget-add-expense-btn";
+              quick.innerHTML=`<span class="budget-add-expense-plus">+</span><span><strong>${editingExpenseId?"Modifica spesa":"Aggiungi spesa"}</strong><small>Importo, pagante e categoria in pochi tocchi</small></span><b>›</b>`;
+              budget.appendChild(quick);
+              quick.addEventListener("click",()=>openExpenseWizard(root,form));
+
+              const list=root.querySelector(".expense-list");
+              const movementsTitle=list?.previousElementSibling?.classList.contains("section-title") ? list.previousElementSibling : null;
+              appendIf(budget,movementsTitle);
+              appendIf(budget,list);
+
+              const forecastTitle=document.createElement("div");
+              forecastTitle.className="section-title budget-forecast-title";
+              forecastTitle.textContent="Costi previsti e ripartizione";
+              budget.appendChild(forecastTitle);
+              root.querySelectorAll("details.budget-city-accordion").forEach(d=>budget.appendChild(d));
+              appendIf(budget,root.querySelector(".budget-offline-note"));
+
+              const splitPanel=document.createElement("section");
+              splitPanel.className="budget-panel";
+              splitPanel.dataset.budgetPanel="split";
+              splitPanel.appendChild(makeIntro("Conti tra Lorenzo e Fortuna","Spese condivise, spese personali e pareggi vengono compensati automaticamente."));
+              appendIf(splitPanel,root.querySelector(".lf-split-card"));
+
+              const tools=document.createElement("section");
+              tools.className="budget-panel";
+              tools.dataset.budgetPanel="tools";
+              tools.appendChild(makeIntro("Strumenti rapidi","Convertitore valuta e calcolo della mancia, separati dalla contabilità del viaggio."));
+              appendIf(tools,root.querySelector(".currency-converter"));
+              appendIf(tools,root.querySelector(".tip-calculator"));
+
+              root.appendChild(budget); root.appendChild(splitPanel); root.appendChild(tools);
+              if(back) root.insertBefore(back,root.firstChild);
+              nav.querySelectorAll("[data-budget-hub]").forEach(btn=>btn.addEventListener("click",()=>setPanel(root,btn.dataset.budgetHub,true)));
+              setPanel(root,activeBudgetPanel,false);
+
+              if(editingExpenseId || wizardOpenAfterRender){
+                wizardOpenAfterRender=false;
+                requestAnimationFrame(()=>openExpenseWizard(root,form));
+              }
+            }
+
+            renderBudgetScreen=function(){
+              const root=document.querySelector("#screen-budget");
+              if(root) delete root.dataset.budgetHubReady;
+              originalRenderBudgetScreen();
+              enhanceBudgetLayout();
+            };
+
+            const refreshIfOpen=()=>{ if(document.querySelector("#screen-budget.active")) renderBudgetScreen(); };
+            if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>requestAnimationFrame(refreshIfOpen),{once:true});
+            else requestAnimationFrame(refreshIfOpen);
+          })();
+          ''',encoding='utf-8')
+
+          # Wizard styling.
+          css=Path('budget-layout.css').read_text(encoding='utf-8')
+          css += r'''
+
+          /* V35 · fast expense wizard */
+          .expense-form-source{display:none!important;}
+          .budget-add-expense-btn{
+            width:100%;margin:18px 0 16px;border:0;border-radius:20px;padding:15px 16px;
+            background:var(--ink);color:#fff;display:grid;grid-template-columns:42px 1fr auto;
+            align-items:center;gap:11px;text-align:left;box-shadow:0 10px 26px rgba(19,42,69,.16);
+            -webkit-tap-highlight-color:transparent;
+          }
+          .budget-add-expense-btn:active{transform:scale(.985)}
+          .budget-add-expense-plus{width:38px;height:38px;border-radius:13px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:26px;line-height:1}
+          .budget-add-expense-btn strong{display:block;font-size:16px;margin-bottom:2px}.budget-add-expense-btn small{display:block;color:rgba(255,255,255,.72);font-size:11px;line-height:1.3}.budget-add-expense-btn b{font-size:25px;font-weight:500}
+          .expense-paid-by,.expense-split-type{display:block;font-style:normal;font-size:10px;font-weight:800;margin-top:3px;color:var(--muted)}
+          .expense-split-type{color:var(--th-accent,var(--brass))}
+
+          body.expense-wizard-open{overflow:hidden}
+          .expense-wizard{position:fixed;inset:0;z-index:5000;display:flex;align-items:flex-end;justify-content:center}
+          .expense-wizard-backdrop{position:absolute;inset:0;background:rgba(10,22,34,.48);backdrop-filter:blur(3px)}
+          .expense-wizard-sheet{position:relative;width:min(100%,480px);max-height:92dvh;overflow:auto;background:var(--paper,#f6f1e8);border-radius:26px 26px 0 0;padding:8px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -20px 60px rgba(0,0,0,.24);animation:expense-sheet-in 240ms cubic-bezier(.22,.78,.24,1) both}
+          @keyframes expense-sheet-in{from{transform:translateY(24px);opacity:.5}to{transform:none;opacity:1}}
+          .expense-wizard-grab{width:42px;height:5px;border-radius:99px;background:rgba(27,39,50,.18);margin:1px auto 9px}
+          .expense-wizard-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.expense-wizard-head small{display:block;font-size:9px;letter-spacing:.14em;color:var(--muted);font-weight:900}.expense-wizard-head strong{display:block;font-size:21px;margin-top:2px}.expense-wizard-head button{border:0;background:rgba(20,35,50,.07);width:36px;height:36px;border-radius:50%;font-size:24px;color:var(--ink)}
+          .expense-wizard-progress{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:10px 0 20px}.expense-wizard-progress span{height:4px;border-radius:99px;background:rgba(25,40,55,.10)}.expense-wizard-progress span.active{background:var(--th-accent,var(--brass))}
+          .expense-wizard-step{display:none}.expense-wizard-step.active{display:block;animation:lf-budget-panel-in 190ms ease both}
+          .expense-wizard-question{font-size:18px;font-weight:900;margin:3px 0 13px}.expense-wizard-question.small{font-size:14px;margin-top:22px;margin-bottom:9px}
+          .expense-wizard-amount{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 16px;box-shadow:0 8px 22px rgba(19,42,69,.06)}.expense-wizard-amount span{font-size:27px;font-weight:900}.expense-wizard-amount input{min-width:0;width:100%;border:0!important;background:transparent!important;font-size:36px!important;font-weight:900!important;padding:7px 0!important;outline:none;box-shadow:none!important;color:var(--ink)}
+          .expense-choice-grid{display:grid;gap:9px}.expense-choice-grid.two{grid-template-columns:repeat(2,1fr)}.expense-choice-grid.three{grid-template-columns:repeat(3,1fr)}.expense-choice-grid button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:17px;min-height:82px;padding:10px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.expense-choice-grid button>span{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:rgba(20,35,50,.07);font-weight:900}.expense-choice-grid button strong{font-size:13px}.expense-choice-grid button small{font-size:9px;color:var(--muted);font-weight:700}.expense-choice-grid button.active{border-color:var(--th-accent,var(--brass));background:color-mix(in srgb,var(--th-accent,var(--brass)) 9%,#fff);box-shadow:0 7px 18px rgba(19,42,69,.08)}
+          .expense-category-chips{display:flex;flex-wrap:wrap;gap:7px}.expense-category-chips button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:9px 11px;font-size:12px;font-weight:800}.expense-category-chips button.active{border-color:var(--th-accent,var(--brass));background:color-mix(in srgb,var(--th-accent,var(--brass)) 10%,#fff)}
+          .expense-wizard-hint{font-size:10px;line-height:1.4;color:var(--muted);margin:10px 2px 0}
+          .wizard-field{display:block;font-size:11px;font-weight:900;color:var(--muted);margin:11px 0}.wizard-field small{font-weight:600}.wizard-field input,.wizard-field select{display:block;width:100%;margin-top:5px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);padding:12px;font-size:14px;box-sizing:border-box}.wizard-field-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+          .expense-wizard-summary{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 14px;display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center}.expense-wizard-summary span{font-size:12px;font-weight:800}.expense-wizard-summary strong{font-size:18px}.expense-wizard-summary small{grid-column:1/-1;color:var(--muted);font-size:10px}
+          .expense-wizard-actions{position:sticky;bottom:calc(-18px - env(safe-area-inset-bottom));margin:20px -18px calc(-18px - env(safe-area-inset-bottom));padding:11px 18px calc(18px + env(safe-area-inset-bottom));display:flex;gap:9px;background:linear-gradient(to bottom,rgba(246,241,232,.88),var(--paper,#f6f1e8) 24%);backdrop-filter:blur(8px)}.expense-wizard-actions .primary-action{flex:1}.expense-wizard-actions .secondary-action{min-width:90px}
+          @media(max-width:360px){.expense-choice-grid.three{grid-template-columns:1fr}.expense-choice-grid.three button{min-height:58px;flex-direction:row;justify-content:flex-start;padding:8px 12px}.expense-choice-grid.three button small{margin-left:auto}.wizard-field-row{grid-template-columns:1fr}}
+          @media(prefers-reduced-motion:reduce){.expense-wizard-sheet,.expense-wizard-step{animation:none!important}}
+          '''
+          Path('budget-layout.css').write_text(css,encoding='utf-8')
+
+          # Cache-bust and PWA cache.
+          p=Path('index.html'); text=p.read_text(encoding='utf-8')
+          replacements={
+            'style.css?v=82':'style.css?v=82',
+            'budget-layout.css?v=1':'budget-layout.css?v=2',
+            'firebase-budget.js?v=33':'firebase-budget.js?v=34',
+            'app.js?v=110':'app.js?v=111',
+            'budget-layout.js?v=2':'budget-layout.js?v=3'
+          }
+          for a,b in replacements.items():
+            if a not in text: raise SystemExit(f'index marker missing: {a}')
+            text=text.replace(a,b,1)
+          p.write_text(text,encoding='utf-8')
+
+          p=Path('sw.js'); text=p.read_text(encoding='utf-8')
+          if 'viaggio-nozze-v129' not in text: raise SystemExit('cache marker missing')
+          p.write_text(text.replace('viaggio-nozze-v129','viaggio-nozze-v130',1),encoding='utf-8')
+          PY
+
+          node --check app.js
+          node --check budget-layout.js
+          node --check firebase-budget.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.35' app.js
+          grep -q 'splitType.*expense.splitType' firebase-budget.js
+          grep -q 'Solo Lorenzo' budget-layout.js
+          grep -q 'budget-layout.js?v=3' index.html
+          grep -q 'viaggio-nozze-v130' sw.js
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js firebase-budget.js budget-layout.js budget-layout.css index.html sw.js
+          git commit -m "Aggiunge wizard rapido e spese personali 2.4.35 [skip ci]"
+          git push
