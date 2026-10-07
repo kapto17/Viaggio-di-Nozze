@@ -122,11 +122,8 @@
   }
 })();
 
-/* V31 · shared city transition + bottom-nav polish */
+/* V32 · bottom-nav polish only; shared city transition removed */
 (() => {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let sharedBusy = false;
-
   function syncTabPill(){
     const nav = document.querySelector("nav.tabbar");
     if(!nav) return;
@@ -151,45 +148,6 @@
     window.addEventListener("resize",syncTabPill,{passive:true});
   }
 
-  document.addEventListener("click", (event) => {
-    const card = event.target.closest?.(".city-card.photo-city-card");
-    if(!card || !card.dataset.leg) return;
-    if(event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    if(reduced.matches || typeof document.startViewTransition !== "function" || typeof window.openCity !== "function") return;
-
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if(sharedBusy) return;
-    sharedBusy = true;
-
-    let hero = null;
-    const cleanup = () => {
-      card.style.removeProperty("view-transition-name");
-      hero?.style.removeProperty("view-transition-name");
-      document.documentElement.classList.remove("city-shared-transition");
-      sharedBusy = false;
-      requestAnimationFrame(syncTabPill);
-    };
-
-    card.style.viewTransitionName = "city-card-shared";
-    document.documentElement.classList.add("city-shared-transition");
-
-    try{
-      const transition = document.startViewTransition(() => {
-        window.openCity(card.dataset.leg);
-        hero = document.querySelector("#screen-city-detail.active .city-header.photo-city-header");
-        if(hero) hero.style.viewTransitionName = "city-card-shared";
-      });
-      transition.finished.catch(() => {}).finally(cleanup);
-    }catch(_){
-      cleanup();
-      window.openCity(card.dataset.leg);
-    }
-  }, true);
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded",initTabPill,{once:true});
-  }else{
-    initTabPill();
-  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded",initTabPill,{once:true});
+  else initTabPill();
 })();

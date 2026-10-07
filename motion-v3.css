@@ -1,35 +1,6 @@
 /* V31 · third motion polish · rollback baseline ad1484ba */
 
-/* Shared card -> city hero transition (native View Transitions, where supported). */
-.city-shared-transition #screen-city-detail.screen.active{
-  animation:none!important;
-}
-@supports (view-transition-name: city-card-shared){
-  ::view-transition-group(city-card-shared){
-    animation-duration:520ms;
-    animation-timing-function:cubic-bezier(.22,.78,.24,1);
-    z-index:1000;
-  }
-  ::view-transition-old(city-card-shared),
-  ::view-transition-new(city-card-shared){
-    border-radius:24px;
-    overflow:hidden;
-  }
-  ::view-transition-old(city-card-shared){
-    animation:lf-city-vt-old 360ms ease-out both;
-  }
-  ::view-transition-new(city-card-shared){
-    animation:lf-city-vt-new 520ms cubic-bezier(.22,.78,.24,1) both;
-  }
-}
-@keyframes lf-city-vt-old{
-  from{opacity:1;filter:brightness(1);}
-  to{opacity:.18;filter:brightness(.96);}
-}
-@keyframes lf-city-vt-new{
-  from{opacity:.22;filter:brightness(1.035);}
-  to{opacity:1;filter:brightness(1);}
-}
+/* Shared card -> hero transition removed in V32: caused a visible second repaint on mobile. */
 
 /* Internal photo zoom on press: the card stays put, only the image breathes. */
 .city-card.photo-city-card::before{
@@ -85,9 +56,6 @@ nav.tabbar.motion-nav button.active .tab-dollar{
 }
 
 @media (prefers-reduced-motion:reduce){
-  ::view-transition-group(city-card-shared),
-  ::view-transition-old(city-card-shared),
-  ::view-transition-new(city-card-shared){animation:none!important;}
   .city-card.photo-city-card::before,
   .city-card.photo-city-card .city-card-arrow,
   nav.tabbar.motion-nav::before,
