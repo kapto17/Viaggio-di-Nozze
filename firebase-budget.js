@@ -34,14 +34,14 @@ const firebaseConfig = {
 const DEFAULT_SETTINGS = {
   totalBudget: 2500,
   currency: "USD",
+  bayahibeBudgetDOP: 0,
   cityBudgets: {
     "San Francisco": 450,
     "Los Angeles": 650,
     "Las Vegas 27-28": 170,
     "Page / Grand Canyon": 300,
     "Las Vegas 29-30": 180,
-    "Chicago": 550,
-    "Bayahibe": 200
+    "Chicago": 550
   }
 };
 
@@ -144,11 +144,16 @@ async function saveSettings(next){
   }, { merge:true });
 }
 
+function validCurrency(value){
+  return value === "DOP" ? "DOP" : "USD";
+}
+
 async function addExpense(expense){
   if (!currentUser) throw new Error("Area L&F non sbloccata");
   await addDoc(expensesRef, {
     entryType: "expense",
     amount: Number(expense.amount),
+    currency: validCurrency(expense.currency),
     city: expense.city || "Generale",
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
@@ -165,6 +170,7 @@ async function editExpense(id, expense){
   await updateDoc(doc(db, "budget", "main", "expenses", id), {
     entryType: "expense",
     amount: Number(expense.amount),
+    currency: validCurrency(expense.currency),
     city: expense.city || "Generale",
     category: expense.category || "Altro",
     description: String(expense.description || "").trim(),
@@ -184,6 +190,7 @@ async function addSettlement(settlement){
   await addDoc(expensesRef, {
     entryType: "settlement",
     amount,
+    currency: validCurrency(settlement.currency),
     from,
     to,
     note: String(settlement.note || "Pareggio manuale").trim(),
