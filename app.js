@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.41";
+    version.textContent="Versione app 2.4.42";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1203,8 +1203,8 @@ function openCity(legId, pushHistory=true, restoreState=null){
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
     `).join("") : ""}
     <div class="ticket-import-box">
-      <div class="ticket-import-title">Biglietti offline</div>
-      <div class="ticket-import-note">I file restano solo su questo dispositivo e non vengono caricati su GitHub. Scegli prima a quale prenotazione appartengono.</div>
+      <div class="ticket-import-title">Biglietti L&F</div>
+      <div class="ticket-import-note">Accedi all'area L&F per caricare e vedere i file condivisi. Scegli prima a quale prenotazione appartengono.</div>
       <select id="ticket-target-${leg.id}" class="ticket-import-btn" style="width:100%;margin:10px 0;text-align:left">
         <option value="">Associa a…</option>
         ${ticketTargetsForLeg(leg).map(t=>`<option value="${escapeHtml(t.key)}" data-label="${escapeHtml(t.label)}">${escapeHtml(t.label)}</option>`).join("")}
