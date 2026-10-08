@@ -348,6 +348,16 @@ async function removeTicket(id){
   await deleteDoc(doc(db, "budget", "main", "tickets", id));
 }
 
+async function renameTicket(id, label){
+  if (!currentUser) throw new Error("Area L&F non sbloccata");
+  const clean = String(label || "").trim().slice(0,80);
+  if (!clean) throw new Error("Nome biglietto non valido");
+  await updateDoc(doc(db, "budget", "main", "tickets", id), {
+    label: clean,
+    updatedAt: serverTimestamp()
+  });
+}
+
 window.LFBudget = {
   login,
   logout,
@@ -360,6 +370,7 @@ window.LFBudget = {
   uploadTicket,
   downloadTicket,
   removeTicket,
+  renameTicket,
   isAuthenticated: () => !!currentUser,
   getUser: () => currentUser ? { uid: currentUser.uid, email: currentUser.email } : null,
   getSnapshot: () => ({ settings:lastSettings, expenses:lastExpenses }),

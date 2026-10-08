@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.45";
+    version.textContent="Versione app 2.4.46";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -946,7 +946,7 @@ function ticketTargetsForLeg(leg){
     seen.add(key); out.push({key,label});
   };
   (leg.tickets||[]).forEach(x=>add(x.name));
-  (leg.activities||[]).forEach(x=>add(x.name));
+  (leg.activities||[]).filter(x=>x.ticketUpload!==false).forEach(x=>add(x.name));
   (leg.transport||[]).forEach(x=>add(x.title));
   return out;
 }

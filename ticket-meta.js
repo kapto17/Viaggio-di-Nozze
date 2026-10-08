@@ -1,4 +1,4 @@
-/* V45 · Wizard caricamento biglietti + sync in background */
+/* V46 · Wizard + rinomina biglietti + sync in background */
 (() => {
   const pending = new Map();
   const OWNER_LABELS = {
@@ -56,6 +56,70 @@
       };
       req.onerror = () => reject(req.error);
     });
+  }
+
+  async function updateLocalTicketLabel(localId, label){
+    const db = await openTicketDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("tickets", "readwrite");
+      const store = tx.objectStore("tickets");
+      const req = store.get(Number(localId));
+      req.onsuccess = () => {
+        const rec = req.result;
+        if(!rec){ resolve(); return; }
+        rec.label = cleanName(label) || rec.fileName;
+        const put = store.put(rec);
+        put.onsuccess = () => resolve();
+        put.onerror = () => reject(put.error);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function openRenameDialog(rec){
+    closeMetaDialog();
+    const backdrop = document.createElement("div");
+    backdrop.className = "ticket-meta-backdrop";
+    backdrop.innerHTML = `
+      <div class="ticket-meta-sheet" role="dialog" aria-modal="true" aria-label="Modifica nome biglietto">
+        <div class="ticket-meta-handle"></div>
+        <div class="ticket-meta-head">
+          <div><small>🎟️ BIGLIETTO</small><h3>Modifica nome</h3></div>
+          <button type="button" class="ticket-meta-close" aria-label="Chiudi">×</button>
+        </div>
+        <label class="ticket-meta-field ticket-wizard-name-field">
+          <span>Nome del documento</span>
+          <input class="ticket-rename-input" type="text" maxlength="80" autocomplete="off" value="${escapeHtml(rec.label || rec.fileName || "")}">
+        </label>
+        <button type="button" class="ticket-meta-confirm ticket-rename-save">Salva nuovo nome</button>
+      </div>`;
+    document.body.appendChild(backdrop);
+    const input = backdrop.querySelector(".ticket-rename-input");
+    const save = backdrop.querySelector(".ticket-rename-save");
+    backdrop.querySelector(".ticket-meta-close").addEventListener("click", closeMetaDialog);
+    backdrop.addEventListener("click", e => { if(e.target === backdrop) closeMetaDialog(); });
+    save.addEventListener("click", async () => {
+      const next = cleanName(input.value);
+      if(!next){ input.classList.add("ticket-meta-error"); input.focus(); return; }
+      save.disabled = true;
+      save.textContent = "Salvataggio…";
+      try{
+        if(rec.cloudId){
+          if(!window.LFBudget?.renameTicket) throw new Error("Rinomina cloud non disponibile");
+          await window.LFBudget.renameTicket(rec.cloudId, next);
+        }
+        await updateLocalTicketLabel(rec.id, next);
+        closeMetaDialog();
+        await renderLocalTickets(rec.legId);
+        if(typeof decorateTicketButtons === "function") await decorateTicketButtons(document);
+      }catch(err){
+        console.error("Rinomina biglietto:", err);
+        save.disabled = false;
+        save.textContent = "Salva nuovo nome";
+        alert("Non sono riuscito a rinominare il biglietto. Controlla la connessione e riprova.");
+      }
+    });
+    requestAnimationFrame(() => { input.focus(); input.select(); });
   }
 
   function cloudErrorMessage(err){
@@ -236,6 +300,16 @@
         sync.textContent = rec.cloudId ? "☁ Condiviso" : "↻ Da sincronizzare";
         (card.querySelector(".ticket-owner-badge") || name).insertAdjacentElement("afterend", sync);
       }
+      const actions = card.querySelector(".local-ticket-actions");
+      if(actions && !actions.querySelector("[data-ticket-rename]")){
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "local-ticket-rename";
+        edit.dataset.ticketRename = rec.id;
+        edit.textContent = "Modifica nome";
+        const del = actions.querySelector("[data-ticket-delete]");
+        if(del) actions.insertBefore(edit, del); else actions.appendChild(edit);
+      }
     });
   }
 
@@ -290,6 +364,15 @@
       dlg.showModal();
     };
   }
+
+  document.addEventListener("click", async e => {
+    const edit = e.target.closest?.("[data-ticket-rename]");
+    if(!edit) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    const rec = await getLocalTicket(edit.dataset.ticketRename);
+    if(rec) openRenameDialog(rec);
+  }, true);
 
   document.addEventListener("click", e => {
     const button = e.target.closest?.('button[id^="ticket-import-"]');

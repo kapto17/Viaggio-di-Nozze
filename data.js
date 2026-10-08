@@ -55,7 +55,7 @@ const TRIP = {
         { date: "2026-10-23", time: "", type: "car", title: "Ritiro SUV a noleggio", subtitle: "Ritiro a LAX · noleggio dal 23/10 al 30/10 · riconsegna a LAS", mapsQuery: "Los Angeles International Airport car rental" }
       ],
       activities: [
-        { priority: "must", lf: true, name: "Los Angeles Lakers vs LA Clippers", date: "2026-10-23", time: "19:00", status: "Prenotato", icon: "🏀", note: "Partita NBA alla Crypto.com Arena · biglietti acquistati", mapsQuery: "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015" },
+        { priority: "must", lf: true, ticketUpload: false, name: "Los Angeles Lakers vs LA Clippers", date: "2026-10-23", time: "19:00", status: "Prenotato", icon: "🏀", note: "Partita NBA alla Crypto.com Arena · biglietti acquistati", mapsQuery: "Crypto.com Arena 1111 S Figueroa St Los Angeles CA 90015" },
         { priority: "must", lf: true, name: "Universal Studios Hollywood", date: "2026-10-26", time: "Giornata", status: "Prenotato", icon: "🎬", note: "Giornata agli Universal Studios Hollywood · biglietti già prenotati", mapsQuery: "Universal Studios Hollywood, Universal City, CA" }
       ],
       places: [
@@ -86,9 +86,7 @@ const TRIP = {
         { name: "Musso & Frank Grill", image: "./assets/restaurants/musso-frank.webp", meal: "serious", price: "$$$$", type: "Old Hollywood · steakhouse", typeIcon: "🥩", note: "Istituzione di Hollywood dal fascino storico: da scegliere se volete una vera cena Old Hollywood.", mapsQuery: "Musso & Frank Grill 6667 Hollywood Blvd Los Angeles" },
         { name: "République", image: "https://i.pinimg.com/736x/e7/e6/8d/e7e68d15d9d6cf32b82a108800b18e7c.jpg", meal: "serious", price: "$$", lf: true, type: "Francese · bakery · brunch", typeIcon: "🥐", note: "Segnato da Fortuna · storico edificio su La Brea, molto apprezzato per bakery, brunch e cucina francese contemporanea.", mapsQuery: "Republique 624 S La Brea Ave Los Angeles CA 90036" },
         { name: "Du-par's Restaurant & Bakery", image: "https://dupars.net/Store/wp-content/uploads/2015/11/DU-PARS.jpg", meal: "quick", price: "$", lf: true, type: "Diner · colazione · pancake", typeIcon: "🥞", note: "Segnato da Fortuna · storico diner dell'Original Farmers Market, famoso per i suoi buttermilk hot cakes. Da provare per i pancake.", description: "Du-par's è un classico di Los Angeles aperto all'Original Farmers Market dal 1938. Il locale è celebre soprattutto per i buttermilk hot cakes, serviti in short stack o full stack con burro fuso e sciroppo d'acero o boysenberry. Una tappa perfetta se volete fare una vera colazione americana o una pausa dolce durante la giornata.", mapsQuery: "Du-par's Restaurant & Bakery 6333 W 3rd St Los Angeles CA 90036" }
-      ], days: [], tickets: [
-        { name: "Lakers vs LA Clippers", note: "23 ottobre 2026 · 19:00 · Crypto.com Arena · biglietti acquistati. Documento/QR da aggiungere quando disponibile.", status: "Prenotato" }
-      ]
+      ], days: [], tickets: []
     },
 
     {
