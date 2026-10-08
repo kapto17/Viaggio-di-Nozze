@@ -1,4 +1,4 @@
-/* V41 · Nome e proprietario biglietti */
+/* V42 · Nome, proprietario e stato sincronizzazione biglietti */
 .ticket-meta-backdrop{
   position:fixed;inset:0;z-index:9999;
   display:flex;align-items:flex-end;justify-content:center;
@@ -31,10 +31,12 @@
 .ticket-owner-grid button.active{border-color:var(--ink,#16233f);background:var(--ink,#16233f);color:#fff}
 .ticket-owner-grid button.active b{background:rgba(255,255,255,.15);color:#fff}
 .ticket-meta-confirm{width:100%;margin-top:18px;border:0;border-radius:14px;background:var(--ink,#16233f);color:#fff;font:inherit;font-weight:850;font-size:15px;padding:14px}
-.ticket-owner-badge{display:inline-flex;margin:5px 0 2px;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:850;line-height:1.2;background:var(--paper-alt,#f1eadb);color:var(--ink-soft,#2a3b5c)}
+.ticket-owner-badge,.ticket-sync-badge{display:inline-flex;margin:5px 5px 2px 0;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:850;line-height:1.2;background:var(--paper-alt,#f1eadb);color:var(--ink-soft,#2a3b5c)}
 .ticket-owner-badge.owner-lorenzo{background:#e9eef8}
 .ticket-owner-badge.owner-fortuna{background:#f8e9ee}
 .ticket-owner-badge.owner-both{background:#edf2e6}
+.ticket-sync-badge.is-shared{background:#e8f3ea;color:#275c34}
+.ticket-sync-badge.is-pending{background:#fff1d6;color:#795713}
 .ticket-picker-meta{border:0;border-radius:20px;padding:0;max-width:min(92vw,430px);width:100%;box-shadow:0 18px 60px #0006;background:var(--paper,#fbf8f1)}
 .ticket-picker-meta::backdrop{background:rgba(12,22,39,.45)}
 .ticket-picker-meta-inner{padding:20px}
