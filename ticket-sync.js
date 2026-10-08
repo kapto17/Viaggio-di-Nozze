@@ -219,7 +219,7 @@
       if(!authenticated) return;
       const payload = window.LFBudget?.getTicketsSnapshot?.();
       if(payload) schedule(payload);
-    }, 9000);
+    }, 700);
   }
 
   document.addEventListener("click", async e => {

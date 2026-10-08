@@ -19,15 +19,10 @@ import {
   updateDoc,
   deleteDoc,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  getDocs,
+  Bytes
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-import {
-  getStorage,
-  ref as storageRef,
-  uploadBytes,
-  getBlob,
-  deleteObject
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDreelMDDET9M8xw_6sQ6Rs3vMh-WA7GEI",
@@ -57,7 +52,6 @@ const auth = getAuth(app);
 const db = initializeFirestore(app, {
   localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
 });
-const storage = getStorage(app);
 
 let currentUser = null;
 let authListeners = new Set();
@@ -257,30 +251,47 @@ async function removeExpense(id){
   await deleteDoc(doc(db, "budget", "main", "expenses", id));
 }
 
-function safeStorageName(name){
-  const clean = String(name || "biglietto").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
-  return (clean || "biglietto").slice(-120);
-}
+const TICKET_CHUNK_SIZE = 600 * 1024;
+const TICKET_MAX_SIZE = 20 * 1024 * 1024;
 
 function validTicketOwner(value){
   return ["lorenzo","fortuna","both"].includes(value) ? value : "both";
 }
 
+function ticketChunksRef(id){
+  return collection(db, "budget", "main", "ticketFiles", id, "chunks");
+}
+
+async function deleteTicketChunks(id){
+  try {
+    const snap = await getDocs(ticketChunksRef(id));
+    for (const chunk of snap.docs) await deleteDoc(chunk.ref);
+  } catch(err){
+    console.warn("Pulizia chunk biglietto:", err);
+  }
+}
+
 async function uploadTicket(ticket, file){
   if (!currentUser) throw new Error("Area L&F non sbloccata");
   if (!file) throw new Error("File biglietto mancante");
+  if (!navigator.onLine) throw new Error("Offline: sincronizzazione rimandata");
+  if (file.size > TICKET_MAX_SIZE) throw new Error("Il file supera il limite di 20 MB");
+
   const ticketDoc = doc(ticketsRef);
-  const storagePath = `tickets/${ticketDoc.id}/${Date.now()}-${safeStorageName(file.name)}`;
-  const fileRef = storageRef(storage, storagePath);
+  const ticketId = ticketDoc.id;
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const chunkCount = Math.max(1, Math.ceil(bytes.length / TICKET_CHUNK_SIZE));
+
   try {
-    await uploadBytes(fileRef, file, {
-      contentType: file.type || "application/octet-stream",
-      customMetadata: {
-        ticketId: ticketDoc.id,
-        owner: validTicketOwner(ticket.owner),
-        uploadedBy: currentUser.uid
-      }
-    });
+    for(let i=0; i<chunkCount; i++){
+      const part = bytes.slice(i*TICKET_CHUNK_SIZE, Math.min(bytes.length, (i+1)*TICKET_CHUNK_SIZE));
+      const chunkId = String(i).padStart(4, "0");
+      await setDoc(doc(db, "budget", "main", "ticketFiles", ticketId, "chunks", chunkId), {
+        index:i,
+        data:Bytes.fromUint8Array(part)
+      });
+    }
+
     const payload = {
       legId: String(ticket.legId || ""),
       label: String(ticket.label || file.name).trim().slice(0,80),
@@ -290,16 +301,19 @@ async function uploadTicket(ticket, file){
       fileName: String(file.name || "biglietto"),
       mimeType: file.type || "application/octet-stream",
       size: Number(file.size || 0),
-      storagePath,
+      storageKind: "firestore-chunks",
+      chunkCount,
       uploadedBy: currentUser.uid,
       createdAtMs: Date.now(),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
+    // Il metadato viene scritto per ultimo: l'altro telefono vede il ticket
+    // solo quando tutti i blocchi del file sono già disponibili.
     await setDoc(ticketDoc, payload);
-    return { id:ticketDoc.id, ...payload };
+    return { id:ticketId, ...payload };
   } catch(err){
-    try { await deleteObject(fileRef); } catch(_){}
+    await deleteTicketChunks(ticketId);
     throw err;
   }
 }
@@ -312,21 +326,25 @@ async function downloadTicket(id){
     if (!snap.exists()) throw new Error("Biglietto non trovato");
     ticket = { id:snap.id, ...snap.data() };
   }
-  if (!ticket.storagePath) throw new Error("File del biglietto non disponibile");
-  return getBlob(storageRef(storage, ticket.storagePath));
+  if (ticket.storageKind !== "firestore-chunks") throw new Error("File condiviso non disponibile");
+
+  const snap = await getDocs(ticketChunksRef(id));
+  const chunks = snap.docs
+    .map(d => ({ id:d.id, ...d.data() }))
+    .sort((a,b) => Number(a.index ?? a.id) - Number(b.index ?? b.id));
+  if (!chunks.length || (ticket.chunkCount && chunks.length !== Number(ticket.chunkCount))){
+    throw new Error("File condiviso incompleto");
+  }
+  const parts = chunks.map(c => {
+    if (!c.data || typeof c.data.toUint8Array !== "function") throw new Error("Blocco file non valido");
+    return c.data.toUint8Array();
+  });
+  return new Blob(parts, { type: ticket.mimeType || "application/octet-stream" });
 }
 
 async function removeTicket(id){
   if (!currentUser) throw new Error("Area L&F non sbloccata");
-  let ticket = lastTickets.find(t => t.id === id);
-  if (!ticket){
-    const snap = await getDoc(doc(db, "budget", "main", "tickets", id));
-    if (snap.exists()) ticket = { id:snap.id, ...snap.data() };
-  }
-  if (ticket?.storagePath){
-    try { await deleteObject(storageRef(storage, ticket.storagePath)); }
-    catch(err){ if (err?.code !== "storage/object-not-found") throw err; }
-  }
+  await deleteTicketChunks(id);
   await deleteDoc(doc(db, "budget", "main", "tickets", id));
 }
 

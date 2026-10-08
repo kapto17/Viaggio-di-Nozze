@@ -1,4 +1,4 @@
-/* V42 · Nome, proprietario e sincronizzazione cloud biglietti */
+/* V43 · Nome/proprietario: salvataggio locale immediato, sync in background */
 (() => {
   const pending = new Map();
   const OWNER_LABELS = {
@@ -236,27 +236,14 @@
 
     const button = document.getElementById(`ticket-import-${meta.legId}`);
     if(button){ button.disabled = true; button.textContent = "Salvataggio…"; }
-    let localId = null;
     try{
-      localId = await saveTicketWithMeta(meta.legId, file, meta.name, meta.targetKey, meta.targetLabel, meta.owner, "");
-      if(button) button.textContent = "Condivisione…";
-      try{
-        const cloud = await window.LFBudget.uploadTicket({
-          legId:meta.legId,
-          label:meta.name,
-          owner:meta.owner,
-          targetKey:meta.targetKey,
-          targetLabel:meta.targetLabel
-        }, file);
-        await markTicketShared(localId, cloud.id);
-      }catch(syncErr){
-        console.error("Ticket cloud sync:", syncErr);
-        alert(cloudErrorMessage(syncErr));
-      }
+      const localId = await saveTicketWithMeta(meta.legId, file, meta.name, meta.targetKey, meta.targetLabel, meta.owner, "");
       input.value = "";
       pending.delete(input.id);
       await renderLocalTickets(meta.legId);
       if(typeof decorateTicketButtons === "function") await decorateTicketButtons(document);
+      // Il cloud parte dopo: il file deve restare subito usabile sul telefono.
+      window.dispatchEvent(new CustomEvent("lf-local-ticket-changed", { detail:{ localId, legId:meta.legId } }));
     }catch(err){
       console.error(err);
       alert("Non sono riuscito a salvare il file sul telefono.");
