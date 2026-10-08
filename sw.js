@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v139";
+const CACHE_NAME = "viaggio-nozze-v140";
 const ASSETS = [
   "./",
   "./index.html",
@@ -92,8 +92,6 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  // Per navigazioni HTML: rete prima, cache come fallback.
-  // Così gli aggiornamenti da GitHub Pages arrivano subito senza rompere l'offline.
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request)
@@ -107,8 +105,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // File applicativi principali: rete prima, cache come fallback.
-  // Evita che browser diversi rimangano bloccati su vecchie versioni di CSS/JS.
   const url = new URL(event.request.url);
   const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/ticket-sync.js", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
@@ -127,7 +123,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Immagini e altri asset: cache prima, rete come fallback.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
@@ -141,7 +136,6 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
-
 
 /* v2.3.3 — attivazione immediata degli aggiornamenti */
 self.addEventListener("message", event => {
