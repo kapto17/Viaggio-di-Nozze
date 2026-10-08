@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
-  getAuth,
-  setPersistence,
+  initializeAuth,
+  indexedDBLocalPersistence,
   browserLocalPersistence,
   signInWithEmailAndPassword,
   signOut,
@@ -48,7 +48,9 @@ const DEFAULT_SETTINGS = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: [indexedDBLocalPersistence, browserLocalPersistence]
+});
 const db = initializeFirestore(app, {
   localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
 });
@@ -149,8 +151,6 @@ function stopBudgetListeners(){
   emitBudget();
   emitTickets();
 }
-
-setPersistence(auth, browserLocalPersistence).catch(err => console.error("Auth persistence:", err));
 
 onAuthStateChanged(auth, async (user) => {
   currentUser = user || null;
