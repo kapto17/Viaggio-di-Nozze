@@ -30,6 +30,13 @@
   }
 
   function registerReveal(root = document) {
+    // On history/back the previous screen is being reconstructed. Do not hand
+    // those nodes to IntersectionObserver: on iOS its callback can arrive a
+    // frame later, producing a brief opacity:0 flash. Mark them visible now.
+    if (document.documentElement.classList.contains("history-restoring")) {
+      revealImmediately(root);
+      return;
+    }
     if (reducedMotion.matches || !("IntersectionObserver" in window)) {
       revealImmediately(root);
       return;
