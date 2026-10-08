@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.46";
+    version.textContent="Versione app 2.4.47";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1385,6 +1385,43 @@ function bindSecretPrivateAccess(){
   });
 }
 
+
+// Tema classico: la mappa sostituisce il titolo, quindi eredita lo stesso accesso segreto L&F.
+function bindClassicPrivateAccess(){
+  const hero = document.querySelector(".honeymoon-topbar");
+  if(!hero || hero.dataset.lfClassicSecretBound === "1") return;
+  hero.dataset.lfClassicSecretBound = "1";
+
+  const isClassicTarget = (event) => {
+    if(document.documentElement.dataset.theme !== "classic") return false;
+    if(event.target.closest?.(".theme-menu-btn")) return false;
+    return true;
+  };
+  const openPrivateDestination = () => {
+    if(privateAuthState.authenticated) openBudget();
+    else openPrivateAccess();
+  };
+
+  let lastMapTap = 0;
+  hero.addEventListener("pointerup", (event) => {
+    if(!isClassicTarget(event)) return;
+    const now = Date.now();
+    if(now - lastMapTap > 0 && now - lastMapTap < 450){
+      event.preventDefault();
+      lastMapTap = 0;
+      openPrivateDestination();
+      return;
+    }
+    lastMapTap = now;
+  });
+
+  hero.addEventListener("dblclick", (event) => {
+    if(!isClassicTarget(event)) return;
+    event.preventDefault();
+    openPrivateDestination();
+  });
+}
+
 function updatePrivateAreaEntry(){
   const btn = $("#private-area-entry");
   if (!btn) return;
@@ -2153,6 +2190,7 @@ function init(){
   renderCitiesList();
   startChecklistCountdown();
   bindSecretPrivateAccess();
+  bindClassicPrivateAccess();
   updatePrivateTabsVisibility();
   updateChecklistArchiveEntry();
   document.getElementById("archived-checklist-btn")?.addEventListener("click", () => {
