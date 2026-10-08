@@ -1,4 +1,4 @@
-/* V42 · Nome, proprietario e stato sincronizzazione biglietti */
+/* V45 · Wizard, proprietario e stato sincronizzazione biglietti */
 .ticket-meta-backdrop{
   position:fixed;inset:0;z-index:9999;
   display:flex;align-items:flex-end;justify-content:center;
@@ -49,3 +49,29 @@
 .ticket-picker-meta [data-pick-ticket]>b{font-size:20px;color:var(--ink-soft,#2a3b5c)}
 .ticket-picker-close{width:100%;margin-top:9px;padding:10px;border:0;background:transparent;font:inherit;color:var(--ink-soft,#2a3b5c)}
 @media (prefers-reduced-motion:no-preference){.ticket-meta-sheet{animation:ticketMetaUp .2s ease-out}.ticket-meta-backdrop{animation:ticketMetaFade .16s ease-out}}@keyframes ticketMetaUp{from{transform:translateY(28px);opacity:.5}}@keyframes ticketMetaFade{from{opacity:0}}
+
+
+/* Wizard caricamento biglietti */
+.ticket-wizard-sheet{max-height:min(88vh,760px);overflow:auto}
+.ticket-wizard-progress{display:grid;grid-template-columns:28px 1fr 28px 1fr 28px;align-items:center;margin:18px 2px 20px}
+.ticket-wizard-progress b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--paper-alt,#f1eadb);color:var(--ink-soft,#2a3b5c);font-size:11px;font-weight:900;border:1px solid rgba(22,35,63,.10)}
+.ticket-wizard-progress b.active{background:var(--ink,#16233f);color:#fff;border-color:var(--ink,#16233f)}
+.ticket-wizard-progress b.done{background:#e8f3ea;color:#275c34;border-color:#cfe4d4}
+.ticket-wizard-progress i{height:2px;background:rgba(22,35,63,.12)}
+.ticket-wizard-step[hidden]{display:none!important}
+.ticket-wizard-kicker{font-size:10px;letter-spacing:.09em;font-weight:900;color:var(--ink-soft,#2a3b5c);opacity:.72;margin-bottom:5px}
+.ticket-wizard-step h4{font-size:20px;line-height:1.15;margin:0 0 6px;color:var(--ink,#16233f)}
+.ticket-wizard-step>p{font-size:13px;line-height:1.4;color:var(--ink-soft,#2a3b5c);margin:0 0 17px}
+.ticket-wizard-target{width:100%;appearance:auto;border:1px solid rgba(22,35,63,.18);border-radius:14px;background:#fff;color:var(--ink,#16233f);font:inherit;font-size:15px;padding:13px 12px;outline:none}
+.ticket-wizard-target:focus{border-color:rgba(22,35,63,.55);box-shadow:0 0 0 3px rgba(22,35,63,.07)}
+.ticket-wizard-target.ticket-meta-error{border-color:#b43b48}
+.ticket-wizard-name-field{margin-top:17px}
+.ticket-owner-grid.ticket-owner-error{padding:3px;border-radius:17px;box-shadow:0 0 0 2px rgba(180,59,72,.55)}
+.ticket-wizard-nav{display:grid;grid-template-columns:minmax(92px,.42fr) minmax(0,1fr);gap:9px;margin-top:18px}
+.ticket-wizard-nav .ticket-meta-confirm{margin-top:0}
+.ticket-wizard-back{border:1px solid rgba(22,35,63,.15);border-radius:14px;background:transparent;color:var(--ink,#16233f);font:inherit;font-weight:800;padding:13px 12px}
+.ticket-wizard-summary{display:grid;gap:8px;margin-top:4px}
+.ticket-wizard-summary>div{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:11px 12px;border-radius:13px;background:rgba(255,255,255,.66);border:1px solid rgba(22,35,63,.08)}
+.ticket-wizard-summary span{font-size:11px;color:var(--ink-soft,#2a3b5c);font-weight:750;white-space:nowrap}
+.ticket-wizard-summary strong{font-size:12px;line-height:1.35;text-align:right;color:var(--ink,#16233f);overflow-wrap:anywhere}
+@media(max-width:390px){.ticket-wizard-sheet{padding-left:14px;padding-right:14px}.ticket-owner-grid button span{font-size:11px}.ticket-wizard-nav{grid-template-columns:90px 1fr}}

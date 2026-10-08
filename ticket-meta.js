@@ -1,4 +1,4 @@
-/* V43 · Nome/proprietario: salvataggio locale immediato, sync in background */
+/* V45 · Wizard caricamento biglietti + sync in background */
 (() => {
   const pending = new Map();
   const OWNER_LABELS = {
@@ -78,36 +78,84 @@
 
   function openMetaDialog(legId, select, input){
     closeMetaDialog();
-    const opt = select.options[select.selectedIndex];
-    const targetKey = select.value;
-    const targetLabel = opt?.dataset?.label || opt?.textContent || "";
 
     const backdrop = document.createElement("div");
     backdrop.className = "ticket-meta-backdrop";
     backdrop.innerHTML = `
-      <div class="ticket-meta-sheet" role="dialog" aria-modal="true" aria-label="Nuovo biglietto">
+      <div class="ticket-meta-sheet ticket-wizard-sheet" role="dialog" aria-modal="true" aria-label="Carica biglietto">
         <div class="ticket-meta-handle"></div>
         <div class="ticket-meta-head">
-          <div><small>🎟️ NUOVO BIGLIETTO</small><h3>Come vuoi salvarlo?</h3></div>
+          <div><small>🎟️ CARICA BIGLIETTO</small><h3>Nuovo documento</h3></div>
           <button type="button" class="ticket-meta-close" aria-label="Chiudi">×</button>
         </div>
-        <div class="ticket-meta-linked">Associato a <strong>${escapeHtml(targetLabel)}</strong></div>
-        <label class="ticket-meta-field">
-          <span>Nome del biglietto</span>
-          <input type="text" maxlength="80" autocomplete="off" placeholder="Es. Volo andata Lorenzo" value="${targetLabel === "Altro" ? "" : escapeHtml(targetLabel)}">
-        </label>
-        <div class="ticket-meta-label">Di chi è?</div>
-        <div class="ticket-owner-grid" role="group" aria-label="Proprietario biglietto">
-          <button type="button" data-ticket-owner="lorenzo"><b>L</b><span>Lorenzo</span></button>
-          <button type="button" data-ticket-owner="fortuna"><b>F</b><span>Fortuna</span></button>
-          <button type="button" class="active" data-ticket-owner="both"><b>L+F</b><span>Entrambi</span></button>
+        <div class="ticket-wizard-progress" aria-label="Avanzamento caricamento">
+          <b class="active" data-progress-step="1">1</b><i></i><b data-progress-step="2">2</b><i></i><b data-progress-step="3">3</b>
         </div>
-        <button type="button" class="ticket-meta-confirm">Scegli file</button>
+
+        <section class="ticket-wizard-step" data-wizard-step="1">
+          <div class="ticket-wizard-kicker">PASSO 1 DI 3</div>
+          <h4>A cosa appartiene?</h4>
+          <p>Collega il documento alla prenotazione o al trasporto giusto.</p>
+          <label class="ticket-meta-field">
+            <span>Prenotazione / attività</span>
+            <select class="ticket-wizard-target">${select.innerHTML}</select>
+          </label>
+          <button type="button" class="ticket-meta-confirm" data-wizard-next="1">Continua</button>
+        </section>
+
+        <section class="ticket-wizard-step" data-wizard-step="2" hidden>
+          <div class="ticket-wizard-kicker">PASSO 2 DI 3</div>
+          <h4>Di chi è e come si chiama?</h4>
+          <p>Il nome sarà quello mostrato nell’app, indipendentemente dal nome del PDF.</p>
+          <div class="ticket-meta-label">Proprietario</div>
+          <div class="ticket-owner-grid" role="group" aria-label="Proprietario biglietto">
+            <button type="button" data-ticket-owner="lorenzo"><b>L</b><span>Lorenzo</span></button>
+            <button type="button" data-ticket-owner="fortuna"><b>F</b><span>Fortuna</span></button>
+            <button type="button" data-ticket-owner="both"><b>L+F</b><span>Entrambi</span></button>
+          </div>
+          <label class="ticket-meta-field ticket-wizard-name-field">
+            <span>Nome del documento</span>
+            <input class="ticket-wizard-name" type="text" maxlength="80" autocomplete="off" placeholder="Es. Volo andata Lorenzo">
+          </label>
+          <div class="ticket-wizard-nav">
+            <button type="button" class="ticket-wizard-back" data-wizard-back="2">Indietro</button>
+            <button type="button" class="ticket-meta-confirm" data-wizard-next="2">Continua</button>
+          </div>
+        </section>
+
+        <section class="ticket-wizard-step" data-wizard-step="3" hidden>
+          <div class="ticket-wizard-kicker">PASSO 3 DI 3</div>
+          <h4>Scegli il file</h4>
+          <p>Controlla i dati e poi seleziona il PDF o l’immagine dal telefono.</p>
+          <div class="ticket-wizard-summary">
+            <div><span>Associato a</span><strong class="ticket-summary-target">—</strong></div>
+            <div><span>Di chi è</span><strong class="ticket-summary-owner">—</strong></div>
+            <div><span>Nome</span><strong class="ticket-summary-name">—</strong></div>
+          </div>
+          <div class="ticket-wizard-nav">
+            <button type="button" class="ticket-wizard-back" data-wizard-back="3">Indietro</button>
+            <button type="button" class="ticket-meta-confirm ticket-wizard-file">📎 Scegli file e carica</button>
+          </div>
+        </section>
       </div>`;
 
     document.body.appendChild(backdrop);
-    let owner = "both";
-    const nameInput = backdrop.querySelector("input");
+    const targetSelect = backdrop.querySelector(".ticket-wizard-target");
+    const nameInput = backdrop.querySelector(".ticket-wizard-name");
+    let owner = "";
+    let targetKey = "";
+    let targetLabel = "";
+    let name = "";
+
+    function showStep(step){
+      backdrop.querySelectorAll("[data-wizard-step]").forEach(el => el.hidden = Number(el.dataset.wizardStep) !== step);
+      backdrop.querySelectorAll("[data-progress-step]").forEach(el => {
+        const n = Number(el.dataset.progressStep);
+        el.classList.toggle("active", n === step);
+        el.classList.toggle("done", n < step);
+      });
+      if(step === 2) requestAnimationFrame(() => nameInput.focus());
+    }
 
     backdrop.querySelectorAll("[data-ticket-owner]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -116,22 +164,54 @@
       });
     });
 
-    backdrop.querySelector(".ticket-meta-close").addEventListener("click", closeMetaDialog);
-    backdrop.addEventListener("click", e => { if(e.target === backdrop) closeMetaDialog(); });
-    backdrop.querySelector(".ticket-meta-confirm").addEventListener("click", () => {
-      const name = cleanName(nameInput.value);
-      if(!name){
-        nameInput.focus();
-        nameInput.classList.add("ticket-meta-error");
+    backdrop.querySelector('[data-wizard-next="1"]').addEventListener("click", () => {
+      targetKey = targetSelect.value;
+      const opt = targetSelect.options[targetSelect.selectedIndex];
+      targetLabel = opt?.dataset?.label || opt?.textContent || "";
+      if(!targetKey){
+        targetSelect.classList.add("ticket-meta-error");
+        targetSelect.focus();
         return;
       }
+      targetSelect.classList.remove("ticket-meta-error");
+      nameInput.placeholder = targetLabel && targetLabel !== "Altro" ? `Es. ${targetLabel} Lorenzo` : "Es. Volo andata Lorenzo";
+      showStep(2);
+    });
+
+    backdrop.querySelector('[data-wizard-next="2"]').addEventListener("click", () => {
+      name = cleanName(nameInput.value);
+      if(!owner){
+        backdrop.querySelector(".ticket-owner-grid").classList.add("ticket-owner-error");
+        return;
+      }
+      backdrop.querySelector(".ticket-owner-grid").classList.remove("ticket-owner-error");
+      if(!name){
+        nameInput.classList.add("ticket-meta-error");
+        nameInput.focus();
+        return;
+      }
+      nameInput.classList.remove("ticket-meta-error");
+      backdrop.querySelector(".ticket-summary-target").textContent = targetLabel || "Altro";
+      backdrop.querySelector(".ticket-summary-owner").textContent = ownerLabel(owner);
+      backdrop.querySelector(".ticket-summary-name").textContent = name;
+      showStep(3);
+    });
+
+    backdrop.querySelectorAll("[data-wizard-back]").forEach(btn => btn.addEventListener("click", () => {
+      showStep(Number(btn.dataset.wizardBack) - 1);
+    }));
+
+    backdrop.querySelector(".ticket-wizard-file").addEventListener("click", () => {
+      select.value = targetKey;
       pending.set(input.id, {legId, name, owner, targetKey, targetLabel});
       input.multiple = false;
       closeMetaDialog();
       input.click();
     });
 
-    requestAnimationFrame(() => nameInput.focus());
+    backdrop.querySelector(".ticket-meta-close").addEventListener("click", closeMetaDialog);
+    backdrop.addEventListener("click", e => { if(e.target === backdrop) closeMetaDialog(); });
+    showStep(1);
   }
 
   async function decorateTicketList(legId){
@@ -225,11 +305,6 @@
       alert("Per caricare e condividere i biglietti devi prima accedere all'area privata L&F dal Budget.");
       return;
     }
-    if(!select.value){
-      alert("Prima scegli a cosa vuoi associare il biglietto.");
-      select.focus();
-      return;
-    }
     openMetaDialog(legId, select, input);
   }, true);
 
@@ -257,7 +332,7 @@
       console.error(err);
       alert("Non sono riuscito a salvare il file sul telefono.");
     }finally{
-      if(button){ button.disabled = false; button.textContent = "📎 Importa biglietto"; }
+      if(button){ button.disabled = false; button.textContent = "＋ Carica biglietto"; }
     }
   }, true);
 })();

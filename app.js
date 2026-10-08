@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.44";
+    version.textContent="Versione app 2.4.45";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1233,14 +1233,14 @@ function openCity(legId, pushHistory=true, restoreState=null){
     `).join("") : ""}
     <div class="ticket-import-box">
       <div class="ticket-import-title">Biglietti L&F</div>
-      <div class="ticket-import-note">Accedi all'area L&F per caricare e vedere i file condivisi. Scegli prima a quale prenotazione appartengono.</div>
-      <select id="ticket-target-${leg.id}" class="ticket-import-btn" style="width:100%;margin:10px 0;text-align:left">
+      <div class="ticket-import-note">Carica una sola volta PDF o immagini: scegli nel wizard a cosa appartengono, di chi sono e come vuoi chiamarli.</div>
+      <select id="ticket-target-${leg.id}" class="ticket-import-btn" hidden aria-hidden="true">
         <option value="">Associa a…</option>
         ${ticketTargetsForLeg(leg).map(t=>`<option value="${escapeHtml(t.key)}" data-label="${escapeHtml(t.label)}">${escapeHtml(t.label)}</option>`).join("")}
         <option value="${leg.id}::altro" data-label="Altro">Altro</option>
       </select>
-      <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*" multiple>
-      <button id="ticket-import-${leg.id}" class="ticket-import-btn">📎 Importa biglietto</button>
+      <input id="ticket-file-${leg.id}" class="ticket-file-input" type="file" accept=".pdf,image/*">
+      <button id="ticket-import-${leg.id}" class="ticket-import-btn">＋ Carica biglietto</button>
       <div id="local-tickets-${leg.id}" class="local-tickets-list"></div>
     </div>`;
 
