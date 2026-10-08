@@ -1,4 +1,4 @@
-/* V42.1 · Sincronizzazione biglietti Firebase <-> cache IndexedDB */
+/* V43.1 · Sincronizzazione biglietti Firestore <-> cache IndexedDB */
 (() => {
   let started = false;
   let authenticated = false;
@@ -76,7 +76,6 @@
     const remoteBySignature = new Map(sharedTickets.map(t => [signature(t), t]));
     for(const local of localTickets){
       if(local.cloudId || !local.blob) continue;
-      if(Date.now() - Number(local.createdAt || 0) < 8000) continue;
       const same = remoteBySignature.get(signature(local));
       if(same){
         await attachCloudId(local, same.id);

@@ -174,9 +174,11 @@
         alert("I file dei biglietti sono nell'area privata L&F. Accedi prima dal Budget.");
         return;
       }
+      const popup = typeof openTicketPlaceholder === "function" ? openTicketPlaceholder() : null;
       const tickets = await getTicketsForTarget(targetKey);
-      if(!tickets.length) return;
-      if(tickets.length === 1){ await openTicketRecord(tickets[0]); return; }
+      if(!tickets.length){ try{ popup?.close(); }catch(_){} return; }
+      if(tickets.length === 1){ await openTicketRecord(tickets[0], popup); return; }
+      try{ popup?.close(); }catch(_){}
 
       document.getElementById("ticket-picker-dialog")?.remove();
       const dlg = document.createElement("dialog");
@@ -193,9 +195,16 @@
       document.body.appendChild(dlg);
       dlg.querySelector("[data-close-ticket-dialog]").onclick = () => dlg.close();
       dlg.querySelectorAll("[data-pick-ticket]").forEach(btn => btn.onclick = async () => {
-        const rec = await getLocalTicket(btn.dataset.pickTicket);
-        dlg.close();
-        await openTicketRecord(rec);
+        const popup = typeof openTicketPlaceholder === "function" ? openTicketPlaceholder() : null;
+        try{
+          const rec = await getLocalTicket(btn.dataset.pickTicket);
+          dlg.close();
+          await openTicketRecord(rec, popup);
+        }catch(err){
+          console.error("Apertura biglietto:", err);
+          try{ popup?.close(); }catch(_){}
+          alert("Non sono riuscito ad aprire il biglietto su questo dispositivo.");
+        }
       });
       dlg.addEventListener("close", () => dlg.remove());
       dlg.showModal();

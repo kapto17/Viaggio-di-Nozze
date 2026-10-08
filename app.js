@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.43";
+    version.textContent="Versione app 2.4.44";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -973,11 +973,35 @@ async function getTicketsForTarget(targetKey){
     req.onerror=()=>reject(req.error);
   });
 }
-async function openTicketRecord(rec){
-  if(!rec)return;
+function openTicketPlaceholder(){
+  let popup = null;
+  try{
+    popup = window.open("about:blank", "_blank");
+    if(popup && !popup.closed){
+      try{
+        popup.document.title = "Apertura biglietto…";
+        popup.document.body.innerHTML = '<div style="font-family:system-ui;padding:24px;color:#16233f">Apertura biglietto…</div>';
+      }catch(_){}
+    }
+  }catch(_){}
+  return popup;
+}
+async function openTicketRecord(rec, popup=null){
+  if(!rec || !rec.blob){
+    try{ popup?.close(); }catch(_){}
+    return;
+  }
   const url=URL.createObjectURL(rec.blob);
-  window.open(url,"_blank");
-  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  let opened=false;
+  if(popup && !popup.closed){
+    try{ popup.location.replace(url); opened=true; }catch(_){
+      try{ popup.location.href=url; opened=true; }catch(__){}
+    }
+  }
+  if(!opened){
+    try{ window.location.href=url; opened=true; }catch(_){}
+  }
+  setTimeout(()=>URL.revokeObjectURL(url),120000);
 }
 async function openTicketsForTarget(targetKey,targetLabel="Biglietti"){
   const tickets=await getTicketsForTarget(targetKey);
@@ -1061,11 +1085,16 @@ async function renderLocalTickets(legId){
 
     $$("[data-ticket-open]", host).forEach(btn => {
       btn.addEventListener("click", async () => {
-        const rec = await getLocalTicket(btn.dataset.ticketOpen);
-        if (!rec) return;
-        const url = URL.createObjectURL(rec.blob);
-        window.open(url, "_blank");
-        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        const popup = openTicketPlaceholder();
+        try{
+          const rec = await getLocalTicket(btn.dataset.ticketOpen);
+          if (!rec){ try{ popup?.close(); }catch(_){} return; }
+          await openTicketRecord(rec, popup);
+        }catch(err){
+          console.error("Apertura biglietto:", err);
+          try{ popup?.close(); }catch(_){}
+          alert("Non sono riuscito ad aprire il biglietto su questo dispositivo.");
+        }
       });
     });
 
