@@ -1,0 +1,43 @@
+/* V40 · Oggi/Domani + meteo */
+.today-plus-wrap{margin:14px 0 16px}
+.today-day-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px;padding:4px;background:rgba(22,35,63,.06);border:1px solid var(--line);border-radius:15px}
+.today-day-switch button{border:0;background:transparent;color:var(--ink-soft);border-radius:11px;padding:9px 10px;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+.today-day-switch button b{font-size:13px}
+.today-day-switch button span{font-size:11px;opacity:.75}
+.today-day-switch button.active{background:#fff;color:var(--ink);box-shadow:0 4px 12px -8px rgba(22,35,63,.45)}
+.today-weather-panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.today-weather-panel>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;font-weight:850;font-size:13px;cursor:pointer}
+.today-weather-panel>summary::-webkit-details-marker{display:none}
+.today-weather-chevron{font-size:16px;transition:transform .18s ease}
+.today-weather-panel[open] .today-weather-chevron{transform:rotate(180deg)}
+.today-weather-detail{border-top:1px solid var(--line);padding:13px 14px 14px}
+.today-weather-loading,.today-weather-unavailable{font-size:12px;color:var(--ink-soft);padding:8px 2px}
+.today-weather-empty{display:flex;flex-direction:column;gap:5px;padding:5px 2px 2px}
+.today-weather-empty strong{font-size:13px}
+.today-weather-empty span{font-size:12px;color:var(--ink-soft);line-height:1.45}
+.today-weather-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.today-weather-summary>div:first-child{display:flex;align-items:center;gap:9px;min-width:0}
+.today-weather-summary>div:first-child>span{font-size:25px}
+.today-weather-summary b{display:block;font-size:14px;line-height:1.15}
+.today-weather-summary small{display:block;color:var(--ink-soft);font-size:10.5px;margin-top:2px}
+.today-weather-numbers{text-align:right;flex:0 0 auto}
+.today-weather-numbers strong{display:block;font-size:18px;letter-spacing:-.03em}
+.today-weather-numbers small{font-size:10.5px;color:var(--ink-soft)}
+.today-weather-segment{margin-top:12px}
+.today-weather-segment+.today-weather-segment{padding-top:12px;border-top:1px dashed var(--line)}
+.today-weather-segment-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.today-weather-segment-head strong{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.today-weather-segment-head span{font-size:11px;font-weight:800;color:var(--ink-soft)}
+.today-hourly-scroll{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
+.today-hourly-scroll::-webkit-scrollbar{display:none}
+.today-hour-card{flex:0 0 64px;scroll-snap-align:start;border:1px solid var(--line);border-radius:13px;background:var(--paper);padding:8px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.today-hour-card b{font-size:10px;color:var(--ink-soft)}
+.today-hour-card>span{font-size:20px;line-height:1.2}
+.today-hour-card strong{font-size:14px}
+.today-hour-card small{font-size:9.5px;color:var(--ink-soft)}
+.today-weather-source{text-align:right;margin-top:8px;font-size:9.5px;color:var(--ink-soft);opacity:.72}
+#today-screen-weather{min-width:86px}
+#today-screen-weather strong{font-size:17px;white-space:nowrap}
+#today-screen-weather small{display:block;font-size:9.5px;color:var(--ink-soft);margin-top:2px;text-align:right}
+@media(max-width:380px){.today-day-switch button{padding:8px 6px}.today-day-switch button b{font-size:12px}.today-hour-card{flex-basis:60px}}
+@media(prefers-reduced-motion:reduce){.today-weather-chevron{transition:none}}
