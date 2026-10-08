@@ -1,0 +1,36 @@
+name: Ticket UI and history flash v49
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/ticket_ui_history_flash_v49.py
+      - name: Verify
+        run: |
+          node --check app.js
+          node --check ticket-sync.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.49' app.js
+          grep -q 'history-restoring' app.js
+          grep -q 'history-restoring' motion-v3.css
+          grep -q 'ticket-import-title">Biglietti<' app.js
+          ! grep -q 'ticket-import-title">Biglietti L&F<' app.js
+          ! grep -q 'Caricalo una sola volta' ticket-sync.js
+          grep -q 'local-ticket-open' ticket-meta.css
+          grep -q 'motion-v3.css?v=3' index.html
+          grep -q 'ticket-meta.css?v=4' index.html
+          grep -q 'app.js?v=124' index.html
+          grep -q 'ticket-sync.js?v=5' index.html
+          grep -q 'viaggio-nozze-v147' sw.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js ticket-sync.js ticket-meta.css motion-v3.css index.html sw.js
+          git commit -m "Pulisce Biglietti e corregge flash back 2.4.49 [skip ci]"
+          git push
