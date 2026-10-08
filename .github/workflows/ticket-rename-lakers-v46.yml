@@ -1,0 +1,36 @@
+name: Ticket rename and Lakers cleanup v46
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/ticket_rename_lakers_v46.py
+      - name: Verify
+        run: |
+          node --check app.js
+          node --check ticket-meta.js
+          node --check firebase-budget.js
+          node --check data.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.46' app.js
+          grep -q 'ticketUpload: false, name: "Los Angeles Lakers vs LA Clippers"' data.js
+          ! grep -q 'name: "Lakers vs LA Clippers", note:' data.js
+          grep -q 'renameTicket' firebase-budget.js
+          grep -q 'data-ticket-rename' ticket-meta.js
+          grep -q 'data.js?v=109' index.html
+          grep -q 'firebase-budget.js?v=38' index.html
+          grep -q 'app.js?v=121' index.html
+          grep -q 'ticket-meta.js?v=6' index.html
+          grep -q 'viaggio-nozze-v144' sw.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.js app.js firebase-budget.js ticket-meta.js index.html sw.js
+          git commit -m "Aggiunge rinomina biglietti e rimuove ticket Lakers 2.4.46 [skip ci]"
+          git push
