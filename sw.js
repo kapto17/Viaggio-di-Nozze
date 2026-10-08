@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v137";
+const CACHE_NAME = "viaggio-nozze-v138";
 const ASSETS = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const ASSETS = [
   "./budget-summary.css",
   "./lakers-guide.css",
   "./today-weather.css",
+  "./ticket-meta.css",
   "./app.js",
   "./motion.js",
   "./budget-layout.js",
@@ -17,6 +18,7 @@ const ASSETS = [
   "./budget-summary.js",
   "./lakers-guide.js",
   "./today-weather.js",
+  "./ticket-meta.js",
   "./data.js",
   "./firebase-budget.js",
   "./manifest.json",
@@ -107,7 +109,7 @@ self.addEventListener("fetch", (event) => {
   // File applicativi principali: rete prima, cache come fallback.
   // Evita che browser diversi rimangano bloccati su vecchie versioni di CSS/JS.
   const url = new URL(event.request.url);
-  const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+  const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
   if (isCoreAsset) {
     event.respondWith(
