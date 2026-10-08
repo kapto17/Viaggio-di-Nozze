@@ -1,4 +1,4 @@
-/* V41 · Nome personalizzato + proprietario biglietto locale */
+/* V42 · Nome, proprietario e sincronizzazione cloud biglietti */
 (() => {
   const pending = new Map();
   const OWNER_LABELS = {
@@ -15,7 +15,7 @@
     return OWNER_LABELS[owner] || "";
   }
 
-  async function saveTicketWithMeta(legId, file, label, targetKey, targetLabel, owner){
+  async function saveTicketWithMeta(legId, file, label, targetKey, targetLabel, owner, cloudId=""){
     const db = await openTicketDb();
     const rec = {
       legId,
@@ -27,6 +27,8 @@
       mimeType: file.type || "application/octet-stream",
       size: file.size,
       createdAt: Date.now(),
+      cloudId: cloudId || "",
+      syncPending: !cloudId,
       blob: file
     };
     return new Promise((resolve, reject) => {
@@ -35,6 +37,39 @@
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
+  }
+
+  async function markTicketShared(localId, cloudId){
+    const db = await openTicketDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("tickets", "readwrite");
+      const store = tx.objectStore("tickets");
+      const req = store.get(Number(localId));
+      req.onsuccess = () => {
+        const rec = req.result;
+        if(!rec){ resolve(); return; }
+        rec.cloudId = cloudId;
+        rec.syncPending = false;
+        const put = store.put(rec);
+        put.onsuccess = () => resolve();
+        put.onerror = () => reject(put.error);
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  function cloudErrorMessage(err){
+    const code = String(err?.code || "");
+    if(code.includes("unauthorized") || code.includes("permission-denied")){
+      return "Firebase sta bloccando l'accesso ai biglietti condivisi. Il file resta salvato su questo telefono e verrà sincronizzato appena sistemiamo i permessi.";
+    }
+    if(code.includes("storage/bucket-not-found") || code.includes("storage/unknown")){
+      return "Firebase Storage non risulta disponibile. Il file resta salvato su questo telefono e verrà sincronizzato appena abilitiamo lo spazio condiviso.";
+    }
+    if(!navigator.onLine){
+      return "Sei offline: il biglietto è stato salvato sul telefono e verrà condiviso automaticamente quando tornerà la connessione.";
+    }
+    return "Il biglietto è stato salvato sul telefono, ma la sincronizzazione non è riuscita. Riproveremo automaticamente.";
   }
 
   function closeMetaDialog(){
@@ -106,13 +141,21 @@
     const cards = Array.from(host.querySelectorAll(".local-ticket-card"));
     cards.forEach((card, index) => {
       const rec = tickets[index];
-      if(!rec?.owner || card.querySelector(".ticket-owner-badge")) return;
+      if(!rec) return;
       const name = card.querySelector(".local-ticket-name");
       if(!name) return;
-      const badge = document.createElement("span");
-      badge.className = `ticket-owner-badge owner-${rec.owner}`;
-      badge.textContent = ownerLabel(rec.owner);
-      name.insertAdjacentElement("afterend", badge);
+      if(rec.owner && !card.querySelector(".ticket-owner-badge")){
+        const badge = document.createElement("span");
+        badge.className = `ticket-owner-badge owner-${rec.owner}`;
+        badge.textContent = ownerLabel(rec.owner);
+        name.insertAdjacentElement("afterend", badge);
+      }
+      if(!card.querySelector(".ticket-sync-badge")){
+        const sync = document.createElement("span");
+        sync.className = `ticket-sync-badge ${rec.cloudId ? "is-shared" : "is-pending"}`;
+        sync.textContent = rec.cloudId ? "☁ Condiviso" : "↻ Da sincronizzare";
+        (card.querySelector(".ticket-owner-badge") || name).insertAdjacentElement("afterend", sync);
+      }
     });
   }
 
@@ -127,6 +170,10 @@
 
   if(typeof window.openTicketsForTarget === "function"){
     window.openTicketsForTarget = async function(targetKey, targetLabel="Biglietti"){
+      if(!window.LFBudget?.isAuthenticated?.()){
+        alert("I file dei biglietti sono nell'area privata L&F. Accedi prima dal Budget.");
+        return;
+      }
       const tickets = await getTicketsForTarget(targetKey);
       if(!tickets.length) return;
       if(tickets.length === 1){ await openTicketRecord(tickets[0]); return; }
@@ -139,7 +186,7 @@
         <div class="ticket-picker-eyebrow">🎟️ BIGLIETTI</div>
         <h3>${escapeHtml(targetLabel)}</h3>
         ${tickets.map(t => `<button type="button" data-pick-ticket="${t.id}">
-          <span>📄</span><div><strong>${escapeHtml(t.label || t.fileName)}</strong>${t.owner ? `<small>${escapeHtml(ownerLabel(t.owner))}</small>` : ""}</div><b>›</b>
+          <span>📄</span><div><strong>${escapeHtml(t.label || t.fileName)}</strong>${t.owner ? `<small>${escapeHtml(ownerLabel(t.owner))}${t.cloudId ? " · Condiviso" : " · Solo locale"}</small>` : ""}</div><b>›</b>
         </button>`).join("")}
         <button type="button" class="ticket-picker-close" data-close-ticket-dialog>Chiudi</button>
       </div>`;
@@ -165,6 +212,10 @@
 
     e.preventDefault();
     e.stopImmediatePropagation();
+    if(!window.LFBudget?.isAuthenticated?.()){
+      alert("Per caricare e condividere i biglietti devi prima accedere all'area privata L&F dal Budget.");
+      return;
+    }
     if(!select.value){
       alert("Prima scegli a cosa vuoi associare il biglietto.");
       select.focus();
@@ -185,8 +236,23 @@
 
     const button = document.getElementById(`ticket-import-${meta.legId}`);
     if(button){ button.disabled = true; button.textContent = "Salvataggio…"; }
+    let localId = null;
     try{
-      await saveTicketWithMeta(meta.legId, file, meta.name, meta.targetKey, meta.targetLabel, meta.owner);
+      localId = await saveTicketWithMeta(meta.legId, file, meta.name, meta.targetKey, meta.targetLabel, meta.owner, "");
+      if(button) button.textContent = "Condivisione…";
+      try{
+        const cloud = await window.LFBudget.uploadTicket({
+          legId:meta.legId,
+          label:meta.name,
+          owner:meta.owner,
+          targetKey:meta.targetKey,
+          targetLabel:meta.targetLabel
+        }, file);
+        await markTicketShared(localId, cloud.id);
+      }catch(syncErr){
+        console.error("Ticket cloud sync:", syncErr);
+        alert(cloudErrorMessage(syncErr));
+      }
       input.value = "";
       pending.delete(input.id);
       await renderLocalTickets(meta.legId);
