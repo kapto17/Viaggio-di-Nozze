@@ -223,20 +223,46 @@
   document.addEventListener("click", async e => {
     const btn = e.target.closest?.("[data-ticket-delete]");
     if(!btn || !authenticated) return;
-    const rec = await getLocalTicket(btn.dataset.ticketDelete);
-    if(!rec?.cloudId) return;
+
+    // Ferma subito il vecchio handler locale: se aspettiamo IndexedDB prima di farlo,
+    // il click prosegue e vengono mostrati due popup di conferma.
     e.preventDefault();
     e.stopImmediatePropagation();
-    if(!confirm("Eliminare questo biglietto condiviso da entrambi i telefoni?")) return;
+    if(btn.dataset.ticketDeleting === "1") return;
+    btn.dataset.ticketDeleting = "1";
+
+    let rec = null;
+    try{
+      rec = await getLocalTicket(btn.dataset.ticketDelete);
+    }catch(err){
+      console.error("Lettura biglietto da eliminare:", err);
+    }
+    if(!rec){
+      delete btn.dataset.ticketDeleting;
+      return;
+    }
+
+    const shared = !!rec.cloudId;
+    const message = shared
+      ? "Eliminare questo biglietto condiviso da entrambi i telefoni?"
+      : "Eliminare questo biglietto da questo telefono?";
+    if(!confirm(message)){
+      delete btn.dataset.ticketDeleting;
+      return;
+    }
+
     btn.disabled = true;
     try{
-      await window.LFBudget.removeTicket(rec.cloudId);
+      if(shared) await window.LFBudget.removeTicket(rec.cloudId);
       await deleteLocalTicket(rec.id);
       await refreshVisibleTickets();
     }catch(err){
-      console.error("Eliminazione biglietto condiviso:", err);
-      alert("Non sono riuscito a eliminare il biglietto condiviso. Riprova quando sei online.");
+      console.error("Eliminazione biglietto:", err);
+      alert(shared
+        ? "Non sono riuscito a eliminare il biglietto condiviso. Riprova quando sei online."
+        : "Non sono riuscito a eliminare il biglietto da questo telefono.");
       btn.disabled = false;
+      delete btn.dataset.ticketDeleting;
     }
   }, true);
 
