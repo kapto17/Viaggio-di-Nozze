@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.48";
+    version.textContent="Versione app 2.4.49";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -1232,8 +1232,7 @@ function openCity(legId, pushHistory=true, restoreState=null){
       <div class="ticket"><div class="stub-top"><div><div class="stitle">${tk.name}</div><div class="ssub">${tk.note||""}</div></div>${tk.status ? `<span class="pill">${tk.status}</span>` : ""}</div></div>
     `).join("") : ""}
     <div class="ticket-import-box">
-      <div class="ticket-import-title">Biglietti L&F</div>
-      <div class="ticket-import-note">Carica una sola volta PDF o immagini: scegli nel wizard a cosa appartengono, di chi sono e come vuoi chiamarli.</div>
+      <div class="ticket-import-title">Biglietti</div>
       <select id="ticket-target-${leg.id}" class="ticket-import-btn" hidden aria-hidden="true">
         <option value="">Associa a…</option>
         ${ticketTargetsForLeg(leg).map(t=>`<option value="${escapeHtml(t.key)}" data-label="${escapeHtml(t.label)}">${escapeHtml(t.label)}</option>`).join("")}
@@ -2220,7 +2219,15 @@ function init(){
     });
   });
 
-  window.addEventListener("popstate", (event) => renderNavigationState(event.state));
+  window.addEventListener("popstate", (event) => {
+  const root = document.documentElement;
+  root.classList.add("history-restoring");
+  try {
+    renderNavigationState(event.state);
+  } finally {
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("history-restoring")));
+  }
+});
   window.addEventListener("online", updateOnlineBadge);
   window.addEventListener("offline", updateOnlineBadge);
   updateOnlineBadge();

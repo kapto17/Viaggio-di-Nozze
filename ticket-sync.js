@@ -190,17 +190,16 @@
     document.querySelectorAll(".ticket-import-box").forEach(box => {
       const title = box.querySelector(".ticket-import-title");
       const note = box.querySelector(".ticket-import-note");
+      if(note) note.remove();
       const select = box.querySelector('select[id^="ticket-target-"]');
       const button = box.querySelector('button[id^="ticket-import-"]');
       const list = box.querySelector('.local-tickets-list');
-      setTextIfChanged(title, "Biglietti L&F");
+      setTextIfChanged(title, "Biglietti");
       if(authenticated){
-        setTextIfChanged(note, "Caricalo una sola volta: viene condiviso tra i vostri telefoni e resta disponibile anche offline dopo il download.");
         if(select) select.disabled = false;
         if(button) button.disabled = false;
         if(list) list.hidden = false;
       }else{
-        setTextIfChanged(note, "I file reali dei biglietti sono privati. Accedi all'area L&F dal Budget per visualizzarli o caricarli.");
         if(select) select.disabled = true;
         if(button) button.disabled = true;
         if(list) list.hidden = true;

@@ -75,3 +75,26 @@
 .ticket-wizard-summary span{font-size:11px;color:var(--ink-soft,#2a3b5c);font-weight:750;white-space:nowrap}
 .ticket-wizard-summary strong{font-size:12px;line-height:1.35;text-align:right;color:var(--ink,#16233f);overflow-wrap:anywhere}
 @media(max-width:390px){.ticket-wizard-sheet{padding-left:14px;padding-right:14px}.ticket-owner-grid button span{font-size:11px}.ticket-wizard-nav{grid-template-columns:90px 1fr}}
+
+
+/* V49 · Azioni biglietto più sicure su mobile */
+.local-ticket-actions{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:8px!important;
+  align-items:stretch;
+}
+.local-ticket-actions .local-ticket-open{
+  grid-column:1 / -1;
+  width:100%;
+  min-height:42px;
+  padding:10px 14px!important;
+  font-size:13px!important;
+  font-weight:850!important;
+}
+.local-ticket-actions .local-ticket-rename,
+.local-ticket-actions .local-ticket-delete{
+  width:100%;
+  min-height:35px;
+  padding:7px 10px!important;
+}
