@@ -1,0 +1,31 @@
+name: Ticket delete single confirm v50
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/ticket_delete_single_confirm_v50.py
+      - name: Verify
+        run: |
+          node --check ticket-sync.js
+          node --check app.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.50' app.js
+          grep -q 'ticketDeleting' ticket-sync.js
+          grep -q 'Eliminare questo biglietto condiviso da entrambi i telefoni?' ticket-sync.js
+          grep -q 'Eliminare questo biglietto da questo telefono?' ticket-sync.js
+          grep -q 'app.js?v=125' index.html
+          grep -q 'ticket-sync.js?v=6' index.html
+          grep -q 'viaggio-nozze-v148' sw.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ticket-sync.js app.js index.html sw.js
+          git commit -m "Evita doppia conferma eliminazione biglietti 2.4.50 [skip ci]"
+          git push
