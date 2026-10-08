@@ -1,4 +1,4 @@
-/* V42 · Sincronizzazione biglietti Firebase <-> cache IndexedDB */
+/* V42.1 · Sincronizzazione biglietti Firebase <-> cache IndexedDB */
 (() => {
   let started = false;
   let authenticated = false;
@@ -76,7 +76,6 @@
     const remoteBySignature = new Map(sharedTickets.map(t => [signature(t), t]));
     for(const local of localTickets){
       if(local.cloudId || !local.blob) continue;
-      // Evita di competere con il caricamento appena iniziato dal wizard.
       if(Date.now() - Number(local.createdAt || 0) < 8000) continue;
       const same = remoteBySignature.get(signature(local));
       if(same){
@@ -95,7 +94,6 @@
         remoteBySignature.set(signature(local), cloud);
       }catch(err){
         console.error("Migrazione biglietto locale:", err);
-        // Rimane in locale: verrà ritentato più avanti.
       }
     }
   }
@@ -137,7 +135,6 @@
     local = await allLocalTickets();
     await migratePending(local, shared);
 
-    // Solo una risposta confermata dal server può cancellare cache locali.
     if(!payload.fromCache){
       const remoteIds = new Set(shared.map(t => t.id));
       const db = await openTicketDb();
@@ -186,6 +183,10 @@
     if(typeof decorateTicketButtons === "function") await decorateTicketButtons(document);
   }
 
+  function setTextIfChanged(node, value){
+    if(node && node.textContent !== value) node.textContent = value;
+  }
+
   function refreshPrivateTicketUi(){
     document.querySelectorAll(".ticket-import-box").forEach(box => {
       const title = box.querySelector(".ticket-import-title");
@@ -193,14 +194,14 @@
       const select = box.querySelector('select[id^="ticket-target-"]');
       const button = box.querySelector('button[id^="ticket-import-"]');
       const list = box.querySelector('.local-tickets-list');
-      if(title) title.textContent = "Biglietti L&F";
+      setTextIfChanged(title, "Biglietti L&F");
       if(authenticated){
-        if(note) note.textContent = "Caricalo una sola volta: viene condiviso tra i vostri telefoni e resta disponibile anche offline dopo il download.";
+        setTextIfChanged(note, "Caricalo una sola volta: viene condiviso tra i vostri telefoni e resta disponibile anche offline dopo il download.");
         if(select) select.disabled = false;
         if(button) button.disabled = false;
         if(list) list.hidden = false;
       }else{
-        if(note) note.textContent = "I file reali dei biglietti sono privati. Accedi all'area L&F dal Budget per visualizzarli o caricarli.";
+        setTextIfChanged(note, "I file reali dei biglietti sono privati. Accedi all'area L&F dal Budget per visualizzarli o caricarli.");
         if(select) select.disabled = true;
         if(button) button.disabled = true;
         if(list) list.hidden = true;
@@ -244,7 +245,23 @@
   window.addEventListener("online", retrySoon);
   window.addEventListener("lf-local-ticket-changed", retrySoon);
 
-  const observer = new MutationObserver(() => refreshPrivateTicketUi());
+  // Reagisce soltanto quando viene aggiunto un nuovo box Biglietti.
+  // Non osserva le modifiche testuali che il sincronizzatore stesso produce:
+  // questo evita il loop di MutationObserver che bloccava l'apertura delle tappe.
+  const observer = new MutationObserver((mutations) => {
+    let ticketUiAdded = false;
+    for(const mutation of mutations){
+      for(const node of mutation.addedNodes){
+        if(node.nodeType !== 1) continue;
+        if(node.matches?.(".ticket-import-box") || node.querySelector?.(".ticket-import-box")){
+          ticketUiAdded = true;
+          break;
+        }
+      }
+      if(ticketUiAdded) break;
+    }
+    if(ticketUiAdded) refreshPrivateTicketUi();
+  });
   observer.observe(document.documentElement, {childList:true, subtree:true});
 
   function start(){
