@@ -195,7 +195,7 @@ jobs:
           node --check app.js
           node --check sw.js
           git diff --quiet -- app.js style.css motion.js motion-v3.css data.js firebase-budget.js
-          test "$(git diff --name-only | sort | tr '\n' ' ')" = "index.html program-tab.css program-tab.js sw.js "
+          test "$( { git diff --name-only; printf '%s\n' program-tab.css program-tab.js; } | sort -u | tr '\n' ' ')" = "index.html program-tab.css program-tab.js sw.js "
           grep -q 'data-screen="program"' index.html
           grep -q 'id="screen-program"' index.html
           grep -q 'program-tab.js?v=1' index.html
