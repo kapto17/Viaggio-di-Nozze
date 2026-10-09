@@ -1,0 +1,18 @@
+V13 — Consigli TikTok condivisi
+
+Aggiunta nuova sezione privata "Consigli TikTok", visibile dopo l'accesso L&F e sincronizzata tramite Firestore.
+
+Struttura:
+- San Francisco
+- Los Angeles
+- Las Vegas
+- Page / Grand Canyon
+- Chicago
+- Bayahibe
+
+Dentro ogni tappa: elenco video, anteprima cliccabile che apre TikTok, titolo facoltativo, pulsante + Aggiungi e pulsante Elimina. La tappa è implicita: aggiungendo da Los Angeles il link viene salvato direttamente in Los Angeles.
+
+Import iniziale: caricati nel modulo i 10 link TikTok inviati il 9/10/2026, con URL canonico e post ID. Non essendo possibile verificare con certezza il contenuto dei post dall'esterno, al primo accesso vengono mostrati in una voce temporanea "Da assegnare": si apre il video e si tocca la città corretta. Quando tutti sono assegnati, la voce scompare.
+
+File nuovi: saved-tips.js, saved-tips.css.
+Cache PWA aggiornata a viaggio-nozze-v153.
