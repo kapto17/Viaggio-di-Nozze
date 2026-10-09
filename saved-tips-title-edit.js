@@ -2,6 +2,7 @@ import { getApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.
 import { getFirestore, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 let db = null;
+let saving = false;
 
 function initDb(){
   if (db) return true;
@@ -17,71 +18,49 @@ function cleanTitle(value){
   return String(value || "").replace(/\s+/g, " ").trim().slice(0, 80);
 }
 
-function decorateTipCard(card){
-  if (!card || card.dataset.titleEditReady === "1") return;
-  const tipId = card.dataset.tipId;
-  const copy = card.querySelector(".tiktok-tip-copy");
-  const title = copy?.querySelector("strong");
-  if (!tipId || !copy || !title) return;
+async function editTitle(titleEl){
+  if (saving || !titleEl) return;
+  if (!window.LFBudget?.isAuthenticated?.()) return;
 
-  card.dataset.titleEditReady = "1";
+  const card = titleEl.closest(".tiktok-tip-card");
+  const tipId = card?.dataset?.tipId;
+  if (!tipId) return;
 
-  const line = document.createElement("div");
-  line.className = "tiktok-title-line";
-  title.parentNode.insertBefore(line, title);
-  line.appendChild(title);
+  if (!initDb()){
+    alert("Firebase non è ancora disponibile. Riprova tra un momento.");
+    return;
+  }
 
-  const edit = document.createElement("button");
-  edit.type = "button";
-  edit.className = "tiktok-title-edit-btn";
-  edit.setAttribute("aria-label", "Modifica titolo");
-  edit.title = "Modifica titolo";
-  edit.textContent = "✎";
-  line.appendChild(edit);
+  const currentText = String(titleEl.textContent || "").trim();
+  const current = currentText === "Consiglio TikTok" ? "" : currentText;
+  const next = prompt("Titolo del consiglio TikTok:", current);
+  if (next === null) return;
 
-  edit.addEventListener("click", async () => {
-    if (!window.LFBudget?.isAuthenticated?.()) return;
-    if (!initDb()){
-      alert("Firebase non è ancora disponibile. Riprova tra un momento.");
-      return;
-    }
-
-    const current = title.textContent === "Consiglio TikTok" ? "" : title.textContent;
-    const next = prompt("Titolo del consiglio TikTok:", current || "");
-    if (next === null) return;
-
-    const value = cleanTitle(next);
-    edit.disabled = true;
-    edit.textContent = "…";
-    try {
-      await updateDoc(doc(db, "budget", "main", "tiktokTips", tipId), {
-        title:value,
-        updatedAt:serverTimestamp()
-      });
-    } catch(err){
-      console.error("Modifica titolo TikTok:", err);
-      alert("Non sono riuscito a modificare il titolo.");
-    } finally {
-      edit.disabled = false;
-      edit.textContent = "✎";
-    }
-  });
+  const value = cleanTitle(next);
+  saving = true;
+  titleEl.classList.add("tiktok-title-saving");
+  try {
+    await updateDoc(doc(db, "budget", "main", "tiktokTips", tipId), {
+      title:value,
+      updatedAt:serverTimestamp()
+    });
+  } catch(err){
+    console.error("Modifica titolo TikTok:", err);
+    alert("Non sono riuscito a modificare il titolo.");
+  } finally {
+    saving = false;
+    titleEl.classList.remove("tiktok-title-saving");
+  }
 }
 
-function decorateVisibleTips(){
-  document.querySelectorAll(".tiktok-tip-card").forEach(decorateTipCard);
-}
-
-const observer = new MutationObserver(() => decorateVisibleTips());
-
-function start(){
-  initDb();
-  decorateVisibleTips();
-  const host = document.querySelector("#screen-tiktok-city");
-  if (host) observer.observe(host, { childList:true, subtree:true });
-}
-
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once:true });
-else start();
+// Event delegation: nessun MutationObserver e nessuna modifica continua del DOM.
+document.addEventListener("click", event => {
+  const titleEl = event.target.closest(".tiktok-tip-card .tiktok-tip-copy strong");
+  if (!titleEl) return;
+  event.preventDefault();
+  event.stopPropagation();
+  editTitle(titleEl);
+});
 
 window.addEventListener("lf-firebase-ready", initDb, { once:true });
+initDb();
