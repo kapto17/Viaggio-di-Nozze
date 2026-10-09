@@ -1,0 +1,32 @@
+name: iOS bottom nav back v52
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/ios_bottom_nav_back_v52.py
+      - name: Verify
+        run: |
+          node --check motion.js
+          node --check app.js
+          node --check sw.js
+          grep -q 'motion-nav-restoring' motion.js
+          grep -q 'history-restoring' motion.js
+          grep -q 'motion-nav-restoring' motion-v3.css
+          grep -q 'Versione app 2.4.52' app.js
+          grep -q 'motion-v3.css?v=4' index.html
+          grep -q 'app.js?v=127' index.html
+          grep -q 'motion.js?v=5' index.html
+          grep -q 'viaggio-nozze-v150' sw.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add motion.js motion-v3.css app.js index.html sw.js
+          git commit -m "Corregge flash bottom bar iOS 2.4.52 [skip ci]"
+          git push
