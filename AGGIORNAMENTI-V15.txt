@@ -1,0 +1,9 @@
+Versione app 2.4.53
+
+Correzione regressione introdotta nella 2.4.52:
+- rimosso il MutationObserver usato per aggiornare la versione visibile, che poteva generare un ciclo continuo di mutazioni DOM e bloccare l'interfaccia della PWA;
+- aggiornamento versione ora solo su eventi puntuali (apertura Home, popstate, pageshow, ritorno in foreground), senza osservazione continua del DOM;
+- rimossa anche l'osservazione continua DOM dal modulo di modifica dei titoli TikTok;
+- il titolo dei consigli TikTok resta modificabile toccando il titolo/matitina, con salvataggio Firestore condiviso;
+- cache PWA incrementata a viaggio-nozze-v156;
+- riferimenti asset incrementati per forzare il recupero dei file corretti.
