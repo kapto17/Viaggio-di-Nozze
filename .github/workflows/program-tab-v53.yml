@@ -1,0 +1,33 @@
+name: Programma bottom bar v53
+on: [push]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply patch
+        run: python scripts/program_tab_v53.py
+      - name: Verify
+        run: |
+          node --check app.js
+          node --check sw.js
+          grep -q 'Versione app 2.4.53' app.js
+          grep -q 'programTabSelectedDate' app.js
+          grep -q 'program-date-chip' app.js
+          grep -q 'Programma del viaggio' index.html
+          grep -q 'Programma' index.html
+          grep -q 'style.css?v=83' index.html
+          grep -q 'app.js?v=127' index.html
+          grep -q 'V53 · Programma nella bottom bar' style.css
+          grep -q 'viaggio-nozze-v151' sw.js
+          ! grep -q 'motion-nav-restoring' motion.js
+          git diff --check
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app.js index.html style.css sw.js
+          git commit -m "Sostituisce Città con Programma 2.4.53 [skip ci]"
+          git push
