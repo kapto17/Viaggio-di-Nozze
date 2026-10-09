@@ -184,9 +184,14 @@ function stopTipsListener(){
   currentCity = null;
 }
 
-function setTabVisible(visible){
+function setTabVisible(moduleAuthenticated){
   const tab = $("#tiktok-tab");
-  if (tab) tab.hidden = !visible;
+  if (!tab) return;
+  // La visibilità deve seguire lo stesso stato L&F usato da Budget e SOS.
+  // Anche se il modulo Firebase TikTok vede ancora una sessione durante un cambio stato,
+  // il tab resta nascosto finché l'area privata centrale non risulta autenticata.
+  const privateAreaAuthenticated = !!window.LFBudget?.isAuthenticated?.();
+  tab.hidden = !(moduleAuthenticated && privateAreaAuthenticated);
 }
 
 function setScreen(name){
@@ -210,7 +215,7 @@ function navigate(name, payload={}, push=true){
 }
 
 function requireAuth(pushHistory=true){
-  if (currentUser) return true;
+  if (currentUser && window.LFBudget?.isAuthenticated?.()) return true;
   sessionStorage.setItem("lf-private-target", "tiktok");
   if (typeof window.openPrivateAccess === "function") window.openPrivateAccess(pushHistory);
   else location.hash = "private-access";
@@ -224,7 +229,7 @@ function countFor(cityId){
 function renderHub(){
   const host = $("#screen-tiktok");
   if (!host) return;
-  if (!currentUser){
+  if (!currentUser || !window.LFBudget?.isAuthenticated?.()){
     host.innerHTML = `<div class="tiktok-empty">Area privata L&amp;F.</div>`;
     return;
   }
@@ -289,7 +294,7 @@ function renderCity(cityId){
   currentCity = cityId;
   const host = $("#screen-tiktok-city");
   if (!host) return;
-  if (!currentUser){ host.innerHTML = `<div class="tiktok-empty">Area privata L&amp;F.</div>`; return; }
+  if (!currentUser || !window.LFBudget?.isAuthenticated?.()){ host.innerHTML = `<div class="tiktok-empty">Area privata L&amp;F.</div>`; return; }
   const info = cityInfo(cityId);
   const label = cityId === "unassigned" ? "Da assegnare" : (info?.label || "Consigli TikTok");
   const icon = cityId === "unassigned" ? "📥" : (info?.icon || "♪");
@@ -327,7 +332,7 @@ function renderCity(cityId){
 
 async function saveTip(event, cityId){
   event.preventDefault();
-  if (!currentUser || cityId === "unassigned") return;
+  if (!currentUser || !window.LFBudget?.isAuthenticated?.() || cityId === "unassigned") return;
   const status = $("#tiktok-form-status");
   const button = $("#tiktok-save");
   try {
@@ -363,14 +368,14 @@ async function saveTip(event, cityId){
 }
 
 async function removeTip(id){
-  if (!currentUser || !id) return;
+  if (!currentUser || !window.LFBudget?.isAuthenticated?.() || !id) return;
   if (!confirm("Eliminare questo consiglio TikTok? Verrà rimosso anche dall'altro telefono.")) return;
   try { await deleteDoc(doc(db,"budget","main","tiktokTips",id)); }
   catch(err){ console.error(err); alert("Non sono riuscito a eliminare il consiglio."); }
 }
 
 async function assignTip(id, cityId){
-  if (!currentUser || !id || !cityInfo(cityId)) return;
+  if (!currentUser || !window.LFBudget?.isAuthenticated?.() || !id || !cityInfo(cityId)) return;
   try {
     await updateDoc(doc(db,"budget","main","tiktokTips",id), { city:cityId, updatedAt:serverTimestamp() });
   } catch(err){
@@ -447,8 +452,17 @@ function startFirebase(){
 
 bindNavigation();
 setTabVisible(false);
+
+// Fonte di verità per la visibilità: lo stesso stato privato L&F di Budget e SOS.
+window.addEventListener("lf-auth-changed", event => {
+  setTabVisible(!!event.detail?.authenticated && !!currentUser);
+  if (!event.detail?.authenticated && ($("#screen-tiktok")?.classList.contains("active") || $("#screen-tiktok-city")?.classList.contains("active"))){
+    if (typeof window.openPrivateAccess === "function") window.openPrivateAccess(false);
+  }
+});
+
 if (window.LFBudget) startFirebase();
 else window.addEventListener("lf-firebase-ready", startFirebase, { once:true });
-window.addEventListener("online",()=>{ if (currentUser) ensureInitialTips(); });
+window.addEventListener("online",()=>{ if (currentUser && window.LFBudget?.isAuthenticated?.()) ensureInitialTips(); });
 
 window.LFTikTokTips = { open:openHub, openCity };
