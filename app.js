@@ -524,7 +524,7 @@ function renderHome(){
   if(new Date() < new Date("2026-10-20T00:00:00")){
     const version=document.createElement("div");
     version.className="home-app-version";
-    version.textContent="Versione app 2.4.51";
+    version.textContent="Versione app 2.4.53";
     el.appendChild(version);
   }
   bindTodayCard(el);
@@ -867,272 +867,77 @@ function renderRouteStrip(){
   $$(".route-stop", el).forEach(btn => btn.addEventListener("click", () => openCity(btn.dataset.leg)));
 }
 
-// ---------- Rendering: Città (elenco) ----------
-function renderCitiesList(){
+// ---------- Rendering: Programma (riusa lo screen "cities" per non cambiare history/navigation) ----------
+let programTabSelectedDate = "";
+
+function programTabDates(){
+  return [...new Set(allProgramDays().map(row => row.day.date))].sort();
+}
+
+function programTabDefaultDate(dates){
+  if(!dates.length) return "";
+  const today = localISODate();
+  if(today <= dates[0]) return dates[0];
+  if(today >= dates[dates.length - 1]) return dates[dates.length - 1];
+  if(dates.includes(today)) return today;
+  return dates.find(date => date > today) || dates[0];
+}
+
+function programTabChipHtml(iso, active){
+  const d = new Date(`${iso}T12:00:00`);
+  const weekday = d.toLocaleDateString("it-IT", {weekday:"short"}).replace(".", "");
+  const month = d.toLocaleDateString("it-IT", {month:"short"}).replace(".", "");
+  return `<button type="button" class="program-date-chip ${active ? "active" : ""}" data-program-tab-date="${iso}" aria-pressed="${active ? "true" : "false"}">
+    <span>${weekday}</span><strong>${d.getDate()}</strong><small>${month}</small>
+  </button>`;
+}
+
+function renderCitiesList(forcedDate=null){
   const el = $("#screen-cities");
-  el.innerHTML = `
-    <div class="section-title">Tutte le tappe</div>
-    ${TRIP.legs.map(leg => cityCardHtml(leg)).join("")}
-  `;
-  bindCityCardClicks(el);
-}
+  const rows = allProgramDays();
+  const dates = programTabDates();
 
-
-// ---------- Biglietti locali (IndexedDB) ----------
-const TICKET_DB_NAME = "viaggio-nozze-local";
-const TICKET_DB_VERSION = 2;
-const TICKET_STORE = "tickets";
-
-function openTicketDb(){
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(TICKET_DB_NAME, TICKET_DB_VERSION);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      let store;
-      if (!db.objectStoreNames.contains(TICKET_STORE)){
-        store = db.createObjectStore(TICKET_STORE, { keyPath: "id", autoIncrement: true });
-        store.createIndex("legId", "legId", { unique:false });
-      } else {
-        store = req.transaction.objectStore(TICKET_STORE);
-      }
-      if (!store.indexNames.contains("targetKey")) store.createIndex("targetKey", "targetKey", { unique:false });
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function saveLocalTicket(legId, file, label="", targetKey="", targetLabel=""){
-  const db = await openTicketDb();
-  const rec = {
-    legId,
-    label: label || file.name,
-    targetKey,
-    targetLabel,
-    fileName: file.name,
-    mimeType: file.type || "application/octet-stream",
-    size: file.size,
-    createdAt: Date.now(),
-    blob: file
-  };
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(TICKET_STORE, "readwrite");
-    const req = tx.objectStore(TICKET_STORE).add(rec);
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-async function getLocalTickets(legId){
-  const db = await openTicketDb();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(TICKET_STORE, "readonly");
-    const idx = tx.objectStore(TICKET_STORE).index("legId");
-    const req = idx.getAll(legId);
-    req.onsuccess = () => resolve((req.result || []).sort((a,b)=>a.createdAt-b.createdAt));
-    req.onerror = () => reject(req.error);
-  });
-}
-
-function ticketKey(legId,label){
-  return `${legId}::${normalizeProgramRef(label)}`;
-}
-function ticketTargetsForLeg(leg){
-  const seen=new Set(),out=[];
-  const add=label=>{
-    if(!label)return;
-    const key=ticketKey(leg.id,label);
-    if(seen.has(key))return;
-    seen.add(key); out.push({key,label});
-  };
-  (leg.tickets||[]).forEach(x=>add(x.name));
-  (leg.activities||[]).filter(x=>x.ticketUpload!==false).forEach(x=>add(x.name));
-  (leg.transport||[]).forEach(x=>add(x.title));
-  return out;
-}
-function ticketTargetForProgramItem(item){
-  const ref=resolveProgramDetail(item);
-  if(ref)return {key:ticketKey(ref.legId,ref.name),label:ref.name,legId:ref.legId};
-  const title=normalizeProgramRef(item?.title);
-  if(!title)return null;
-  for(const leg of TRIP.legs){
-    for(const t of ticketTargetsForLeg(leg)){
-      const n=normalizeProgramRef(t.label);
-      if(n===title || (n && (title.includes(n)||n.includes(title)))) return {...t,legId:leg.id};
-    }
-  }
-  return null;
-}
-async function getTicketsForTarget(targetKey){
-  if(!targetKey)return [];
-  const db=await openTicketDb();
-  return new Promise((resolve,reject)=>{
-    const tx=db.transaction(TICKET_STORE,"readonly");
-    const req=tx.objectStore(TICKET_STORE).index("targetKey").getAll(targetKey);
-    req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>a.createdAt-b.createdAt));
-    req.onerror=()=>reject(req.error);
-  });
-}
-function openTicketPlaceholder(){
-  let popup = null;
-  try{
-    popup = window.open("about:blank", "_blank");
-    if(popup && !popup.closed){
-      try{
-        popup.document.title = "Apertura biglietto…";
-        popup.document.body.innerHTML = '<div style="font-family:system-ui;padding:24px;color:#16233f">Apertura biglietto…</div>';
-      }catch(_){}
-    }
-  }catch(_){}
-  return popup;
-}
-async function openTicketRecord(rec, popup=null){
-  if(!rec || !rec.blob){
-    try{ popup?.close(); }catch(_){}
+  if(!dates.length){
+    el.innerHTML = `<div class="program-hub-head"><h2>Programma</h2></div><div class="empty-note">Programma non disponibile.</div>`;
     return;
   }
-  const url=URL.createObjectURL(rec.blob);
-  let opened=false;
-  if(popup && !popup.closed){
-    try{ popup.location.replace(url); opened=true; }catch(_){
-      try{ popup.location.href=url; opened=true; }catch(__){}
-    }
-  }
-  if(!opened){
-    try{ window.location.href=url; opened=true; }catch(_){}
-  }
-  setTimeout(()=>URL.revokeObjectURL(url),120000);
-}
-async function openTicketsForTarget(targetKey,targetLabel="Biglietti"){
-  const tickets=await getTicketsForTarget(targetKey);
-  if(!tickets.length)return;
-  if(tickets.length===1){await openTicketRecord(tickets[0]);return;}
-  document.getElementById("ticket-picker-dialog")?.remove();
-  const dlg=document.createElement("dialog");
-  dlg.id="ticket-picker-dialog";
-  dlg.style.cssText="border:0;border-radius:20px;padding:0;max-width:min(92vw,430px);width:100%;box-shadow:0 18px 60px #0006";
-  dlg.innerHTML=`<div style="padding:20px"><div style="font-size:12px;opacity:.65;font-weight:800">🎟️ BIGLIETTI</div><h3 style="margin:6px 0 14px">${escapeHtml(targetLabel)}</h3>${tickets.map(t=>`<button type="button" data-pick-ticket="${t.id}" style="display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:12px;border:1px solid #ddd;background:#fff;font:inherit">📄 ${escapeHtml(t.label||t.fileName)}</button>`).join("")}<button type="button" data-close-ticket-dialog style="width:100%;margin-top:10px;padding:10px;border:0;background:transparent;font:inherit">Chiudi</button></div>`;
-  document.body.appendChild(dlg);
-  dlg.querySelector("[data-close-ticket-dialog]").onclick=()=>dlg.close();
-  dlg.querySelectorAll("[data-pick-ticket]").forEach(b=>b.onclick=async()=>{const rec=await getLocalTicket(b.dataset.pickTicket);dlg.close();await openTicketRecord(rec);});
-  dlg.addEventListener("close",()=>dlg.remove());
-  dlg.showModal();
-}
-async function decorateTicketButtons(root=document){
-  for(const host of root.querySelectorAll("[data-ticket-target]")){
-    try{
-      const tickets=await getTicketsForTarget(host.dataset.ticketTarget);
-      let btn=host.querySelector(".linked-ticket-btn");
-      if(!tickets.length){btn?.remove();continue;}
-      if(!btn){
-        btn=document.createElement("button");
-        btn.type="button"; btn.className="program-map linked-ticket-btn";
-        host.appendChild(btn);
-      }
-      btn.textContent=`🎟️ ${tickets.length>1?"Biglietti":"Biglietto"}`;
-      btn.onclick=e=>{e.stopPropagation();openTicketsForTarget(host.dataset.ticketTarget,host.dataset.ticketLabel||"Biglietti");};
-    }catch(_){}
-  }
-}
 
-async function getLocalTicket(id){
-  const db = await openTicketDb();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(TICKET_STORE, "readonly");
-    const req = tx.objectStore(TICKET_STORE).get(Number(id));
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
+  if(forcedDate && dates.includes(forcedDate)) programTabSelectedDate = forcedDate;
+  else if(!dates.includes(programTabSelectedDate)) programTabSelectedDate = programTabDefaultDate(dates);
 
-async function deleteLocalTicket(id){
-  const db = await openTicketDb();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(TICKET_STORE, "readwrite");
-    const req = tx.objectStore(TICKET_STORE).delete(Number(id));
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
-  });
-}
+  const selectedRows = rows.filter(row => row.day.date === programTabSelectedDate);
+  el.innerHTML = `
+    <div class="program-hub">
+      <div class="program-hub-head">
+        <h2>Programma</h2>
+        <div>Il viaggio giorno per giorno</div>
+      </div>
+      <div class="program-date-strip" role="tablist" aria-label="Giorni del viaggio">
+        ${dates.map(date => programTabChipHtml(date, date === programTabSelectedDate)).join("")}
+      </div>
+      <div class="program-hub-content">
+        ${selectedRows.map(({leg,day}) => `
+          <section class="program-hub-leg" style="--program-leg-accent:${ACCENT[leg.accent] || "var(--brass)"}">
+            <div class="program-hub-city"><span></span>${escapeHtml(leg.city)}</div>
+            ${programDayHtml(day)}
+          </section>
+        `).join("")}
+      </div>
+    </div>`;
 
-function formatFileSize(bytes){
-  if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + " KB";
-  return (bytes/(1024*1024)).toFixed(1) + " MB";
-}
-
-async function renderLocalTickets(legId){
-  const host = $("#local-tickets-" + legId);
-  if (!host) return;
-  try {
-    const tickets = await getLocalTickets(legId);
-    if (!tickets.length){
-      host.innerHTML = `<div class="local-ticket-empty">Nessun file salvato sul telefono.</div>`;
-      return;
-    }
-    host.innerHTML = tickets.map(t => `
-      <div class="local-ticket-card">
-        <div class="local-ticket-icon">${t.mimeType.includes("pdf") ? "📄" : "🎟️"}</div>
-        <div class="local-ticket-info">
-          <div class="local-ticket-name">${t.label || t.fileName}</div>
-          <div class="local-ticket-meta">${t.targetLabel ? `Associato a: ${escapeHtml(t.targetLabel)} · ` : "Non associato · "}${t.fileName} · ${formatFileSize(t.size)}</div>
-          <div class="local-ticket-actions">
-            <button class="local-ticket-open" data-ticket-open="${t.id}">Apri</button>
-            <button class="local-ticket-delete" data-ticket-delete="${t.id}">Elimina</button>
-          </div>
-        </div>
-      </div>`).join("");
-
-    $$("[data-ticket-open]", host).forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const popup = openTicketPlaceholder();
-        try{
-          const rec = await getLocalTicket(btn.dataset.ticketOpen);
-          if (!rec){ try{ popup?.close(); }catch(_){} return; }
-          await openTicketRecord(rec, popup);
-        }catch(err){
-          console.error("Apertura biglietto:", err);
-          try{ popup?.close(); }catch(_){}
-          alert("Non sono riuscito ad aprire il biglietto su questo dispositivo.");
-        }
-      });
+  $$("[data-program-tab-date]", el).forEach(button => {
+    button.addEventListener("click", () => {
+      const next = button.dataset.programTabDate;
+      if(!next || next === programTabSelectedDate) return;
+      programTabSelectedDate = next;
+      renderCitiesList(next);
+      window.scrollTo({top:0, behavior:"auto"});
     });
-
-    $$("[data-ticket-delete]", host).forEach(btn => {
-      btn.addEventListener("click", async () => {
-        if (!confirm("Eliminare questo biglietto dal telefono?")) return;
-        await deleteLocalTicket(btn.dataset.ticketDelete);
-        renderLocalTickets(legId);
-      });
-    });
-  } catch(err){
-    console.error(err);
-    host.innerHTML = `<div class="local-ticket-empty">Impossibile leggere i biglietti locali.</div>`;
-  }
-}
-
-function bindTicketImporter(leg){
-  const input=$("#ticket-file-"+leg.id);
-  const button=$("#ticket-import-"+leg.id);
-  const select=$("#ticket-target-"+leg.id);
-  if(!input||!button||!select)return;
-  button.addEventListener("click",()=>{
-    if(!select.value){alert("Prima scegli a cosa vuoi associare il biglietto.");select.focus();return;}
-    input.click();
   });
-  input.addEventListener("change",async()=>{
-    const files=Array.from(input.files||[]);
-    if(!files.length)return;
-    const opt=select.options[select.selectedIndex];
-    const targetKey=select.value, targetLabel=opt?.dataset?.label||opt?.textContent||"";
-    button.disabled=true;button.textContent="Salvataggio…";
-    try{
-      for(const file of files)await saveLocalTicket(leg.id,file,file.name.replace(/\.[^.]+$/,""),targetKey,targetLabel);
-      input.value="";
-      await renderLocalTickets(leg.id);
-      await decorateTicketButtons(document);
-    }catch(err){console.error(err);alert("Non sono riuscito a salvare il file sul telefono.");}
-    finally{button.disabled=false;button.textContent="📎 Importa biglietto";}
+
+  requestAnimationFrame(() => {
+    const active = $(".program-date-chip.active", el);
+    active?.scrollIntoView({behavior:"auto", block:"nearest", inline:"center"});
   });
 }
 
