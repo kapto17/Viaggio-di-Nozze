@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v152";
+const CACHE_NAME = "viaggio-nozze-v153";
 const ASSETS = [
   "./",
   "./index.html",
@@ -12,6 +12,7 @@ const ASSETS = [
   "./today-weather.css",
   "./ticket-meta.css",
   "./program-tab.css",
+  "./saved-tips.css",
   "./app.js",
   "./motion.js",
   "./budget-layout.js",
@@ -22,6 +23,7 @@ const ASSETS = [
   "./ticket-meta.js",
   "./program-tab.js",
   "./ticket-sync.js",
+  "./saved-tips.js",
   "./data.js",
   "./firebase-budget.js",
   "./manifest.json",
@@ -108,7 +110,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   const url = new URL(event.request.url);
-  const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+  const isCoreAsset = ["/style.css", "/app.js", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/saved-tips.js", "/saved-tips.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
   if (isCoreAsset) {
     event.respondWith(
