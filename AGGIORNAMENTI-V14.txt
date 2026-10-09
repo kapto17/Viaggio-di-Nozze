@@ -1,0 +1,16 @@
+V14 — App 2.4.52
+
+Consigli TikTok:
+- aggiunta matitina accanto al titolo di ogni consiglio;
+- il titolo sotto l'anteprima può essere modificato liberamente anche dopo il salvataggio;
+- la modifica viene salvata su Firestore e sincronizzata tra i due telefoni;
+- lasciando il titolo vuoto si torna al titolo automatico / "Consiglio TikTok".
+
+Versionamento:
+- introdotto app-version.js come punto unico per la versione visibile dell'app;
+- versione pubblicata: 2.4.52;
+- da questa release ogni modifica pubblicata deve incrementare il contatore della versione.
+
+PWA:
+- cache aggiornata a viaggio-nozze-v155;
+- aggiunti alla cache saved-tips-title-edit.js, saved-tips-title-edit.css e app-version.js.
