@@ -83,15 +83,3 @@ html.history-restoring .program-transfer-row.motion-reveal .program-transfer-rai
   transform:translateX(-50%) scaleY(1)!important;
   transition:none!important;
 }
-
-
-/* V52 · iOS PWA: nessun frame intermedio della bottom bar durante Indietro. */
-nav.tabbar.motion-nav.motion-nav-restoring,
-nav.tabbar.motion-nav.motion-nav-restoring *,
-nav.tabbar.motion-nav.motion-nav-restoring::before{
-  transition:none!important;
-  animation:none!important;
-}
-nav.tabbar.motion-nav.motion-nav-restoring.motion-nav-ready::before{
-  opacity:1!important;
-}
