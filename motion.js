@@ -134,6 +134,8 @@
   function syncTabPill(){
     const nav = document.querySelector("nav.tabbar");
     if(!nav) return;
+    const restoring = document.documentElement.classList.contains("history-restoring");
+    if(restoring) nav.classList.add("motion-nav-restoring");
     nav.classList.add("motion-nav");
     const active = Array.from(nav.querySelectorAll("button.active"))
       .find(btn => !btn.hidden && btn.getClientRects().length);
@@ -143,13 +145,25 @@
     nav.style.setProperty("--motion-pill-left", `${(btnRect.left-navRect.left).toFixed(1)}px`);
     nav.style.setProperty("--motion-pill-width", `${btnRect.width.toFixed(1)}px`);
     nav.classList.add("motion-nav-ready");
+    if(restoring){
+      const token = String((Number(nav.dataset.motionRestoreToken || 0) + 1));
+      nav.dataset.motionRestoreToken = token;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if(nav.dataset.motionRestoreToken === token) nav.classList.remove("motion-nav-restoring");
+      }));
+    }
   }
 
   function initTabPill(){
     const nav = document.querySelector("nav.tabbar");
     if(!nav) return;
     syncTabPill();
-    const observer = new MutationObserver(() => requestAnimationFrame(syncTabPill));
+    const observer = new MutationObserver(() => {
+      // During browser Back, run before the next paint so iOS never renders
+      // the previous active pill/icon state for one frame.
+      if(document.documentElement.classList.contains("history-restoring")) syncTabPill();
+      else requestAnimationFrame(syncTabPill);
+    });
     observer.observe(nav,{subtree:true,attributes:true,attributeFilter:["class","hidden"]});
     nav.addEventListener("click",() => requestAnimationFrame(syncTabPill),{passive:true});
     window.addEventListener("resize",syncTabPill,{passive:true});
