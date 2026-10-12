@@ -1,0 +1,10 @@
+Versione 2.4.54
+
+Aggiunti due documenti caricabili nella sezione Biglietti/Documenti:
+- San Francisco: ESTA · Stati Uniti
+- Bayahibe: E-Ticket · Repubblica Dominicana
+
+I documenti usano lo stesso sistema di upload locale/sincronizzazione già presente per gli altri biglietti.
+
+Implementazione separata in travel-documents.js per evitare modifiche invasive a data.js.
+Cache PWA aggiornata a viaggio-nozze-v157.
