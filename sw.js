@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v161";
+const CACHE_NAME = "viaggio-nozze-v162";
 const ASSETS = [
   "./",
   "./index.html",
@@ -18,8 +18,7 @@ const ASSETS = [
   "./app.js",
   "./app-version.js",
   "./travel-documents.js",
-  "./trip-data-patch.js",
-  "./trip-ui-patch.js",
+  "./trip-update.js",
   "./motion.js",
   "./budget-layout.js",
   "./expense-wizard.js",
@@ -89,8 +88,6 @@ const ASSETS = [
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    // Forza una lettura fresca in fase di installazione: evita di costruire
-    // una nuova cache usando asset rimasti nella HTTP cache del browser.
     await Promise.all(ASSETS.map(async (asset) => {
       const response = await fetch(asset, { cache: "reload" });
       if (!response.ok) throw new Error(`Precache failed: ${asset}`);
@@ -125,7 +122,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   const url = new URL(event.request.url);
-  const isCoreAsset = ["/style.css", "/app.js", "/app-version.js", "/travel-documents.js", "/trip-data-patch.js", "/trip-ui-patch.js", "/hotel-voucher.js", "/hotel-voucher.css", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/saved-tips.js", "/saved-tips.css", "/saved-tips-title-edit.js", "/saved-tips-title-edit.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+  const isCoreAsset = ["/style.css", "/app.js", "/app-version.js", "/travel-documents.js", "/trip-update.js", "/hotel-voucher.js", "/hotel-voucher.css", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/saved-tips.js", "/saved-tips.css", "/saved-tips-title-edit.js", "/saved-tips-title-edit.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
   if (isCoreAsset) {
     event.respondWith(
@@ -156,7 +153,6 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-/* aggiornamento immediato degli aggiornamenti */
 self.addEventListener("message", event => {
   if(event.data && event.data.type === "SKIP_WAITING"){
     self.skipWaiting();
