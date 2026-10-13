@@ -21,7 +21,7 @@
 
     const screen = document.getElementById("screen-city-detail");
     if (!screen?.classList.contains("active")) return "";
-    const city = screen.querySelector(".city-detail-hero h2, .cd-hero h2, h2")?.textContent?.trim() || "";
+    const city = screen.querySelector(".city-header-content h2, .city-detail-hero h2, .cd-hero h2, h2")?.textContent?.trim() || "";
     if (city === "Las Vegas") {
       const dates = screen.querySelector(".cd-dates")?.textContent || "";
       return /27\s*ott/i.test(dates) ? "vegas1" : "vegas2";
@@ -95,6 +95,7 @@
     btn.hidden = !auth;
     if (!auth) return;
 
+    if (!btn.textContent) btn.textContent = "🎟️ Voucher hotel";
     try {
       const found = await ticketsFor(btn.dataset.hotelVoucherTarget || "");
       const hasVoucher = found.length > 0;
@@ -103,6 +104,7 @@
       btn.textContent = hasVoucher ? "🎟️ Apri voucher" : "📎 Aggiungi voucher";
     } catch (err) {
       console.error("Stato voucher hotel:", err);
+      btn.dataset.hasVoucher = "0";
       btn.textContent = "🎟️ Voucher hotel";
     }
   }
@@ -134,6 +136,7 @@
       button.type = "button";
       button.className = "mapbtn hotel-map hotel-voucher-btn";
       button.hidden = true;
+      button.textContent = "🎟️ Voucher hotel";
       actions.appendChild(button);
     }
     if (!input) {
@@ -153,17 +156,19 @@
       button.dataset.hotelVoucherBound = "1";
       button.addEventListener("click", async () => {
         if (!isAuthenticated()) return;
+
+        // Se non risulta ancora caricato, apriamo il picker subito dentro il gesto utente:
+        // su Android è più affidabile che farlo dopo una await.
+        if (button.dataset.hasVoucher !== "1") {
+          input.click();
+          return;
+        }
+
         button.disabled = true;
         try {
-          const found = await ticketsFor(button.dataset.hotelVoucherTarget || "");
-          if (found.length) {
-            button.disabled = false;
-            if (typeof window.openTicketsForTarget === "function") {
-              await window.openTicketsForTarget(button.dataset.hotelVoucherTarget, button.dataset.hotelVoucherLabel || "Voucher hotel");
-            }
-            return;
+          if (typeof window.openTicketsForTarget === "function") {
+            await window.openTicketsForTarget(button.dataset.hotelVoucherTarget, button.dataset.hotelVoucherLabel || "Voucher hotel");
           }
-          input.click();
         } catch (err) {
           console.error("Apertura voucher hotel:", err);
           alert("Non sono riuscito ad aprire il voucher dell'hotel.");
