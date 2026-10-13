@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v159";
+const CACHE_NAME = "viaggio-nozze-v160";
 const ASSETS = [
   "./",
   "./index.html",
@@ -85,9 +85,16 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    // Forza una lettura fresca in fase di installazione: evita di costruire
+    // una nuova cache usando asset rimasti nella HTTP cache del browser.
+    await Promise.all(ASSETS.map(async (asset) => {
+      const response = await fetch(asset, { cache: "reload" });
+      if (!response.ok) throw new Error(`Precache failed: ${asset}`);
+      await cache.put(asset, response);
+    }));
+  })());
   self.skipWaiting();
 });
 
@@ -104,13 +111,13 @@ self.addEventListener("fetch", (event) => {
 
   if (event.request.mode === "navigate") {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: "no-store" })
         .then((response) => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
           return response;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(() => caches.match("./index.html", { ignoreSearch:true }))
     );
     return;
   }
@@ -120,7 +127,7 @@ self.addEventListener("fetch", (event) => {
 
   if (isCoreAsset) {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: "no-store" })
         .then((response) => {
           if (response && (response.ok || response.type === "opaque")) {
             const copy = response.clone();
@@ -128,7 +135,7 @@ self.addEventListener("fetch", (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(event.request, { ignoreSearch:true }))
     );
     return;
   }
@@ -147,7 +154,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-/* v2.3.3 — attivazione immediata degli aggiornamenti */
+/* aggiornamento immediato degli aggiornamenti */
 self.addEventListener("message", event => {
   if(event.data && event.data.type === "SKIP_WAITING"){
     self.skipWaiting();
