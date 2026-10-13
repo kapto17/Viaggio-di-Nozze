@@ -1,21 +1,39 @@
-/* 2.4.55 · Voucher hotel nel box Alloggio */
+/* 2.4.56 · Voucher hotel allineato al pulsante Maps */
 .hotel-voucher-actions{
   display:flex;
   align-items:center;
-  flex-wrap:wrap;
-  gap:9px;
+  flex-wrap:nowrap;
+  gap:8px;
   margin-top:13px;
+  min-width:0;
 }
 .hotel-voucher-actions .hotel-map{
   margin-top:0!important;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border:1px solid var(--ink);
+  border-radius:999px;
+  padding:6px 10px;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.2;
+  text-decoration:none;
+  color:var(--ink);
+  background:var(--paper);
+  white-space:nowrap;
+  min-width:0;
+}
+.hotel-voucher-actions .hotel-map:active{
+  background:var(--ink);
+  color:var(--paper);
 }
 .hotel-voucher-btn{
   appearance:none;
   -webkit-appearance:none;
-  border:0;
-  font:inherit;
   cursor:pointer;
-  white-space:nowrap;
 }
 .hotel-voucher-btn.is-ready{
   box-shadow:inset 0 0 0 1px rgba(22,35,63,.08);
@@ -29,4 +47,15 @@
 }
 .hotel-voucher-input{
   display:none!important;
+}
+
+@media(max-width:420px){
+  .hotel-voucher-actions{
+    gap:6px;
+  }
+  .hotel-voucher-actions .hotel-map{
+    padding:6px 8px;
+    font-size:11px;
+    gap:4px;
+  }
 }
