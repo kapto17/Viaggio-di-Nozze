@@ -1,21 +1,31 @@
-/* v2.4.58 — unico file per correzioni viaggio, documenti, promemoria e fee */
+/* v2.4.59 — unico file per correzioni viaggio, documenti, promemoria, fee e assicurazione */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
   const setHotelFee = (id, fee) => { const target = leg(id); if (target?.hotel) target.hotel.hotelFee = fee; };
+  const addTicket = (legId, ticket) => {
+    const target = leg(legId);
+    if (!target) return;
+    if (!Array.isArray(target.tickets)) target.tickets = [];
+    const exists = target.tickets.some(item => String(item?.name || "").trim().toLowerCase() === ticket.name.toLowerCase());
+    if (!exists) target.tickets.push(ticket);
+  };
+
+  const sfo = leg("sfo");
+  addTicket("sfo", {
+    name:"Assicurazione viaggio",
+    note:"Nobis Assicurazioni · WI UP · Polizza 204765892 · validità 20/10/2026–10/11/2026 · Mondo.",
+    status:"Documento"
+  });
 
   const bayahibe = leg("bayahibe");
   if (bayahibe) {
     if (!Array.isArray(bayahibe.tickets)) bayahibe.tickets = [];
     bayahibe.tickets = bayahibe.tickets.filter(item => String(item?.name || "").trim().toLowerCase() !== "e-ticket · repubblica dominicana".toLowerCase());
-    const addTicket = ticket => {
-      const exists = bayahibe.tickets.some(item => String(item?.name || "").trim().toLowerCase() === ticket.name.toLowerCase());
-      if (!exists) bayahibe.tickets.push(ticket);
-    };
-    addTicket({ name:"E-Ticket Ingresso", note:"E-ticket per l’ingresso in Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
-    addTicket({ name:"E-Ticket Uscita", note:"E-ticket per l’uscita dalla Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
-    addTicket({ name:"Transfer Andata", note:"Voucher del trasferimento da Punta Cana al Viva Dominicus Palace.", status:"Documento" });
-    addTicket({ name:"Transfer Ritorno", note:"Voucher del trasferimento dal Viva Dominicus Palace a Punta Cana.", status:"Documento" });
+    addTicket("bayahibe", { name:"E-Ticket Ingresso", note:"E-ticket per l’ingresso in Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
+    addTicket("bayahibe", { name:"E-Ticket Uscita", note:"E-ticket per l’uscita dalla Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
+    addTicket("bayahibe", { name:"Transfer Andata", note:"Voucher del trasferimento da Punta Cana al Viva Dominicus Palace.", status:"Documento" });
+    addTicket("bayahibe", { name:"Transfer Ritorno", note:"Voucher del trasferimento dal Viva Dominicus Palace a Punta Cana.", status:"Documento" });
   }
 
   setHotelFee("sfo", { perNight:0, label:"Fee hotel", status:"not-listed", note:"Nessuna Guest Amenities Fee è indicata nel voucher dell’agenzia · eventuali addebiti extra restano da verificare in hotel." });
@@ -26,7 +36,6 @@
   setHotelFee("chicago", { perNight:25, label:"Facility fee + extra locali", status:"confirmed-base", note:"$25,00 + tasse per camera/notte · CTID 1,5% da pagare direttamente in hotel · deposito cauzionale $100 al giorno, massimo $300 (non è un costo e viene restituito se non ci sono addebiti)." });
   setHotelFee("bayahibe", { perNight:0, label:"Fee hotel", status:"none", note:"Nessuna resort fee separata indicata per il pacchetto all inclusive." });
 
-  const sfo = leg("sfo");
   const fcoSfo = sfo?.transport?.find(item => item.date === "2026-10-20" && item.type === "flight");
   if (fcoSfo) fcoSfo.subtitle = "United UA506 · partenza da Roma Fiumicino";
   const la = leg("la");
@@ -82,17 +91,30 @@
         { icon:"✈️", title:"Fai il check-in online", text:"United · PUJ → IAD → FCO · partenza domani alle 12:56." }
       ]
     };
+
     if (!document.getElementById("trip-update-style")) {
       const style = document.createElement("style");
       style.id = "trip-update-style";
-      style.textContent = `.today-reminders-card{margin:16px 0 18px;padding:16px;border:1px solid rgba(176,76,91,.22);border-radius:18px;background:linear-gradient(145deg,#fffaf5,#fff);box-shadow:0 8px 22px -18px rgba(50,35,35,.45)}.today-reminders-head{display:flex;align-items:center;gap:9px;margin-bottom:11px}.today-reminders-head span{font-size:20px}.today-reminders-head strong{font-size:15px;letter-spacing:.02em}.today-reminder-item{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 0;border-top:1px solid rgba(40,40,40,.08)}.today-reminder-item:first-of-type{border-top:0;padding-top:2px}.today-reminder-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(176,76,91,.08);font-size:18px}.today-reminder-copy strong{display:block;font-size:14px;margin-bottom:3px}.today-reminder-copy span{display:block;font-size:13px;line-height:1.4;opacity:.76}`;
+      style.textContent = `
+        .today-reminders-card{margin:16px 0 18px;padding:16px;border:1px solid rgba(176,76,91,.22);border-radius:18px;background:linear-gradient(145deg,#fffaf5,#fff);box-shadow:0 8px 22px -18px rgba(50,35,35,.45)}
+        .today-reminders-head{display:flex;align-items:center;gap:9px;margin-bottom:11px}.today-reminders-head span{font-size:20px}.today-reminders-head strong{font-size:15px;letter-spacing:.02em}
+        .today-reminder-item{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 0;border-top:1px solid rgba(40,40,40,.08)}.today-reminder-item:first-of-type{border-top:0;padding-top:2px}
+        .today-reminder-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:rgba(176,76,91,.08);font-size:18px}.today-reminder-copy strong{display:block;font-size:14px;margin-bottom:3px}.today-reminder-copy span{display:block;font-size:13px;line-height:1.4;opacity:.76}
+        .sos-insurance-note{margin:8px 0 0;font-weight:700;color:#8a2f3c}
+        .sos-insurance-coverages{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+        .sos-insurance-coverages span{padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.035);font-size:12px;line-height:1.25}
+        .sos-insurance-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+        .sos-insurance-actions a{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border-radius:11px;text-decoration:none;font-weight:700;background:rgba(176,76,91,.08);color:inherit}
+      `;
       document.head.appendChild(style);
     }
+
     const remindersHtml = iso => {
       const items = TODAY_REMINDERS[iso] || [];
       if (!items.length) return "";
       return `<section class="today-reminders-card" data-today-reminders="${iso}"><div class="today-reminders-head"><span>⚠️</span><strong>Da fare oggi</strong></div>${items.map(item => `<div class="today-reminder-item"><div class="today-reminder-icon">${item.icon}</div><div class="today-reminder-copy"><strong>${item.title}</strong><span>${item.text}</span></div></div>`).join("")}</section>`;
     };
+
     const injectTodayReminders = iso => {
       const screen = document.getElementById("screen-today");
       if (!screen || !iso) return;
@@ -102,14 +124,17 @@
       const program = screen.querySelector(".today-screen-program");
       if (program) program.insertAdjacentHTML("beforebegin", html);
     };
+
     if (typeof window.openTodayScreen === "function" && !window.openTodayScreen.__tripUpdateWrapped) {
       const originalOpenTodayScreen = window.openTodayScreen;
       const wrapped = function(legId, iso){ const result = originalOpenTodayScreen.apply(this, arguments); requestAnimationFrame(() => injectTodayReminders(iso)); return result; };
       wrapped.__tripUpdateWrapped = true;
       window.openTodayScreen = wrapped;
     }
+
     const nightsBetween = (checkin, checkout) => { const a = new Date(`${checkin}T12:00:00Z`); const b = new Date(`${checkout}T12:00:00Z`); const value = Math.round((b-a)/86400000); return Number.isFinite(value) && value > 0 ? value : 1; };
     const knownFeeTotal = () => TRIP.legs.reduce((sum, item) => { const fee = item.hotel?.hotelFee; const perNight = Number(fee?.perNight || 0); if (!perNight || !item.hotel?.checkin || !item.hotel?.checkout) return sum; return sum + perNight * nightsBetween(item.hotel.checkin, item.hotel.checkout); }, 0);
+
     const patchBudgetFeeSection = () => {
       const host = document.getElementById("screen-budget");
       if (!host) return;
@@ -125,13 +150,87 @@
       if (total && typeof money === "function") total.textContent = money(knownFeeTotal(), "USD");
       if (note) note.textContent = "Totale delle fee base con importo noto/stimato. Per Chicago restano da aggiungere le tasse sulla facility fee e il CTID 1,5%; le cauzioni non sono costi.";
     };
+
     if (typeof window.renderBudgetScreen === "function" && !window.renderBudgetScreen.__tripUpdateWrapped) {
       const originalRenderBudgetScreen = window.renderBudgetScreen;
       const wrappedBudget = function(){ const result = originalRenderBudgetScreen.apply(this, arguments); requestAnimationFrame(patchBudgetFeeSection); return result; };
       wrappedBudget.__tripUpdateWrapped = true;
       window.renderBudgetScreen = wrappedBudget;
     }
+
+    const patchInsuranceSOS = () => {
+      const screen = document.getElementById("screen-sos");
+      if (!screen) return;
+      const sectionTitle = Array.from(screen.querySelectorAll(".section-title")).find(el => String(el.textContent || "").trim() === "Assicurazione viaggio");
+      if (!sectionTitle) return;
+
+      screen.querySelector("[data-sos-insurance-details]")?.remove();
+      const oldCard = sectionTitle.nextElementSibling;
+      if (oldCard?.classList?.contains("sos-info-card")) oldCard.remove();
+
+      const wrap = document.createElement("div");
+      wrap.dataset.sosInsuranceDetails = "1";
+      wrap.innerHTML = `
+        <div class="sos-info-card">
+          <div class="sos-card-icon">🛡️</div>
+          <div>
+            <small>Nobis Assicurazioni · WI UP</small>
+            <strong>Polizza 204765892</strong>
+            <p>Valida dal 20/10/2026 al 10/11/2026 · validità territoriale Mondo · assicurati Lorenzo e Fortuna.</p>
+          </div>
+        </div>
+        <div class="sos-info-card">
+          <div class="sos-card-icon">🚑</div>
+          <div>
+            <small>Assistenza in viaggio · 24 ore su 24</small>
+            <strong>Centrale Operativa Nobis</strong>
+            <p>+39 039 9890 702</p>
+            <p class="sos-insurance-note">Contattare la Centrale Operativa prima di sostenere spese mediche o prendere iniziative autonome, salvo emergenza immediata.</p>
+          </div>
+          <a href="tel:+390399890702">Chiama</a>
+        </div>
+        <div class="sos-info-card">
+          <div class="sos-card-icon">💶</div>
+          <div>
+            <small>Massimali principali</small>
+            <strong>Coperture incluse</strong>
+            <div class="sos-insurance-coverages">
+              <span>🏥 Spese mediche<br><b>€50.000</b></span>
+              <span>🧳 Bagaglio<br><b>€1.500</b></span>
+              <span>🩹 Infortuni<br><b>€50.000</b></span>
+              <span>⚖️ Responsabilità civile<br><b>€50.000</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="sos-info-card">
+          <div class="sos-card-icon">📋</div>
+          <div>
+            <small>Denuncia sinistro</small>
+            <strong>Nobis</strong>
+            <p>Portale sinistri.nobis.it · email gst@nobis.it</p>
+            <div class="sos-insurance-actions">
+              <a href="https://sinistri.nobis.it" target="_blank" rel="noopener">Apri portale</a>
+              <a href="mailto:gst@nobis.it">Scrivi email</a>
+            </div>
+            <div class="program-actions" data-ticket-target="sfo::assicurazione viaggio" data-ticket-label="Assicurazione viaggio"></div>
+          </div>
+        </div>`;
+      sectionTitle.insertAdjacentElement("afterend", wrap);
+      if (typeof decorateTicketButtons === "function") decorateTicketButtons(wrap);
+    };
+
+    if (typeof window.openSOS === "function" && !window.openSOS.__tripInsuranceWrapped) {
+      const originalOpenSOS = window.openSOS;
+      const wrappedSOS = function(){
+        const result = originalOpenSOS.apply(this, arguments);
+        requestAnimationFrame(patchInsuranceSOS);
+        return result;
+      };
+      wrappedSOS.__tripInsuranceWrapped = true;
+      window.openSOS = wrappedSOS;
+    }
   }
+
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installUi, { once:true });
   else installUi();
 })();
