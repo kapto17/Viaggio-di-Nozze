@@ -1,4 +1,4 @@
-/* v2.4.64 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
+/* v2.4.65 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
@@ -113,6 +113,7 @@
         .documents-section{margin:12px 0;border-radius:17px;background:rgba(255,255,255,.5);overflow:hidden}.documents-section>summary{list-style:none}.documents-section>summary::-webkit-details-marker{display:none}.documents-section-title{display:flex;align-items:center;gap:8px;margin:0;padding:14px 15px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.documents-section-title .documents-section-count{margin-left:auto;min-width:24px;height:24px;padding:0 7px;border-radius:999px;display:grid;place-items:center;background:#ece9e0;font-size:11px;letter-spacing:0}.documents-section-title .documents-section-chevron{font-size:15px;opacity:.55;transition:transform .2s ease}.documents-section[open] .documents-section-chevron{transform:rotate(180deg)}
         .documents-list{display:grid;gap:10px;padding:0 10px 10px}.documents-card{background:#fff;border-radius:17px;padding:14px;box-shadow:0 9px 24px -21px rgba(20,30,45,.55)}.documents-card-top{display:flex;align-items:flex-start;gap:11px}.documents-card-icon{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:#f2ede3;font-size:19px}.documents-card-copy{min-width:0;flex:1}.documents-card-copy strong{display:block;font-size:14px;line-height:1.25}.documents-card-copy small{display:block;margin-top:4px;font-size:11px;line-height:1.35;opacity:.65}.documents-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.documents-card-badges span{padding:4px 7px;border-radius:999px;background:#eef1ec;font-size:10px;font-weight:800}.documents-open{width:100%;margin-top:11px;padding:11px;border:0;border-radius:13px;background:#eef0f3;color:#23334e;font-weight:800}.documents-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.documents-card-actions button{padding:10px;border:0;border-radius:13px;background:#eef0f3;color:#23334e;font:inherit;font-size:12px;font-weight:800}.documents-empty{padding:24px 16px;border-radius:17px;background:#fff;text-align:center;opacity:.72}
         .documents-upload-backdrop{position:fixed;inset:0;z-index:10050;background:rgba(10,18,30,.52);display:grid;align-items:end;padding:18px}.documents-upload-sheet{width:min(100%,520px);max-height:88vh;overflow:auto;margin:0 auto;background:#fff;border-radius:23px;padding:18px;box-shadow:0 20px 70px rgba(0,0,0,.3)}.documents-upload-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.documents-upload-head small{font-size:10px;font-weight:900;letter-spacing:.1em;opacity:.58}.documents-upload-head h3{margin:3px 0 14px}.documents-upload-close{border:0;background:#eef0f3;border-radius:50%;width:36px;height:36px;font-size:20px}.documents-field{display:grid;gap:6px;margin:12px 0}.documents-field span{font-size:12px;font-weight:800}.documents-field select,.documents-field input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d9dde4;border-radius:12px;background:#fff;font:inherit}.documents-upload-save{width:100%;margin-top:9px;padding:13px;border:0;border-radius:14px;background:#d29a28;color:#10203a;font-weight:900}
+        .lf-transport-ticket-btn{border:0;cursor:pointer;font:inherit;white-space:nowrap}
       `;
       document.head.appendChild(style);
     }
@@ -194,13 +195,6 @@
         while (node?.classList?.contains("ticket")) { const previous = node.previousElementSibling; node.remove(); node = previous; }
       });
     };
-
-    if (typeof window.openCity === "function" && !window.openCity.__tripTicketSummaryWrapped) {
-      const originalOpenCity = window.openCity;
-      const wrappedOpenCity = function(){ const result = originalOpenCity.apply(this, arguments); requestAnimationFrame(stripStaticTicketSummaries); return result; };
-      wrappedOpenCity.__tripTicketSummaryWrapped = true;
-      window.openCity = wrappedOpenCity;
-    }
 
     const normalizeKey = value => String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     const makeTicketKey = (legId, label) => typeof window.ticketKey === "function" ? window.ticketKey(legId,label) : `${legId}::${normalizeKey(label)}`;
@@ -332,7 +326,7 @@
       if (!window.LFBudget?.isAuthenticated?.()) { screen.innerHTML = `<div class="documents-empty">Area privata L&amp;F.</div>`; return; }
       let records = [];
       try { records = await allDocumentRecords(); } catch(err){ console.error("Archivio documenti:",err); }
-      const order = ["flights","hotels","transport","travel","activities","flightvouchers","other"];
+      const order = ["travel","flights","hotels","transport","activities","flightvouchers","other"];
       const grouped = new Map();
       records.forEach(rec => { const cat = documentCategory(rec); if (!grouped.has(cat.id)) grouped.set(cat.id,{cat,items:[]}); grouped.get(cat.id).items.push(rec); });
       const sections = order.filter(id => grouped.has(id)).map(id => { const group = grouped.get(id); const items = sortDocumentGroup(id,group.items); return `<details class="documents-section"><summary class="documents-section-title"><span>${group.cat.icon}</span><strong>${group.cat.label}</strong><span class="documents-section-count">${items.length}</span><span class="documents-section-chevron">⌄</span></summary><div class="documents-list">${items.map(documentCard).join("")}</div></details>`; }).join("");
@@ -383,6 +377,55 @@
           await renderDocumentsScreen();
         } catch(err){ console.error("Salvataggio documento:",err); save.disabled = false; save.textContent = "Salva e condividi"; alert("Non sono riuscito a salvare il documento."); }
       });
+    }
+
+    async function patchTransportTicketButtons(legId){
+      const screen = document.getElementById("screen-city-detail");
+      const targetLeg = leg(legId);
+      if (!screen?.classList.contains("active") || !targetLeg) return;
+      const transportAccordion = Array.from(screen.querySelectorAll(".city-accordion")).find(item => normalizeKey(item.querySelector("summary")?.textContent || "").includes("trasporti"));
+      if (!transportAccordion) return;
+      transportAccordion.querySelectorAll(".lf-transport-ticket-btn").forEach(btn => btn.remove());
+      if (!window.LFBudget?.isAuthenticated?.()) return;
+      let records = [];
+      try { records = await allDocumentRecords(); } catch(err) { console.error("Collegamento biglietti ai trasporti:",err); return; }
+      const cards = Array.from(transportAccordion.querySelectorAll(".ticket"));
+      (targetLeg.transport || []).forEach((transport,index) => {
+        if (transport.type !== "flight") return;
+        const card = cards[index];
+        if (!card) return;
+        const targetKey = makeTicketKey(legId,transport.title);
+        const targetNorm = normalizeKey(transport.title);
+        const matches = records.filter(rec => rec.legId === legId && (rec.targetKey === targetKey || normalizeKey(rec.targetLabel) === targetNorm));
+        if (!matches.length) return;
+        const bottom = card.querySelector(".stub-bottom");
+        if (!bottom) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "mapbtn lf-transport-ticket-btn";
+        btn.textContent = matches.length > 1 ? "🎟️ Apri biglietti" : "🎟️ Apri biglietto";
+        btn.addEventListener("click", async event => {
+          event.preventDefault();
+          if (typeof window.openTicketsForTarget === "function") { window.openTicketsForTarget(targetKey,transport.title); return; }
+          const rec = matches[0];
+          const popup = typeof openTicketPlaceholder === "function" ? openTicketPlaceholder() : null;
+          if (rec && typeof openTicketRecord === "function") await openTicketRecord(rec,popup);
+        });
+        bottom.appendChild(btn);
+      });
+    }
+
+    let activeCityLegId = null;
+    if (typeof window.openCity === "function" && !window.openCity.__tripTicketSummaryWrapped) {
+      const originalOpenCity = window.openCity;
+      const wrappedOpenCity = function(legId){
+        activeCityLegId = legId;
+        const result = originalOpenCity.apply(this, arguments);
+        requestAnimationFrame(() => { stripStaticTicketSummaries(); patchTransportTicketButtons(legId); });
+        return result;
+      };
+      wrappedOpenCity.__tripTicketSummaryWrapped = true;
+      window.openCity = wrappedOpenCity;
     }
 
     function ensureDocumentsScreen(){
@@ -441,24 +484,45 @@
       if (shortcuts) { shortcuts.hidden = !authenticated; if (authenticated) shortcuts.style.removeProperty("display"); else shortcuts.style.setProperty("display","none","important"); }
       const checklist = document.getElementById("archived-checklist-btn"); if (checklist) checklist.hidden = false;
       if (!authenticated && document.getElementById("screen-documents")?.classList.contains("active")) if (typeof openPrivateAccess === "function") openPrivateAccess(false);
+      if (activeCityLegId) setTimeout(() => patchTransportTicketButtons(activeCityLegId),80);
     }
 
-    if (typeof window.renderLocalTickets === "function" && !window.renderLocalTickets.__insuranceMovedToSOS) {
+    if (typeof window.renderLocalTickets === "function" && !window.renderLocalTickets.__tripDocumentCleanup) {
       const baseRenderLocalTickets = window.renderLocalTickets;
       const wrappedRenderLocalTickets = async function(legId){
         const result = await baseRenderLocalTickets.apply(this,arguments);
-        if (legId === "sfo") document.querySelectorAll("#local-tickets-sfo .local-ticket-card").forEach(card => { const text = normalizeKey(card.textContent || ""); if (text.includes("assicurazione viaggio") || text.includes("204765892")) card.remove(); });
+        const host = document.getElementById(`local-tickets-${legId}`);
+        if (!host) return result;
+        host.querySelectorAll(".local-ticket-card").forEach(card => {
+          const text = normalizeKey(card.textContent || "");
+          if (legId === "sfo" && (text.includes("assicurazione") || /(^| )esta( |$)/.test(text))) { card.remove(); return; }
+          const icon = card.querySelector(".local-ticket-icon");
+          if (!icon) return;
+          if (/associato a volo|\bvolo\b|\bfco\b.*\bsfo\b|\bsfo\b.*\blax\b|\blas\b.*\bord\b|\bord\b.*\bpuj\b|\bpuj\b.*\biad\b|\biad\b.*\bfco\b/.test(text)) icon.textContent = "✈️";
+          else if (/voucher hotel|hotel spero|commerce|paris las vegas|lake powell|warwick|dominicus/.test(text)) icon.textContent = "🏨";
+          else if (/noleggio|ritiro suv|transfer|rental/.test(text)) icon.textContent = "🚗";
+          else if (/alcatraz|universal|antelope|tour|studios/.test(text)) icon.textContent = "🎟️";
+        });
+        if (activeCityLegId === legId) setTimeout(() => patchTransportTicketButtons(legId),30);
         return result;
       };
-      wrappedRenderLocalTickets.__insuranceMovedToSOS = true;
+      wrappedRenderLocalTickets.__tripDocumentCleanup = true;
       window.renderLocalTickets = wrappedRenderLocalTickets;
     }
 
     ensureDocumentsScreen(); setupBottomNavigation(); setupMainMenu(); stripStaticTicketSummaries(); applyPrivateNavigationState(!!window.LFBudget?.isAuthenticated?.());
     if (window.LFBudget?.onAuth) window.LFBudget.onAuth(state => applyPrivateNavigationState(!!state?.authenticated));
     window.addEventListener("lf-auth-changed",e => applyPrivateNavigationState(!!e.detail?.authenticated));
-    window.addEventListener("lf-local-ticket-changed",() => { if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,150); if (document.getElementById("screen-sos")?.classList.contains("active")) setTimeout(patchInsuranceSOS,150); });
-    if (window.LFBudget?.onTickets) window.LFBudget.onTickets(() => { if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,900); if (document.getElementById("screen-sos")?.classList.contains("active")) setTimeout(patchInsuranceSOS,900); });
+    window.addEventListener("lf-local-ticket-changed",() => {
+      if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,150);
+      if (document.getElementById("screen-sos")?.classList.contains("active")) setTimeout(patchInsuranceSOS,150);
+      if (activeCityLegId && document.getElementById("screen-city-detail")?.classList.contains("active")) setTimeout(() => patchTransportTicketButtons(activeCityLegId),150);
+    });
+    if (window.LFBudget?.onTickets) window.LFBudget.onTickets(() => {
+      if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,900);
+      if (document.getElementById("screen-sos")?.classList.contains("active")) setTimeout(patchInsuranceSOS,900);
+      if (activeCityLegId && document.getElementById("screen-city-detail")?.classList.contains("active")) setTimeout(() => patchTransportTicketButtons(activeCityLegId),900);
+    });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installUi, { once:true });
