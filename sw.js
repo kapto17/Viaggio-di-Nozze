@@ -1,4 +1,4 @@
-const CACHE_NAME = "viaggio-nozze-v160";
+const CACHE_NAME = "viaggio-nozze-v161";
 const ASSETS = [
   "./",
   "./index.html",
@@ -18,6 +18,8 @@ const ASSETS = [
   "./app.js",
   "./app-version.js",
   "./travel-documents.js",
+  "./trip-data-patch.js",
+  "./trip-ui-patch.js",
   "./motion.js",
   "./budget-layout.js",
   "./expense-wizard.js",
@@ -123,7 +125,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   const url = new URL(event.request.url);
-  const isCoreAsset = ["/style.css", "/app.js", "/app-version.js", "/travel-documents.js", "/hotel-voucher.js", "/hotel-voucher.css", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/saved-tips.js", "/saved-tips.css", "/saved-tips-title-edit.js", "/saved-tips-title-edit.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
+  const isCoreAsset = ["/style.css", "/app.js", "/app-version.js", "/travel-documents.js", "/trip-data-patch.js", "/trip-ui-patch.js", "/hotel-voucher.js", "/hotel-voucher.css", "/motion.js", "/data.js", "/firebase-budget.js", "/budget-layout.js", "/expense-wizard.js", "/budget-summary.js", "/lakers-guide.js", "/lakers-guide.css", "/today-weather.js", "/today-weather.css", "/ticket-meta.js", "/ticket-meta.css", "/program-tab.js", "/program-tab.css", "/ticket-sync.js", "/saved-tips.js", "/saved-tips.css", "/saved-tips-title-edit.js", "/saved-tips-title-edit.css", "/manifest.json"].some((suffix) => url.pathname.endsWith(suffix));
 
   if (isCoreAsset) {
     event.respondWith(
