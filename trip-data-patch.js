@@ -73,7 +73,8 @@
     iadFco.subtitle = "Washington Dulles → Roma Fiumicino · United UA884 · Durata 8 h 30 min";
   }
 
-  // Timeline del 23 ottobre: nuovo Alaska AS1369, arrivo anticipato e ritiro Alamo alle 13:30.
+  // Timeline del 23 ottobre: adeguiamo soltanto partenza/arrivo del volo e i margini per SFO.
+  // Auto e check-in al The Commerce restano invariati, come richiesto.
   if (typeof PROGRAM_GUIDE !== "undefined") {
     const sfo22 = (PROGRAM_GUIDE.sfo || []).find(day => day.date === "2026-10-22");
     const wake = sfo22?.items?.find(item => String(item.title || "").includes("Sveglia consigliata per il 23 ottobre"));
@@ -100,13 +101,6 @@
           item.time = "11:53";
           item.kind = "booked";
           item.note = "Atterraggio previsto alle 11:53. Recuperate i bagagli e seguite le indicazioni Rental Car Shuttles.";
-        } else if (title === "Spostamento · terminal LAX → Rental Car Center") {
-          item.time = "12:35 circa";
-        } else if (title === "Ritiro auto · Alamo") {
-          item.time = "13:30";
-          item.note = "Orario indicato nel voucher Alamo. Da qui avete il SUV fino alla riconsegna a Las Vegas.";
-        } else if (title === "Spostamento · LAX Rental Car Center → The Commerce Hotel") {
-          item.time = "13:50 circa";
         }
       });
     }
