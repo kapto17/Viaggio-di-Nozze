@@ -1,0 +1,32 @@
+/* 2.4.55 · Voucher hotel nel box Alloggio */
+.hotel-voucher-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:13px;
+}
+.hotel-voucher-actions .hotel-map{
+  margin-top:0!important;
+}
+.hotel-voucher-btn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:0;
+  font:inherit;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.hotel-voucher-btn.is-ready{
+  box-shadow:inset 0 0 0 1px rgba(22,35,63,.08);
+}
+.hotel-voucher-btn:disabled{
+  opacity:.58;
+  cursor:default;
+}
+.hotel-voucher-btn[hidden]{
+  display:none!important;
+}
+.hotel-voucher-input{
+  display:none!important;
+}
