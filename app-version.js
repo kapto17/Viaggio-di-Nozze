@@ -1,4 +1,4 @@
-const LF_APP_VERSION = "2.4.61";
+const LF_APP_VERSION = "2.4.62";
 window.LF_APP_VERSION = LF_APP_VERSION;
 
 function applyVisibleVersion(){
