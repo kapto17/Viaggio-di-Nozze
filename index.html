@@ -48,171 +48,57 @@ html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
   background-size:contain!important;
   box-shadow:0 10px 28px rgba(19,42,69,.12)!important;
 }
-
-html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .honeymoon-title-wrap{
-  display:none!important;
-}
-
+html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .honeymoon-title-wrap{display:none!important;}
 html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden) .theme-menu-btn{
-  position:absolute!important;
-  z-index:4!important;
-  top:max(12px, env(safe-area-inset-top))!important;
-  left:12px!important;
-  margin:0!important;
-  padding:8px!important;
-  border-radius:12px!important;
-  background:rgba(255,255,255,.88)!important;
-  box-shadow:0 3px 12px rgba(20,30,40,.16)!important;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  position:absolute!important;z-index:4!important;top:max(12px, env(safe-area-inset-top))!important;left:12px!important;margin:0!important;padding:8px!important;border-radius:12px!important;background:rgba(255,255,255,.88)!important;box-shadow:0 3px 12px rgba(20,30,40,.16)!important;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
-
-@media(max-width:600px){
-  html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){
-    width:calc(100% - 20px)!important;
-    margin-top:calc(env(safe-area-inset-top) + 8px)!important;
-    margin-right:10px!important;
-    margin-bottom:16px!important;
-    margin-left:10px!important;
-    border-radius:20px!important;
-    aspect-ratio:1536 / 1162;
-    background-size:contain!important;
-  }
-}
+@media(max-width:600px){html[data-theme="classic"] .honeymoon-topbar:not(.home-only-hidden){width:calc(100% - 20px)!important;margin-top:calc(env(safe-area-inset-top) + 8px)!important;margin-right:10px!important;margin-bottom:16px!important;margin-left:10px!important;border-radius:20px!important;aspect-ratio:1536 / 1162;background-size:contain!important;}}
 </style>
 
 <style>
 /* v2.3.27 — Fusi orari, solo tema Classico */
-html[data-theme="classic"] .timezone-box{
-  background:transparent!important;
-  border:none!important;
-  box-shadow:none!important;
-}
-html[data-theme="classic"] .timezone-box-title{
-  color:var(--ink)!important;
-}
-html[data-theme="classic"] .world-clock-card{
-  border:1px solid rgba(176,76,91,.16)!important;
-  box-shadow:0 7px 18px -15px rgba(69,43,43,.35)!important;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
-}
-html[data-theme="classic"] .world-clock-card.world-clock-0{
-  background:linear-gradient(145deg,#fffaf1 0%,#f8efe1 100%)!important;
-}
-html[data-theme="classic"] .world-clock-card.world-clock-1{
-  background:linear-gradient(145deg,#fff7f4 0%,#f8e8e4 100%)!important;
-}
-html[data-theme="classic"] .world-clock-card.world-clock-2{
-  background:linear-gradient(145deg,#f8fbff 0%,#e9eef7 100%)!important;
-}
-html[data-theme="classic"] .world-clock-card.world-clock-3{
-  background:linear-gradient(145deg,#fbfaf1 0%,#edf1df 100%)!important;
-}
-html[data-theme="classic"] .world-clock-card strong,
-html[data-theme="classic"] .world-clock-card b{
-  color:#172238!important;
-}
-html[data-theme="classic"] .world-clock-card small,
-html[data-theme="classic"] .world-clock-card span{
-  color:#5f6670!important;
-}
+html[data-theme="classic"] .timezone-box{background:transparent!important;border:none!important;box-shadow:none!important;}
+html[data-theme="classic"] .timezone-box-title{color:var(--ink)!important;}
+html[data-theme="classic"] .world-clock-card{border:1px solid rgba(176,76,91,.16)!important;box-shadow:0 7px 18px -15px rgba(69,43,43,.35)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);}
+html[data-theme="classic"] .world-clock-card.world-clock-0{background:linear-gradient(145deg,#fffaf1 0%,#f8efe1 100%)!important;}
+html[data-theme="classic"] .world-clock-card.world-clock-1{background:linear-gradient(145deg,#fff7f4 0%,#f8e8e4 100%)!important;}
+html[data-theme="classic"] .world-clock-card.world-clock-2{background:linear-gradient(145deg,#f8fbff 0%,#e9eef7 100%)!important;}
+html[data-theme="classic"] .world-clock-card.world-clock-3{background:linear-gradient(145deg,#fbfaf1 0%,#edf1df 100%)!important;}
+html[data-theme="classic"] .world-clock-card strong,html[data-theme="classic"] .world-clock-card b{color:#172238!important;}
+html[data-theme="classic"] .world-clock-card small,html[data-theme="classic"] .world-clock-card span{color:#5f6670!important;}
 </style>
 
 </head>
 <body>
 <div id="offline-badge" class="offline-badge">● Modalità offline — dati locali</div>
-
 <div id="app">
   <div class="topbar honeymoon-topbar">
-    <button id="theme-menu-btn" class="theme-menu-btn" type="button" aria-label="Apri menu temi" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <button id="theme-menu-btn" class="theme-menu-btn" type="button" aria-label="Apri menu temi" aria-expanded="false"><span></span><span></span><span></span></button>
     <div class="honeymoon-title-wrap">
       <h1>Viaggio di Nozze</h1>
-      <svg class="honeymoon-heart-line" viewBox="0 0 320 70" aria-hidden="true" focusable="false">
-        <path d="M6 42 C55 42 73 51 105 43 C126 38 137 34 145 28 C151 23 151 11 160 10 C169 11 169 23 175 28 C183 34 194 38 215 43 C247 51 265 42 314 42"/>
-        <path d="M160 10 C151 -4 130 -1 130 14 C130 28 145 37 160 49 C175 37 190 28 190 14 C190 -1 169 -4 160 10 Z"/>
-      </svg>
+      <svg class="honeymoon-heart-line" viewBox="0 0 320 70" aria-hidden="true" focusable="false"><path d="M6 42 C55 42 73 51 105 43 C126 38 137 34 145 28 C151 23 151 11 160 10 C169 11 169 23 175 28 C183 34 194 38 215 43 C247 51 265 42 314 42"/><path d="M160 10 C151 -4 130 -1 130 14 C130 28 145 37 160 49 C175 37 190 28 190 14 C190 -1 169 -4 160 10 Z"/></svg>
     </div>
   </div>
-
   <div id="theme-panel-backdrop" class="theme-panel-backdrop" hidden></div>
   <aside id="theme-panel" class="theme-panel" aria-hidden="true" aria-label="Menu app">
-    <div class="theme-panel-head">
-      <div>
-        <small>MENU</small>
-        <h2>Viaggio di Nozze</h2>
-      </div>
-      <button id="theme-panel-close" class="theme-panel-close" type="button" aria-label="Chiudi">×</button>
-    </div>
+    <div class="theme-panel-head"><div><small>MENU</small><h2>Viaggio di Nozze</h2></div><button id="theme-panel-close" class="theme-panel-close" type="button" aria-label="Chiudi">×</button></div>
     <p class="theme-panel-intro">Il tema viene salvato solo su questo dispositivo.</p>
-
-    <button class="theme-choice" type="button" data-theme-choice="classic">
-      <span class="theme-swatch theme-swatch-classic"><i></i><i></i><i></i></span>
-      <span><strong>Originale</strong><small>Panna, bianco e rosso romantico</small></span>
-      <b class="theme-check">✓</b>
-    </button>
-
-    <button class="theme-choice" type="button" data-theme-choice="green">
-      <span class="theme-swatch theme-swatch-green"><i></i><i></i><i></i></span>
-      <span><strong>Verde</strong><small>Oliva, verde e bianco</small></span>
-      <b class="theme-check">✓</b>
-    </button>
-
-    <button class="theme-choice" type="button" data-theme-choice="blue">
-      <span class="theme-swatch theme-swatch-blue"><i></i><i></i><i></i></span>
-      <span><strong>Blu Chicago</strong><small>Cielo, bianco e blu profondo</small></span>
-      <b class="theme-check">✓</b>
-    </button>
-
-    <button id="archived-checklist-btn" class="theme-choice menu-checklist-choice" type="button" hidden>
-      <span class="menu-checklist-icon" aria-hidden="true">🧳</span>
-      <span><strong>Checklist</strong><small>Rivedi preparativi e spunte</small></span>
-      <b class="menu-checklist-arrow">›</b>
-    </button>
+    <button class="theme-choice" type="button" data-theme-choice="classic"><span class="theme-swatch theme-swatch-classic"><i></i><i></i><i></i></span><span><strong>Originale</strong><small>Panna, bianco e rosso romantico</small></span><b class="theme-check">✓</b></button>
+    <button class="theme-choice" type="button" data-theme-choice="green"><span class="theme-swatch theme-swatch-green"><i></i><i></i><i></i></span><span><strong>Verde</strong><small>Oliva, verde e bianco</small></span><b class="theme-check">✓</b></button>
+    <button class="theme-choice" type="button" data-theme-choice="blue"><span class="theme-swatch theme-swatch-blue"><i></i><i></i><i></i></span><span><strong>Blu Chicago</strong><small>Cielo, bianco e blu profondo</small></span><b class="theme-check">✓</b></button>
+    <button id="archived-checklist-btn" class="theme-choice menu-checklist-choice" type="button" hidden><span class="menu-checklist-icon" aria-hidden="true">🧳</span><span><strong>Checklist</strong><small>Rivedi preparativi e spunte</small></span><b class="menu-checklist-arrow">›</b></button>
   </aside>
-
   <main>
-    <section class="screen active" id="screen-home"></section>
-    <section class="screen" id="screen-cities"></section>
-    <section class="screen" id="screen-program"></section>
-    <section class="screen" id="screen-city-detail"></section>
-    <section class="screen" id="screen-food-detail"></section>
-    <section class="screen" id="screen-place-detail"></section>
-    <section class="screen" id="screen-restaurant-detail"></section>
-    <section class="screen" id="screen-checklist"></section>
-    <section class="screen" id="screen-private-access"></section>
-    <section class="screen" id="screen-budget"></section>
-    <section class="screen" id="screen-tiktok"></section>
-    <section class="screen" id="screen-tiktok-city"></section>
-    <section class="screen" id="screen-sos"></section>
+    <section class="screen active" id="screen-home"></section><section class="screen" id="screen-cities"></section><section class="screen" id="screen-program"></section><section class="screen" id="screen-city-detail"></section><section class="screen" id="screen-food-detail"></section><section class="screen" id="screen-place-detail"></section><section class="screen" id="screen-restaurant-detail"></section><section class="screen" id="screen-checklist"></section><section class="screen" id="screen-private-access"></section><section class="screen" id="screen-budget"></section><section class="screen" id="screen-tiktok"></section><section class="screen" id="screen-tiktok-city"></section><section class="screen" id="screen-sos"></section>
   </main>
-
   <nav class="tabbar">
-    <button class="active" data-screen="home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-      Home
-    </button>
-    <button data-screen="program" aria-label="Programma del viaggio">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h2M14 14h2M8 18h2M14 18h2"/></svg>
-      Programma
-    </button>
-    <button id="budget-tab" data-screen="budget" hidden aria-label="Budget L&F">
-      <span class="tab-dollar" aria-hidden="true">$</span>
-      Budget
-    </button>
-    <button id="tiktok-tab" data-screen="tiktok" hidden aria-label="Consigli TikTok">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4v10.5a4.5 4.5 0 1 1-3-4.24"/><path d="M14 4c1.1 2.4 2.8 3.8 5 4"/></svg>
-      TikTok
-    </button>
-    <button id="sos-tab" data-screen="sos" hidden aria-label="SOS e informazioni utili">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3L12 3z"/><path d="M12 9v4"/><path d="M12 16h.01"/></svg>
-      SOS
-    </button>
+    <button class="active" data-screen="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Home</button>
+    <button data-screen="program" aria-label="Programma del viaggio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h2M14 14h2M8 18h2M14 18h2"/></svg>Programma</button>
+    <button id="budget-tab" data-screen="budget" hidden aria-label="Budget L&F"><span class="tab-dollar" aria-hidden="true">$</span>Budget</button>
+    <button id="tiktok-tab" data-screen="tiktok" hidden aria-label="Consigli TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4v10.5a4.5 4.5 0 1 1-3-4.24"/><path d="M14 4c1.1 2.4 2.8 3.8 5 4"/></svg>TikTok</button>
+    <button id="sos-tab" data-screen="sos" hidden aria-label="SOS e informazioni utili"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3L12 3z"/><path d="M12 9v4"/><path d="M12 16h.01"/></svg>SOS</button>
   </nav>
 </div>
-
 <script src="data.js?v=109"></script>
 <script src="travel-documents.js?v=1"></script>
 <script src="trip-update.js?v=1"></script>
@@ -231,6 +117,5 @@ html[data-theme="classic"] .world-clock-card span{
 <script src="hotel-voucher.js?v=1"></script>
 <script type="module" src="saved-tips.js?v=2"></script>
 <script type="module" src="saved-tips-title-edit.js?v=2"></script>
-
 </body>
 </html>
