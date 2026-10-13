@@ -1,4 +1,4 @@
-/* v2.4.60 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
+/* v2.4.61 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
@@ -113,7 +113,8 @@
         .lf-theme-submenu{margin:8px 0 12px;border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden}
         .lf-theme-submenu>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 15px;font-weight:800}.lf-theme-submenu>summary::-webkit-details-marker{display:none}.lf-theme-submenu>summary:after{content:'⌄';opacity:.7}.lf-theme-submenu[open]>summary:after{transform:rotate(180deg)}
         .lf-theme-submenu-inner{padding:0 8px 8px}.lf-theme-submenu .theme-panel-intro{margin:0 8px 8px}
-        .lf-menu-shortcuts{display:grid;gap:8px;margin-top:10px}.lf-menu-shortcut{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:0;border-radius:14px;background:rgba(255,255,255,.08);color:inherit;text-align:left;font:inherit;cursor:pointer}.lf-menu-shortcut span{font-size:18px}.lf-menu-shortcut strong{font-size:14px}.lf-menu-shortcut b{margin-left:auto;opacity:.7}
+        .lf-menu-shortcuts{display:grid;gap:8px;margin-top:10px}.lf-menu-shortcuts[hidden]{display:none!important}.lf-menu-shortcut{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:0;border-radius:14px;background:rgba(255,255,255,.08);color:inherit;text-align:left;font:inherit;cursor:pointer}.lf-menu-shortcut span{font-size:18px}.lf-menu-shortcut strong{font-size:14px}.lf-menu-shortcut b{margin-left:auto;opacity:.7}
+        nav.tabbar #documents-tab[hidden]{display:none!important}
         .documents-head{padding:6px 2px 14px}.documents-head small{font-size:11px;font-weight:900;letter-spacing:.12em;opacity:.62}.documents-head h2{margin:4px 0 6px;font-size:28px}.documents-head p{margin:0;opacity:.72;line-height:1.45}
         .documents-add-btn{width:100%;margin:4px 0 18px;padding:14px 16px;border:0;border-radius:16px;background:#d29a28;color:#10203a;font-weight:900;font-size:15px}
         .documents-section{margin:18px 0}.documents-section-title{display:flex;align-items:center;gap:8px;margin:0 0 9px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
@@ -305,8 +306,8 @@
 
     function documentCategory(rec){
       const value = normalizeKey(`${rec.targetLabel || ""} ${rec.label || ""}`);
-      if (/\bvolo\b|fco|sfo|lax|las|ord|puj|iad|united|alaska|american/.test(value)) return { id:"flights", icon:"✈️", label:"Voli" };
       if (/voucher hotel|hotel spero|commerce|paris las vegas|lake powell|warwick|dominicus/.test(value)) return { id:"hotels", icon:"🏨", label:"Hotel" };
+      if (/\bvolo\b|\bfco\b|\bsfo\b|\blax\b|\blas\b|\bord\b|\bpuj\b|\biad\b|\bunited\b|\balaska\b|\bamerican\b/.test(value)) return { id:"flights", icon:"✈️", label:"Voli" };
       if (/noleggio|ritiro suv|auto|transfer|rental/.test(value)) return { id:"transport", icon:"🚗", label:"Auto e transfer" };
       if (/esta|e ticket|assicurazione|passaporto|documento/.test(value)) return { id:"travel", icon:"🛂", label:"Documenti di viaggio" };
       if (/alcatraz|universal|antelope|tour|studios|attivita/.test(value)) return { id:"activities", icon:"🎟️", label:"Attività" };
@@ -485,6 +486,7 @@
         docs.type = "button";
         docs.dataset.screen = "documents";
         docs.hidden = true;
+        docs.style.setProperty("display","none","important");
         docs.setAttribute("aria-label","Documenti di viaggio");
         docs.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6l2 2h8v14H4z"/><path d="M8 11h8M8 15h6"/></svg>Documenti`;
         nav.insertBefore(docs,sos);
@@ -520,6 +522,7 @@
       shortcuts.className = "lf-menu-shortcuts";
       shortcuts.id = "lf-private-menu-shortcuts";
       shortcuts.hidden = true;
+      shortcuts.style.setProperty("display","none","important");
       shortcuts.innerHTML = `
         <button type="button" class="lf-menu-shortcut" data-lf-shortcut="tiktok"><span>♪</span><strong>Consigli TikTok</strong><b>›</b></button>
         <button type="button" class="lf-menu-shortcut" data-lf-shortcut="program"><span>🗓️</span><strong>Programma</strong><b>›</b></button>
@@ -549,8 +552,16 @@
     function applyPrivateNavigationState(authenticated){
       const docs = document.getElementById("documents-tab");
       const shortcuts = document.getElementById("lf-private-menu-shortcuts");
-      if (docs) docs.hidden = !authenticated;
-      if (shortcuts) shortcuts.hidden = !authenticated;
+      if (docs) {
+        docs.hidden = !authenticated;
+        if (authenticated) docs.style.removeProperty("display");
+        else docs.style.setProperty("display","none","important");
+      }
+      if (shortcuts) {
+        shortcuts.hidden = !authenticated;
+        if (authenticated) shortcuts.style.removeProperty("display");
+        else shortcuts.style.setProperty("display","none","important");
+      }
       const checklist = document.getElementById("archived-checklist-btn");
       if (checklist) checklist.hidden = false;
       if (!authenticated && document.getElementById("screen-documents")?.classList.contains("active")) {
