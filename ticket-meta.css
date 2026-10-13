@@ -98,3 +98,32 @@
   min-height:35px;
   padding:7px 10px!important;
 }
+
+/* v2.4.66 · Pulsanti del volo uniformi nella tendina Trasporti */
+#screen-city-detail .stub-bottom .mapbtn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  min-height:38px!important;
+  padding:9px 14px!important;
+  border:0!important;
+  border-radius:999px!important;
+  font-family:inherit!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+}
+#screen-city-detail .stub-bottom .lf-transport-ticket-btn{
+  font-size:0!important;
+  cursor:pointer;
+}
+#screen-city-detail .stub-bottom .lf-transport-ticket-btn::after{
+  content:"🎟️ Biglietto";
+  font-family:inherit;
+  font-size:13px;
+  font-weight:800;
+  line-height:1;
+}
