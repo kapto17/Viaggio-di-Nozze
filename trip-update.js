@@ -1,4 +1,4 @@
-/* v2.4.59 — unico file per correzioni viaggio, documenti, promemoria, fee e assicurazione */
+/* v2.4.60 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
@@ -21,11 +21,15 @@
   const bayahibe = leg("bayahibe");
   if (bayahibe) {
     if (!Array.isArray(bayahibe.tickets)) bayahibe.tickets = [];
-    bayahibe.tickets = bayahibe.tickets.filter(item => String(item?.name || "").trim().toLowerCase() !== "e-ticket · repubblica dominicana".toLowerCase());
+    const obsolete = new Set([
+      "e-ticket · repubblica dominicana",
+      "transfer andata",
+      "transfer ritorno"
+    ]);
+    bayahibe.tickets = bayahibe.tickets.filter(item => !obsolete.has(String(item?.name || "").trim().toLowerCase()));
     addTicket("bayahibe", { name:"E-Ticket Ingresso", note:"E-ticket per l’ingresso in Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
     addTicket("bayahibe", { name:"E-Ticket Uscita", note:"E-ticket per l’uscita dalla Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.", status:"Documento" });
-    addTicket("bayahibe", { name:"Transfer Andata", note:"Voucher del trasferimento da Punta Cana al Viva Dominicus Palace.", status:"Documento" });
-    addTicket("bayahibe", { name:"Transfer Ritorno", note:"Voucher del trasferimento dal Viva Dominicus Palace a Punta Cana.", status:"Documento" });
+    addTicket("bayahibe", { name:"Transfer da e per aeroporto", note:"Voucher unico dei transfer Punta Cana Airport ↔ Viva Dominicus Palace.", status:"Documento" });
   }
 
   setHotelFee("sfo", { perNight:0, label:"Fee hotel", status:"not-listed", note:"Nessuna Guest Amenities Fee è indicata nel voucher dell’agenzia · eventuali addebiti extra restano da verificare in hotel." });
@@ -105,6 +109,16 @@
         .sos-insurance-coverages span{padding:8px 10px;border-radius:10px;background:rgba(0,0,0,.035);font-size:12px;line-height:1.25}
         .sos-insurance-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
         .sos-insurance-actions a{display:inline-flex;align-items:center;justify-content:center;padding:9px 11px;border-radius:11px;text-decoration:none;font-weight:700;background:rgba(176,76,91,.08);color:inherit}
+        .lf-hidden-tiktok-trigger{display:none!important}
+        .lf-theme-submenu{margin:8px 0 12px;border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden}
+        .lf-theme-submenu>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 15px;font-weight:800}.lf-theme-submenu>summary::-webkit-details-marker{display:none}.lf-theme-submenu>summary:after{content:'⌄';opacity:.7}.lf-theme-submenu[open]>summary:after{transform:rotate(180deg)}
+        .lf-theme-submenu-inner{padding:0 8px 8px}.lf-theme-submenu .theme-panel-intro{margin:0 8px 8px}
+        .lf-menu-shortcuts{display:grid;gap:8px;margin-top:10px}.lf-menu-shortcut{width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:0;border-radius:14px;background:rgba(255,255,255,.08);color:inherit;text-align:left;font:inherit;cursor:pointer}.lf-menu-shortcut span{font-size:18px}.lf-menu-shortcut strong{font-size:14px}.lf-menu-shortcut b{margin-left:auto;opacity:.7}
+        .documents-head{padding:6px 2px 14px}.documents-head small{font-size:11px;font-weight:900;letter-spacing:.12em;opacity:.62}.documents-head h2{margin:4px 0 6px;font-size:28px}.documents-head p{margin:0;opacity:.72;line-height:1.45}
+        .documents-add-btn{width:100%;margin:4px 0 18px;padding:14px 16px;border:0;border-radius:16px;background:#d29a28;color:#10203a;font-weight:900;font-size:15px}
+        .documents-section{margin:18px 0}.documents-section-title{display:flex;align-items:center;gap:8px;margin:0 0 9px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+        .documents-list{display:grid;gap:10px}.documents-card{background:#fff;border-radius:17px;padding:14px;box-shadow:0 9px 24px -21px rgba(20,30,45,.55)}.documents-card-top{display:flex;align-items:flex-start;gap:11px}.documents-card-icon{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:#f2ede3;font-size:19px}.documents-card-copy{min-width:0;flex:1}.documents-card-copy strong{display:block;font-size:14px;line-height:1.25}.documents-card-copy small{display:block;margin-top:4px;font-size:11px;line-height:1.35;opacity:.65}.documents-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.documents-card-badges span{padding:4px 7px;border-radius:999px;background:#eef1ec;font-size:10px;font-weight:800}.documents-open{width:100%;margin-top:11px;padding:11px;border:0;border-radius:13px;background:#eef0f3;color:#23334e;font-weight:800}.documents-empty{padding:24px 16px;border-radius:17px;background:#fff;text-align:center;opacity:.72}
+        .documents-upload-backdrop{position:fixed;inset:0;z-index:10050;background:rgba(10,18,30,.52);display:grid;align-items:end;padding:18px}.documents-upload-sheet{width:min(100%,520px);max-height:88vh;overflow:auto;margin:0 auto;background:#fff;border-radius:23px;padding:18px;box-shadow:0 20px 70px rgba(0,0,0,.3)}.documents-upload-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.documents-upload-head small{font-size:10px;font-weight:900;letter-spacing:.1em;opacity:.58}.documents-upload-head h3{margin:3px 0 14px}.documents-upload-close{border:0;background:#eef0f3;border-radius:50%;width:36px;height:36px;font-size:20px}.documents-field{display:grid;gap:6px;margin:12px 0}.documents-field span{font-size:12px;font-weight:800}.documents-field select,.documents-field input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d9dde4;border-radius:12px;background:#fff;font:inherit}.documents-upload-save{width:100%;margin-top:9px;padding:13px;border:0;border-radius:14px;background:#d29a28;color:#10203a;font-weight:900}
       `;
       document.head.appendChild(style);
     }
@@ -229,6 +243,335 @@
       wrappedSOS.__tripInsuranceWrapped = true;
       window.openSOS = wrappedSOS;
     }
+
+    // Nasconde soltanto le vecchie schede informative statiche sopra al vero archivio Biglietti.
+    // I target restano nei dati e quindi continuano a essere disponibili quando si carica un file.
+    const stripStaticTicketSummaries = () => {
+      document.querySelectorAll("#screen-city-detail .ticket-import-box").forEach(box => {
+        let node = box.previousElementSibling;
+        while (node?.classList?.contains("ticket")) {
+          const previous = node.previousElementSibling;
+          node.remove();
+          node = previous;
+        }
+      });
+    };
+
+    if (typeof window.openCity === "function" && !window.openCity.__tripTicketSummaryWrapped) {
+      const originalOpenCity = window.openCity;
+      const wrappedOpenCity = function(){
+        const result = originalOpenCity.apply(this, arguments);
+        requestAnimationFrame(stripStaticTicketSummaries);
+        return result;
+      };
+      wrappedOpenCity.__tripTicketSummaryWrapped = true;
+      window.openCity = wrappedOpenCity;
+    }
+
+    const normalizeKey = value => String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+    const makeTicketKey = (legId, label) => typeof window.ticketKey === "function" ? window.ticketKey(legId,label) : `${legId}::${normalizeKey(label)}`;
+    const ownerLabel = owner => owner === "lorenzo" ? "Lorenzo" : owner === "fortuna" ? "Fortuna" : "Entrambi";
+    const cityLabel = legId => leg(legId)?.city || legId || "Viaggio";
+
+    function allUploadTargets(){
+      const out = [];
+      TRIP.legs.forEach(item => {
+        const seen = new Set();
+        const add = label => {
+          if (!label) return;
+          const key = makeTicketKey(item.id,label);
+          if (seen.has(key)) return;
+          seen.add(key);
+          out.push({ legId:item.id, city:item.city, label, key });
+        };
+        (item.transport || []).forEach(x => add(x.title));
+        if (item.hotel?.name) add(`Voucher hotel · ${item.hotel.name}`);
+        (item.activities || []).filter(x => x.ticketUpload !== false).forEach(x => add(x.name));
+        (item.tickets || []).forEach(x => add(x.name));
+      });
+      return out;
+    }
+
+    async function allDocumentRecords(){
+      if (typeof window.openTicketDb !== "function") return [];
+      const db = await window.openTicketDb();
+      return await new Promise((resolve,reject) => {
+        const tx = db.transaction("tickets","readonly");
+        const req = tx.objectStore("tickets").getAll();
+        req.onsuccess = () => resolve((req.result || []).sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0)));
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function documentCategory(rec){
+      const value = normalizeKey(`${rec.targetLabel || ""} ${rec.label || ""}`);
+      if (/\bvolo\b|fco|sfo|lax|las|ord|puj|iad|united|alaska|american/.test(value)) return { id:"flights", icon:"✈️", label:"Voli" };
+      if (/voucher hotel|hotel spero|commerce|paris las vegas|lake powell|warwick|dominicus/.test(value)) return { id:"hotels", icon:"🏨", label:"Hotel" };
+      if (/noleggio|ritiro suv|auto|transfer|rental/.test(value)) return { id:"transport", icon:"🚗", label:"Auto e transfer" };
+      if (/esta|e ticket|assicurazione|passaporto|documento/.test(value)) return { id:"travel", icon:"🛂", label:"Documenti di viaggio" };
+      if (/alcatraz|universal|antelope|tour|studios|attivita/.test(value)) return { id:"activities", icon:"🎟️", label:"Attività" };
+      return { id:"other", icon:"📄", label:"Altri documenti" };
+    }
+
+    function documentCard(rec){
+      const cat = documentCategory(rec);
+      const sync = rec.cloudId ? "☁ Condiviso" : "↻ Da sincronizzare";
+      return `<div class="documents-card">
+        <div class="documents-card-top">
+          <div class="documents-card-icon">${cat.icon}</div>
+          <div class="documents-card-copy">
+            <strong>${typeof escapeHtml === "function" ? escapeHtml(rec.label || rec.fileName || "Documento") : (rec.label || rec.fileName || "Documento")}</strong>
+            <small>${typeof escapeHtml === "function" ? escapeHtml(rec.targetLabel || "Non associato") : (rec.targetLabel || "Non associato")} · ${typeof escapeHtml === "function" ? escapeHtml(cityLabel(rec.legId)) : cityLabel(rec.legId)}</small>
+            <div class="documents-card-badges"><span>${ownerLabel(rec.owner)}</span><span>${sync}</span></div>
+          </div>
+        </div>
+        <button type="button" class="documents-open" data-document-open="${rec.id}">Apri</button>
+      </div>`;
+    }
+
+    async function renderDocumentsScreen(){
+      const screen = document.getElementById("screen-documents");
+      if (!screen) return;
+      if (!window.LFBudget?.isAuthenticated?.()) {
+        screen.innerHTML = `<div class="documents-empty">Area privata L&amp;F.</div>`;
+        return;
+      }
+      let records = [];
+      try { records = await allDocumentRecords(); }
+      catch(err){ console.error("Archivio documenti:",err); }
+      const order = ["flights","hotels","transport","travel","activities","other"];
+      const grouped = new Map();
+      records.forEach(rec => {
+        const cat = documentCategory(rec);
+        if (!grouped.has(cat.id)) grouped.set(cat.id,{cat,items:[]});
+        grouped.get(cat.id).items.push(rec);
+      });
+      const sections = order.filter(id => grouped.has(id)).map(id => {
+        const group = grouped.get(id);
+        return `<section class="documents-section"><div class="documents-section-title"><span>${group.cat.icon}</span>${group.cat.label}</div><div class="documents-list">${group.items.map(documentCard).join("")}</div></section>`;
+      }).join("");
+      screen.innerHTML = `
+        <button type="button" class="back-btn" id="back-documents">‹ Home</button>
+        <div class="documents-head"><small>AREA PRIVATA L&amp;F</small><h2>Documenti</h2><p>Tutti i file del viaggio in un unico posto. I documenti restano gli stessi già associati alle singole tappe.</p></div>
+        <button type="button" class="documents-add-btn" id="documents-add">＋ Aggiungi documento</button>
+        ${sections || `<div class="documents-empty">Non hai ancora caricato documenti.</div>`}`;
+      document.getElementById("back-documents")?.addEventListener("click", () => history.back());
+      document.getElementById("documents-add")?.addEventListener("click", openDocumentsUpload);
+      screen.querySelectorAll("[data-document-open]").forEach(btn => btn.addEventListener("click", async () => {
+        const popup = typeof openTicketPlaceholder === "function" ? openTicketPlaceholder() : null;
+        try {
+          const rec = await getLocalTicket(btn.dataset.documentOpen);
+          if (rec && typeof openTicketRecord === "function") await openTicketRecord(rec,popup);
+          else try{ popup?.close(); }catch(_){}
+        } catch(err){
+          console.error("Apertura documento:",err);
+          try{ popup?.close(); }catch(_){}
+          alert("Non sono riuscito ad aprire il documento.");
+        }
+      }));
+    }
+
+    async function saveDocumentFromHub(file, meta){
+      const db = await window.openTicketDb();
+      const rec = {
+        legId:meta.legId,
+        label:meta.label,
+        owner:meta.owner,
+        targetKey:meta.targetKey,
+        targetLabel:meta.targetLabel,
+        fileName:file.name,
+        mimeType:file.type || "application/octet-stream",
+        size:file.size,
+        createdAt:Date.now(),
+        cloudId:"",
+        syncPending:true,
+        blob:file
+      };
+      return await new Promise((resolve,reject) => {
+        const tx = db.transaction("tickets","readwrite");
+        const req = tx.objectStore("tickets").add(rec);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    function closeDocumentsUpload(){ document.querySelector(".documents-upload-backdrop")?.remove(); }
+
+    function openDocumentsUpload(){
+      if (!window.LFBudget?.isAuthenticated?.()) return;
+      closeDocumentsUpload();
+      const targets = allUploadTargets();
+      const byLeg = new Map();
+      targets.forEach(target => {
+        if (!byLeg.has(target.legId)) byLeg.set(target.legId,[]);
+        byLeg.get(target.legId).push(target);
+      });
+      const options = TRIP.legs.map(item => {
+        const rows = byLeg.get(item.id) || [];
+        return `<optgroup label="${item.city}">${rows.map(target => `<option value="${target.key}" data-leg-id="${target.legId}" data-target-label="${String(target.label).replaceAll('&','&amp;').replaceAll('"','&quot;')}">${target.label}</option>`).join("")}</optgroup>`;
+      }).join("");
+      const backdrop = document.createElement("div");
+      backdrop.className = "documents-upload-backdrop";
+      backdrop.innerHTML = `<form class="documents-upload-sheet" id="documents-upload-form">
+        <div class="documents-upload-head"><div><small>DOCUMENTI</small><h3>Aggiungi documento</h3></div><button type="button" class="documents-upload-close" aria-label="Chiudi">×</button></div>
+        <label class="documents-field"><span>Associa a</span><select id="documents-upload-target">${options}</select></label>
+        <label class="documents-field"><span>Di chi è</span><select id="documents-upload-owner"><option value="both">Entrambi</option><option value="lorenzo">Lorenzo</option><option value="fortuna">Fortuna</option></select></label>
+        <label class="documents-field"><span>Nome del documento</span><input id="documents-upload-name" type="text" maxlength="80" placeholder="Es. Prenotazione volo United"></label>
+        <label class="documents-field"><span>File</span><input id="documents-upload-file" type="file" accept="application/pdf,image/*" required></label>
+        <button class="documents-upload-save" type="submit">Salva e condividi</button>
+      </form>`;
+      document.body.appendChild(backdrop);
+      backdrop.querySelector(".documents-upload-close")?.addEventListener("click",closeDocumentsUpload);
+      backdrop.addEventListener("click",e => { if (e.target === backdrop) closeDocumentsUpload(); });
+      backdrop.querySelector("#documents-upload-form")?.addEventListener("submit", async e => {
+        e.preventDefault();
+        const targetSelect = backdrop.querySelector("#documents-upload-target");
+        const selected = targetSelect.options[targetSelect.selectedIndex];
+        const file = backdrop.querySelector("#documents-upload-file")?.files?.[0];
+        if (!selected || !file) return;
+        const save = backdrop.querySelector(".documents-upload-save");
+        save.disabled = true;
+        save.textContent = "Salvataggio…";
+        const typedName = String(backdrop.querySelector("#documents-upload-name")?.value || "").trim();
+        const label = typedName || file.name.replace(/\.[^.]+$/,"");
+        try {
+          const localId = await saveDocumentFromHub(file,{
+            legId:selected.dataset.legId,
+            targetKey:selected.value,
+            targetLabel:selected.dataset.targetLabel || selected.textContent,
+            owner:backdrop.querySelector("#documents-upload-owner")?.value || "both",
+            label
+          });
+          closeDocumentsUpload();
+          window.dispatchEvent(new CustomEvent("lf-local-ticket-changed",{detail:{localId,legId:selected.dataset.legId}}));
+          await renderDocumentsScreen();
+        } catch(err){
+          console.error("Salvataggio documento:",err);
+          save.disabled = false;
+          save.textContent = "Salva e condividi";
+          alert("Non sono riuscito a salvare il documento.");
+        }
+      });
+    }
+
+    function ensureDocumentsScreen(){
+      if (document.getElementById("screen-documents")) return;
+      const screen = document.createElement("section");
+      screen.className = "screen";
+      screen.id = "screen-documents";
+      document.querySelector("main")?.appendChild(screen);
+    }
+
+    function openDocumentsScreen(pushHistory=true){
+      if (!window.LFBudget?.isAuthenticated?.()) {
+        if (typeof openPrivateAccess === "function") openPrivateAccess(pushHistory);
+        return;
+      }
+      ensureDocumentsScreen();
+      renderDocumentsScreen();
+      if (typeof navigateTo === "function") navigateTo("documents",{},pushHistory);
+      else if (typeof showScreen === "function") showScreen("documents");
+    }
+    window.openDocumentsScreen = openDocumentsScreen;
+
+    function setupBottomNavigation(){
+      const nav = document.querySelector("nav.tabbar");
+      const oldTikTok = document.getElementById("tiktok-tab");
+      const sos = document.getElementById("sos-tab");
+      if (!nav || !oldTikTok || !sos) return;
+      if (!document.getElementById("documents-tab")) {
+        const docs = document.createElement("button");
+        docs.id = "documents-tab";
+        docs.type = "button";
+        docs.dataset.screen = "documents";
+        docs.hidden = true;
+        docs.setAttribute("aria-label","Documenti di viaggio");
+        docs.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6l2 2h8v14H4z"/><path d="M8 11h8M8 15h6"/></svg>Documenti`;
+        nav.insertBefore(docs,sos);
+        docs.addEventListener("click",e => { e.preventDefault(); e.stopImmediatePropagation(); openDocumentsScreen(true); },true);
+      }
+      oldTikTok.classList.add("lf-hidden-tiktok-trigger");
+      oldTikTok.hidden = true;
+      if (oldTikTok.parentElement === nav) document.body.appendChild(oldTikTok);
+    }
+
+    function setupMainMenu(){
+      const panel = document.getElementById("theme-panel");
+      if (!panel || panel.dataset.lfMenuUpdated === "1") return;
+      panel.dataset.lfMenuUpdated = "1";
+      const themeButtons = Array.from(panel.querySelectorAll(".theme-choice[data-theme-choice]"));
+      const intro = panel.querySelector(".theme-panel-intro");
+      if (themeButtons.length) {
+        const details = document.createElement("details");
+        details.className = "lf-theme-submenu";
+        const summary = document.createElement("summary");
+        summary.innerHTML = `<span>🎨 Temi</span>`;
+        const inner = document.createElement("div");
+        inner.className = "lf-theme-submenu-inner";
+        if (intro) inner.appendChild(intro);
+        themeButtons.forEach(btn => inner.appendChild(btn));
+        details.append(summary,inner);
+        const checklist = document.getElementById("archived-checklist-btn");
+        panel.insertBefore(details,checklist || null);
+      }
+      const checklist = document.getElementById("archived-checklist-btn");
+      if (checklist) checklist.hidden = false;
+      const shortcuts = document.createElement("div");
+      shortcuts.className = "lf-menu-shortcuts";
+      shortcuts.id = "lf-private-menu-shortcuts";
+      shortcuts.hidden = true;
+      shortcuts.innerHTML = `
+        <button type="button" class="lf-menu-shortcut" data-lf-shortcut="tiktok"><span>♪</span><strong>Consigli TikTok</strong><b>›</b></button>
+        <button type="button" class="lf-menu-shortcut" data-lf-shortcut="program"><span>🗓️</span><strong>Programma</strong><b>›</b></button>
+        <button type="button" class="lf-menu-shortcut" data-lf-shortcut="budget"><span>💰</span><strong>Budget</strong><b>›</b></button>
+        <button type="button" class="lf-menu-shortcut" data-lf-shortcut="documents"><span>📁</span><strong>Documenti</strong><b>›</b></button>
+        <button type="button" class="lf-menu-shortcut" data-lf-shortcut="sos"><span>🆘</span><strong>SOS</strong><b>›</b></button>`;
+      panel.appendChild(shortcuts);
+      shortcuts.querySelectorAll("[data-lf-shortcut]").forEach(btn => btn.addEventListener("click",() => {
+        const target = btn.dataset.lfShortcut;
+        if (typeof closeThemePanel === "function") closeThemePanel();
+        if (target === "tiktok") { document.getElementById("tiktok-tab")?.click(); return; }
+        if (target === "program") { document.querySelector('nav.tabbar button[data-screen="program"]')?.click(); return; }
+        if (target === "budget") { document.getElementById("budget-tab")?.click(); return; }
+        if (target === "documents") { openDocumentsScreen(true); return; }
+        if (target === "sos") document.getElementById("sos-tab")?.click();
+      }));
+    }
+
+    // La Checklist deve restare sempre disponibile dal menu, anche quando sparisce dalla Home.
+    if (typeof window.updateChecklistArchiveEntry === "function") {
+      window.updateChecklistArchiveEntry = function(){
+        const btn = document.getElementById("archived-checklist-btn");
+        if (btn) btn.hidden = false;
+      };
+    }
+
+    function applyPrivateNavigationState(authenticated){
+      const docs = document.getElementById("documents-tab");
+      const shortcuts = document.getElementById("lf-private-menu-shortcuts");
+      if (docs) docs.hidden = !authenticated;
+      if (shortcuts) shortcuts.hidden = !authenticated;
+      const checklist = document.getElementById("archived-checklist-btn");
+      if (checklist) checklist.hidden = false;
+      if (!authenticated && document.getElementById("screen-documents")?.classList.contains("active")) {
+        if (typeof openPrivateAccess === "function") openPrivateAccess(false);
+      }
+    }
+
+    ensureDocumentsScreen();
+    setupBottomNavigation();
+    setupMainMenu();
+    stripStaticTicketSummaries();
+    applyPrivateNavigationState(!!window.LFBudget?.isAuthenticated?.());
+
+    if (window.LFBudget?.onAuth) window.LFBudget.onAuth(state => applyPrivateNavigationState(!!state?.authenticated));
+    window.addEventListener("lf-auth-changed",e => applyPrivateNavigationState(!!e.detail?.authenticated));
+    window.addEventListener("lf-local-ticket-changed",() => {
+      if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,150);
+    });
+    if (window.LFBudget?.onTickets) window.LFBudget.onTickets(() => {
+      if (document.getElementById("screen-documents")?.classList.contains("active")) setTimeout(renderDocumentsScreen,900);
+    });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installUi, { once:true });
