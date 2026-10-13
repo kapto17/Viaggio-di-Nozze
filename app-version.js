@@ -1,4 +1,4 @@
-const LF_APP_VERSION = "2.4.56";
+const LF_APP_VERSION = "2.4.57";
 window.LF_APP_VERSION = LF_APP_VERSION;
 
 function applyVisibleVersion(){
@@ -12,8 +12,23 @@ function scheduleVersionUpdate(){
   requestAnimationFrame(() => requestAnimationFrame(applyVisibleVersion));
 }
 
-// Nessun MutationObserver: la 2.4.52 poteva creare un ciclo di mutazioni
-// riscrivendo continuamente il testo della versione e bloccare la UI.
+// Il core storico crea ancora la Home con una versione hardcoded.
+// Avvolgiamo renderHome una sola volta: così OGNI ridisegno della Home
+// (compreso quello provocato dall'arrivo dello stato Firebase) applica
+// subito la versione corrente senza MutationObserver e senza loop DOM.
+(function wrapRenderHome(){
+  const original = window.renderHome;
+  if (typeof original !== "function" || original.__lfVersionWrapped) return;
+
+  function wrappedRenderHome(...args){
+    const result = original.apply(this, args);
+    applyVisibleVersion();
+    return result;
+  }
+  wrappedRenderHome.__lfVersionWrapped = true;
+  window.renderHome = wrappedRenderHome;
+})();
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", scheduleVersionUpdate, { once:true });
 } else {
