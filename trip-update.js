@@ -1,4 +1,4 @@
-/* v2.4.62 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
+/* v2.4.63 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
@@ -245,8 +245,6 @@
       window.openSOS = wrappedSOS;
     }
 
-    // Nasconde soltanto le vecchie schede informative statiche sopra al vero archivio Biglietti.
-    // I target restano nei dati e quindi continuano a essere disponibili quando si carica un file.
     const stripStaticTicketSummaries = () => {
       document.querySelectorAll("#screen-city-detail .ticket-import-box").forEach(box => {
         let node = box.previousElementSibling;
@@ -275,7 +273,10 @@
     const cityLabel = legId => legId === "documents" ? "Archivio generale" : (leg(legId)?.city || legId || "Viaggio");
     const legOrder = new Map(TRIP.legs.map((item,index) => [item.id,index]));
     const DOCS_ONLY_TARGETS = [
-      { legId:"documents", city:"Solo Documenti", label:"Voucher voli United", key:"docs-only::voucher-voli-united" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher United UA506 · FCO → SFO", key:"docs-only::voucher-united-ua506-fco-sfo" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher United UA1862 · ORD → PUJ", key:"docs-only::voucher-united-ua1862-ord-puj" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher United UA1614 · PUJ → IAD", key:"docs-only::voucher-united-ua1614-puj-iad" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher United UA884 · IAD → FCO", key:"docs-only::voucher-united-ua884-iad-fco" },
       { legId:"documents", city:"Solo Documenti", label:"Voucher volo Alaska · SFO → LAX", key:"docs-only::voucher-volo-alaska-sfo-lax" },
       { legId:"documents", city:"Solo Documenti", label:"Voucher volo American · LAS → ORD", key:"docs-only::voucher-volo-american-las-ord" },
       { legId:"documents", city:"Solo Documenti", label:"Altro voucher volo", key:"docs-only::altro-voucher-volo" }
@@ -563,7 +564,6 @@
       }));
     }
 
-    // La Checklist deve restare sempre disponibile dal menu, anche quando sparisce dalla Home.
     if (typeof window.updateChecklistArchiveEntry === "function") {
       window.updateChecklistArchiveEntry = function(){
         const btn = document.getElementById("archived-checklist-btn");
