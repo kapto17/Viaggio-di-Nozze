@@ -18,26 +18,8 @@
   });
 
   addTicket("bayahibe", {
-    name: "E-Ticket Ingresso",
-    note: "E-ticket per l’ingresso in Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.",
-    status: "Documento"
-  });
-
-  addTicket("bayahibe", {
-    name: "E-Ticket Uscita",
-    note: "E-ticket per l’uscita dalla Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.",
-    status: "Documento"
-  });
-
-  addTicket("bayahibe", {
-    name: "Transfer Andata",
-    note: "Voucher del trasferimento da Punta Cana al Viva Dominicus Palace.",
-    status: "Documento"
-  });
-
-  addTicket("bayahibe", {
-    name: "Transfer Ritorno",
-    note: "Voucher del trasferimento dal Viva Dominicus Palace a Punta Cana.",
+    name: "E-Ticket · Repubblica Dominicana",
+    note: "Modulo elettronico di ingresso/uscita per la Repubblica Dominicana · allegare PDF, screenshot o QR della conferma.",
     status: "Documento"
   });
 })();
