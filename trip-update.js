@@ -1,4 +1,4 @@
-/* v2.4.61 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
+/* v2.4.62 — unico file per correzioni viaggio, documenti, promemoria, fee, assicurazione e navigazione privata */
 (function(){
   if (typeof TRIP === "undefined" || !Array.isArray(TRIP.legs)) return;
   const leg = id => TRIP.legs.find(item => item.id === id);
@@ -117,8 +117,8 @@
         nav.tabbar #documents-tab[hidden]{display:none!important}
         .documents-head{padding:6px 2px 14px}.documents-head small{font-size:11px;font-weight:900;letter-spacing:.12em;opacity:.62}.documents-head h2{margin:4px 0 6px;font-size:28px}.documents-head p{margin:0;opacity:.72;line-height:1.45}
         .documents-add-btn{width:100%;margin:4px 0 18px;padding:14px 16px;border:0;border-radius:16px;background:#d29a28;color:#10203a;font-weight:900;font-size:15px}
-        .documents-section{margin:18px 0}.documents-section-title{display:flex;align-items:center;gap:8px;margin:0 0 9px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
-        .documents-list{display:grid;gap:10px}.documents-card{background:#fff;border-radius:17px;padding:14px;box-shadow:0 9px 24px -21px rgba(20,30,45,.55)}.documents-card-top{display:flex;align-items:flex-start;gap:11px}.documents-card-icon{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:#f2ede3;font-size:19px}.documents-card-copy{min-width:0;flex:1}.documents-card-copy strong{display:block;font-size:14px;line-height:1.25}.documents-card-copy small{display:block;margin-top:4px;font-size:11px;line-height:1.35;opacity:.65}.documents-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.documents-card-badges span{padding:4px 7px;border-radius:999px;background:#eef1ec;font-size:10px;font-weight:800}.documents-open{width:100%;margin-top:11px;padding:11px;border:0;border-radius:13px;background:#eef0f3;color:#23334e;font-weight:800}.documents-empty{padding:24px 16px;border-radius:17px;background:#fff;text-align:center;opacity:.72}
+        .documents-section{margin:12px 0;border-radius:17px;background:rgba(255,255,255,.5);overflow:hidden}.documents-section>summary{list-style:none}.documents-section>summary::-webkit-details-marker{display:none}.documents-section-title{display:flex;align-items:center;gap:8px;margin:0;padding:14px 15px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.documents-section-title .documents-section-count{margin-left:auto;min-width:24px;height:24px;padding:0 7px;border-radius:999px;display:grid;place-items:center;background:#ece9e0;font-size:11px;letter-spacing:0}.documents-section-title .documents-section-chevron{font-size:15px;opacity:.55;transition:transform .2s ease}.documents-section[open] .documents-section-chevron{transform:rotate(180deg)}
+        .documents-list{display:grid;gap:10px;padding:0 10px 10px}.documents-card{background:#fff;border-radius:17px;padding:14px;box-shadow:0 9px 24px -21px rgba(20,30,45,.55)}.documents-card-top{display:flex;align-items:flex-start;gap:11px}.documents-card-icon{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;background:#f2ede3;font-size:19px}.documents-card-copy{min-width:0;flex:1}.documents-card-copy strong{display:block;font-size:14px;line-height:1.25}.documents-card-copy small{display:block;margin-top:4px;font-size:11px;line-height:1.35;opacity:.65}.documents-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.documents-card-badges span{padding:4px 7px;border-radius:999px;background:#eef1ec;font-size:10px;font-weight:800}.documents-open{width:100%;margin-top:11px;padding:11px;border:0;border-radius:13px;background:#eef0f3;color:#23334e;font-weight:800}.documents-empty{padding:24px 16px;border-radius:17px;background:#fff;text-align:center;opacity:.72}
         .documents-upload-backdrop{position:fixed;inset:0;z-index:10050;background:rgba(10,18,30,.52);display:grid;align-items:end;padding:18px}.documents-upload-sheet{width:min(100%,520px);max-height:88vh;overflow:auto;margin:0 auto;background:#fff;border-radius:23px;padding:18px;box-shadow:0 20px 70px rgba(0,0,0,.3)}.documents-upload-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.documents-upload-head small{font-size:10px;font-weight:900;letter-spacing:.1em;opacity:.58}.documents-upload-head h3{margin:3px 0 14px}.documents-upload-close{border:0;background:#eef0f3;border-radius:50%;width:36px;height:36px;font-size:20px}.documents-field{display:grid;gap:6px;margin:12px 0}.documents-field span{font-size:12px;font-weight:800}.documents-field select,.documents-field input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d9dde4;border-radius:12px;background:#fff;font:inherit}.documents-upload-save{width:100%;margin-top:9px;padding:13px;border:0;border-radius:14px;background:#d29a28;color:#10203a;font-weight:900}
       `;
       document.head.appendChild(style);
@@ -272,7 +272,14 @@
     const normalizeKey = value => String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     const makeTicketKey = (legId, label) => typeof window.ticketKey === "function" ? window.ticketKey(legId,label) : `${legId}::${normalizeKey(label)}`;
     const ownerLabel = owner => owner === "lorenzo" ? "Lorenzo" : owner === "fortuna" ? "Fortuna" : "Entrambi";
-    const cityLabel = legId => leg(legId)?.city || legId || "Viaggio";
+    const cityLabel = legId => legId === "documents" ? "Archivio generale" : (leg(legId)?.city || legId || "Viaggio");
+    const legOrder = new Map(TRIP.legs.map((item,index) => [item.id,index]));
+    const DOCS_ONLY_TARGETS = [
+      { legId:"documents", city:"Solo Documenti", label:"Voucher voli United", key:"docs-only::voucher-voli-united" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher volo Alaska · SFO → LAX", key:"docs-only::voucher-volo-alaska-sfo-lax" },
+      { legId:"documents", city:"Solo Documenti", label:"Voucher volo American · LAS → ORD", key:"docs-only::voucher-volo-american-las-ord" },
+      { legId:"documents", city:"Solo Documenti", label:"Altro voucher volo", key:"docs-only::altro-voucher-volo" }
+    ];
 
     function allUploadTargets(){
       const out = [];
@@ -307,7 +314,7 @@
     function documentCategory(rec){
       const value = normalizeKey(`${rec.targetLabel || ""} ${rec.label || ""}`);
       if (/voucher hotel|hotel spero|commerce|paris las vegas|lake powell|warwick|dominicus/.test(value)) return { id:"hotels", icon:"🏨", label:"Hotel" };
-      if (/\bvolo\b|\bfco\b|\bsfo\b|\blax\b|\blas\b|\bord\b|\bpuj\b|\biad\b|\bunited\b|\balaska\b|\bamerican\b/.test(value)) return { id:"flights", icon:"✈️", label:"Voli" };
+      if (/\bvolo\b|\bvoli\b|\bfco\b|\bsfo\b|\blax\b|\blas\b|\bord\b|\bpuj\b|\biad\b|\bunited\b|\balaska\b|\bamerican\b/.test(value)) return { id:"flights", icon:"✈️", label:"Voli" };
       if (/noleggio|ritiro suv|auto|transfer|rental/.test(value)) return { id:"transport", icon:"🚗", label:"Auto e transfer" };
       if (/esta|e ticket|assicurazione|passaporto|documento/.test(value)) return { id:"travel", icon:"🛂", label:"Documenti di viaggio" };
       if (/alcatraz|universal|antelope|tour|studios|attivita/.test(value)) return { id:"activities", icon:"🎟️", label:"Attività" };
@@ -330,6 +337,18 @@
       </div>`;
     }
 
+    function sortDocumentGroup(id, items){
+      const copy = [...items];
+      if (id === "hotels") {
+        return copy.sort((a,b) => {
+          const aOrder = legOrder.has(a.legId) ? legOrder.get(a.legId) : 999;
+          const bOrder = legOrder.has(b.legId) ? legOrder.get(b.legId) : 999;
+          return aOrder - bOrder || Number(a.createdAt || 0) - Number(b.createdAt || 0);
+        });
+      }
+      return copy.sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+    }
+
     async function renderDocumentsScreen(){
       const screen = document.getElementById("screen-documents");
       if (!screen) return;
@@ -349,7 +368,8 @@
       });
       const sections = order.filter(id => grouped.has(id)).map(id => {
         const group = grouped.get(id);
-        return `<section class="documents-section"><div class="documents-section-title"><span>${group.cat.icon}</span>${group.cat.label}</div><div class="documents-list">${group.items.map(documentCard).join("")}</div></section>`;
+        const items = sortDocumentGroup(id,group.items);
+        return `<details class="documents-section"><summary class="documents-section-title"><span>${group.cat.icon}</span><strong>${group.cat.label}</strong><span class="documents-section-count">${items.length}</span><span class="documents-section-chevron">⌄</span></summary><div class="documents-list">${items.map(documentCard).join("")}</div></details>`;
       }).join("");
       screen.innerHTML = `
         <button type="button" class="back-btn" id="back-documents">‹ Home</button>
@@ -407,10 +427,12 @@
         if (!byLeg.has(target.legId)) byLeg.set(target.legId,[]);
         byLeg.get(target.legId).push(target);
       });
-      const options = TRIP.legs.map(item => {
+      const docsOnlyOptions = `<optgroup label="Solo nella sezione Documenti">${DOCS_ONLY_TARGETS.map(target => `<option value="${target.key}" data-leg-id="${target.legId}" data-target-label="${target.label}">${target.label}</option>`).join("")}</optgroup>`;
+      const tripOptions = TRIP.legs.map(item => {
         const rows = byLeg.get(item.id) || [];
         return `<optgroup label="${item.city}">${rows.map(target => `<option value="${target.key}" data-leg-id="${target.legId}" data-target-label="${String(target.label).replaceAll('&','&amp;').replaceAll('"','&quot;')}">${target.label}</option>`).join("")}</optgroup>`;
       }).join("");
+      const options = docsOnlyOptions + tripOptions;
       const backdrop = document.createElement("div");
       backdrop.className = "documents-upload-backdrop";
       backdrop.innerHTML = `<form class="documents-upload-sheet" id="documents-upload-form">
