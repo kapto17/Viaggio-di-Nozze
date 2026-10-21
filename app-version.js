@@ -1,4 +1,4 @@
-const LF_APP_VERSION = "2.4.69";
+const LF_APP_VERSION = "2.4.70";
 window.LF_APP_VERSION = LF_APP_VERSION;
 
 // 2.4.67 · Modifica puntuale al 28/10: rende esplicito il casello South Entrance
