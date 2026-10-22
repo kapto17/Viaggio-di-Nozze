@@ -1,5 +1,24 @@
-const LF_APP_VERSION = "2.4.70";
+const LF_APP_VERSION = "2.4.71";
 window.LF_APP_VERSION = LF_APP_VERSION;
+
+// 2.4.71 · Safari/iPhone effettua auto-zoom quando un input ha font < 16px.
+// Il wizard spese usa 13px nei campi finali: portiamo solo quei controlli a 16px
+// senza disabilitare lo zoom manuale dell'app.
+(function installExpenseWizardIosZoomFix(){
+  const styleId = "lf-expense-ios-zoom-fix";
+  if(document.getElementById(styleId)) return;
+  const style = document.createElement("style");
+  style.id = styleId;
+  style.textContent = `
+    @supports (-webkit-touch-callout: none) {
+      .expense-wizard .wizard-field input,
+      .expense-wizard .wizard-field select {
+        font-size:16px!important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
 
 // 2.4.67 · Modifica puntuale al 28/10: rende esplicito il casello South Entrance
 // senza riscrivere data.js, così non interferiamo con modifiche fatte in altre chat.
